@@ -11,7 +11,10 @@ export class PopUpComponent implements OnInit {
   @Output() isConnectedToWallet = new EventEmitter<boolean>();
   @Output() isClosed = new EventEmitter<boolean>();
 
-  constructor(private _walletsConnectService: WalletsConnectService) { }
+  constructor(
+    private _walletsConnectService: WalletsConnectService,
+    private _walletConnectConnector: WalletsConnectService,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -28,5 +31,7 @@ export class PopUpComponent implements OnInit {
         console.log('Connected to MyAlgoWallet')
       }
     }
+
+
   }
 }

@@ -104,6 +104,17 @@
       margin-bottom: 30px;
     }
   }
+  .pre-last-section {
+    .title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+
+      h3 {
+        margin: 0px 20px;
+      }
+    }
+  }
   .last-section {
     .boxes {
       .box {
@@ -145,8 +156,9 @@
 @media (max-width: 768px) {
   .main {
     padding: 0px;
-    width: 93%;
+    width: 94%;
     margin: auto;
+
 
     span.aboout {
       margin-top: 0px !important;
@@ -164,11 +176,20 @@
       }
     }
     .first-section {
+      padding: 0px 20px;
       .wrapper {
           margin: 0px !important;
       }
+      .first-wrapper {
+        margin-top: 16px !important;
+        .buttons {
+          margin-top: 30px;
+        }
+      }
     }
     .second-section {
+      padding: 20px 20px;
+
       .wrapper {
         margin: 0px !important;
       }
@@ -176,6 +197,41 @@
     .third-section {
       flex-direction: column;
       //padding-bottom: 15px;
+    }
+  }
+  h3 {
+    text-align: center;
+  }
+}
+@media (max-width: 520px) {
+  .main {
+    .first-section {
+      .wrapper {
+        padding: 15px;
+      }
+    }
+    .second-section {
+      padding: 15px;
+      .wrapper {
+        padding: 15px !important;
+      }
+    }
+    .third-section {
+      .boxes {
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .pre-last-section {
+      .title {
+        flex-direction: column;
+        .title_hot {
+          margin-bottom: 15px;
+        }
+        .title_in {
+          margin: 15px 0px;
+        }
+      }
     }
   }
 }

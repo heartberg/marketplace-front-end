@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MyAlgoWallet } from '@randlabs/wallet-myalgo-js';
-
 const myAlgoWallet = new MyAlgoWallet();
 
 @Injectable()
@@ -8,6 +7,7 @@ const myAlgoWallet = new MyAlgoWallet();
 export class WalletsConnectService {
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
+
 
    connectToMyAlgo = async() => {
     try {
@@ -20,5 +20,4 @@ export class WalletsConnectService {
       console.error(err);
     }
   }
-
 }

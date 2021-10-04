@@ -1,0 +1,75 @@
+.drop-down {
+  position: relative;
+
+  .btn {
+    padding: 0px;
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+
+  .valueCatcher {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%);
+    border: 1px solid rgba(129, 0, 127, 0.15);
+    width: 150px;
+    justify-content: space-between;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    &.marketplace-w {
+      width: 280px;
+    }
+
+    &.border-bottom-none {
+      border-bottom: none;
+      border-radius: 5px 5px 0px 0px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .dropDown {
+    box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%);
+    border: 1px solid rgba(129, 0, 127, 0.15);
+    border-radius: 0px 0px 5px 5px;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 999;
+    background: white;
+    width: 170px;
+
+    &.marketplace-w_position-unset {
+      width: 280px;
+      position: unset;
+    }
+
+    .section {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-bottom: 1px solid rgba(129, 0, 127, 0.15);
+      transition: 0.3s;
+      &:hover {
+        background: rgba(129, 0, 127, 0.8);
+        button {
+          color: #e8e8e9;
+        }
+      }
+      &.border-none {
+        border: unset;
+      }
+      button {
+        cursor: pointer;
+      }
+    }
+  }
+}

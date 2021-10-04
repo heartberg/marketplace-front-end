@@ -14,7 +14,7 @@
         </div>
       </ng-container>
       <div class="left-content">
-        <div class="logo">
+        <div class="logo" routerLink="/home">
           <img src="assets/img/header/logo.svg" alt="">
         </div>
         <div class="search-section hide-respo">
@@ -31,7 +31,7 @@
       <div class="navbar-section" [ngClass]="{'menu-respo-opened': isMenuRespoOpened}">
         <ul [ngClass]="{'clicked': isMenuRespoOpened}">
           <ng-container *ngIf="!changeRespoNavAndProfileIcons">
-            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}">Marketplace</li>
+            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace">Marketplace</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}">Artists</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}">SpaceShuttle</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}">Token</li>

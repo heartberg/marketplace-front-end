@@ -1,0 +1,34 @@
+
+mat-slider {
+  width: 300px;
+}
+.main {
+  .wrapper {
+    display: flex;
+
+    .left-section {
+      width: 25%;
+      .section {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgba(129, 0, 127, 0.15);;
+        border-bottom: 1px solid rgba(129, 0, 127, 0.15);
+        padding: 0px 10px 30px 10px;
+        &.first {
+          height: 150px;
+        }
+
+        h3 {
+          margin-top: 15px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+    .right-section {
+      width: 75%;
+    }
+  }
+}

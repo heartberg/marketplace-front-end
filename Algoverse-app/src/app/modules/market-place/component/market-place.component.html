@@ -1,0 +1,64 @@
+<div class="main">
+  <div class="wrapper">
+    <div class="left-section">
+      <div class="section first">
+        <div class="title">
+          <h3>
+            Price
+          </h3>
+        </div>
+        <mat-slider
+          thumbLabel
+          [displayWith]="formatLabel"
+          tickInterval="1000"
+          step="1000"
+          min="0"
+          max="100000"
+          aria-label="units"></mat-slider>
+      </div>
+      <div class="section">
+        <div class="title">
+          <h3>
+            Cateogry
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="categoriesDropDown"></app-drop-down-selector>
+      </div>
+      <div class="section">
+        <div class="title">
+          <h3>
+            Type
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="typesDropDown"></app-drop-down-selector>
+      </div>
+      <div class="section">
+        <div class="title">
+          <h3>
+            Collections
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="collectionsDropDown"></app-drop-down-selector>
+      </div>
+      <div class="section">
+        <div class="title">
+          <h3>
+            Artists
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="artistsDropDown"></app-drop-down-selector>
+      </div>
+    </div>
+    <div class="right-section">
+<!--      <mat-slider-->
+<!--        thumbLabel-->
+<!--        [displayWith]="formatLabel"-->
+<!--        tickInterval="1000"-->
+<!--        step="1000"-->
+<!--        min="0"-->
+<!--        max="100000"-->
+<!--        aria-label="units"></mat-slider>-->
+    </div>
+  </div>
+</div>
+<!--cdk-focused cdk-mouse-focused-->
