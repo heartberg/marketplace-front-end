@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HeaderModule} from "./modules/header/header.module";
-import {LandingPageModule} from "./modules/landing-page/landing-page.module";
+import {SharedModule} from "./shared/shared.module";
+import {HomeModule} from "./modules/home.module";
 
 @NgModule({
   declarations: [
@@ -13,8 +13,8 @@ import {LandingPageModule} from "./modules/landing-page/landing-page.module";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HeaderModule,
-    LandingPageModule
+    SharedModule,
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

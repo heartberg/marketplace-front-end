@@ -5,11 +5,95 @@
 }
 
 @font-face {
-   font-family: regular;
-   src: url("assets/font/American_Typewriter_Regular.ttf");
+   font-family: secondary;
+   src: url("assets/font/Stem-Bold.ttf");
 }
 
-h1,h2,h3,h4,h5,h6,
-li,a,p,span,button,input {
-  font-family: regular;
+@font-face {
+  font-family: primary;
+  src: url("assets/font/Baltore.otf");
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: secondary;
+}
+li,a,p,span,button,input, ::placeholder {
+  font-family: primary;
+}
+h1,h2,h3 {
+  font-size: 22px;
+  color: #040405;
+}
+
+li,a {
+  font-size: 18px;
+  color: #1c1c1e;
+}
+span,p {
+  font-size: 16px;
+  color: #1c1c1e;
+}
+button {
+  font-size: 18px;
+}
+input {
+  font-size: 18px;
+  color: #1c1c1e;
+}
+// costum styles
+.btn-default {
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  padding: 8px 15px;
+  border-radius: 24px;
+  color: #81007F;
+  font-family: secondary;
+  cursor: pointer;
+  box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%);
+  border: 1px solid rgb(129, 0, 127, 15%);
+}
+
+.btn-secondary {
+  padding: 8px 15px;
+  color: #e8e8e9;
+  background: #81007F;
+  border-radius: 24px;
+  font-family: 'secondary';
+  outline: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-icon-round {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%);
+  border: 1px solid rgb(129, 0, 127, 15%);
+  cursor: pointer;
+
+  svg {
+
+    path {
+      color: rgba(4, 4, 5, 0.8);
+    }
+  }
+
+  &.specific-size {
+    height: 38px;
+    width: 38px;
+  }
+}
+
+.letter-spacing-restyle {
+  letter-spacing: 1.2px;
 }

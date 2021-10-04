@@ -1,0 +1,29 @@
+<div class="main">
+  <div class="wrapper">
+    <button class="btn btn-default close" (click)="closePopUp(false)">
+      <i class="fa fa-close"></i>
+    </button>
+    <div class="top-side">
+      <div class="title">
+        <h3>Connect your Wallet</h3>
+      </div>
+      <div class="pre-title">
+        <span>Choose your preferred method to connect to the Algoverse Marketplace</span>
+      </div>
+    </div>
+    <div class="wallet-side">
+      <div class="wallet-section" (click)="setelectWalletConnect('WalletConnect')">
+        <img src="https://walletconnect.org/walletconnect-logo.svg" alt="">
+        <span>WalletConnect</span>
+      </div>
+      <div class="wallet-section" (click)="setelectWalletConnect('MyAlgoWallet')">
+        <img src="https://wallet.myalgo.com/images/MyAlgoBlue.svg" alt="">
+        <span>MyAlgoWallet</span>
+      </div>
+      <div class="wallet-section" (click)="setelectWalletConnect('AlgoSigner')">
+        <img aria-hidden="true" src="https://lh3.googleusercontent.com/q6YDjVcO1MQEvfJpNC59-d7RsqbD8zaDjMaMCqOVYMXFyjuuQIhAsSuG4LrciSBgik0KuJwfGZGWIvEjRFRHaH4h=w128-h128-e365-rj-sc0x00ffffff" class="e-f-s">
+        <span>AlgoSigner</span>
+      </div>
+    </div>
+  </div>
+</div>
