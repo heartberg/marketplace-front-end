@@ -6,11 +6,17 @@ import {MarketPlaceComponent} from "./market-place/component/market-place.compon
 import {MatSliderModule} from "@angular/material/slider";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {RouterModule} from "@angular/router";
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileSettingsComponent } from './profile/profile-settings/profile-settings.component';
+import { NotificationCentreComponent } from './profile/notification-centre/notification-centre.component';
 
 @NgModule({
   declarations: [
     LandingPageComponent,
     MarketPlaceComponent,
+    ProfileComponent,
+    ProfileSettingsComponent,
+    NotificationCentreComponent,
   ],
   imports: [
     BrowserModule,
