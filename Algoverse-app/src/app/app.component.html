@@ -1,6 +1,8 @@
-<div class="main">
-  <app-header></app-header>
-  <div class="content">
-    <router-outlet></router-outlet>
+<div class="main-wrapper" [class.dark-mode]="this.isThemeChanged">
+  <app-header (themeWasChanged)="changeTheme($event)"></app-header>
+  <div class="main MAIN">
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

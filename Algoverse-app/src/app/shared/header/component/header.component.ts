@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 
 @Component({
   selector: 'app-header',
@@ -18,8 +20,10 @@ export class HeaderComponent implements OnInit {
   public changeRespoNavAndProfileIconsCounter = 1;
   public SearchRespoOpened = false;
 
+  @Output() themeWasChanged = new EventEmitter<boolean>();
+
   constructor(
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -55,6 +59,11 @@ export class HeaderComponent implements OnInit {
 
   changeDarkMode() {
     this.isDarkModeChanged = !this.isDarkModeChanged
+    if (this.isDarkModeChanged) {
+      this.themeWasChanged.emit(true);
+    } else {
+      this.themeWasChanged.emit(false);
+    }
   }
 
   walletConnectionSucceed(event: boolean): void {

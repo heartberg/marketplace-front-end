@@ -5,17 +5,19 @@ import {SharedModule} from "../shared/shared.module";
 import {MarketPlaceComponent} from "./market-place/component/market-place.component";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
     LandingPageComponent,
-    MarketPlaceComponent
+    MarketPlaceComponent,
   ],
   imports: [
     BrowserModule,
     SharedModule,
     MatSliderModule,
-    MatGridListModule
+    MatGridListModule,
+    RouterModule
   ],
   providers: [],
   exports: [

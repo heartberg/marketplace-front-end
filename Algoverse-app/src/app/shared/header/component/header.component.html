@@ -15,7 +15,10 @@
       </ng-container>
       <div class="left-content">
         <div class="logo" routerLink="/home">
-          <img src="assets/img/header/logo.svg" alt="">
+          <img src="assets/img/header/logo.svg" alt="" *ngIf="!isDarkModeChanged">
+          <ng-container *ngIf="isDarkModeChanged">
+            <img src="assets/img/header/logo-white.svg" alt="">
+          </ng-container>
         </div>
         <div class="search-section hide-respo">
           <div class="search">
