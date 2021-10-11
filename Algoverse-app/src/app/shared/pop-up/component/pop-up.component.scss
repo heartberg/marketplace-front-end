@@ -5,7 +5,8 @@
   left: 0px;
   right: 0px;
   background: rgba(28, 28, 30, 0.4);
-
+  z-index: 999;
+  
   .wrapper {
     padding: 40px 25px 45px 25px;
     border-radius: 24px;
@@ -16,6 +17,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
+    
 
     .close {
       position: absolute;

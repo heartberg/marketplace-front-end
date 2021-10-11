@@ -1,19 +1,103 @@
-.main .section span {
-  color: red;
-}
-.main .footer span {
-  color: black;
-}
-.main {
-  .section {
-    span {
-      color: red;
-    }
+.body{
+  img{
+      width: 30px;
+      height: 30px;
+      color:rgba(4, 4, 5, 0.5);
+      margin-bottom: -15px;
   }
 
-  .footer {
-    span {
-      color: blue;
+  box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%) !important;
+  border: 1px solid rgba(129, 0, 127, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 30px 20px !important;
+  display: flex;
+  
+  
+}
+
+.body{
+  .link{
+      margin-right: 50px;
+  }
+      
+      
+}
+
+.body{
+  .inside{
+  box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%) !important;
+  border: 1px solid rgba(129, 0, 127, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 30px 20px !important;
+  display: flex;
+  width: 100%;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px !important;
+  
+  }
+}
+
+.body{
+  .setBox{
+  height: 20px;
+  width: 0px;
+  display: flex;
+  }
+}
+
+.wrapper{
+  mat-slide-toggle{
+    float: right;
+    margin-left: 100px;
+    margin-top: 6px;
+    
+  }
+  span{
+    color: rgba(4, 4, 5, 0.5);
+    font-size: 18px;
+    padding: 20px;
+    
+  }
+  align-items: center;
+  margin: 30px;
+  padding: 40px;
+}
+
+.downSection{
+    .button1{
+      padding: 6px 13px;
+      color: #e8e8e9;
+      background: #81007F;
+      border-radius: 24px;
+      font-family: "secondary";
+      outline: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      
+  }
+  .button2{
+    padding: 6px 13px;
+    border-radius: 24px;
+    color: #81007F;
+    font-family: secondary;
+    cursor: pointer;
+    box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%);
+    border: 1px solid rgba(129, 0, 127, 0.15);
+  }
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 100px;
+  
+}
+
+.downSection{
+  .buttons{
+    button{
+      margin: 20px;
     }
   }
 }
+

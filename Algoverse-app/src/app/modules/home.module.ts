@@ -9,6 +9,10 @@ import {RouterModule} from "@angular/router";
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileSettingsComponent } from './profile/profile-settings/profile-settings.component';
 import { NotificationCentreComponent } from './profile/notification-centre/notification-centre.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,11 @@ import { NotificationCentreComponent } from './profile/notification-centre/notif
     SharedModule,
     MatSliderModule,
     MatGridListModule,
-    RouterModule
+    RouterModule,
+    MatSlideToggleModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
   ],
   providers: [],
   exports: [
