@@ -1,0 +1,19 @@
+.main .section span {
+  color: red;
+}
+.main .footer span {
+  color: black;
+}
+.main {
+  .section {
+    span {
+      color: red;
+    }
+  }
+
+  .footer {
+    span {
+      color: blue;
+    }
+  }
+}
