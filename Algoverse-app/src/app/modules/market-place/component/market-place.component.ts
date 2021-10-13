@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./market-place.component.scss']
 })
 export class MarketPlaceComponent implements OnInit {
-  categoriesDropDown: string[] = ['All NFTs', 'Art', 'Music', 'Packs', 'URLs', 'Real Estate'];
-  typesDropDown: string[] = ['All Types', 'Sale', 'Auction', 'Swap'];
-  collectionsDropDown: string[] = ['All Collections', 'Collection 1', 'Collection 2', 'Collection 3'];
-  artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
+  public categoriesDropDown: string[] = ['All NFTs', 'Art', 'Music', 'Packs', 'URLs', 'Real Estate'];
+  public typesDropDown: string[] = ['All Types', 'Sale', 'Auction', 'Swap'];
+  public collectionsDropDown: string[] = ['All Collections', 'Collection 1', 'Collection 2', 'Collection 3'];
+  public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
+  public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
+  public boxArray: number[] = [1,1,1,2,2,3,4,4,4];
 
   formatLabel(value: number) {
     if (value >= 1000) {

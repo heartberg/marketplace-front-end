@@ -5,12 +5,14 @@ import { HeaderComponent } from './header/component/header.component';
 import {WalletsConnectService} from "../services/wallets-connect.service";
 import { DropDownSelectorComponent } from './drop-down-selector/drop-down-selector.component';
 import {RouterModule} from "@angular/router";
+import { CardComponent } from './card/card.component';
 
 @NgModule({
   declarations: [
     PopUpComponent,
     HeaderComponent,
-    DropDownSelectorComponent
+    DropDownSelectorComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +21,8 @@ import {RouterModule} from "@angular/router";
   exports: [
     PopUpComponent,
     HeaderComponent,
-    DropDownSelectorComponent
+    DropDownSelectorComponent,
+    CardComponent
   ],
   providers: [WalletsConnectService],
 })

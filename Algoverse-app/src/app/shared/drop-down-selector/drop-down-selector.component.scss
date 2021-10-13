@@ -14,13 +14,30 @@
     flex-direction: row-reverse;
     box-shadow: 0px 0px 1px 1px rgb(129 0 127 / 5%);
     border: 1px solid rgba(129, 0, 127, 0.15);
-    width: 150px;
+    width: 100%;
     justify-content: space-between;
-    padding: 0px 10px;
+    padding: 5px 10px;
     cursor: pointer;
     border-radius: 5px;
-    &.marketplace-w {
-      width: 280px;
+
+    &.no-border {
+      border: none !important;
+    }
+
+    .dotes {
+      display: flex;
+      align-items: center;
+
+      div {
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background: #666666;
+        margin-left: 10px;
+        &:first-child {
+          margin-left: 0px;
+        }
+      }
     }
 
     &.border-bottom-none {
@@ -46,18 +63,21 @@
     right: 0px;
     z-index: 999;
     background: white;
-    width: 170px;
+    &.left-0 {
+      left: unset !important;
+    }
 
     &.marketplace-w_position-unset {
-      width: 300px;
+      width: 100%;
       position: unset;
     }
 
     .section {
       cursor: pointer;
-      padding: 5px 10px;
+      padding: 10px 10px;
       border-bottom: 1px solid rgba(129, 0, 127, 0.15);
       transition: 0.3s;
+
       &:hover {
         background: rgba(129, 0, 127, 0.8);
         button {

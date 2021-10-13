@@ -1,6 +1,7 @@
 .header-sticky {
   position: sticky;
   top: 0px;
+  z-index: 999;
 
   .search-respo {
     display:  none;
@@ -247,8 +248,8 @@
       }
     }
 
-    .btn-primary,
-    .btn-secondary {
+    .btn-primary-costum,
+    .btn-secondary-costum {
       font-size: 16px;
     }
   }
@@ -408,10 +409,10 @@
 
       .create-section {
         margin-right: 0px !important;
-        button {
-          &.hideUntilMenuRespoClicked {
-            display: none;
-          }
+      }
+      button {
+        &.hideUntilMenuRespoClicked {
+          display: none;
         }
       }
       .search-respo {
@@ -419,7 +420,7 @@
           margin-right: 0px !important;
         }
       }
-      .btn-primary {
+      .btn-primary-costum {
         position: absolute;
         bottom: 51px;
         right: 0px;

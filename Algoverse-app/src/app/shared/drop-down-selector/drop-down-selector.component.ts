@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 
 @Component({
   selector: 'app-drop-down-selector',
@@ -8,16 +9,16 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class DropDownSelectorComponent implements OnInit {
   @Input() public dropDownValues: string[] = [];
+  @Input() public isNotAccordion: boolean = true;
+  @Input() public treeDots: boolean = false;
+
   public isDropDownOpened = false;
   public isDropDownOpenedCounter = 1;
   public showDropDownSelected: string = '';
 
-  public isMarketPlaceUrl: boolean = false;
-
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.checkRouteForMarketplace();
   }
 
   openDropDown() {
@@ -35,11 +36,4 @@ export class DropDownSelectorComponent implements OnInit {
     this.isDropDownOpened = false;
   }
 
-  checkRouteForMarketplace(): void {
-    let marketplaceRoute = this.route.snapshot.url[0].path;
-    if (marketplaceRoute === 'marketplace') {
-      console.log(true)
-      this.isMarketPlaceUrl = true;
-    }
-  }
 }

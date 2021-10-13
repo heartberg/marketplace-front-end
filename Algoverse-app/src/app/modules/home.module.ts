@@ -6,24 +6,30 @@ import {MarketPlaceComponent} from "./market-place/component/market-place.compon
 import {MatSliderModule} from "@angular/material/slider";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {RouterModule} from "@angular/router";
-import { ProfileComponent } from './profile/profile.component';
-import { ProfileSettingsComponent } from './profile/profile-settings/profile-settings.component';
-import { NotificationCentreComponent } from './profile/notification-centre/notification-centre.component';
+import { MyCollectionComponent } from './collection/my-collection/my-collection.component';
+import { CreateCollectionComponent } from './collection/create-collection/create-collection.component';
+import { UpdateCollectionComponent } from './collection/update-collection/update-collection.component';
+import { CollectionDetailComponent } from './collection/collection-detail/collection-detail.component';
+import {HttpClientModule} from "@angular/common/http";
+import { CreateOfferComponent } from './create-offer/create-offer.component';
 
 @NgModule({
   declarations: [
     LandingPageComponent,
     MarketPlaceComponent,
-    ProfileComponent,
-    ProfileSettingsComponent,
-    NotificationCentreComponent,
+    MyCollectionComponent,
+    CreateCollectionComponent,
+    UpdateCollectionComponent,
+    CollectionDetailComponent,
+    CreateOfferComponent,
   ],
   imports: [
     BrowserModule,
     SharedModule,
     MatSliderModule,
     MatGridListModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   providers: [],
   exports: [

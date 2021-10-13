@@ -50,14 +50,51 @@
       </div>
     </div>
     <div class="right-section">
-<!--      <mat-slider-->
-<!--        thumbLabel-->
-<!--        [displayWith]="formatLabel"-->
-<!--        tickInterval="1000"-->
-<!--        step="1000"-->
-<!--        min="0"-->
-<!--        max="100000"-->
-<!--        aria-label="units"></mat-slider>-->
+      <div class="timed-auction-section">
+        <div class="wrapper">
+          <div class="wrapper-border p-b_0">
+            <div class="row m-t_10 ">
+              <div class="col-sm-4">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+                  </div>
+                  <div class="col-sm-12">
+                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                  <div class="col-sm-12 only-one-img">
+                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+                  </div>
+                  <div class="col-sm-12">
+                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="boxes-section">
+        <div class="boxes-section-sort-by">
+          <app-drop-down-selector [dropDownValues]="boxesSortDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
+            <app-card></app-card>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

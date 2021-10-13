@@ -1,0 +1,108 @@
+.main {
+  i {
+    font-size: 25px;
+  }
+  .collection-profile-section {
+    position: relative;
+
+    img {
+      border-radius: 12px;
+    }
+    .cover {
+      img {
+        height: 400px;
+        width: 100%;
+      }
+    }
+    .collection-avatar {
+      border-radius: 12px;
+      position: absolute;
+      left: 50%;
+      bottom: -70px;
+      transform: translateX(-50%);
+
+      img {
+        height: 150px;
+        width: 150px;
+        border-radius: 12px;
+      }
+    }
+  }
+  .collection-profile-info {
+    display: flex;
+    margin-top: 80px;
+
+    .collection-profile-info-left {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .creator-section{
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 30px;
+
+        .section-top {
+
+          img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+          }
+        }
+      }
+      .website-section {
+        align-items: flex-end;
+      }
+      .section-top{
+        display: flex;
+        align-items: center;
+
+        img {
+          height: 30px;
+          width: 30px;
+        }
+      }
+    }
+    .collection-profile-info-middle {
+      h4 {
+        margin: 0px !important;
+        text-align: center;
+        margin-bottom: 15px !important;
+      }
+    }
+    .collection-profile-info-right {
+      height: 100%;
+      justify-content: space-between;
+      display: flex;
+      flex-direction: column;
+      margin-left: 15px;
+
+      .right-section-info {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .section {
+          display: flex;
+          align-items: center;
+          margin-left: 25px;
+          &:first-child {
+            margin: 0px;
+          }
+        }
+      }
+      .category-section {
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+    h4,span {
+      margin-left: 10px;
+    }
+  }
+  .wrapper-bottom {
+    margin-top: 20px;
+  }
+}

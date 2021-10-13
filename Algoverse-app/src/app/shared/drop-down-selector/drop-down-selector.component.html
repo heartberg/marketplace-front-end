@@ -1,20 +1,29 @@
 <div class="drop-down">
-  <div class="valueCatcher" (click)="openDropDown()" [class.border-bottom-none]="isDropDownOpened" [class.marketplace-w]="isMarketPlaceUrl">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAPFBMVEX///8AAADw8PAoKCj09PTv7+8lJSWTk5OQkJArKyuMjIyZmZmSkpKWlpYhISGcnJyFhYXGxsY6OjpISEiJJhDdAAACyUlEQVR4nO3XbXebMAyG4TpNStY3su3//9eFOrQBS4pDzGxx7utrWx+eSkbi6QkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGCZ345OXaQL/Qqn9uG4wqmLdCGsELE/n9pIxGMYvBU+tf869bXwqYvEgKWr2F9ObSBiF8IKEfvvU6s36k/Ako3aX51aOeIxhBUi9pNTqzbqewgrROxnp1asYhfmPgqc+pacWi3ivIKD7uFTP4RTK0U8Co/yeBXTCla7i2mLlogoB6xSRamZHo+oBSzR/vc6/FIf5n3xofq/7flQ8Nkz7V+KV1Gv4Oe+6LNn2ulVXBZRD/hSoYKD3bP6SEsaVW/RWgHPjVryLhp3sEqLRnu9ive++4wK7lZ59kyHUhFbbNHIaNR7hrS2PpxbtGoFB0aj5keUNtxLBSvewZHxRs2NqFewdotGO3305y3MegU/mwho3sWciPI3yqDmmJgyFrjbjWpUsJmA5tC4FdF4yTTSopHxurEb9dVJwMV30cMdHBlzUY9otGj1QZ863D809Aq21qKR0agn8Q/0O1h/VZMZQ0OqolHB5u7gyPjqTyN6a9HIWODmjaq3aCurmiz7Lp7U32tvTEwZd/E6olHBxgOaC9xPRD+bjMRY4MaIeou2OOhTxnYTIxoVbL5FoxtVNAK6qODAWOBObsfElDE0/qg/aX1MTBlDQ62gq4DmAifzMCamjNfNNgKadzHl6w6OjLmYVNDNmJgyFjj/LRplNmqrX/Q5shrVy6omy3ij+m3RyPjqjzytarIbd9HnmJgyFzhvq5rMuIve7+BIjbiVgOpd3MIdHIlz0euqJhMWuO20aJQ0qudVTTZrVN+rmmzy1b+1Fo2uFjj/q5rs+y5uaUxMXRa4baxqsq+hsc07ODovcNsa9Kn9340HBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/8k/r0QS+70JmxMAAAAASUVORK5CYII=" alt="">
-    <ng-container *ngFor="let button of dropDownValues; let i = index">
-      <button class="btn" *ngIf="i === 0">
-        <ng-container *ngIf="showDropDownSelected === ''">
-          {{button}}
-        </ng-container>
-        <ng-container *ngIf="showDropDownSelected !== ''">
-          {{showDropDownSelected}}
-        </ng-container>
-      </button>
+  <div class="valueCatcher" (click)="openDropDown()" [class.border-bottom-none]="isDropDownOpened" [class.no-border]="treeDots">
+    <ng-container *ngIf="!treeDots">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAPFBMVEX///8AAADw8PAoKCj09PTv7+8lJSWTk5OQkJArKyuMjIyZmZmSkpKWlpYhISGcnJyFhYXGxsY6OjpISEiJJhDdAAACyUlEQVR4nO3XbXebMAyG4TpNStY3su3//9eFOrQBS4pDzGxx7utrWx+eSkbi6QkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGCZ345OXaQL/Qqn9uG4wqmLdCGsELE/n9pIxGMYvBU+tf869bXwqYvEgKWr2F9ObSBiF8IKEfvvU6s36k/Ako3aX51aOeIxhBUi9pNTqzbqewgrROxnp1asYhfmPgqc+pacWi3ivIKD7uFTP4RTK0U8Co/yeBXTCla7i2mLlogoB6xSRamZHo+oBSzR/vc6/FIf5n3xofq/7flQ8Nkz7V+KV1Gv4Oe+6LNn2ulVXBZRD/hSoYKD3bP6SEsaVW/RWgHPjVryLhp3sEqLRnu9ive++4wK7lZ59kyHUhFbbNHIaNR7hrS2PpxbtGoFB0aj5keUNtxLBSvewZHxRs2NqFewdotGO3305y3MegU/mwho3sWciPI3yqDmmJgyFrjbjWpUsJmA5tC4FdF4yTTSopHxurEb9dVJwMV30cMdHBlzUY9otGj1QZ863D809Aq21qKR0agn8Q/0O1h/VZMZQ0OqolHB5u7gyPjqTyN6a9HIWODmjaq3aCurmiz7Lp7U32tvTEwZd/E6olHBxgOaC9xPRD+bjMRY4MaIeou2OOhTxnYTIxoVbL5FoxtVNAK6qODAWOBObsfElDE0/qg/aX1MTBlDQ62gq4DmAifzMCamjNfNNgKadzHl6w6OjLmYVNDNmJgyFjj/LRplNmqrX/Q5shrVy6omy3ij+m3RyPjqjzytarIbd9HnmJgyFzhvq5rMuIve7+BIjbiVgOpd3MIdHIlz0euqJhMWuO20aJQ0qudVTTZrVN+rmmzy1b+1Fo2uFjj/q5rs+y5uaUxMXRa4baxqsq+hsc07ODovcNsa9Kn9340HBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/8k/r0QS+70JmxMAAAAASUVORK5CYII=" alt="">
+      <ng-container *ngFor="let button of dropDownValues; let i = index">
+        <button class="btn-default" *ngIf="i === 0">
+          <ng-container *ngIf="showDropDownSelected === ''">
+            {{button}}
+          </ng-container>
+          <ng-container *ngIf="showDropDownSelected !== ''">
+            {{showDropDownSelected}}
+          </ng-container>
+        </button>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="treeDots">
+      <div class="dotes">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </ng-container>
   </div>
-  <div class="dropDown" *ngIf="isDropDownOpened" [class.marketplace-w_position-unset]="isMarketPlaceUrl">
+  <div class="dropDown" *ngIf="isDropDownOpened" [class.marketplace-w_position-unset]="isNotAccordion" [class.left-0]="treeDots">
     <div class="section" *ngFor="let button of dropDownValues; let last = last" (click)="selectValue(button)" [class.border-none]="last">
-      <button class="btn">{{button}}</button>
+      <button class="btn-default">{{button}}</button>
     </div>
   </div>
 <!--  <select name="" id="">-->
