@@ -1,0 +1,96 @@
+.full{
+  img{
+    width: 30px;
+    height: 30px;
+    color:rgba(4, 4, 5, 0.5);
+  }
+
+}
+.full{
+  .backArrow{
+    margin-right: 50px;
+  }
+}
+
+.full{
+  .firstLine{
+    display: flex;
+    align-items: center;
+  }
+}
+
+.filters{
+  flex-direction: column;
+  overflow: overlay;
+
+  button{
+    margin: 5px 0px;
+  }
+}
+
+.notificationCentre{
+  display: flex;
+  margin-top: 20px;
+  margin-right: -20px;
+
+  .notification{
+    display: flex;
+  }
+}
+
+.notification{
+  display: flex;
+  flex-direction: column;
+  overflow: overlay;
+
+  .fix-height {
+    height: 337px;
+    overflow-y: scroll;
+  }
+}
+
+.wrapper-notification{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  &.no-margin {
+    margin: 0px;
+  }
+
+  .alligner{
+    display: flex;
+    align-items: center;
+
+    .alligner-left {
+      margin-left: 80px;
+    }
+  }
+}
+h4 {
+  margin-left:5px;
+  margin-bottom: 10px;
+}
+.btn-primary-costum {
+  width: fit-content;
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .filter-wrapper {
+    flex-direction: unset !important;
+    flex-wrap: wrap !important;
+    button {
+      margin: 5px !important;
+    }
+  }
+  .fix-height {
+    height: 420px !important;
+  }
+}
+@media (max-width: 530px) {
+  .wrapper-notification {
+    width: 400px !important;
+    overflow: scroll;
+  }
+}

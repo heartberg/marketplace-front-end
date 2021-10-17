@@ -1,1 +1,54 @@
-<p>notification-centre works!</p>
+<div class="full wrapper-border">
+  <div class="firstLine">
+    <img class="backArrow" src="https://cdn3.iconfinder.com/data/icons/arrow-13/64/arrow8-512.png" alt="">
+    <h4>Notification centre</h4>
+  </div>
+  <div class="notificationCentre">
+    <div class="row" style="width: 100%">
+      <div class="col-md-4">
+        <div class="filters wrapper-border">
+          <div class="filterHeader">
+            <h4>Filters</h4>
+          </div>
+          <div class="d-flex flex-column filter-wrapper">
+            <button class="btn-primary-costum">Show all</button>
+            <button class="btn-primary-costum">Sells</button>
+            <button class="btn-primary-costum">Auctions</button>
+            <button class="btn-primary-costum">Received Bids</button>
+            <button class="btn-primary-costum">Swap Requests</button>
+            <button class="btn-primary-costum">Starred</button>
+            <button class="btn-primary-costum">Re-Sell</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="notification wrapper-border">
+          <div class="notifHeader">
+            <h4>Notifications</h4>
+          </div>
+          <div class="wrapper-border fix-height">
+            <div class="wrapper-notification wrapper-border"
+                 *ngFor="let item of arr; last as last"
+                 [class.no-margin]="last"
+            >
+              <div class="alligner">
+                <div class="inside">
+                  <span>Sell</span>
+                </div>
+                <div class="alligner-left">
+                  <span>lorem, lorem , lorem</span>
+                </div>
+              </div>
+              <div class="alligner-right">
+                <span>Buy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

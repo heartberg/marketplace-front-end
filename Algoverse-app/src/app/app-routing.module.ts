@@ -7,6 +7,9 @@ import {MyCollectionComponent} from "./modules/collection/my-collection/my-colle
 import {CreateCollectionComponent} from "./modules/collection/create-collection/create-collection.component";
 import {UpdateCollectionComponent} from "./modules/collection/update-collection/update-collection.component";
 import {CreateOfferComponent} from "./modules/create-offer/create-offer.component";
+import {ProfileComponent} from "./modules/profile/profile.component";
+import {ProfileSettingsComponent} from "./modules/profile/profile-settings/profile-settings.component";
+import {NotificationCentreComponent} from "./modules/profile/notification-centre/notification-centre.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,7 +19,10 @@ const routes: Routes = [
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
   { path: 'collection-detail', component: CollectionDetailComponent },
-  { path: 'create-offer', component: CreateOfferComponent }
+  { path: 'create-offer', component: CreateOfferComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'profile-settings', component: ProfileSettingsComponent },
+  { path: 'notification-center', component: NotificationCentreComponent }
 ];
 
 @NgModule({

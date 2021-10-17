@@ -12,6 +12,10 @@ import { UpdateCollectionComponent } from './collection/update-collection/update
 import { CollectionDetailComponent } from './collection/collection-detail/collection-detail.component';
 import {HttpClientModule} from "@angular/common/http";
 import { CreateOfferComponent } from './create-offer/create-offer.component';
+import {ProfileComponent} from "./profile/profile.component";
+import {ProfileSettingsComponent} from "./profile/profile-settings/profile-settings.component";
+import {NotificationCentreComponent} from "./profile/notification-centre/notification-centre.component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -22,6 +26,9 @@ import { CreateOfferComponent } from './create-offer/create-offer.component';
     UpdateCollectionComponent,
     CollectionDetailComponent,
     CreateOfferComponent,
+    ProfileComponent,
+    ProfileSettingsComponent,
+    NotificationCentreComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +36,8 @@ import { CreateOfferComponent } from './create-offer/create-offer.component';
     MatSliderModule,
     MatGridListModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSlideToggleModule
   ],
   providers: [],
   exports: [

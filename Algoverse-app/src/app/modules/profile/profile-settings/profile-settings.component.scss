@@ -1,0 +1,62 @@
+.body{
+  img{
+    width: 30px;
+    height: 30px;
+    color:rgba(4, 4, 5, 0.5);
+    margin-bottom: -15px;
+  }
+}
+
+.body{
+  .link{
+    margin-right: 50px;
+  }
+}
+
+.body{
+  .inside{
+    display: flex;
+    width: 100%;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px !important;
+
+  }
+}
+
+.body{
+  .setBox{
+    display: flex;
+  }
+}
+
+.wrapper{
+  align-items: center;
+  margin: 50px 0px;
+  mat-slide-toggle{
+    float: right;
+    margin-left: 100px;
+    margin-top: 6px;
+  }
+  .options {
+    margin-bottom: 30px;
+    div {
+      padding: 10px 0px;
+    }
+  }
+}
+
+.downSection{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.downSection{
+  .buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+}

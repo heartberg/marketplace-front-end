@@ -286,7 +286,7 @@ input {
   border-radius: 12px !important;
   padding: 20px 20px !important;
   cursor: pointer;
-  
+
   img {
     border-radius: 12px;
   }
@@ -323,8 +323,21 @@ input {
   }
 
 }
+
 // disable mat button styles
-.mat-button {
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background: rgba(129, 0, 127, 0.7);
+  background: #4AD662;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background: rgba(129, 0, 127, 0.7);
+  background: white;
+}
+.mat-slide-toggle.mat-checked .mat-ripple-element {
+  background: rgba(129, 0, 127, 0.7);
+  background: #4AD662;
+}
+.mat-slide-toggle-thumb {
 
 }
 
