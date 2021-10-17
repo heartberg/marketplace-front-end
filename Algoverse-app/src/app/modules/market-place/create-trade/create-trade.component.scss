@@ -1,0 +1,146 @@
+.imgborder{
+  height: 35px;
+  width: 35px;
+
+  img{
+    width: 35px;
+    height: 35px;
+
+  }
+}
+
+.backArrow{
+  margin-bottom: 25px;
+}
+
+.header{
+  margin-bottom: 40px;
+}
+
+.whole{
+  display: flex;
+}
+
+
+.dropdown{
+  .AssetsList{
+    margin-top: 10px;
+
+  }
+}
+
+.inside .preview{
+  display: flex;
+}
+
+.whole {
+  height: 650px;
+  overflow-y: overlay;
+
+  .metaheader{
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
+  .assetsList{
+    display: flex;
+    align-items: center;
+  }
+  .assetdescription{
+    margin-left: 20px;
+    height: 100px;
+    overflow-y: overlay;
+  }
+
+  .royalties{
+    margin-bottom: 20px;
+
+    .royal{
+      display: flex;
+      align-items: center;
+    }
+    .royaldescr{
+      margin-left: 93px;
+      width: 100%;
+    }
+  }
+
+  .collectionborder{
+    margin-bottom: 20px;
+
+    .collections{
+      align-items: center;
+      display: flex;
+      span{
+        margin-left: 85px;
+      }
+    }
+  }
+
+  .properties{
+    margin-left: 15px;
+    margin-bottom: 10px;
+  }
+
+  .left .right{
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .propertiesborder{
+    margin-bottom: 20px;
+  }
+
+  .createoffer{
+    margin-bottom: 20px;
+    .amountheader{
+      margin-left: 15px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .typeoffer{
+    margin-bottom: 20px;
+    .typeheader{
+      margin-left: 15px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .duration{
+    margin-bottom: 20px;
+    .durationheader{
+      margin-left: 15px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .price{
+    margin-bottom: 20px;
+    .priceheader{
+      margin-left: 15px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .btn-secondary-costum {
+    margin: auto;
+    width: 130px;
+    height: 40px;
+    display: block;
+    text-align: center;
+  }
+
+  .assets{
+    margin-bottom: 20px;
+
+    .assetdesc{
+      h4{
+        width: 150px;
+      }
+    }
+  }
+}
+.input-costum {
+  width: 100%;
+}

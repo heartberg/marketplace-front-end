@@ -13,9 +13,9 @@ export class LandingPageComponent implements OnInit {
   constructor(private _userService: UserService) { }
 
   ngOnInit(): void {
-    this._userService.userGetShuttle().subscribe(
-      (result) => console.log(result)
-    );
+    // this._userService.userGetShuttle().subscribe(
+    //   (result) => console.log(result)
+    // );
   }
 
 }

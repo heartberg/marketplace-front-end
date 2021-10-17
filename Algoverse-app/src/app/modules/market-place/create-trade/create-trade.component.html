@@ -1,0 +1,97 @@
+<div class="wrapper wrapper-border">
+  <div class="backArrow">
+    <img src="https://www.pngitem.com/pimgs/m/467-4678631_arrow-back-icon-png-transparent-png.png" alt="" style="width: 50px;">
+  </div>
+  <div class="whole wrapper-border">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="inside wrapper-border">
+          <div class="header">
+            <h3>Create sale</h3>
+          </div>
+          <div class="dropdownborder wrapper-border">
+            <h4>Assets</h4>
+            <div class="dropdown">
+              <div class="AssetsList">
+                <app-drop-down-selector [dropDownValues]="['Option 1', 'Option 2', 'Option 3', ]"></app-drop-down-selector>
+              </div>
+            </div>
+          </div>
+          <div class="metaheader">
+            <h3>Metadata</h3>
+          </div>
+          <div class="assets wrapper-border">
+            <div class="assetsList">
+              <div class="assetdesc">
+                <h4>Asset Description</h4>
+              </div>
+              <div class="assetdescription wrapper-border">
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
+                  et nostrum expedita at obcaecati voluptate, nesciunt molestiae itaque fuga consequatur
+                  earum quisquam aliquid? Eum sed,
+                  voluptate enim molestias mollitia iusto.
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="royalties wrapper-border">
+            <div class="royal">
+              <h4>Royalties</h4>
+              <input type="text" class="input-costum">
+            </div>
+          </div>
+          <div class="collectionborder wrapper-border">
+            <div class="collections">
+              <h4>Collection</h4>
+              <span>Collection name</span>
+            </div>
+          </div>
+          <div class="propertiesborder wrapper-border">
+            <h4 class="properties">Properties</h4>
+            <div class="row">
+              <div class="col-md-5">
+                <div class="left">
+                  <input type="text" placeholder="Height" class="input-costum" style="margin-bottom: 10px;">
+                  <input type="text" placeholder="Speed" class="input-costum">
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="right">
+                  <input type="text" placeholder="5m" class="input-costum" style="margin-bottom: 10px;">
+                  <input type="text" placeholder="20Kmh" class="input-costum">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="createoffer wrapper-border">
+            <h4 class="amountheader">Amount</h4>
+            <input type="text" placeholder="Max is Supply" class="input-costum" >
+          </div>
+          <div class="typeoffer wrapper-border">
+            <h4 class="typeheader">Type</h4>
+            <input type="text" placeholder="Fixed price" class="input-costum">
+          </div>
+          <div class="duration wrapper-border">
+            <h4 class="durationheader">Duration</h4>
+            <input type="date" placeholder="" class="input-costum">
+          </div>
+          <div class="price wrapper-border">
+            <h4 class="priceheader">Price</h4>
+            <input type="text" placeholder="Enter price for the offered item" class="input-costum">
+          </div>
+          <div class="btn-secondary-costum aligner">
+            Create offer
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="preview wrapper-border">
+          <div class="previewheader">
+            <h4>Preview</h4>
+          </div>
+          <app-card></app-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
