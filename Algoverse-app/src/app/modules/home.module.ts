@@ -17,6 +17,7 @@ import {ProfileSettingsComponent} from "./profile/profile-settings/profile-setti
 import {NotificationCentreComponent} from "./profile/notification-centre/notification-centre.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateTradeComponent } from './market-place/create-trade/create-trade.component';
+import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CreateTradeComponent } from './market-place/create-trade/create-trade.c
     ProfileComponent,
     ProfileSettingsComponent,
     NotificationCentreComponent,
-    CreateTradeComponent
+    CreateTradeComponent,
+    ProfileEditComponent
   ],
   imports: [
     BrowserModule,

@@ -11,6 +11,7 @@ import {ProfileComponent} from "./modules/profile/profile.component";
 import {ProfileSettingsComponent} from "./modules/profile/profile-settings/profile-settings.component";
 import {NotificationCentreComponent} from "./modules/profile/notification-centre/notification-centre.component";
 import {CreateTradeComponent} from "./modules/market-place/create-trade/create-trade.component";
+import {ProfileEditComponent} from "./modules/profile/profile-edit/profile-edit.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'profile-settings', component: ProfileSettingsComponent },
   { path: 'notification-center', component: NotificationCentreComponent },
-  { path: 'create-trade', component: CreateTradeComponent }
+  { path: 'create-trade', component: CreateTradeComponent },
+  { path: 'edit-profile', component: ProfileEditComponent }
 ];
 
 @NgModule({
