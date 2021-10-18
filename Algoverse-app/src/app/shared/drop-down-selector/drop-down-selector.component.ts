@@ -12,6 +12,9 @@ export class DropDownSelectorComponent implements OnInit {
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
 
+  @Input() public tree: boolean = false;
+  @Input() public hasTitle: string  = '';
+
   public isDropDownOpened = false;
   public isDropDownOpenedCounter = 1;
   public showDropDownSelected: string = '';

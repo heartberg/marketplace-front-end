@@ -69,8 +69,10 @@ input {
   font-size: 18px;
   color: #1c1c1e;
 }
+.color-violet {
+  color: #81007F !important;
+}
 // costum styles
-
 .btn-default {
   outline: none;
   border: none;
@@ -124,10 +126,6 @@ input {
   }
 }
 
-.color-violet {
-  color: #81007F;
-}
-
 .letter-spacing-restyle {
   letter-spacing: 1.2px;
 }
@@ -143,6 +141,19 @@ input {
   .input-costum {
     background: rgba(255, 255, 255, 0.07) !important;
     color: rgb(255, 255, 255, 0.8) !important;
+    &::placeholder {
+      color: rgb(255, 255, 255, 0.8) !important;
+    }
+    &:focus {
+      background: rgba(255, 255, 255, 0) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      box-shadow: rgb(255 255 255 / 6%) 0px 0px 0px 4px !important;
+    }
+  }
+
+  textarea {
+    background: rgba(255, 255, 255, 0.07) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
     &::placeholder {
       color: rgb(255, 255, 255, 0.8) !important;
     }
@@ -247,6 +258,7 @@ input {
 
   .wrapper-card {
     border: 1px solid rgba(129, 0, 127, 1) !important;
+
   }
 
   .drop-down {
@@ -260,6 +272,14 @@ input {
       background: #1c1c1e !important;
       .section {
         border: 1px solid rgba(129, 0, 127, 0.8) !important;
+        &.no-border {
+          border: unset !important;
+          &:hover {
+            button {
+              color: #81007F !important;
+            }
+          }
+        }
         button {
           color: rgba(255, 255, 255, 0.8) !important;
         }
@@ -286,7 +306,11 @@ input {
   border-radius: 12px !important;
   padding: 20px 20px !important;
   cursor: pointer;
-
+  transition: 0.3s;
+  &:hover {
+    transform: scale(1.03);
+    border: 1px solid rgba(129, 0, 127, 0.4) !important;
+  }
   img {
     border-radius: 12px;
   }
@@ -323,7 +347,26 @@ input {
   }
 
 }
+textarea {
+  color: rgb(128, 128, 128) !important;
+  outline: none;
+  background: rgba(4, 4, 5, 0.07);
+  resize: none;
+  border: transparent;
+  border-radius: 12px;
 
+  &::placeholder {
+    color: rgba(4, 4, 5, 0.5);
+  }
+  &:hover {
+    border: 1px solid rgba(4, 4, 5, 0.1);
+  }
+  &:focus {
+    background: rgba(4, 4, 5, 0);
+    border: 1px solid rgba(4, 4, 5, 0.3);
+    box-shadow: rgb(4 4 5 / 6%) 0px 0px 0px 4px;
+  }
+}
 // disable mat button styles
 .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
   background: rgba(129, 0, 127, 0.7);

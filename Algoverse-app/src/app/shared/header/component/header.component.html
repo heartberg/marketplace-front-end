@@ -44,9 +44,9 @@
           <ng-container *ngIf="changeRespoNavAndProfileIcons">
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}">Profile</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}">Items</li>
-            <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}">Create Offer</li>
+            <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}"  routerLink="/create-offer">Create Offer</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">Collections</li>
-            <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}">Notifications</li>
+            <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li>
             <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}">Log Out</li>
           </ng-container>
         </ul>
@@ -57,6 +57,7 @@
         <div class="create-section">
           <button class="btn-default btn-secondary-costum letter-spacing-restyle"
                   [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened}"
+                  routerLink="/create-offer"
           >
               Create
           </button>
@@ -106,9 +107,9 @@
               <ul>
                 <li>Profile</li>
                 <li>Items</li>
-                <li>Create Offer</li>
+                <li routerLink="/create-offer">Create Offer</li>
                 <li routerLink="/collection">Collections</li>
-                <li>Notifications</li>
+                <li routerLink="/notification-center">Notifications</li>
                 <li>Log Out</li>
               </ul>
             </div>

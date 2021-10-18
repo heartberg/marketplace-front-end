@@ -14,9 +14,10 @@ import {HomeModule} from "./modules/home.module";
     BrowserModule,
     AppRoutingModule,
     SharedModule,
-    HomeModule
+    HomeModule,
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

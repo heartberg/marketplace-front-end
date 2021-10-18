@@ -18,6 +18,10 @@ import {NotificationCentreComponent} from "./profile/notification-centre/notific
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateTradeComponent } from './market-place/create-trade/create-trade.component';
 import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
+import { AssetsDetailBuyComponent } from './market-place/assets-detail-buy/assets-detail-buy.component';
+import {MatTreeModule} from "@angular/material/tree";
+import {MatIconModule} from "@angular/material/icon";
+import { CreateAssetComponent } from './create-asset/create-asset.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,9 @@ import { ProfileEditComponent } from './profile/profile-edit/profile-edit.compon
     ProfileSettingsComponent,
     NotificationCentreComponent,
     CreateTradeComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    AssetsDetailBuyComponent,
+    CreateAssetComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +47,9 @@ import { ProfileEditComponent } from './profile/profile-edit/profile-edit.compon
     MatGridListModule,
     RouterModule,
     HttpClientModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTreeModule,
+    MatIconModule
   ],
   providers: [],
   exports: [

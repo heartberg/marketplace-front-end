@@ -5,18 +5,23 @@
   img{
     width: 35px;
     height: 35px;
-
   }
 }
 
 .backArrow{
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .header{
-  margin-bottom: 40px;
+  margin-bottom: 15px;
+  margin-left: 5px;
 }
-
+.dropdownborder {
+  h4 {
+    margin-bottom: -2px;
+    margin-left: 5px;
+  }
+}
 .whole{
   display: flex;
 }
@@ -34,12 +39,13 @@
 }
 
 .whole {
-  height: 650px;
+  height: calc(100vh - 231px);
   overflow-y: overlay;
 
   .metaheader{
-    margin-bottom: 40px;
-    margin-top: 40px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 5px;
   }
   .assetsList{
     display: flex;
@@ -71,7 +77,8 @@
       align-items: center;
       display: flex;
       span{
-        margin-left: 85px;
+        margin-left: 10px;
+        color: violet;
       }
     }
   }
@@ -134,13 +141,74 @@
   .assets{
     margin-bottom: 20px;
 
-    .assetdesc{
-      h4{
-        width: 150px;
-      }
-    }
   }
 }
 .input-costum {
   width: 100%;
+}
+// added
+.preview {
+  position: sticky;
+  top: 0px;
+}
+
+.previewheader {
+  padding-bottom: 10px;
+  padding-left: 5px;
+}
+
+.restyle-wrapper {
+  padding: 10px !important;
+}
+
+input[type=date] {
+  padding-right: 15px;
+}
+.restyle-col {
+  padding-bottom: 0px;
+  padding-right: 0px;
+}
+.restyle-col-bottom {
+  padding-bottom: 0px;
+}
+.height-_10 {
+  margin-right: -10px;
+}
+
+@media (max-width: 768px) {
+
+  .assetdescription {
+    margin: 0px !important;
+  }
+
+  .whole{
+    border: none !important;
+    outline: none;
+    padding: 0px !important;
+
+    .collectionborder {
+      .collections {
+        span {
+          margin: 0px;
+        }
+      }
+    }
+  }
+  .collections {
+    h4 {
+      margin-bottom: 10px;
+    }
+  }
+  .propertiesborder {
+    .p-b-10 {
+      padding-bottom: 10px !important;
+    }
+  }
+  .royal {
+    h4 {
+      margin-left: 8px;
+      line-height: 0px;
+      margin-top: 10px;
+    }
+  }
 }

@@ -15,7 +15,11 @@ export class UserService {
   }
 
   userGetShuttle(): Observable<any> {
-    const url = `${this.baseUrl}/user/get/forVote`;
+    const url = `${this.baseUrl}/user/get/all/verified`;
+    return this._http.get<any>(url);
+  }
+  getHot(): Observable<any> {
+    const url = `${this.baseUrl}/user/get/hot`;
     return this._http.get<any>(url);
   }
 }

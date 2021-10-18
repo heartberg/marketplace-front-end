@@ -93,3 +93,21 @@
     }
   }
 }
+.isTree {
+  padding-left: 25px !important;
+  box-shadow: unset !important;
+  border: none !important;
+  cursor: unset;
+  .section {
+    &:hover {
+      color: unset !important;
+      background: unset !important;
+      button {
+        color: black;
+      }
+    }
+  }
+}
+.rotate {
+  transform: rotate(90deg);
+}
