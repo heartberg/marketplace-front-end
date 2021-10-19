@@ -14,6 +14,8 @@ import {CreateTradeComponent} from "./modules/market-place/create-trade/create-t
 import {ProfileEditComponent} from "./modules/profile/profile-edit/profile-edit.component";
 import {AssetsDetailBuyComponent} from "./modules/market-place/assets-detail-buy/assets-detail-buy.component";
 import {CreateAssetComponent} from "./modules/create-asset/create-asset.component";
+import {GetVerifiedComponent} from "./modules/get-verified/get-verified.component";
+import {TokenComponent} from "./modules/token/token.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,7 +32,9 @@ const routes: Routes = [
   { path: 'create-trade', component: CreateTradeComponent },
   { path: 'edit-profile', component: ProfileEditComponent },
   { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },
-  { path: 'create-asset', component: CreateAssetComponent }
+  { path: 'create-asset', component: CreateAssetComponent },
+  { path: 'get-verified', component: GetVerifiedComponent },
+  { path: 'token', component: TokenComponent },
 ];
 
 @NgModule({

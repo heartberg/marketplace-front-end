@@ -22,6 +22,8 @@ import { AssetsDetailBuyComponent } from './market-place/assets-detail-buy/asset
 import {MatTreeModule} from "@angular/material/tree";
 import {MatIconModule} from "@angular/material/icon";
 import { CreateAssetComponent } from './create-asset/create-asset.component';
+import { GetVerifiedComponent } from './get-verified/get-verified.component';
+import { TokenComponent } from './token/token.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { CreateAssetComponent } from './create-asset/create-asset.component';
     CreateTradeComponent,
     ProfileEditComponent,
     AssetsDetailBuyComponent,
-    CreateAssetComponent
+    CreateAssetComponent,
+    GetVerifiedComponent,
+    TokenComponent
   ],
   imports: [
     BrowserModule,
