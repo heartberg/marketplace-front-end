@@ -8,6 +8,7 @@ import {RouterModule} from "@angular/router";
 import { CardComponent } from './card/card.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import {SwiperModule} from "swiper/angular";
+import { SwapCardComponent } from './swap-card/swap-card.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {SwiperModule} from "swiper/angular";
     HeaderComponent,
     DropDownSelectorComponent,
     CardComponent,
-    CarouselComponent
+    CarouselComponent,
+    SwapCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,8 @@ import {SwiperModule} from "swiper/angular";
     HeaderComponent,
     DropDownSelectorComponent,
     CardComponent,
-    CarouselComponent
+    CarouselComponent,
+    SwapCardComponent
   ],
   providers: [WalletsConnectService],
 })

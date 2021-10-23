@@ -16,11 +16,14 @@ import {AssetsDetailBuyComponent} from "./modules/market-place/assets-detail-buy
 import {CreateAssetComponent} from "./modules/create-asset/create-asset.component";
 import {GetVerifiedComponent} from "./modules/get-verified/get-verified.component";
 import {TokenComponent} from "./modules/token/token.component";
+import {ArtistApplicationComponent} from "./modules/artists/artist-application/artist-application.component";
+import {ArtistsComponent} from "./modules/artists/artists/artists.component";
+import {SpaceshuttleComponent} from "./modules/artists/spaceshuttle/spaceshuttle.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: LandingPageComponent },
-  { path: 'marketplace', component: MarketPlaceComponent },
+  { path: 'marketplace/:slugId', component: MarketPlaceComponent },
   { path: 'collection', component: MyCollectionComponent },
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
@@ -35,6 +38,10 @@ const routes: Routes = [
   { path: 'create-asset', component: CreateAssetComponent },
   { path: 'get-verified', component: GetVerifiedComponent },
   { path: 'token', component: TokenComponent },
+  { path: 'artists', component: ArtistsComponent },
+  { path: 'artists/artist-application', component: ArtistApplicationComponent },
+  { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
+
 ];
 
 @NgModule({

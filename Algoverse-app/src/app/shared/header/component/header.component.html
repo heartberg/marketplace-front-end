@@ -34,15 +34,15 @@
       <div class="navbar-section" [ngClass]="{'menu-respo-opened': isMenuRespoOpened}">
         <ul [ngClass]="{'clicked': isMenuRespoOpened}">
           <ng-container *ngIf="!changeRespoNavAndProfileIcons">
-            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace">Marketplace</li>
-            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}">Artists</li>
+            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace/all-types">Marketplace</li>
+            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/artists">Artists</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}">SpaceShuttle</li>
-            <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}">Token</li>
+            <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/token">Token</li>
             <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> Algolution </li>
             <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}" class="last-nav-list">Blog</li>
           </ng-container>
           <ng-container *ngIf="changeRespoNavAndProfileIcons">
-            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}">Profile</li>
+            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/profile">Profile</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}">Items</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}"  routerLink="/create-offer">Create Offer</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">Collections</li>
@@ -105,7 +105,7 @@
             </ng-container>
             <div class="dropDown" *ngIf="isProfileOpened">
               <ul>
-                <li>Profile</li>
+                <li routerLink="/profile">Profile</li>
                 <li>Items</li>
                 <li routerLink="/create-offer">Create Offer</li>
                 <li routerLink="/collection">Collections</li>

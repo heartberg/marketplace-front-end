@@ -37,7 +37,7 @@
     }
     .card-info-right {
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-end;
       flex-direction: column;
       &.my-page {
         display: flex;

@@ -1,19 +1,101 @@
-.main .section span {
-  color: red;
-}
-.main .footer span {
-  color: black;
-}
 .main {
-  .section {
-    span {
-      color: red;
+  .wrapper {
+    position: relative;
+
+    .setting-section {
+      position: absolute;
+      top: 17px;
+      right: 25px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .avatar-section {
+      margin-top: 20px;
+      .img {
+        margin-bottom: 10px;
+      }
+    }
+    .avatar-info {
+      .avatar-name {
+        margin-bottom: 10px;
+      }
+    }
+    .avatar-other-info {
+      margin-top: 20px;
+      .color-violet {
+        margin-right: 5px;
+      }
+    }
+    .scroll-bio {
+      margin-top: 20px;
+      .wrapper {
+        height: 60px;
+        width: 100%;
+        overflow-y: scroll;
+      }
+    }
+    .collection-section {
+      margin-top: 20px;
+      .collection-section-img {
+        margin-top: 10px;
+        span {
+          text-align: center;
+          margin-top: 5px;
+          display: block;
+        }
+      }
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .soc-section {
+      margin-top: 50px;
+      display: flex;
+      align-items: center;
+      .img {
+        margin-right: 15px;
+      }
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+    .verified-btn {
+      margin-top: 30px;
+      width: 100%;
+      justify-content: center;
+
+    }
+  .right-section {
+    .cover {
+      height: 300px;
+      width: 100%;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .tabs-section {
+      margin-top: 20px;
+      .row {
+        margin-top: 20px !important;
+      }
     }
   }
-
-  .footer {
-    span {
-      color: blue;
+  }
+  .wrapper-bottom {
+    h3 {
+      margin-bottom: 20px;
     }
+  }
+  .dropDownSection {
+    margin-top: 20px;
   }
 }

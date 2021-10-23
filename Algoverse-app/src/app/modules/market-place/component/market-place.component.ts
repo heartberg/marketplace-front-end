@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-market-place',
@@ -12,6 +13,11 @@ export class MarketPlaceComponent implements OnInit {
   public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
   public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
   public boxArray: number[] = [1,1,1,2,2,3,4,4,4];
+  //drop down value
+  public dropDownValue: string = '';
+  public isSwap: boolean = false;
+  public isSale: boolean = false;
+  public isAll: boolean = true;
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -21,9 +27,29 @@ export class MarketPlaceComponent implements OnInit {
     return value;
   }
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  catchValue(event: string) {
+   this.dropDownValue = event;
+    if(this.dropDownValue == 'Sale') {
+      this.isSale = true;
+      this.isSwap = false;
+      this.isAll = false;
+      this.router.navigate(['marketplace/sale'])
+    } else if (this.dropDownValue == 'Auction') {
+
+    } else if (this.dropDownValue == 'Swap') {
+      this.isSale = false;
+      this.isSwap = true;
+      this.isAll = false;
+      this.router.navigate(['marketplace/swap'])
+
+    } else if (this.dropDownValue == 'All Types') {
+      this.isAll = true;
+      this.router.navigate(['marketplace/all-types'])
+    }
+  }
 }

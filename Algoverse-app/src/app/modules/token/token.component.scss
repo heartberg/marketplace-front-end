@@ -6,9 +6,17 @@
 .row{
     text-align: center;
     justify-content: center;
-    align-items: center;
 }
 
 .wrapper-border{
     margin-bottom: 20px;
+}
+
+img {
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .flex-reverse-column-costum {
+    flex-direction: column-reverse;
+  }
 }

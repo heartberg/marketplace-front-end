@@ -30,7 +30,7 @@
             Type
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="typesDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="typesDropDown" (dropDownValue)="catchValue($event)"></app-drop-down-selector>
       </div>
       <div class="section">
         <div class="title">
@@ -89,9 +89,20 @@
         <div class="boxes-section-sort-by">
           <app-drop-down-selector [dropDownValues]="boxesSortDropDown" [isNotAccordion]="false"></app-drop-down-selector>
         </div>
-        <div class="row">
-          <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-            <app-card></app-card>
+        <div class="sale-section" *ngIf="isSale || isAll">
+          <h3 class="color-violet">Sale</h3>
+          <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
+              <app-card></app-card>
+            </div>
+          </div>
+        </div>
+        <div class="swap-section" *ngIf="isSwap || isAll">
+          <h3 class="color-violet">Swap</h3>
+          <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
+              <app-swap-card></app-swap-card>
+            </div>
           </div>
         </div>
       </div>

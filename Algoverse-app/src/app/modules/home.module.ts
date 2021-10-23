@@ -24,6 +24,11 @@ import {MatIconModule} from "@angular/material/icon";
 import { CreateAssetComponent } from './create-asset/create-asset.component';
 import { GetVerifiedComponent } from './get-verified/get-verified.component';
 import { TokenComponent } from './token/token.component';
+import { ArtistApplicationComponent } from './artists/artist-application/artist-application.component';
+import { ArtistsComponent } from './artists/artists/artists.component';
+import { SpaceshuttleComponent } from './artists/spaceshuttle/spaceshuttle.component';
+import { CreateTimedAuctionComponent } from './create-timed-auction/create-timed-auction.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -42,7 +47,11 @@ import { TokenComponent } from './token/token.component';
     AssetsDetailBuyComponent,
     CreateAssetComponent,
     GetVerifiedComponent,
-    TokenComponent
+    TokenComponent,
+    ArtistApplicationComponent,
+    ArtistsComponent,
+    SpaceshuttleComponent,
+    CreateTimedAuctionComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +62,8 @@ import { TokenComponent } from './token/token.component';
     HttpClientModule,
     MatSlideToggleModule,
     MatTreeModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule
   ],
   providers: [],
   exports: [

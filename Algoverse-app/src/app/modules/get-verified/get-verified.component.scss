@@ -1,6 +1,6 @@
 .wrapper-border{
     margin-bottom: 20px;
-    
+
     .col-md-5{
         h3{
         margin-bottom: 20px;
@@ -16,14 +16,17 @@
         input{
             width: 100%;
         }
-        
+
         textarea{
             width: 100%;
+            padding: 10px;
         }
-        
+
     }
 
-    
-    
-    
+  .unset_margin {
+    margin: 0px !important;
+  }
+
+
 }
