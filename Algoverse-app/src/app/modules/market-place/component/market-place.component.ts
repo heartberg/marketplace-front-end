@@ -18,6 +18,7 @@ export class MarketPlaceComponent implements OnInit {
   public isSwap: boolean = false;
   public isSale: boolean = false;
   public isAll: boolean = true;
+  public isTimedAuction: boolean = false;
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -34,15 +35,24 @@ export class MarketPlaceComponent implements OnInit {
 
   catchValue(event: string) {
    this.dropDownValue = event;
+
     if(this.dropDownValue == 'Sale') {
       this.isSale = true;
       this.isSwap = false;
+      this.isTimedAuction = false;
       this.isAll = false;
       this.router.navigate(['marketplace/sale'])
+
     } else if (this.dropDownValue == 'Auction') {
+      this.isSale = false;
+      this.isSwap = false;
+      this.isTimedAuction = true;
+      this.isAll = false;
+      this.router.navigate(['marketplace/auction'])
 
     } else if (this.dropDownValue == 'Swap') {
       this.isSale = false;
+      this.isTimedAuction = false;
       this.isSwap = true;
       this.isAll = false;
       this.router.navigate(['marketplace/swap'])

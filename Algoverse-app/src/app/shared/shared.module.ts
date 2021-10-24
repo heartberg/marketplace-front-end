@@ -9,6 +9,7 @@ import { CardComponent } from './card/card.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import {SwiperModule} from "swiper/angular";
 import { SwapCardComponent } from './swap-card/swap-card.component';
+import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-card.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { SwapCardComponent } from './swap-card/swap-card.component';
     CardComponent,
     CarouselComponent,
     SwapCardComponent,
+    TimedAuctionCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { SwapCardComponent } from './swap-card/swap-card.component';
     DropDownSelectorComponent,
     CardComponent,
     CarouselComponent,
-    SwapCardComponent
+    SwapCardComponent,
+    TimedAuctionCardComponent
   ],
   providers: [WalletsConnectService],
 })

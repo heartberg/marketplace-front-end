@@ -29,6 +29,7 @@ import { ArtistsComponent } from './artists/artists/artists.component';
 import { SpaceshuttleComponent } from './artists/spaceshuttle/spaceshuttle.component';
 import { CreateTimedAuctionComponent } from './create-timed-auction/create-timed-auction.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import { SpaceShuttleComponent } from './space-shuttle/space-shuttle.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     ArtistApplicationComponent,
     ArtistsComponent,
     SpaceshuttleComponent,
-    CreateTimedAuctionComponent
+    CreateTimedAuctionComponent,
+    SpaceShuttleComponent
   ],
   imports: [
     BrowserModule,
