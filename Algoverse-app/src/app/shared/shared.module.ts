@@ -10,6 +10,8 @@ import { CarouselComponent } from './carousel/carousel.component';
 import {SwiperModule} from "swiper/angular";
 import { SwapCardComponent } from './swap-card/swap-card.component';
 import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-card.component';
+import { SkeletonImgComponent } from './skeleton-preloader/skeleton-img/skeleton-img.component';
+import { SkeletonCardComponent } from './skeleton-preloader/skeleton-card/skeleton-card.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-ca
     CarouselComponent,
     SwapCardComponent,
     TimedAuctionCardComponent,
+    SkeletonImgComponent,
+    SkeletonCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,9 @@ import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-ca
     CardComponent,
     CarouselComponent,
     SwapCardComponent,
-    TimedAuctionCardComponent
+    TimedAuctionCardComponent,
+    SkeletonImgComponent,
+    SkeletonCardComponent
   ],
   providers: [WalletsConnectService],
 })

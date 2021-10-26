@@ -99,3 +99,8 @@
     margin-top: 20px;
   }
 }
+@media (max-width: 767px) {
+  .d-none-respo {
+    display: none !important;
+  }
+}

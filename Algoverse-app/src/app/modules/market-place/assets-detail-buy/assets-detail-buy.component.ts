@@ -6,10 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./assets-detail-buy.component.scss']
 })
 export class AssetsDetailBuyComponent implements OnInit {
+  isPopUp: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  openPopUp():void {
+    this.isPopUp = true;
+  }
+
+  closePopUp(): void {
+    this.isPopUp = false;
+  }
 }

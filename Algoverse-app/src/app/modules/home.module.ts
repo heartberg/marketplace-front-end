@@ -27,9 +27,11 @@ import { TokenComponent } from './token/token.component';
 import { ArtistApplicationComponent } from './artists/artist-application/artist-application.component';
 import { ArtistsComponent } from './artists/artists/artists.component';
 import { SpaceshuttleComponent } from './artists/spaceshuttle/spaceshuttle.component';
-import { CreateTimedAuctionComponent } from './create-timed-auction/create-timed-auction.component';
 import {MatTabsModule} from "@angular/material/tabs";
-import { SpaceShuttleComponent } from './space-shuttle/space-shuttle.component';
+import { CreateSwapComponent } from './swap/create-swap/create-swap.component';
+import { AssetDetailSwapComponent } from './swap/asset-detail-swap/asset-detail-swap.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { CreateAuctionComponent } from './create-auction/create-auction.component';
 
 @NgModule({
   declarations: [
@@ -52,8 +54,9 @@ import { SpaceShuttleComponent } from './space-shuttle/space-shuttle.component';
     ArtistApplicationComponent,
     ArtistsComponent,
     SpaceshuttleComponent,
-    CreateTimedAuctionComponent,
-    SpaceShuttleComponent
+    CreateSwapComponent,
+    AssetDetailSwapComponent,
+    CreateAuctionComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ import { SpaceShuttleComponent } from './space-shuttle/space-shuttle.component';
     MatSlideToggleModule,
     MatTreeModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCheckboxModule,
   ],
   providers: [],
   exports: [

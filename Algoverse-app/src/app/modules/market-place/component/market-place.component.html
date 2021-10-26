@@ -7,14 +7,14 @@
             Price
           </h3>
         </div>
-        <mat-slider
-          thumbLabel
-          [displayWith]="formatLabel"
-          tickInterval="1000"
-          step="1000"
-          min="0"
-          max="100000"
-          aria-label="units"></mat-slider>
+<!--        <mat-slider-->
+<!--          thumbLabel-->
+<!--          [displayWith]="formatLabel"-->
+<!--          tickInterval="1000"-->
+<!--          step="1000"-->
+<!--          min="0"-->
+<!--          max="100000"-->
+<!--          aria-label="units"></mat-slider>-->
       </div>
       <div class="section">
         <div class="title">
@@ -93,7 +93,8 @@
           <h3 class="color-violet">Sale</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-              <app-card></app-card>
+              <app-card *ngIf="isLoaded"></app-card>
+              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
         </div>
@@ -101,7 +102,8 @@
           <h3 class="color-violet">Swap</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-              <app-swap-card></app-swap-card>
+              <app-swap-card *ngIf="isLoaded"></app-swap-card>
+              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
         </div>
@@ -109,7 +111,8 @@
           <h3 class="color-violet">Timed Auction</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-              <app-timed-auction-card></app-timed-auction-card>
+              <app-timed-auction-card *ngIf="isLoaded"></app-timed-auction-card>
+              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
         </div>

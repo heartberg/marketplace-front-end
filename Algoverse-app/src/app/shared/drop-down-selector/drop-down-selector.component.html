@@ -67,7 +67,7 @@
     <!--    added-->
   </div>
   <div class="dropDown" *ngIf="isDropDownOpened" [class.marketplace-w_position-unset]="isNotAccordion" [class.left-0]="treeDots" [class.isTree]="tree && !isProfileSection">
-    <div class="section" *ngFor="let button of dropDownValues; let last = last" (click)="selectValue(button)" [class.border-none]="last" [class.no-border]="tree">
+    <div class="section" *ngFor="let button of dropDownValues; let last = last" (click)="selectValue(button)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection">
       <button class="btn-default" [class.color-violet]="tree" *ngIf="!isProfileSection">{{button}}</button>
       <ng-container *ngIf="isProfileSection">
         <div class="dropDownWrapper">

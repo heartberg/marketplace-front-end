@@ -101,7 +101,10 @@ input {
   border: 1px solid transparent;
   cursor: pointer;
 }
-
+.skeleton-relative {
+  position: relative !important;
+  overflow: hidden !important;
+}
 .btn-icon-round {
   height: 40px;
   width: 40px;
@@ -131,10 +134,20 @@ input {
 }
 
 .dark-mode {
+  .wrapper_popUp {
+    background: #1c1c1e !important;
+  }
   app-pop-up {
     .main {
       .wrapper {
         background: #1c1c1e !important;
+      }
+    }
+  }
+  app-swap-card {
+    .img {
+      img {
+        filter: opacity(0.2);
       }
     }
   }
@@ -383,6 +396,14 @@ textarea {
 .mat-slide-toggle-thumb {
 
 }
+// check box
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: #81007F !important;
+}
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #81007F !important;
+}
+// # check box
 
 // bootstrap restyle
 

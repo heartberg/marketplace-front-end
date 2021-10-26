@@ -1,5 +1,12 @@
 .main {
+  .relative {
+    position: relative !important;
+    overflow: hidden;
+  }
 
+  img {
+    border-radius: 12px !important;
+  }
   .unset-border {
     box-shadow: unset !important;
     border: unset;
@@ -237,3 +244,20 @@
     }
   }
 }
+
+:host ::ng-deep .card{
+    bottom: 20px !important;
+    right: 20px !important;;
+    left: 20px !important;;
+    width: auto !important;;
+    top: 20px !important;;
+    height: auto !important;;
+}
+  :host ::ng-deep .isBoxes {
+    bottom: 0px !important;
+    right: 0px !important;
+    left: 0px !important;
+    width: auto !important;
+    top: 0px !important;
+  }
+

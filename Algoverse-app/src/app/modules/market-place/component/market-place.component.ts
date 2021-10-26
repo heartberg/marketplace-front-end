@@ -20,6 +20,8 @@ export class MarketPlaceComponent implements OnInit {
   public isAll: boolean = true;
   public isTimedAuction: boolean = false;
 
+  public isLoaded: boolean = false;
+
   formatLabel(value: number) {
     if (value >= 1000) {
       return Math.round(value / 1000) + 'k';
@@ -31,6 +33,9 @@ export class MarketPlaceComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    setTimeout( () => {
+      this.isLoaded = true;
+    },1000)
   }
 
   catchValue(event: string) {

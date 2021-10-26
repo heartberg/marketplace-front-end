@@ -14,15 +14,17 @@
         </button>
       </div>
     </div>
-    <div class="wrapper second-wrapper wrapper-border">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-      <span>John Zat Burg</span>
+    <div class="wrapper second-wrapper wrapper-border relative">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="" *ngIf="isLoaded">
+      <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
+      <span style="margin-top: 10px;">John Zat Burg</span>
     </div>
   </div>
-  <div class="second-section wrapper-border">
-    <div class="wrapper first-wrap unset-border">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-      <span>John Zat Burg</span>
+  <div class="second-section wrapper-border relative">
+    <div class="wrapper first-wrap unset-border relative">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="" *ngIf="isLoaded">
+      <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
+      <span style="margin-top: 10px;">John Zat Burg</span>
     </div>
     <div class="wrapper second-wrap unset-border">
       <h3>Algolution</h3>
@@ -41,20 +43,24 @@
       <h3>Featured Artists</h3>
     </div>
     <div class="boxes">
-      <div class="box">
+      <div class="box relative">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
         <span>Vincet Van Gogh</span>
       </div>
-      <div class="box">
+      <div class="box relative">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
         <span>Vincet Van Gogh</span>
       </div>
-      <div class="box">
+      <div class="box relative">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
         <span>Vincet Van Gogh</span>
       </div>
-      <div class="box">
+      <div class="box relative">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
         <span>Vincet Van Gogh</span>
       </div>
     </div>
@@ -68,17 +74,20 @@
       <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false"></app-drop-down-selector>
     </div>
     <div class="boxes">
-      <div class="box">
+      <div class="box relative">
         <span>Vincet Van Gogh</span>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
       </div>
-      <div class="box">
+      <div class="box relative">
         <span>Vincet Van Gogh</span>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
       </div>
-      <div class="box">
+      <div class="box relative">
         <span>Vincet Van Gogh</span>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
       </div>
     </div>
   </div>
@@ -88,17 +97,20 @@
       <h3>Benefits for Artists & Collectors</h3>
     </div>
     <div class="boxes">
-      <div class="box">
+      <div class="box relative">
         <span>Vincet Van Gogh</span>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
       </div>
-      <div class="box">
+      <div class="box relative">
         <span>Vincet Van Gogh</span>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
       </div>
-      <div class="box">
+      <div class="box relative">
         <span>Vincet Van Gogh</span>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
       </div>
     </div>
   </div>

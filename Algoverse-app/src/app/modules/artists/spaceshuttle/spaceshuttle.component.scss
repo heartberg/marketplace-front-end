@@ -1,5 +1,8 @@
 .space-shuttle{
   margin-bottom: 20px;
+  img {
+    border-radius: 12px !important;
+  }
   .shuttletext {
     height: 165px;
     overflow-y: scroll;

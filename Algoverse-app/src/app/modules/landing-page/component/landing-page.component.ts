@@ -9,6 +9,7 @@ import {UserService} from "../../../services/user.service";
 export class LandingPageComponent implements OnInit {
   public hotDropDown = ['Collections', 'Item', 'Buyers', 'Sellers', 'Creators'];
   public hotInDropDown = ['1 Day', '7 Days', '30 Days', 'All Time',];
+  public isLoaded:boolean = false;
 
   constructor(private _userService: UserService) { }
 
@@ -16,6 +17,10 @@ export class LandingPageComponent implements OnInit {
     this._userService.userGetShuttle().subscribe(
       (result) => console.log(result)
     );
+    setTimeout( () => {
+      this.isLoaded = true;
+    },1000)
   }
+
 
 }

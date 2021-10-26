@@ -19,6 +19,9 @@ import {TokenComponent} from "./modules/token/token.component";
 import {ArtistApplicationComponent} from "./modules/artists/artist-application/artist-application.component";
 import {ArtistsComponent} from "./modules/artists/artists/artists.component";
 import {SpaceshuttleComponent} from "./modules/artists/spaceshuttle/spaceshuttle.component";
+import {CreateSwapComponent} from "./modules/swap/create-swap/create-swap.component";
+import {AssetDetailSwapComponent} from "./modules/swap/asset-detail-swap/asset-detail-swap.component";
+import {CreateAuctionComponent} from "./modules/create-auction/create-auction.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -36,12 +39,14 @@ const routes: Routes = [
   { path: 'edit-profile', component: ProfileEditComponent },
   { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },
   { path: 'create-asset', component: CreateAssetComponent },
+  { path: 'create-auction', component: CreateAuctionComponent },
   { path: 'get-verified', component: GetVerifiedComponent },
   { path: 'token', component: TokenComponent },
   { path: 'artists', component: ArtistsComponent },
   { path: 'artists/artist-application', component: ArtistApplicationComponent },
   { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
-
+  { path: 'swap/create-swap', component: CreateSwapComponent},
+  { path: 'swap/asset-detail-swap', component: AssetDetailSwapComponent }
 ];
 
 @NgModule({

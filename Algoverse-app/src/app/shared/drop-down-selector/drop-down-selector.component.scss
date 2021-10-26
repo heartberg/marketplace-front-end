@@ -147,3 +147,17 @@
     overflow-y: scroll;
   }
 }
+.unHover {
+  &:hover {
+    background: unset !important;
+  }
+}
+@media (max-width: 1067px) {
+  .isProfile {
+    flex-direction: column-reverse !important;
+    align-items: baseline !important;
+    .collection-details {
+      margin: 10px 0px !important;
+    }
+  }
+}

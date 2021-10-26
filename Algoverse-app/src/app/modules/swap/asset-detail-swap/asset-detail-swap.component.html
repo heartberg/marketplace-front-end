@@ -65,13 +65,10 @@
                     <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Properties'"></app-drop-down-selector>
                   </div>
                   <div class="section">
-                    <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Offers'"></app-drop-down-selector>
+                    <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Seeking'"></app-drop-down-selector>
                   </div>
                   <div class="section">
                     <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Listings'"></app-drop-down-selector>
-                  </div>
-                  <div class="section">
-                    <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'History'"></app-drop-down-selector>
                   </div>
                 </div>
                 <div class="chart">
@@ -89,10 +86,10 @@
                 </div>
               </div>
               <div class="buttons d-flex align-items-center">
-                <button class="btn-primary-costum">
-                  Buy
+                <button class="btn-secondary-costum" (click)="openPopUp()">
+                  Request swap
                 </button>
-                <button class="btn-secondary-costum" style="white-space: nowrap" (click)="openPopUp()">
+                <button class="btn-primary-costum" style="white-space: nowrap" (click)="openPopUpSecond()">
                   Make Offer
                 </button>
               </div>
@@ -103,27 +100,50 @@
     </div>
   </div>
 </div>
-<!--popup-->
-<div class="popUp-bg" *ngIf="isPopUp">
-  <div class="wrapper_popUp wrapper-border">
-    <i class="fa fa-times" aria-hidden="true" (click)="closePopUp()" style="cursor: pointer"></i>
-    <h3>Make offer</h3>
-    <div class="d-flex flex-column algo-input">
-      <div class="title">
+<div class="popUp-bg" *ngIf="isPopUp || isPopUpSecond">
+  <div class="wrapper_popUp popswaprequest wrapper-border">
+    <i class="fa fa-times" aria-hidden="true" style="cursor: pointer" (click)="closePopUp()"></i>
+    <ng-container *ngIf="isPopUp">
+      <div class="wrapper">
+        <h3>Swap request</h3>
+        <div class="dropdown">
+          <app-drop-down-selector class="dropmenu" [dropDownValues]="['Option 1', 'Option 2', 'Option 3', ]"></app-drop-down-selector>
+        </div>
         <h4>Amount</h4>
+        <input class="input-costum" placeholder="Amount">
+        <div class="buttons">
+          <button class="btn-secondary-costum aligner">
+            send
+          </button>
+          <button class="btn-primary-costum aligner" (click)="closePopUp()">
+            Cancel
+          </button>
+        </div>
       </div>
-      <div class="input_preTitle">
-        <span class="color-violet">Algo</span>
-        <input class="input-costum" placeholder="50">
+    </ng-container>
+    <ng-container *ngIf="isPopUpSecond">
+      <div class="wrapper">
+        <h3>Swap request</h3>
+        <div class="dropdown">
+          <app-drop-down-selector class="dropmenu" [dropDownValues]="['Option 1', 'Option 2', 'Option 3', ]"></app-drop-down-selector>
+        </div>
+        <div class="section">
+          <h4>Amount</h4>
+          <input class="input-costum" placeholder="Amount">
+        </div>
+        <div class="section">
+          <h4>Message</h4>
+          <textarea></textarea>
+        </div>
+        <div class="buttons">
+          <button class="btn-secondary-costum aligner">
+            send
+          </button>
+          <button class="btn-primary-costum aligner" (click)="closePopUpSecond()">
+            Cancel
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="buttons">
-      <button class="btn-secondary-costum aligner">
-        bid
-      </button>
-      <button class="btn-primary-costum aligner" (click)="closePopUp()">
-        Cancel
-      </button>
-    </div>
+    </ng-container>
   </div>
 </div>
