@@ -14,11 +14,19 @@ import {CreateTradeComponent} from "./modules/market-place/create-trade/create-t
 import {ProfileEditComponent} from "./modules/profile/profile-edit/profile-edit.component";
 import {AssetsDetailBuyComponent} from "./modules/market-place/assets-detail-buy/assets-detail-buy.component";
 import {CreateAssetComponent} from "./modules/create-asset/create-asset.component";
+import {GetVerifiedComponent} from "./modules/get-verified/get-verified.component";
+import {TokenComponent} from "./modules/token/token.component";
+import {ArtistApplicationComponent} from "./modules/artists/artist-application/artist-application.component";
+import {ArtistsComponent} from "./modules/artists/artists/artists.component";
+import {SpaceshuttleComponent} from "./modules/artists/spaceshuttle/spaceshuttle.component";
+import {CreateSwapComponent} from "./modules/swap/create-swap/create-swap.component";
+import {AssetDetailSwapComponent} from "./modules/swap/asset-detail-swap/asset-detail-swap.component";
+import {CreateAuctionComponent} from "./modules/create-auction/create-auction.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: LandingPageComponent },
-  { path: 'marketplace', component: MarketPlaceComponent },
+  { path: 'marketplace/:slugId', component: MarketPlaceComponent },
   { path: 'collection', component: MyCollectionComponent },
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
@@ -30,7 +38,15 @@ const routes: Routes = [
   { path: 'create-trade', component: CreateTradeComponent },
   { path: 'edit-profile', component: ProfileEditComponent },
   { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },
-  { path: 'create-asset', component: CreateAssetComponent }
+  { path: 'create-asset', component: CreateAssetComponent },
+  { path: 'create-auction', component: CreateAuctionComponent },
+  { path: 'get-verified', component: GetVerifiedComponent },
+  { path: 'token', component: TokenComponent },
+  { path: 'artists', component: ArtistsComponent },
+  { path: 'artists/artist-application', component: ArtistApplicationComponent },
+  { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
+  { path: 'swap/create-swap', component: CreateSwapComponent},
+  { path: 'swap/asset-detail-swap', component: AssetDetailSwapComponent }
 ];
 
 @NgModule({

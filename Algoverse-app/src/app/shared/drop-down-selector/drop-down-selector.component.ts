@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 
@@ -11,9 +11,15 @@ export class DropDownSelectorComponent implements OnInit {
   @Input() public dropDownValues: string[] = [];
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
-
+  // profile
+  @Input() public isProfileSection: boolean = false;
+  @Input() public profileSectionImg: string = ''
+  @Input() public profileSectionInfo: string = ''
+  // profile
   @Input() public tree: boolean = false;
   @Input() public hasTitle: string  = '';
+
+  @Output() dropDownValue = new EventEmitter<string>();
 
   public isDropDownOpened = false;
   public isDropDownOpenedCounter = 1;
@@ -37,6 +43,7 @@ export class DropDownSelectorComponent implements OnInit {
     this.isDropDownOpenedCounter +=1;
     this.showDropDownSelected = value
     this.isDropDownOpened = false;
+    this.dropDownValue.emit(value);
   }
 
 }

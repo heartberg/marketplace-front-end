@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+//@import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 // bootstrap unset default styles
@@ -101,7 +102,10 @@ input {
   border: 1px solid transparent;
   cursor: pointer;
 }
-
+.skeleton-relative {
+  position: relative !important;
+  overflow: hidden !important;
+}
 .btn-icon-round {
   height: 40px;
   width: 40px;
@@ -131,10 +135,20 @@ input {
 }
 
 .dark-mode {
+  .wrapper_popUp {
+    background: #1c1c1e !important;
+  }
   app-pop-up {
     .main {
       .wrapper {
         background: #1c1c1e !important;
+      }
+    }
+  }
+  app-swap-card {
+    .img {
+      img {
+        filter: opacity(0.2);
       }
     }
   }
@@ -383,6 +397,14 @@ textarea {
 .mat-slide-toggle-thumb {
 
 }
+// check box
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: #81007F !important;
+}
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #81007F !important;
+}
+// # check box
 
 // bootstrap restyle
 
@@ -399,4 +421,24 @@ textarea {
     width: 100%;
   }
 
+}
+.owl-theme {
+  .owl-nav {
+    justify-content: space-between;
+    position: absolute;
+    top: 33%;
+    width: 100%;
+    z-index: 999;
+    //transform: translateY(-50%);
+    display: flex;
+    margin-top: 0px;
+    button {
+      &:hover {
+        background: rgba(0,0,0,0.1) !important;
+      }
+      span {
+        font-size: 50px;
+      }
+    }
+  }
 }

@@ -92,8 +92,8 @@
                 <button class="btn-primary-costum">
                   Buy
                 </button>
-                <button class="btn-secondary-costum">
-                  Bid
+                <button class="btn-secondary-costum" style="white-space: nowrap" (click)="openPopUp()">
+                  Make Offer
                 </button>
               </div>
             </div>
@@ -101,31 +101,29 @@
         </div>
       </div>
     </div>
-    <div class="wrapper-last">
-      <div class="wrapper-border" style="padding-bottom: 0px !important;">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="section">
-              <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Properties'"></app-drop-down-selector>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="section">
-              <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'History'"></app-drop-down-selector>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="section">
-              <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Listings'"></app-drop-down-selector>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="section">
-              <app-drop-down-selector [tree]="true" [dropDownValues]="['Height: 200', 'Price: 300$', 'Width: 200px,']" [isNotAccordion]="true" [hasTitle]="'Offers'"></app-drop-down-selector>
-            </div>
-          </div>
-        </div>
+  </div>
+</div>
+<!--popup-->
+<div class="popUp-bg" *ngIf="isPopUp">
+  <div class="wrapper_popUp wrapper-border">
+    <i class="fa fa-times" aria-hidden="true" (click)="closePopUp()" style="cursor: pointer"></i>
+    <h3>Make offer</h3>
+    <div class="d-flex flex-column algo-input">
+      <div class="title">
+        <h4>Amount</h4>
       </div>
+      <div class="input_preTitle">
+        <span class="color-violet">Algo</span>
+        <input class="input-costum" placeholder="50">
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="btn-secondary-costum aligner">
+        bid
+      </button>
+      <button class="btn-primary-costum aligner" (click)="closePopUp()">
+        Cancel
+      </button>
     </div>
   </div>
 </div>

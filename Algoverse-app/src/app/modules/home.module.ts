@@ -22,6 +22,17 @@ import { AssetsDetailBuyComponent } from './market-place/assets-detail-buy/asset
 import {MatTreeModule} from "@angular/material/tree";
 import {MatIconModule} from "@angular/material/icon";
 import { CreateAssetComponent } from './create-asset/create-asset.component';
+import { GetVerifiedComponent } from './get-verified/get-verified.component';
+import { TokenComponent } from './token/token.component';
+import { ArtistApplicationComponent } from './artists/artist-application/artist-application.component';
+import { ArtistsComponent } from './artists/artists/artists.component';
+import { SpaceshuttleComponent } from './artists/spaceshuttle/spaceshuttle.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import { CreateSwapComponent } from './swap/create-swap/create-swap.component';
+import { AssetDetailSwapComponent } from './swap/asset-detail-swap/asset-detail-swap.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { CreateAuctionComponent } from './create-auction/create-auction.component';
+import {CarouselModule} from "../carousel/carousel.module";
 
 @NgModule({
   declarations: [
@@ -38,7 +49,15 @@ import { CreateAssetComponent } from './create-asset/create-asset.component';
     CreateTradeComponent,
     ProfileEditComponent,
     AssetsDetailBuyComponent,
-    CreateAssetComponent
+    CreateAssetComponent,
+    GetVerifiedComponent,
+    TokenComponent,
+    ArtistApplicationComponent,
+    ArtistsComponent,
+    SpaceshuttleComponent,
+    CreateSwapComponent,
+    AssetDetailSwapComponent,
+    CreateAuctionComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +68,10 @@ import { CreateAssetComponent } from './create-asset/create-asset.component';
     HttpClientModule,
     MatSlideToggleModule,
     MatTreeModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule,
+    MatCheckboxModule,
+    CarouselModule,
   ],
   providers: [],
   exports: [
