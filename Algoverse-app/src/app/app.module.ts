@@ -6,10 +6,14 @@ import { AppComponent } from './app.component';
 import {SharedModule} from "./shared/shared.module";
 import {HomeModule} from "./modules/home.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+// import {OwlModule} from "ngx-owl-carousel";
+import {CarouselModule} from "./carousel/carousel.module";
+// import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    // CarouselComponent,
   ],
   imports: [
     BrowserModule,
@@ -17,9 +21,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     SharedModule,
     HomeModule,
     BrowserAnimationsModule,
+    CarouselModule
+    // OwlModule
   ],
   providers: [
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: []
 })
 export class AppModule { }

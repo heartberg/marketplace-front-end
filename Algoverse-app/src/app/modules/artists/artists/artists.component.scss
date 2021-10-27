@@ -276,3 +276,30 @@
 .sortBy {
   margin-bottom: 20px;
 }
+.respo-show {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .d-unset {
+    display: unset !important;
+  }
+
+  .respo-show {
+    display: block;
+  }
+
+  .boxes .box{
+    display: none !important;
+  }
+  .no-hide{
+    .box {
+      display: unset !important;
+    }
+  }
+  .dflex {
+    .box {
+      display: flex;
+    }
+  }
+}

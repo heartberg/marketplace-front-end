@@ -261,3 +261,20 @@
     top: 0px !important;
   }
 
+.respo-show {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .d-unset {
+    display: unset !important;
+  }
+
+  .respo-show {
+    display: block;
+  }
+
+  .boxes .box{
+    display: none !important;
+  }
+}
