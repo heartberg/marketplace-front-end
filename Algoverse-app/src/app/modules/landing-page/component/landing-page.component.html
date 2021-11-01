@@ -42,29 +42,22 @@
     <div class="title">
       <h3>Featured Artists</h3>
     </div>
-    <div class="boxes d-unset">
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
+    <div class="boxes d-unset" style="display: unset">
+      <div class="row d-none-costum">
+        <div class="col-xl-3 col-md-6 col-sm-6" *ngFor="let item of exampleArr">
+          <div class="box relative">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+            <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
+            <span>Vincet Van Gogh</span>
+          </div>
+        </div>
       </div>
       <div class="respo-show">
-        <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>
+        <div class="row">
+          <div class="col-12">
+            <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -72,25 +65,22 @@
   <div class="pre-last-section third-section second-section wrapper-border">
     <div class="title">
       <h3 class="title_hot">Hot</h3>
-      <app-drop-down-selector [dropDownValues]="hotDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+      <app-drop-down-selector [dropDownValues]="hotDropDown" [isNotAccordion]="false" (dropDownValue)="getDropDownValue($event)"></app-drop-down-selector>
       <h3 class="title_in">In</h3>
-      <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+      <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false" (dropDownValue)="getDropDownDaysValue($event)"></app-drop-down-selector>
     </div>
-    <div class="boxes">
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
+    <div class="boxes" style="display: unset">
+      <div class="row">
+        <div class="col-xl-3 col-md-6 col-sm-6" *ngFor="let info of (HotArray$ | async) as HotArray">
+          <div class="box relative" id="d-unset">
+            <span>{{ info.name }}</span>
+<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">-->
+                <img src="{{ info.profileImage }}" alt="">
+          </div>
+        </div>
+<!--        <div class="col-xl-3 col-md-6 col-sm-6" *ngFor="let info of hotInDropDown">-->
+<!--          <app-skeleton-img [isBoxes]="true" *ngIf="!isLoaded" ></app-skeleton-img>-->
+<!--        </div>-->
       </div>
     </div>
   </div>
@@ -99,21 +89,15 @@
     <div class="title">
       <h3>Benefits for Artists & Collectors</h3>
     </div>
-    <div class="boxes d-unset">
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
+    <div class="boxes d-unset" style="display: unset">
+      <div class="row d-none-costum">
+        <div class="col-xl-3 col-md-6 col-sm-6" *ngFor="let item of exampleArr">
+          <div class="box relative">
+            <span>Vincet Van Gogh</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+            <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
+          </div>
+        </div>
       </div>
       <div class="respo-show">
         <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>

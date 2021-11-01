@@ -426,12 +426,12 @@ textarea {
   .owl-nav {
     justify-content: space-between;
     position: absolute;
-    top: 33%;
+    top: 50%;
     width: 100%;
     z-index: 999;
-    //transform: translateY(-50%);
+    transform: translateY(-50%);
     display: flex;
-    margin-top: 0px;
+    margin-top: -5px !important;
     button {
       &:hover {
         background: rgba(0,0,0,0.1) !important;
