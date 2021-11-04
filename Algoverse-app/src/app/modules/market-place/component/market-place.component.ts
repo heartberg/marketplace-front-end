@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {SwapService} from "../../../services/swap.service";
+import {AuctionService} from "../../../services/auction.service";
+import {AssetService} from "../../../services/asset.service";
+import {ArtistService} from "../../../services/artist.service";
+import {CollectionService} from "../../../services/collection.service";
 
 @Component({
   selector: 'app-market-place',
@@ -30,12 +35,23 @@ export class MarketPlaceComponent implements OnInit {
     return value;
   }
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private _swapService: SwapService,
+    private _auctionService: AuctionService,
+    private _assetService: AssetService,
+    private _artistService: ArtistService,
+    private _collectionService: CollectionService
+  ) { }
 
   ngOnInit(): void {
     setTimeout( () => {
       this.isLoaded = true;
     },1000)
+    this._artistService.getAllArtists().subscribe( (s) => console.log(s));
+    this._collectionService.getAllCollectionMarketPlace().subscribe( (s) =>  {
+      console.log(s, 'collection');
+    });
   }
 
   catchValue(event: string) {
@@ -47,6 +63,7 @@ export class MarketPlaceComponent implements OnInit {
       this.isTimedAuction = false;
       this.isAll = false;
       this.router.navigate(['marketplace/sale'])
+      this._assetService.getAllAssetMarketplace(1).subscribe( (data) => console.log(data))
 
     } else if (this.dropDownValue == 'Auction') {
       this.isSale = false;
@@ -54,6 +71,7 @@ export class MarketPlaceComponent implements OnInit {
       this.isTimedAuction = true;
       this.isAll = false;
       this.router.navigate(['marketplace/auction'])
+      this._auctionService.getAllAuctionMarketplace(1).subscribe( (data) => console.log(data))
 
     } else if (this.dropDownValue == 'Swap') {
       this.isSale = false;
@@ -61,6 +79,7 @@ export class MarketPlaceComponent implements OnInit {
       this.isSwap = true;
       this.isAll = false;
       this.router.navigate(['marketplace/swap'])
+      this._swapService.getAllSwapMarketplace(1).subscribe( (data) => console.log(data))
 
     } else if (this.dropDownValue == 'All Types') {
       this.isAll = true;

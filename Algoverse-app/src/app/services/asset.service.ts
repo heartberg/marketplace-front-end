@@ -15,9 +15,18 @@ export class AssetService {
 
   getAssetBuyers(lastDays: number): Observable<AssetHotModel> {
     const url = `${this.baseUrl}/asset/get/hot`;
-    return this._http.get<any>(url, {
+    return this._http.get<AssetHotModel>(url, {
       params: {
         lastDays: lastDays
+      }
+    })
+  }
+
+  getAllAssetMarketplace(pageId: number): Observable<AssetHotModel> {
+    const url = `${this.baseUrl}/asset/get/allWithOpenTrade`;
+    return this._http.get<AssetHotModel>(url, {
+      params: {
+        page: pageId
       }
     })
   }

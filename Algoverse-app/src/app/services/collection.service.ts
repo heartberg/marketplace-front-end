@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserHotModel} from "../models/user-hot.model";
-import {CollectionHotModel} from "../models/collection-hot.model";
+import {CollectionAllMarketplace, CollectionHotModel} from "../models/collection-hot.model";
 
 @Injectable({
   providedIn: "root"
@@ -17,11 +17,15 @@ export class CollectionService {
 
   getHotCollections(lastDays: number): Observable<CollectionHotModel> {
     const url = `${this.baseUrl}/collection/get/hot`;
-    return this._http.get<any>(url, {
+    return this._http.get<CollectionHotModel>(url, {
       params: {
         lastDays: lastDays
       }
     })
   }
 
+  getAllCollectionMarketPlace(): Observable<CollectionAllMarketplace> {
+    const url = `${this.baseUrl}/collection/get/all`;
+    return this._http.get<CollectionAllMarketplace>(url)
+  }
 }

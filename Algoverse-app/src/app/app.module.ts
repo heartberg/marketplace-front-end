@@ -8,6 +8,8 @@ import {HomeModule} from "./modules/home.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 // import {OwlModule} from "ngx-owl-carousel";
 import {CarouselModule} from "./carousel/carousel.module";
+import {ReactiveFormsModule} from "@angular/forms";
+
 // import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
@@ -18,10 +20,11 @@ import {CarouselModule} from "./carousel/carousel.module";
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     SharedModule,
     HomeModule,
     BrowserAnimationsModule,
-    CarouselModule
+    CarouselModule,
     // OwlModule
   ],
   providers: [

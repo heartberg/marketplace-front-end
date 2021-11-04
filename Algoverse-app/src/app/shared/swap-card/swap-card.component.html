@@ -34,6 +34,15 @@
     <div class="">
       <div class="swap-details">
         <span style="font-size: 15px;">Looking for</span>
+        <ng-container>
+          <div class="scroll">
+            <div class="row">
+              <div class="col-4" *ngFor="let item of sliderImgs">
+                <img src="{{item}}" alt="">
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

@@ -10,6 +10,7 @@ import { SwapCardComponent } from './swap-card/swap-card.component';
 import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-card.component';
 import { SkeletonImgComponent } from './skeleton-preloader/skeleton-img/skeleton-img.component';
 import { SkeletonCardComponent } from './skeleton-preloader/skeleton-card/skeleton-card.component';
+import {CarouselModule} from "../carousel/carousel.module";
 
 @NgModule({
   declarations: [

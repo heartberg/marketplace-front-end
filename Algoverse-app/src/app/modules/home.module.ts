@@ -33,6 +33,8 @@ import { AssetDetailSwapComponent } from './swap/asset-detail-swap/asset-detail-
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { CreateAuctionComponent } from './create-auction/create-auction.component';
 import {CarouselModule} from "../carousel/carousel.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ChartsModule, WavesModule} from "angular-bootstrap-md";
 
 @NgModule({
   declarations: [
@@ -72,6 +74,10 @@ import {CarouselModule} from "../carousel/carousel.module";
     MatTabsModule,
     MatCheckboxModule,
     CarouselModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ChartsModule,
+    WavesModule
   ],
   providers: [],
   exports: [

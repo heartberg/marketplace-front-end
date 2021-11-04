@@ -82,5 +82,46 @@
       margin-left: 5px;
       color: #81007F !important;
     }
+    img {
+      height: 100% !important;
+      width: 100%;
+      border-radius: 3px;
+      margin-top: 5px;
+    }
+    .row {
+      margin: 0px -5px !important;
+      .col-4 {
+        padding: 0px 5px !important;
+      }
+    }
   }
+}
+.scroll {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding-bottom: 10px;
+  .row {
+    flex-wrap: unset;
+  }
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #81007F;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #81007F;
 }

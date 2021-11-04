@@ -40,7 +40,7 @@ export class UserService {
 
   getHotBuyers(lastDays: number): Observable<UserHotModel> {
     const url = `${this.baseUrl}/user/get/hot/buyer`;
-    return this._http.get<any>(url, {
+    return this._http.get<UserHotModel>(url, {
       params: {
         lastDays: lastDays
       }

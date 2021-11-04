@@ -3,9 +3,10 @@
     <img src="https://www.pngitem.com/pimgs/m/467-4678631_arrow-back-icon-png-transparent-png.png" alt="" style="width: 50px;">
   </div>
   <div class="whole wrapper-border">
-    <div class="row">
+    <div class="row" style="width: 100%">
       <div class="col-md-8">
-        <div class="inside wrapper-border">
+        <form [formGroup]="tradeForm" (ngSubmit)="createTrade()">
+          <div class="inside wrapper-border">
           <div class="header">
             <h3>Create sale</h3>
           </div>
@@ -13,7 +14,8 @@
             <h4>Assets</h4>
             <div class="dropdown">
               <div class="AssetsList">
-                <app-drop-down-selector [dropDownValues]="['Option 1', 'Option 2', 'Option 3', ]"></app-drop-down-selector>
+                <app-drop-down-selector [dropDownValues]="['Option 1', 'Option 2', 'Option 3', ]" (dropDownValue)="getDropDownValue($event)"></app-drop-down-selector>
+                <input type="text" formControlName="asset" [(ngModel)]="dropDownValue" style="display: none">
               </div>
             </div>
           </div>
@@ -30,7 +32,8 @@
                 </div>
                 <div class="col-md-7 restyle-col">
                   <div class="assetdescription">
-                    <textarea class="wrapper-border restyle-wrapper" style="width: 100%; height: 100%; resize: none;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet et nostrum expedita at obcaecati voluptate, nesciunt molestiae itaque fuga consequatur earum quisquam aliquid? Eum sed voluptate enim molestias mollitia iusto.
+                    <textarea class="wrapper-border restyle-wrapper" style="width: 100%; height: 100%; resize: none;"
+                      formControlName="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet et nostrum expedita at obcaecati voluptate, nesciunt molestiae itaque fuga consequatur earum quisquam aliquid? Eum sed voluptate enim molestias mollitia iusto.
                     </textarea>
                   </div>
                 </div>
@@ -44,7 +47,8 @@
                   <h4>Royalties</h4>
                 </div>
                 <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" placeholder="10">
+                  <input type="text" class="input-costum" placeholder="10"
+                  formControlName="royalties">
                 </div>
               </div>
             </div>
@@ -56,7 +60,9 @@
                   <h4>Collection</h4>
                 </div>
                 <div class="col-md-7 restyle-col-bottom">
-                  <span class="color-violet">Collection name</span>
+<!--                  <span class="color-violet">Collection name</span>-->
+                  <input type="text" class="input-costum" placeholder="Collection name"
+                  formControlName="collectionName">
                 </div>
               </div>
             </div>
@@ -64,36 +70,47 @@
           <div class="propertiesborder wrapper-border">
             <h4 class="properties">Properties</h4>
             <div class="row">
-              <div class="col-md-5 p-b-10">
+              <div class="col-md-12 p-b-10">
                 <div class="left">
-                  <input type="text" placeholder="Height" class="input-costum" style="margin-bottom: 10px;">
-                  <input type="text" placeholder="Speed" class="input-costum">
+                  <div class="extra-field">
+                    <span class="color-violet">Height</span>
+                    <input type="text" placeholder="Height" class="input-costum" style="margin-bottom: 10px;"
+                           formControlName="height">
+                  </div>
+                  <div class="extra-field">
+                    <span class="color-violet">Speed</span>
+                    <input type="text" placeholder="Speed" class="input-costum"
+                           formControlName="speed">
+                  </div>
                 </div>
               </div>
-              <div class="col-md-7">
-                <div class="right">
-                  <input type="text" placeholder="5m" class="input-costum" style="margin-bottom: 10px;">
-                  <input type="text" placeholder="20Kmh" class="input-costum">
-                </div>
-              </div>
+<!--              <div class="col-md-7">-->
+<!--                <div class="right">-->
+<!--                  <input type="text" placeholder="5m" class="input-costum" style="margin-bottom: 10px;">-->
+<!--                  <input type="text" placeholder="20Kmh" class="input-costum">-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
           </div>
           <div class="createoffer wrapper-border">
             <h4 class="amountheader">Amount</h4>
-            <input type="text" placeholder="Max is Supply" class="input-costum" >
+            <input type="text" placeholder="Max is Supply" class="input-costum"
+            formControlName="amount">
           </div>
           <div class="duration wrapper-border">
             <h4 class="durationheader">Duration</h4>
-            <input type="date" placeholder="" class="input-costum">
+            <input type="date" placeholder="" class="input-costum" formControlName="duration">
           </div>
           <div class="price wrapper-border">
             <h4 class="priceheader">Price</h4>
-            <input type="text" placeholder="Enter price for the offered item" class="input-costum">
+            <input type="text" placeholder="Enter price for the offered item" class="input-costum"
+            formControlName="price">
           </div>
-          <div class="btn-secondary-costum aligner">
+          <button class="btn-secondary-costum" type="submit" style="width: unset">
             Create offer
-          </div>
+          </button>
         </div>
+        </form>
       </div>
       <div class="col-md-4">
         <div class="preview wrapper-border">
