@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserHotModel} from "../models/user-hot.model";
-import {CollectionAllMarketplace, CollectionHotModel} from "../models/collection-hot.model";
+import {CollectionAllMarkeplaceObj, CollectionAllMarketplace, CollectionHotModel} from "../models/collection-hot.model";
 
 @Injectable({
   providedIn: "root"
@@ -24,8 +24,8 @@ export class CollectionService {
     })
   }
 
-  getAllCollectionMarketPlace(): Observable<CollectionAllMarketplace> {
+  getAllCollectionMarketPlace(): Observable<CollectionAllMarkeplaceObj[]> {
     const url = `${this.baseUrl}/collection/get/all`;
-    return this._http.get<CollectionAllMarketplace>(url)
+    return this._http.get<CollectionAllMarkeplaceObj[]>(url)
   }
 }

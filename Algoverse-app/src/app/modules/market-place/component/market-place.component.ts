@@ -5,6 +5,9 @@ import {AuctionService} from "../../../services/auction.service";
 import {AssetService} from "../../../services/asset.service";
 import {ArtistService} from "../../../services/artist.service";
 import {CollectionService} from "../../../services/collection.service";
+import {CollectionAllMarkeplaceObj, CollectionAllMarketplace} from "../../../models/collection-hot.model";
+import {ArtistsModel, ArtistsModelObj} from "../../../models/artists.model";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-market-place',
@@ -14,8 +17,14 @@ import {CollectionService} from "../../../services/collection.service";
 export class MarketPlaceComponent implements OnInit {
   public categoriesDropDown: string[] = ['All NFTs', 'Art', 'Music', 'Packs', 'URLs', 'Real Estate'];
   public typesDropDown: string[] = ['All Types', 'Sale', 'Auction', 'Swap'];
-  public collectionsDropDown: string[] = ['All Collections', 'Collection 1', 'Collection 2', 'Collection 3'];
-  public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
+
+  // coming from api
+  // @ts-ignore
+  public collectionsDropDown: CollectionAllMarkeplaceObj[];
+  // @ts-ignore
+  public artistsDropDown: ArtistsModelObj[];
+  // coming from api
+
   public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
   public boxArray: number[] = [1,1,1,2,2,3,4,4,4];
   //drop down value
@@ -26,6 +35,7 @@ export class MarketPlaceComponent implements OnInit {
   public isTimedAuction: boolean = false;
 
   public isLoaded: boolean = false;
+  // artists and collections
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -48,10 +58,14 @@ export class MarketPlaceComponent implements OnInit {
     setTimeout( () => {
       this.isLoaded = true;
     },1000)
-    this._artistService.getAllArtists().subscribe( (s) => console.log(s));
-    this._collectionService.getAllCollectionMarketPlace().subscribe( (s) =>  {
-      console.log(s, 'collection');
-    });
+    this._artistService.getAllArtists()
+      .subscribe(
+      (data) => this.artistsDropDown = data
+    );
+    this._collectionService.getAllCollectionMarketPlace().
+    subscribe(
+      (data) => this.collectionsDropDown = data
+    );
   }
 
   catchValue(event: string) {

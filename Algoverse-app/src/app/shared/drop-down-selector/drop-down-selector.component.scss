@@ -161,3 +161,22 @@
     }
   }
 }
+// on marketplace dropdown of artist and collection
+.specific-button {
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 83%;
+  overflow: hidden;
+}
+.specific-button-viewer {
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 85%;
+  overflow: hidden;
+}

@@ -12,6 +12,16 @@
           </ng-container>
         </button>
       </ng-container>
+      <ng-container *ngIf="dropDownIsTrue">
+        <button class="btn-default specific-button-viewer">
+          <ng-container *ngIf="showDropDownSelected === ''">
+            {{dropDownValueTitleForObj}}
+          </ng-container>
+          <ng-container *ngIf="showDropDownSelected !== ''">
+            {{ showDropDownSelected }}
+          </ng-container>
+        </button>
+      </ng-container>
     </ng-container>
     <ng-container *ngIf="treeDots">
       <div class="dotes">
@@ -88,6 +98,18 @@
         </div>
       </ng-container>
     </div>
+    <ng-container *ngIf="dropDownIsTrue">
+      <div class="section d-flex justify-content-between align-items-center" (click)="selectValue(button.name)" *ngFor="let button of dropDownForObj">
+        <button class="btn-default specific-button" [class.color-violet]="tree">{{button?.name}}</button>
+        <ng-container *ngIf="button.profileImage">
+          <img src="{{button.profileImage}}" alt="">
+        </ng-container>
+        <ng-container *ngIf="button.icon">
+          <img src="{{button.icon}}" alt="">
+        </ng-container>
+      </div>
+
+    </ng-container>
   </div>
 <!--  <select name="" id="">-->
 <!--    <option value="" *ngFor="let button of dropDownValues">-->

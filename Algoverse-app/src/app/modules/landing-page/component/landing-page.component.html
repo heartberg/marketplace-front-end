@@ -73,9 +73,9 @@
       <div class="row">
         <div class="col-xl-3 col-md-6 col-sm-6" *ngFor="let info of (HotArray$ | async) as HotArray">
           <div class="box relative" id="d-unset">
-            <span>{{ info.name }}</span>
+            <span>{{ info?.name }}</span>
 <!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">-->
-                <img src="{{ info.profileImage }}" alt="">
+                <img src="{{ info?.profileImage }}" alt="icon">
           </div>
         </div>
 <!--        <div class="col-xl-3 col-md-6 col-sm-6" *ngFor="let info of hotInDropDown">-->

@@ -8,7 +8,7 @@ import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
   styleUrls: ['./drop-down-selector.component.scss']
 })
 export class DropDownSelectorComponent implements OnInit {
-  @Input() public dropDownValues: string[] = [];
+  @Input() public dropDownValues: any[] = [];
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
   // profile
@@ -18,7 +18,11 @@ export class DropDownSelectorComponent implements OnInit {
   // profile
   @Input() public tree: boolean = false;
   @Input() public hasTitle: string  = '';
-
+  // marketplace artists and collections
+  @Input() public dropDownForObj: any[] = [];
+  @Input() public dropDownIsTrue: boolean = false;
+  @Input() public dropDownValueTitleForObj: string = '';
+  // marketplace artists and collections
   @Output() dropDownValue = new EventEmitter<string>();
 
   public isDropDownOpened = false;
