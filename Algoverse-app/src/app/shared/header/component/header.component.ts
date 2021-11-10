@@ -1,8 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {WalletsConnectService} from "../../../services/wallets-connect.service";
+import {AfterViewInit, Component, EventEmitter, OnChanges, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
-import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../core/reducers";
+import {AuthService} from "../../../services/auth/auth.service";
+import {Login, Logout} from "../../../core/actions/auth.actions";
+import {User} from "../../../models/user.model";
 
 @Component({
   selector: 'app-header',
@@ -24,9 +27,32 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private store: Store<AppState>,
+    private authService: AuthService,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): any {
+    this.auth();
+  }
+
+
+  auth(): any {
+    // for a while after gonna be implemented wallet from locastorage as argument
+    if (localStorage.getItem('wallet')) {
+      this.authService.getUserByWallet('6CZNVPUSXFBXIZ3GKVTOLZMSGCUR36ZRDK3FQH35W53GBE7JDZHWJBQPIU')
+        .subscribe(
+          (user: User) => {
+            this.store.dispatch(new Login({user}))
+          }
+        )
+    } else {
+      return false;
+    }
+  }
+
+  logOut() {
+    this.store.dispatch(new Logout())
+    this.router.navigate(['../../']);
   }
 
   openAvatar() {
@@ -77,6 +103,6 @@ export class HeaderComponent implements OnInit {
 
   closeSearchRespo() {
     this.SearchRespoOpened = false;
-    console.log('sa')
   }
+
 }

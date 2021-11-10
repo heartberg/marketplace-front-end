@@ -13,7 +13,6 @@ export class PopUpComponent implements OnInit {
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
-    private _walletConnectConnector: WalletsConnectService,
   ) { }
 
   ngOnInit(): void {
@@ -31,7 +30,6 @@ export class PopUpComponent implements OnInit {
         console.log('Connected to MyAlgoWallet')
       }
     }
-
-
   }
+
 }

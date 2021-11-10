@@ -289,8 +289,15 @@
     display: block;
   }
 
-  .boxes .box{
-    display: none !important;
+  .boxes {
+    .box{
+      display: none !important;
+    }
+    &.unset-hide {
+      .box {
+        display: flex !important;
+      }
+    }
   }
   .no-hide{
     .box {

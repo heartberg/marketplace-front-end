@@ -47,7 +47,7 @@
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}"  routerLink="/create-offer">Create Offer</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">Collections</li>
             <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li>
-            <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}">Log Out</li>
+            <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}" (click)="logOut()">Log Out</li>
           </ng-container>
         </ul>
       </div>
@@ -110,7 +110,7 @@
                 <li routerLink="/create-offer">Create Offer</li>
                 <li routerLink="/collection">Collections</li>
                 <li routerLink="/notification-center">Notifications</li>
-                <li>Log Out</li>
+                <li (click)="logOut()">Log Out</li>
               </ul>
             </div>
           </div>

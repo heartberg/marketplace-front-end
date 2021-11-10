@@ -11,6 +11,9 @@ import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-ca
 import { SkeletonImgComponent } from './skeleton-preloader/skeleton-img/skeleton-img.component';
 import { SkeletonCardComponent } from './skeleton-preloader/skeleton-card/skeleton-card.component';
 import {CarouselModule} from "../carousel/carousel.module";
+import { StoreModule } from '@ngrx/store';
+import * as fromAuth from '../core/reducers/auth.reducer';
+import {authReducer} from "../core/reducers/auth.reducer";
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import {CarouselModule} from "../carousel/carousel.module";
   imports: [
     BrowserModule,
     RouterModule,
+    StoreModule.forFeature(fromAuth.authFeatureKey, fromAuth.authReducer),
   ],
   exports: [
     PopUpComponent,
