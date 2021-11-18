@@ -8,6 +8,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {ChartsModule, WavesModule} from "angular-bootstrap-md";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations:[
@@ -22,7 +23,8 @@ import {BrowserModule} from "@angular/platform-browser";
         ChartsModule,
         WavesModule,
         CommonModule,
-        BrowserModule
+        BrowserModule,
+        RouterModule
     ],
   providers: [
 

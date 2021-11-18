@@ -1,16 +1,24 @@
-<div class="main">
+<div class="main" *ngIf="collectionInfo">
   <div class="wrapper-top  wrapper-border">
     <div class="collection-profile-section">
       <div class="cover">
-        <img src="https://d1e00ek4ebabms.cloudfront.net/production/bb70a85a-8a88-4b25-8871-20ec661ba119.jpg" alt="">
+        <img [src]="collectionInfo.banner" alt="">
       </div>
-      <div class="collection-avatar">
-        <img src="assets/img/collection/collection-avatar.jpg" alt="">
+      <div class="profile-desc">
+        <div class="collection-avatar">
+          <img [src]="collectionInfo.icon" alt="">
+        </div>
       </div>
     </div>
+    <div class="collection-profile-info-middle" style="text-align: center;margin-top: 75px;">
+      <h4>{{collectionInfo.name}}</h4>
+      <p class="color-violet" style="width: 40%; display: inline-block;">
+        {{collectionInfo.description}}
+      </p>
+    </div>
     <div class="collection-profile-info">
-      <div class="row">
-        <div class="col-md-4">
+      <div class="row" style="width: 100%;">
+        <div class="col-md-6">
           <div class="collection-profile-info-left">
             <div class="creator-section d-flex">
               <div class="section-top">
@@ -21,29 +29,21 @@
               </div>
             </div>
             <div class="website-section d-flex">
-              <div class="section-top">
-                <img src="http://cdn.onlinewebfonts.com/svg/img_190618.png" alt="">
+              <div class="section-top" *ngIf="collectionInfo.creator">
+                <img src="" alt="">
               </div>
               <div class="section-bottom">
-                <span class="color-violet">https://dummy-website.com/bitcoin</span>
+                <span class="color-violet">{{collectionInfo.web}}</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="collection-profile-info-middle">
-            <h4>Doge Coin</h4>
-            <p class="color-violet">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus esse excepturi id ipsam voluptatem! Delectus dignissimos, ea eaque ipsam molestiae natus necessitatibus possimus praesentium quae quas quod vitae voluptate voluptatibus!
-            </p>
-          </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="collection-profile-info-right">
             <div class="d-flex right-section-info">
               <div class="section d-flex">
                 <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i>
-                <span>30</span>
+                <span>{{collectionInfo.stars}}</span>
               </div>
               <div class="section d-flex">
                 <app-drop-down-selector [dropDownValues]="['Settings', 'Report']" [isNotAccordion]="false" [treeDots]="true"></app-drop-down-selector>
@@ -51,7 +51,7 @@
             </div>
             <div class="category-section d-flex">
               <h4>Category:</h4>
-              <span class="color-violet"> Ending Soon</span>
+              <span class="color-violet"> {{collectionInfo.category}}</span>
             </div>
           </div>
         </div>

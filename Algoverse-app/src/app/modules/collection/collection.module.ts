@@ -6,6 +6,7 @@ import {UpdateCollectionComponent} from "./update-collection/update-collection.c
 import {SharedModule} from "../../shared/shared.module";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations:[
@@ -17,7 +18,8 @@ import {BrowserModule} from "@angular/platform-browser";
   imports: [
     SharedModule,
     CommonModule,
-    BrowserModule
+    BrowserModule,
+    RouterModule
   ],
   providers: [
 

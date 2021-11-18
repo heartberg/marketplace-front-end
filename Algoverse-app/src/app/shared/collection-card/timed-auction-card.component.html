@@ -1,0 +1,36 @@
+<div class="wrapper-card" *ngIf="collection">
+  <div class="">
+    <div class="">
+      <div class="img">
+        <img [src]="collection?.icon" [alt]="collection?.icon">
+<!--        <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">-->
+      </div>
+      <div class="card-info">
+        <div class="card-info-left">
+          <div class="section" style="white-space: nowrap">
+            <h4>Name: </h4>
+            <span class="unset-dm-style">{{collection?.name}}</span>
+          </div>
+<!--          <div class="section">-->
+<!--            <h4>Creator </h4>-->
+<!--            <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt="">-->
+<!--          </div>-->
+          <div class="section">
+            <h4>Category </h4>
+            <span class="unset-dm-style">{{collection?.category}}</span>
+          </div>
+          <div class="section">
+            <h4>Volume </h4>
+            <span class="unset-dm-style">{{collection?.volume}}</span>
+          </div>
+        </div>
+        <div class="card-info-right">
+          <div class="section" style="position: absolute; right: 31px;">
+            <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i>
+            <span>{{collection?.stars}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

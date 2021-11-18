@@ -50,4 +50,11 @@ export class DropDownSelectorComponent implements OnInit {
     this.dropDownValue.emit(value);
   }
 
+  emitCollectionId(value: string, collectionId: string): void {
+    this.isDropDownOpenedCounter +=1;
+    this.showDropDownSelected = value
+    this.isDropDownOpened = false;
+    this.dropDownValue.emit(collectionId);
+  }
+
 }

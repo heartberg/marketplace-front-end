@@ -14,6 +14,7 @@ import {CarouselModule} from "../carousel/carousel.module";
 import { StoreModule } from '@ngrx/store';
 import * as fromAuth from '../core/reducers/auth.reducer';
 import {authReducer} from "../core/reducers/auth.reducer";
+import {CollectionCardComponent} from "./collection-card/timed-auction-card.component";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {authReducer} from "../core/reducers/auth.reducer";
     TimedAuctionCardComponent,
     SkeletonImgComponent,
     SkeletonCardComponent,
+    CollectionCardComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +42,7 @@ import {authReducer} from "../core/reducers/auth.reducer";
     TimedAuctionCardComponent,
     SkeletonImgComponent,
     SkeletonCardComponent,
+    CollectionCardComponent,
   ],
   providers: [WalletsConnectService],
 })

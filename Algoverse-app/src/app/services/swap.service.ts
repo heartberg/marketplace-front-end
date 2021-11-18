@@ -17,7 +17,7 @@ export class SwapService {
     const url = `${this.baseUrl}/swap/get/open`;
     return this._http.get<any>(url, {
       params: {
-        page: pageId
+        page: pageId,
       }
     })
   }

@@ -17,7 +17,17 @@ export class AuctionService {
     const url = `${this.baseUrl}/auction/all/open`;
     return this._http.get<any>(url, {
       params: {
-        page: pageId
+        page: pageId,
+      }
+    })
+  }
+
+  getAllAuctionMarketplaceOrdering(pageId: number, ordering: string): Observable<any> {
+    const url = `${this.baseUrl}/auction/all/open`;
+    return this._http.get<any>(url, {
+      params: {
+        page: pageId,
+        ordering: ordering
       }
     })
   }

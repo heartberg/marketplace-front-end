@@ -53,6 +53,8 @@ export class HeaderComponent implements OnInit {
   logOut() {
     this.store.dispatch(new Logout())
     this.router.navigate(['../../']);
+    this.walletConnectionPassed = false;
+    localStorage.removeItem('wallet');
   }
 
   openAvatar() {

@@ -1,4 +1,73 @@
 
+.largerContent {
+  position: absolute;
+  top: 22px;
+  right: 0px;
+  width: 22px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+
+    .slideBack {
+      height: 14px;
+      transform: rotate(180deg);
+      .top {
+        background: #81007F;
+        transform: rotate(50deg);
+      }
+      .bottom {
+        background: #81007F;
+        transform: rotate(-50deg);
+      }
+    }
+  }
+  .slideBack {
+    position: relative;
+    height: 13px;
+    display: inline-block;
+    transform: rotate(180deg);
+    &.isScaled {
+      transform: rotate(-360deg);
+    }
+    .top {
+      height: 2px;
+      width: 17px;
+      transform: rotate(45deg);
+      background: #040405;
+      top: 0px;
+      position: absolute;
+    }
+    .bottom {
+      height: 2px;
+      width: 17px;
+      transform: rotate(-45deg);
+      background: #040405;
+      bottom: 0px;
+      position: absolute;
+    }
+
+  }
+}
+@keyframes scaleContent {
+  100% {
+    width: 4%;
+  }
+  0% {
+    width: 20%;
+  }
+}
+@keyframes scaleContentReverse {
+  0% {
+    width: 4%;
+  }
+  100% {
+    width: 20%;
+  }
+}
+// # content sizer
+
 mat-slider {
   width: 100%;
 }
@@ -18,6 +87,18 @@ app-drop-down-selector {
       height: fit-content;
       position: sticky;
       top: 85px;
+
+      //&.left-section-scaled {
+      //  width: fit-content !important;
+      //}
+      &.animation-class {
+        animation-name: scaleContent;
+        animation-duration: 0.4s;
+      }
+      &.animation-class-reverse {
+        animation-name: scaleContentReverse;
+        animation-duration: 0.4s;
+      }
 
       .section {
         width: 100%;

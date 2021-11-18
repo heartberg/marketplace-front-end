@@ -37,7 +37,9 @@ button  {
   font-family: primary;
   src: url("assets/font/Baltore.otf");
 }
-
+html {
+  scroll-behavior: smooth !important;
+}
 
 h1,h2,h3,h4,h5,h6 {
   font-family: secondary;
@@ -135,6 +137,10 @@ input {
 }
 
 .dark-mode {
+  .dark-mode-icon {
+    color: rgba(255, 255, 255, 0.8) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+  }
   .wrapper_popUp {
     background: #1c1c1e !important;
   }

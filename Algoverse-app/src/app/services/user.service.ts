@@ -46,4 +46,13 @@ export class UserService {
       }
     })
   }
+
+  getUserByName(name: string): Observable<any> {
+    const url = `${this.baseUrl}/user/get/byName`;
+    return this._http.get<any>(url, {
+      params: {
+        name: name
+      }
+    })
+  }
 }

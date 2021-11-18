@@ -10,6 +10,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations:[
@@ -19,15 +20,16 @@ import {BrowserModule} from "@angular/platform-browser";
     CreateSwapComponent,
     CreateTradeComponent
   ],
-  imports: [
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
-    CommonModule,
-    BrowserModule
-  ],
+    imports: [
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatSlideToggleModule,
+        CommonModule,
+        BrowserModule,
+        RouterModule
+    ],
   providers: [
 
   ],
