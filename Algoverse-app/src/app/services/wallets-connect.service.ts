@@ -20,7 +20,7 @@ export class WalletsConnectService {
   // #algo
 
   // algo
-   connectToMyAlgo = async() => {
+  connectToMyAlgo = async () => {
     try {
       const accounts = await myAlgoWallet.connect();
       this.myAlgoAddress = accounts.map(value => value.address)
