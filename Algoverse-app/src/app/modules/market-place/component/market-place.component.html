@@ -43,7 +43,6 @@
           <app-drop-down-selector
             [dropDownForObj]="collectionsDropDown"
             [dropDownIsTrue]="true"
-            [dropDownValueTitleForObj]="'All Collections'"
             (dropDownValue)="getCollections($event)"
           ></app-drop-down-selector>
         </div>
@@ -56,7 +55,10 @@
           <section class="example-section d-flex align-items-center" style="width: 100%;">
             <mat-checkbox class="example-margin"> <h4 class="color-violet" style="font-size: 18px; margin: 0px">Verified only</h4> </mat-checkbox>
           </section>
-          <app-drop-down-selector (dropDownValue)="getArtists($event)" [dropDownForObj]="artistsDropDown" [dropDownIsTrue]="true" [dropDownValueTitleForObj]="'All Artists'"></app-drop-down-selector>
+          <app-drop-down-selector (dropDownValue)="getArtists($event)"
+                                  [dropDownForObj]="artistsDropDown"
+                                  [dropDownIsTrue]="true"
+          ></app-drop-down-selector>
         </div>
       </ng-container>
       <div class="largerContent" (click)="scaleContent()" [ngStyle]="{'position': !isScaled ? 'absolute' : 'unset' }">
@@ -114,44 +116,33 @@
         <div class="boxes-section-sort-by" *ngIf="dropDownValue !== 'Swap'">
           <app-drop-down-selector [dropDownValues]="boxesSortDropDown" [isNotAccordion]="false" (dropDownValue)="catchOrderingValue($event)"></app-drop-down-selector>
         </div>
-        <div class="sale-section" *ngIf="isSale || isAll">
-          <h3 class="color-violet">Sale</h3>
-          <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}">
-              <app-card *ngIf="isLoaded"></app-card>
-              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
-            </div>
-          </div>
-        </div>
-        <div class="swap-section" *ngIf="isSwap || isAll">
-          <h3 class="color-violet" [ngStyle]="{'margin-top': isSwap ? '20px' : '0px' }">Swap</h3>
-          <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}">
-              <app-swap-card *ngIf="isLoaded"></app-swap-card>
-              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
-            </div>
-          </div>
-        </div>
-        <div class="swap-section timed-auction-section" *ngIf="isTimedAuction || isAll">
-          <h3 class="color-violet">Timed Auction</h3>
-          <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}">
-              <app-timed-auction-card *ngIf="isLoaded"></app-timed-auction-card>
-              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
-            </div>
-          </div>
-        </div>
-        <div class="collection-section" style="width: 100%;">
-          <h3 class="color-violet">Collections</h3>
-          <div class="row">
-            <ng-container *ngFor="let collection of collectionsDropDown">
-              <div class="col-lg-6 col-md-6 col-sm-6" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}" [routerLink]="['../../collection/collectionId', collection.collectionId ]">
-                <app-collection-card [collection]="collection"></app-collection-card>
-                <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
-              </div>
-            </ng-container>
-          </div>
-        </div>
+<!--        <div class="sale-section" *ngIf="isSale || isAll">-->
+<!--          <h3 class="color-violet">Sale</h3>-->
+<!--          <div class="row">-->
+<!--            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}">-->
+<!--              <app-card *ngIf="isLoaded"></app-card>-->
+<!--              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="swap-section" *ngIf="isSwap || isAll">-->
+<!--          <h3 class="color-violet" [ngStyle]="{'margin-top': isSwap ? '20px' : '0px' }">Swap</h3>-->
+<!--          <div class="row">-->
+<!--            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}">-->
+<!--              <app-swap-card *ngIf="isLoaded"></app-swap-card>-->
+<!--              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="swap-section timed-auction-section" *ngIf="isTimedAuction || isAll">-->
+<!--          <h3 class="color-violet">Timed Auction</h3>-->
+<!--          <div class="row">-->
+<!--            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray" [ngClass]="{'col-xl-4' : !isScaled, 'col-xl-3': isScaled}">-->
+<!--              <app-timed-auction-card *ngIf="isLoaded"></app-timed-auction-card>-->
+<!--              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
   </div>

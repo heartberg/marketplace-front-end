@@ -28,4 +28,18 @@ export class CollectionService {
     return this._http.get<CollectionAllMarkeplaceObj[]>(url)
   }
 
+  addStar(input: any): Observable<any> {
+    const url = `${this.baseUrl}/collection/star/add`;
+    return this._http.post<any>(url, input)
+  }
+
+  removeStar(input: any): Observable<any> {
+    const url = `${this.baseUrl}/collection/star/remove`;
+    return this._http.post<any>(url, input)
+  }
+
+  addCollection(input: any): Observable<any> {
+    const url = `${this.baseUrl}/collection/add`;
+    return this._http.post<any>(url, input)
+  }
 }

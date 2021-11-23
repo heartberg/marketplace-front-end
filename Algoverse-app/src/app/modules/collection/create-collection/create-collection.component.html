@@ -11,54 +11,60 @@
         <h3>Create Collection</h3>
       </div>
     </div>
+    <form [formGroup]="form" (ngSubmit)="sendForm()">
       <div class="input-section">
         <div class="wrapper-border">
           <div class="section wrapper-border upload-section">
             <h4>Collection Icon</h4>
-            <button class="btn-primary-costum">
+            <button class="btn-primary-costum upload">
               Upload Icon
+              <input type="file" id="myFile" name="filename" formControlName="icon">
             </button>
           </div>
           <div class="section wrapper-border upload-section">
             <h4>Collection Banner</h4>
-            <button class="btn-primary-costum">
+            <button class="btn-primary-costum upload">
               Upload Banner
+              <input type="file" id="myFile" name="filename"  formControlName="banner">
             </button>
           </div>
           <div class="section wrapper-border upload-section">
             <h4>Featured Image</h4>
-            <button class="btn-primary-costum">
+            <button class="btn-primary-costum upload">
               Upload Image
+              <input type="file" id="myFile" name="filename" formControlName="featuredImage">
             </button>
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Name</h4>
-            <input type="text" placeholder="Name" class="input-costum">
+            <input type="text" placeholder="Name" class="input-costum" formControlName="name">
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Description</h4>
-            <input type="text" placeholder="Description" class="input-costum">
+            <input type="text" placeholder="Description" class="input-costum" formControlName="description">
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Royalties</h4>
-            <input type="text" placeholder="Royalties" class="input-costum">
+            <input type="text" placeholder="Royalties" class="input-costum" formControlName="royalties">
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Costum Algoverse URL</h4>
-            <input type="text" placeholder="algoverse.exchange/your-domain-here" class="input-costum">
+            <input type="text" placeholder="algoverse.exchange/your-domain-here" class="input-costum" formControlName="customUrl">
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Category</h4>
-            <app-drop-down-selector [dropDownValues]="['item','item','item']" style="width: 100%;"></app-drop-down-selector>
+            <app-drop-down-selector [dropDownValues]="['item','item','item']" style="width: 100%;" (dropDownValue)="getDropDownValue($event)"></app-drop-down-selector>
+            <input type="text" formControlName="category" [(ngModel)]="dropDownValue" style="display: none">
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Web</h4>
-            <input type="text" placeholder="www.http.com..." class="input-costum">
+            <input type="text" placeholder="www.http.com..." class="input-costum" formControlName="web">
           </div>
-          <button class="btn-secondary-costum aligner">
+          <button class="btn-secondary-costum aligner" type="submit">
             Create Collection
           </button>
         </div>
       </div>
+    </form>
     </div>
   </div>

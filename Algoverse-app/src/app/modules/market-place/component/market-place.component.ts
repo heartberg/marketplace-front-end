@@ -10,7 +10,6 @@ import {ArtistsModel, ArtistsModelObj} from "../../../models/artists.model";
 import {map} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {UserService} from "../../../services/user.service";
-import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 
 @Component({
   selector: 'app-market-place',
@@ -30,11 +29,21 @@ export class MarketPlaceComponent implements OnInit {
 
   public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'High Price', 'Low Price', 'Most liked']
   public boxArray: number[] = [1, 1, 1, 2, 2, 3, 4, 4, 4];
+
+  // main variables
   //drop down value
   public dropDownValue: string = '';
   //drop down filtring value
   public dropDownFiltringValue: string = '';
-  // drop down type value
+  // drop down by collectionId
+  public collectionId: any = '00000000-0000-0000-0000-000000000000';
+  // drop down by wallet
+  public wallet: string = '';
+  // minPrice
+  public minPrice: number | string = '';
+  public maxPrice: number | string = '';
+  // #main variables
+
   public serviceMethod$: Observable<any> = of('');
   public isSwap: boolean = false;
   public isSale: boolean = false;
@@ -44,6 +53,9 @@ export class MarketPlaceComponent implements OnInit {
   public isLoaded: boolean = false;
 
   // artists and collections
+
+  public passedEitherArtist: boolean = false;
+  public passedEitherCollection: boolean = false
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -115,22 +127,47 @@ export class MarketPlaceComponent implements OnInit {
   }
 
   getCollections($event: string) {
-    this._assetService.getAssetsByCollectionId($event).subscribe( date => console.log(date));
+    this.passedEitherArtist = false;
+    this.passedEitherCollection = true;
+
+    // this.artistsDropDownDefaultName = 'All Artists';
+
+    this.collectionId = $event;
+    this.wallet = '';
+    this.returnCorrectApiMethod
+    (
+      this.dropDownValue, this.returnInputOrderingValue(this.dropDownFiltringValue),
+      this.wallet, this.collectionId, this.minPrice, this.maxPrice
+    )
   }
 
   getArtists($event: string) {
-    this._userService.getUserByName($event).subscribe( date => console.log(date))
+    this.passedEitherArtist = true;
+    this.passedEitherCollection = false;
+
+    // this.collectionDropDownDefaultName = 'All Collections';
+
+    this.wallet = $event;
+    this.collectionId = '00000000-0000-0000-0000-000000000000';
+
+    // this.collectionId = $event;
+    // this.wallet = '';
+    // this.returnCorrectApiMethod
+    // (
+    //   this.dropDownValue, this.returnInputOrderingValue(this.dropDownFiltringValue),
+    //   this.wallet, this.collectionId, this.minPrice, this.maxPrice
+    // )
   }
 
   // get type values properties
-  returnCorrectApiMethod(typesValue: string, orderingValue?: any): any {
+  returnCorrectApiMethod(typesValue: string, orderingValue?: any, wallet?: any, collectionId?: any, minPrice?: any, maxPrice?: any): any {
     if (typesValue == 'Swap') {
       this._swapService.getAllSwapMarketplace(1)
         .subscribe(
           (date:any) => console.log(date)
         );
     } else if (typesValue == 'Sale') {
-      this._assetService.getAllAssetMarketplaceOrdering(1, orderingValue)
+      this._assetService.getAllAssetMarketplaceBySort(1, orderingValue, wallet, collectionId)
         .subscribe(
           (date:any) => console.log(date)
         );
@@ -151,12 +188,14 @@ export class MarketPlaceComponent implements OnInit {
       return 'low_price'
     } else if (orderingValue == 'Most liked') {
       return 'likes'
+    } else {
+      return '';
     }
   }
 
   catchOrderingValue(event: any): void {
     this.dropDownFiltringValue = event;
-    this.returnCorrectApiMethod(this.dropDownValue, this.returnInputOrderingValue(this.dropDownFiltringValue))
+    this.returnCorrectApiMethod(this.dropDownValue, this.returnInputOrderingValue(this.dropDownFiltringValue), this.wallet, this.collectionId, this.minPrice, this.maxPrice)
   }
 
 }

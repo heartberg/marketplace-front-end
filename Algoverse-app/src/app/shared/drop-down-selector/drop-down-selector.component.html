@@ -12,16 +12,29 @@
           </ng-container>
         </button>
       </ng-container>
+
+<!--       main header for marketplac obj data-->
       <ng-container *ngIf="dropDownIsTrue">
-        <button class="btn-default specific-button-viewer">
-          <ng-container *ngIf="showDropDownSelected === ''">
-            {{dropDownValueTitleForObj}}
-          </ng-container>
-          <ng-container *ngIf="showDropDownSelected !== ''">
+        <ng-container *ngFor="let button of dropDownForObj; let i = index">
+          <button *ngIf="i === 0 && showDropDownSelected === ''" class="btn-default specific-button-viewer">
+            <ng-container>
+              <ng-container *ngIf="button.collectionId">
+                {{ 'All Collections' }}
+              </ng-container>
+              <ng-container *ngIf="button.wallet">
+                {{ 'All Artists' }}
+              </ng-container>
+            </ng-container>
+          </button>
+        </ng-container>
+        <button class="btn-default specific-button-viewer" *ngIf="showDropDownSelected !== ''">
+          <ng-container >
             {{ showDropDownSelected }}
           </ng-container>
         </button>
       </ng-container>
+<!--       #main header for marketplac obj data-->
+
     </ng-container>
     <ng-container *ngIf="treeDots">
       <div class="dotes">
@@ -99,15 +112,33 @@
       </ng-container>
     </div>
     <ng-container *ngIf="dropDownIsTrue">
-      <div class="section d-flex justify-content-between align-items-center" (click)="emitCollectionId(button?.name, button?.collectionId)" *ngFor="let button of dropDownForObj">
-        <button class="btn-default specific-button" [class.color-violet]="tree">{{button?.name}}</button>
-        <ng-container *ngIf="button?.profileImage">
-          <img src="{{button?.profileImage}}" alt="">
-        </ng-container>
-        <ng-container *ngIf="button?.icon">
-          <img src="{{button.icon}}" alt="">
-        </ng-container>
+      <div class="section d-flex justify-content-between align-items-center" (click)="emitCollectionIdAndWallet(button?.name, button?.collectionId, button?.wallet)" *ngFor="let button of dropDownForObj">
+<!--        <ng-container *ngIf="showDefaultPropertyInDropDown">-->
+<!--          <button *ngIf="showDefaultPropertyInDropDown !== ''">-->
+<!--            {{ showDefaultPropertyInDropDown }}-->
+<!--          </button>-->
+<!--        </ng-container>-->
+
+          <button class="btn-default specific-button" [class.color-violet]="tree">{{button?.name}}</button>
+          <ng-container *ngIf="button?.profileImage">
+            <img src="{{button?.profileImage}}" alt="">
+          </ng-container>
+          <ng-container *ngIf="button?.icon">
+            <img src="{{button.icon}}" alt="">
+          </ng-container>
+
+
       </div>
+<!--      <div class="section d-flex justify-content-between align-items-center"-->
+<!--           (click)="emitCollectionIdAndWallet(button?.name, button?.collectionId, button?.wallet)"-->
+<!--           *ngIf="showDefaultPropertyInDropDown"-->
+<!--      >-->
+<!--                <ng-container *ngIf="showDefaultPropertyInDropDown">-->
+<!--                  <button *ngIf="showDefaultPropertyInDropDown !== ''">-->
+<!--                    {{ showDefaultPropertyInDropDown }}-->
+<!--                  </button>-->
+<!--                </ng-container>-->
+<!--      </div>-->
 
     </ng-container>
   </div>

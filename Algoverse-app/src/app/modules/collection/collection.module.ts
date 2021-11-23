@@ -7,6 +7,7 @@ import {SharedModule} from "../../shared/shared.module";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations:[
@@ -15,12 +16,13 @@ import {RouterModule} from "@angular/router";
     MyCollectionComponent,
     UpdateCollectionComponent,
   ],
-  imports: [
-    SharedModule,
-    CommonModule,
-    BrowserModule,
-    RouterModule
-  ],
+    imports: [
+        SharedModule,
+        CommonModule,
+        BrowserModule,
+        RouterModule,
+        ReactiveFormsModule
+    ],
   providers: [
 
   ],

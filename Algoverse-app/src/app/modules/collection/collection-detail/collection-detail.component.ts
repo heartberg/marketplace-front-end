@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CollectionModelInfo} from "../../../models/collection.model";
+import {CollectionService} from "../../../services/collection.service";
 
 @Component({
   selector: 'app-collection-detail',
@@ -33,10 +34,25 @@ export class CollectionDetailComponent implements OnInit {
       "stars": 0,
       "volume": 6000.0000000000000000000000000
     }
-  constructor() { }
+  constructor(private _collectionService: CollectionService) { }
 
   ngOnInit(): void {
     console.log(this.collectionInfo);
   }
+
+  addStar() {
+    this._collectionService.addStar({
+      starredCollectionID: "08d9827d-bbb9-4063-8447-58813eb0df7c",
+      starringWallet: "BSOMH2YRF5DIYRLN5DEEXGV7EUIXC4BKXENJIRECRYINAPABSF37B52ZWY"
+    }).subscribe( (s) => console.log(s));
+  }
+
+  // removeStart() {
+  //   this._collectionService.removeStar({
+  //     collectionStarId: "08d9827d-bbb9-4063-8447-58813eb0df7c",
+  //   }).subscribe( (s) => console.log(s));
+  // }
+
+
 
 }

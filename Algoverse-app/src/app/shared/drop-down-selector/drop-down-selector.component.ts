@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 
 @Component({
@@ -7,7 +7,7 @@ import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
   templateUrl: './drop-down-selector.component.html',
   styleUrls: ['./drop-down-selector.component.scss']
 })
-export class DropDownSelectorComponent implements OnInit {
+export class DropDownSelectorComponent implements OnInit, DoCheck, OnChanges {
   @Input() public dropDownValues: any[] = [];
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
@@ -21,7 +21,6 @@ export class DropDownSelectorComponent implements OnInit {
   // marketplace artists and collections
   @Input() public dropDownForObj: any[] = [];
   @Input() public dropDownIsTrue: boolean = false;
-  @Input() public dropDownValueTitleForObj: string = '';
   // marketplace artists and collections
   @Output() dropDownValue = new EventEmitter<string>();
 
@@ -29,9 +28,29 @@ export class DropDownSelectorComponent implements OnInit {
   public isDropDownOpenedCounter = 1;
   public showDropDownSelected: string = '';
 
-  constructor(private route: ActivatedRoute) { }
+  // default values for marketplace collection and artists
+
+  // public artistsDropDownDefaultName: string = 'All Artists';
+  // public collectionDropDownDefaultName: string = 'All Collections';
+  //
+  // public passedEitherArtist: boolean = false;
+  // public passedEitherCollection: boolean = false;
+
+  constructor(
+                private route: ActivatedRoute,
+                private router: Router
+              ) { }
+
 
   ngOnInit(): void {
+  }
+
+  ngDoCheck() {
+
+  }
+
+  ngOnChanges() {
+    // this.showDropDownSelected = this.dropDownValueTitleForObj;
   }
 
   openDropDown() {
@@ -50,9 +69,10 @@ export class DropDownSelectorComponent implements OnInit {
     this.dropDownValue.emit(value);
   }
 
-  emitCollectionId(value: string, collectionId: string): void {
+  emitCollectionIdAndWallet(value: string, collectionId: string, wallet: string): void {
     this.isDropDownOpenedCounter +=1;
-    this.showDropDownSelected = value
+
+    this.showDropDownSelected = value;
     this.isDropDownOpened = false;
     this.dropDownValue.emit(collectionId);
   }

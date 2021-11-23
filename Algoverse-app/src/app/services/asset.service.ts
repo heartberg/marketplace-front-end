@@ -41,12 +41,14 @@ export class AssetService {
     })
   }
 
-  getAllAssetMarketplaceOrdering(pageId: number, ordering: string): Observable<AssetHotModel> {
+  getAllAssetMarketplaceBySort(pageId: number, ordering: string, walletId: string, collectionId: string | any): Observable<AssetHotModel> {
     const url = `${this.baseUrl}/asset/get/allWithOpenTrade`;
     return this._http.get<AssetHotModel>(url, {
       params: {
         page: pageId,
-        ordering: ordering
+        ordering: ordering,
+        wallet: walletId,
+        collection: collectionId,
       }
     })
   }
