@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, EventEmitter, OnChanges, OnInit, Output} from '@angular/core';
-import {Router} from "@angular/router";
-import {Observable} from "rxjs";
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../core/reducers";
-import {AuthService} from "../../../services/auth/auth.service";
-import {Login, Logout} from "../../../core/actions/auth.actions";
-import {User} from "../../../models/user.model";
+import { AfterViewInit, Component, EventEmitter, OnChanges, OnInit, Output } from '@angular/core';
+import { Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { Store } from "@ngrx/store";
+import { AppState } from "../../../core/reducers";
+import { AuthService } from "../../../services/auth/auth.service";
+import { Login, Logout } from "../../../core/actions/auth.actions";
+import { User } from "../../../models/user.model";
 
 @Component({
   selector: 'app-header',
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
       this.authService.getUserByWallet('6CZNVPUSXFBXIZ3GKVTOLZMSGCUR36ZRDK3FQH35W53GBE7JDZHWJBQPIU')
         .subscribe(
           (user: User) => {
-            this.store.dispatch(new Login({user}))
+            this.store.dispatch(new Login({ user }))
           }
         )
     } else {
@@ -52,7 +52,6 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     this.store.dispatch(new Logout())
-    this.router.navigate(['../../']);
     this.walletConnectionPassed = false;
     localStorage.removeItem('wallet');
   }

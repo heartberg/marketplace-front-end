@@ -1,6 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {WalletsConnectService} from "../../../services/wallets-connect.service";
-import {of} from "rxjs";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { WalletsConnectService } from "../../../services/wallets-connect.service";
+import { of } from "rxjs";
+import { Store } from '@ngrx/store';
+import { Login } from 'src/app/core/actions/auth.actions';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-pop-up',
@@ -13,6 +17,8 @@ export class PopUpComponent implements OnInit {
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
+    private authService: AuthService,
+    private store: Store
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +32,16 @@ export class PopUpComponent implements OnInit {
     if (value === 'MyAlgoWallet') {
       await of(this._walletsConnectService.connectToMyAlgo()).toPromise();
       if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
+        this.authService.getUserByWallet(
+          // This is what is hardcoded in header.ts, aplying the temporary solution here aswell.
+          '6CZNVPUSXFBXIZ3GKVTOLZMSGCUR36ZRDK3FQH35W53GBE7JDZHWJBQPIU'
+        ).subscribe(
+          (user: User) => {
+            this.store.dispatch(new Login({
+              user: user
+            }))
+          }
+        )
         this.isConnectedToWallet.emit(false);
         console.log('Connected to MyAlgoWallet')
       }

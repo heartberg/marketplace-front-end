@@ -13,6 +13,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from "./core/reducers";
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './core/effects/auth.effects';
 
 // import { CarouselComponent } from './carousel/carousel.component';
 
@@ -29,6 +31,9 @@ import { metaReducers, reducers } from "./core/reducers";
     BrowserAnimationsModule,
     CarouselModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([
+      AuthEffects
+    ]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     // OwlModule
   ],

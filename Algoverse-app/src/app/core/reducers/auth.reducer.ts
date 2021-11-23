@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import {User} from "../../models/user.model";
-import {AuthActions, AuthActionTypes} from "../actions/auth.actions";
+import { User } from "../../models/user.model";
+import { AuthActions, AuthActionTypes } from "../actions/auth.actions";
 
 
 export const authFeatureKey = 'auth';
@@ -16,13 +16,12 @@ export const initialAuthState: AuthState = {
 };
 
 export function authReducer
-(state = initialAuthState, action: AuthActions)
+  (state = initialAuthState, action: AuthActions)
   :
-  AuthState
-{
+  AuthState {
   switch (action.type) {
     case AuthActionTypes.LoginAction:
-      return  {
+      return {
         loggedIn: true,
         user: action.payload.user
       }
