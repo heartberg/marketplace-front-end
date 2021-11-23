@@ -15,6 +15,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromAuth from '../core/reducers/auth.reducer';
 import {authReducer} from "../core/reducers/auth.reducer";
 import {CollectionCardComponent} from "./collection-card/timed-auction-card.component";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {CollectionCardComponent} from "./collection-card/timed-auction-card.comp
     CollectionCardComponent
   ],
   imports: [
-    BrowserModule,
+    // BrowserModule,
+    CommonModule,
     RouterModule,
     StoreModule.forFeature(fromAuth.authFeatureKey, fromAuth.authReducer),
   ],

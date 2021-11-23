@@ -6,23 +6,32 @@ import {UpdateCollectionComponent} from "./update-collection/update-collection.c
 import {SharedModule} from "../../shared/shared.module";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
-import {RouterModule} from "@angular/router";
+import {RouterModule, Routes} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 
+
+const routes: Routes = [
+  { path: '', component: MyCollectionComponent },
+  { path: 'create-collection', component: CreateCollectionComponent },
+  { path: 'update-collection', component: UpdateCollectionComponent },
+  { path: 'collectionId/:collectionId', component: CollectionDetailComponent },
+]
 @NgModule({
-  declarations:[
+  declarations: [
     CollectionDetailComponent,
     CreateCollectionComponent,
     MyCollectionComponent,
     UpdateCollectionComponent,
   ],
     imports: [
+        RouterModule.forChild(routes),
         SharedModule,
         CommonModule,
         BrowserModule,
         RouterModule,
         ReactiveFormsModule
     ],
+
   providers: [
 
   ],

@@ -1,5 +1,4 @@
 import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
 import {SharedModule} from "../shared/shared.module";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatGridListModule} from "@angular/material/grid-list";
@@ -20,14 +19,12 @@ import {LandingPageModule} from "./landing-page/landing-page.module";
 import {MarketplaceModule} from "./market-place/marketplace.module";
 import {ProfileModule} from "./profile/profile.module";
 import {TokenModule} from "./token/token.module";
-import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
 
   ],
   imports: [
-    SharedModule,
     MatSliderModule,
     MatGridListModule,
     RouterModule,
@@ -37,7 +34,7 @@ import {CommonModule} from "@angular/common";
     MatIconModule,
     MatTabsModule,
     MatCheckboxModule,
-    CarouselModule,
+    // CarouselModule,
     ReactiveFormsModule,
     FormsModule,
     ChartsModule,
