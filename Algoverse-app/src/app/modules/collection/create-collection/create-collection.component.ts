@@ -54,7 +54,7 @@ export class CreateCollectionComponent implements OnInit {
         category: category,
         web: web,
         creator: {
-          wallet: 'BSOMH2YRF5DIYRLN5DEEXGV7EUIXC4BKXENJIRECRYINAPABSF37B52ZWY'
+          wallet: localStorage.getItem('wallet'),
         }
       }
     ).subscribe( (date) => console.log(date));

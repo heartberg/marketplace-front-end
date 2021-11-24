@@ -3,56 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from "./guard/auth.guard";
 
 const routes: Routes = [
-  // { path: 'artists', component: ArtistsComponent },
-  // { path: 'artists/artist-application', component: ArtistApplicationComponent },
-  // { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
-
-
-  // { path: '', redirectTo: 'home', pathMatch: 'full' },
-  // { path: 'home', component: LandingPageComponent },
-  // { path: 'marketplace/:slugId', component: MarketPlaceComponent },
-  // { path: 'collection', component: MyCollectionComponent },
-  // { path: 'create-collection', component: CreateCollectionComponent },
-  // { path: 'update-collection', component: UpdateCollectionComponent },
-  // { path: 'collection/collectionId/:collectionId', component: CollectionDetailComponent },
-
-
-
-  // { path: 'create-offer', component: CreateOfferComponent },
-  // {
-  //  path: 'profile',
-  //  component: ProfileComponent,
-  //  canActivate: [AuthGuard],
-  // },
-  // { path: 'profile-settings', component: ProfileSettingsComponent ,
-  //   canActivate: [AuthGuard]
-  // },
-  // { path: 'notification-center', component: NotificationCentreComponent,
-  //   canActivate: [AuthGuard]
-  // },
-  // { path: 'create-trade', component: CreateTradeComponent },
-  // { path: 'edit-profile', component: ProfileEditComponent,
-  //   canActivate: [AuthGuard],
-  // },
-  // { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },
-  // { path: 'create-asset', component: CreateAssetComponent },
-  // { path: 'create-auction', component: CreateAuctionComponent },
-  // { path: 'get-verified', component: GetVerifiedComponent,
-  //   canActivate: [AuthGuard],
-  // },
-  // { path: 'token', component: TokenComponent },
-  // { path: 'artists', component: ArtistsComponent },
-  // { path: 'artists/artist-application', component: ArtistApplicationComponent },
-  // { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
-  // { path: 'swap/create-swap', component: CreateSwapComponent},
-  // { path: 'swap/asset-detail-swap', component: AssetDetailSwapComponent }
-
-
-
 
   {
     // Temporary measue, as there is no such thing as home component, i redirect it to landing-page
-    path: 'home',
+    path: '',
     redirectTo: '/landing-page',
     pathMatch: 'full'
   },

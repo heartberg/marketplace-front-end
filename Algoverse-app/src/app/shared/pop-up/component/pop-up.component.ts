@@ -30,11 +30,12 @@ export class PopUpComponent implements OnInit {
 
   async setelectWalletConnect(value: string) {
     if (value === 'MyAlgoWallet') {
+      let wallet = localStorage.getItem('wallet');
       await of(this._walletsConnectService.connectToMyAlgo()).toPromise();
       if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
         this.authService.getUserByWallet(
-          // This is what is hardcoded in header.ts, aplying the temporary solution here aswell.
-          '6CZNVPUSXFBXIZ3GKVTOLZMSGCUR36ZRDK3FQH35W53GBE7JDZHWJBQPIU'
+          // @ts-ignore
+          'BSOMH2YRF5DIYRLN5DEEXGV7EUIXC4BKXENJIRECRYINAPABSF37B52ZWY'
         ).subscribe(
           (user: User) => {
             this.store.dispatch(new Login({

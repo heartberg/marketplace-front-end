@@ -62,14 +62,14 @@
               Create
           </button>
         </div>
-        <ng-container *ngIf="!walletConnectionPassed">
+        <ng-container *ngIf="!($isLoggedIn | async)">
           <button (click)="connectWalletPopUp()" class="btn-default btn-primary-costum"
                   [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened}"
           >
                   Connect Wallet
           </button>
         </ng-container>
-        <div class="search-respo" *ngIf="!isMenuRespoOpened" [ngClass]="{'m-l_0': walletConnectionPassed}">
+        <div class="search-respo" *ngIf="!isMenuRespoOpened" [ngClass]="{'m-l_0': $isLoggedIn | async}">
           <div class="search-section" (click)="openSearchRespo()" [ngClass]="{'search-respo-x-button': SearchRespoOpened}">
             <div class="search">
               <input type="text" placeholder="Collection, items...">
@@ -95,7 +95,7 @@
             </div>
           </ng-container>
         </div>
-        <ng-container *ngIf="walletConnectionPassed">
+        <ng-container *ngIf="$isLoggedIn | async">
           <div class="avatar btn-icon-round specific-size"  (click)="openAvatar()" [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened, 'm-l_10': isMenuRespoOpened}">
             <i class="fa fa-user" aria-hidden="true" *ngIf="!changeRespoNavAndProfileIcons"></i>
             <ng-container *ngIf="changeRespoNavAndProfileIcons">

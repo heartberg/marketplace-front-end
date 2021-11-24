@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, EventEmitter, OnChanges, OnInit, Output } from '@angular/core';
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import {Observable, of} from "rxjs";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../../core/reducers";
 import { AuthService } from "../../../services/auth/auth.service";
 import { Login, Logout } from "../../../core/actions/auth.actions";
 import { User } from "../../../models/user.model";
+import {AuthState} from "../../../core/reducers/auth.reducer";
+import {isLoggedIn} from "../../../core/selector/auth.selectors";
 
 @Component({
   selector: 'app-header',
@@ -22,7 +24,8 @@ export class HeaderComponent implements OnInit {
   public changeRespoNavAndProfileIcons = false;
   public changeRespoNavAndProfileIconsCounter = 1;
   public SearchRespoOpened = false;
-
+  // @ts-ignore
+  $isLoggedIn: Observable<AuthState>;
   @Output() themeWasChanged = new EventEmitter<boolean>();
 
   constructor(
@@ -33,13 +36,18 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): any {
     this.auth();
+    this.$isLoggedIn = this.store.select(isLoggedIn);
   }
 
 
   auth(): any {
     // for a while after gonna be implemented wallet from locastorage as argument
     if (localStorage.getItem('wallet')) {
-      this.authService.getUserByWallet('6CZNVPUSXFBXIZ3GKVTOLZMSGCUR36ZRDK3FQH35W53GBE7JDZHWJBQPIU')
+      let wallet = localStorage.getItem('wallet');
+      this.authService.getUserByWallet(
+        // @ts-ignore
+       'BSOMH2YRF5DIYRLN5DEEXGV7EUIXC4BKXENJIRECRYINAPABSF37B52ZWY'
+      )
         .subscribe(
           (user: User) => {
             this.store.dispatch(new Login({ user }))

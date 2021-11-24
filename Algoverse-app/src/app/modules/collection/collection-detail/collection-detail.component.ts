@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {CollectionModelInfo} from "../../../models/collection.model";
 import {CollectionService} from "../../../services/collection.service";
+import {Store} from "@ngrx/store";
+import {isLoggedIn} from "../../../core/selector/auth.selectors";
+import {AuthState} from "../../../core/reducers/auth.reducer";
 
 @Component({
   selector: 'app-collection-detail',
@@ -8,7 +11,8 @@ import {CollectionService} from "../../../services/collection.service";
   styleUrls: ['./collection-detail.component.scss']
 })
 export class CollectionDetailComponent implements OnInit {
-  public arr = [12,3,,4,4,5,5,5,5,5,6,,6,77]
+  public arr = [12,3,,4,4,5,5,5,5,5,6,,6,77];
+  wallet: string | undefined;
   collectionInfo:CollectionModelInfo =
     {
       "collectionId": "08d9827d-bbb9-4063-8447-58813eb0df7c",
@@ -34,16 +38,22 @@ export class CollectionDetailComponent implements OnInit {
       "stars": 0,
       "volume": 6000.0000000000000000000000000
     }
-  constructor(private _collectionService: CollectionService) { }
+
+  constructor(
+    private _collectionService: CollectionService,
+    private store: Store
+  ) { }
 
   ngOnInit(): void {
-    console.log(this.collectionInfo);
+    // this.store.select(isLoggedIn).subscribe( (date: AuthState) => {
+    //
+    // })
   }
 
   addStar() {
     this._collectionService.addStar({
       starredCollectionID: "08d9827d-bbb9-4063-8447-58813eb0df7c",
-      starringWallet: "BSOMH2YRF5DIYRLN5DEEXGV7EUIXC4BKXENJIRECRYINAPABSF37B52ZWY"
+      starringWallet: localStorage.getItem('wallet'),
     }).subscribe( (s) => console.log(s));
   }
 
