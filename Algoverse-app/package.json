@@ -25,12 +25,17 @@
     "@walletconnect/browser": "^1.0.0",
     "@walletconnect/client": "^1.6.5",
     "@walletconnect/qrcode-modal": "^1.6.5",
+    "algosdk": "^1.13.1",
     "angular-bootstrap-md": "^12.0.0",
+    "crypto-browserify": "^3.12.0",
     "jquery": "^3.6.0",
     "ngx-owl-carousel": "^2.0.7",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "owl.carousel": "^2.3.4",
     "rxjs": "~6.6.0",
+    "stream-browserify": "^3.0.0",
     "tslib": "^2.3.0",
+    "util": "^0.12.4",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
