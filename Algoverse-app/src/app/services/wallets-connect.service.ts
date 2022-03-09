@@ -6,6 +6,8 @@ import AccountInformation from 'algosdk/dist/types/src/client/v2/algod/accountIn
 import GetAssetByID from 'algosdk/dist/types/src/client/v2/algod/getAssetByID';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
+import WalletConnect from '@walletconnect/client';
+import QRCodeModal from "algorand-walletconnect-qrcode-modal";
 
 const myAlgoWallet = new MyAlgoWallet();
 
@@ -15,9 +17,56 @@ export class WalletsConnectService {
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
 
-  constructor(private userServce: UserService) {}
+  constructor(private userServce: UserService) { }
 
-  connectToMyAlgo = async() => {
+  connectToWalletConnect = () => {
+    try {
+      // Create a connector
+      const connector = new WalletConnect({
+        bridge: "https://bridge.walletconnect.org", // Required
+        qrcodeModal: QRCodeModal,
+      });
+
+      // Check if connection is already established
+      if (!connector.connected) {
+        // create new session
+        connector.createSession();
+      }
+
+      // Subscribe to connection events
+      connector.on("connect", (error, payload) => {
+        if (error) {
+          throw error;
+        }
+
+        // Get provided accounts
+        const { accounts } = payload.params[0];
+        console.log(accounts);
+      });
+
+      connector.on("session_update", (error, payload) => {
+        if (error) {
+          throw error;
+        }
+
+        // Get updated accounts
+        const { accounts } = payload.params[0];
+        console.log(accounts);
+      });
+
+      connector.on("disconnect", (error, payload) => {
+        if (error) {
+          throw error;
+        }
+
+
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  connectToMyAlgo = async () => {
     try {
       const accounts = await myAlgoWallet.connect();
       console.log('accounts', accounts);
@@ -31,7 +80,7 @@ export class WalletsConnectService {
           (result) => console.log('profile', result),
           (error) => console.log('error', error)
         );
-        setTimeout( () => {
+        setTimeout(() => {
 
         }, 1000)
       }
@@ -41,7 +90,7 @@ export class WalletsConnectService {
     }
   }
 
-  getOwnAssets = async() => {
+  getOwnAssets = async () => {
     let result = [];
 
     try {
@@ -78,4 +127,119 @@ export class WalletsConnectService {
 
     return result;
   }
+
+  createTrade = async (params: any) => {
+    let result = [];
+
+    try {
+      const tokenHeader = {
+        "X-Algo-API-Token": environment.ALGOD_TOKEN
+      };
+
+      const algod = new Algodv2(tokenHeader, environment.ALGOD_URL, 4001);
+      const algodIndexer = new Indexer(environment.ALGOD_TOKEN, environment.ALGOD_INDEXER_ADDRESS, 8980);
+
+      if (Array.isArray(this.myAlgoAddress) && this.myAlgoAddress.length > 0) {
+        const accountInfo = await algod.accountInformation(this.myAlgoAddress[0]).do();
+        console.log('accountInfo', accountInfo);
+
+        if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
+          for (let assetInfo of accountInfo.assets) {
+            const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
+            console.log('asset-id:' + assetInfo['asset-id'], asset);
+            result.push(asset);
+          }
+        }
+
+        // const accountInfo = algodIndexer.lookupAccountByID(this.myAlgoAddress[0]);
+        // console.log('accountInfo', accountInfo);
+        // const accounts = await algodIndexer.searchAccounts().do();
+        // console.log('accounts', accounts);
+        // const assets = await algodIndexer.searchForAssets().do();
+        // console.log('assets', assets);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    return result;
+  }
+
+  createSwap = async (params: any) => {
+    let result = [];
+
+    try {
+      const tokenHeader = {
+        "X-Algo-API-Token": environment.ALGOD_TOKEN
+      };
+
+      const algod = new Algodv2(tokenHeader, environment.ALGOD_URL, 4001);
+      const algodIndexer = new Indexer(environment.ALGOD_TOKEN, environment.ALGOD_INDEXER_ADDRESS, 8980);
+
+      if (Array.isArray(this.myAlgoAddress) && this.myAlgoAddress.length > 0) {
+        const accountInfo = await algod.accountInformation(this.myAlgoAddress[0]).do();
+        console.log('accountInfo', accountInfo);
+
+        if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
+          for (let assetInfo of accountInfo.assets) {
+            const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
+            console.log('asset-id:' + assetInfo['asset-id'], asset);
+            result.push(asset);
+          }
+        }
+
+        // const accountInfo = algodIndexer.lookupAccountByID(this.myAlgoAddress[0]);
+        // console.log('accountInfo', accountInfo);
+        // const accounts = await algodIndexer.searchAccounts().do();
+        // console.log('accounts', accounts);
+        // const assets = await algodIndexer.searchForAssets().do();
+        // console.log('assets', assets);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    return result;
+  }
+
+  createAuction = async (params: any) => {
+    let result = [];
+
+    try {
+      const tokenHeader = {
+        "X-Algo-API-Token": environment.ALGOD_TOKEN
+      };
+
+      const algod = new Algodv2(tokenHeader, environment.ALGOD_URL, 4001);
+      const algodIndexer = new Indexer(environment.ALGOD_TOKEN, environment.ALGOD_INDEXER_ADDRESS, 8980);
+
+      if (Array.isArray(this.myAlgoAddress) && this.myAlgoAddress.length > 0) {
+        const accountInfo = await algod.accountInformation(this.myAlgoAddress[0]).do();
+        console.log('accountInfo', accountInfo);
+
+        if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
+          for (let assetInfo of accountInfo.assets) {
+            const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
+            console.log('asset-id:' + assetInfo['asset-id'], asset);
+            result.push(asset);
+          }
+        }
+
+        // const accountInfo = algodIndexer.lookupAccountByID(this.myAlgoAddress[0]);
+        // console.log('accountInfo', accountInfo);
+        // const accounts = await algodIndexer.searchAccounts().do();
+        // console.log('accounts', accounts);
+        // const assets = await algodIndexer.searchForAssets().do();
+        // console.log('assets', assets);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    return result;
+  }
+
 }
