@@ -95,6 +95,10 @@ export class CreateTradeComponent implements OnInit {
   createTrade() {
     console.log('clicked');
     console.log(this.royalty);
+
+    const params = {
+      
+    }
   }
 
 }

@@ -52,6 +52,7 @@
     align-items: center;
   }
   .assetdescription{
+    margin-left: 20px;
     height: 100px;
     overflow-y: overlay;
   }
@@ -124,12 +125,12 @@
     }
   }
 
-  .btn-secondary-costum {
-    margin: auto;
-    width: 130px;
-    height: 40px;
-    display: block;
-    text-align: center;
+  .buttons {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .assets{

@@ -19,52 +19,52 @@ export class WalletsConnectService {
 
   constructor(private userServce: UserService) { }
 
-  connectToWalletConnect = () => {
-    try {
-      // Create a connector
-      const connector = new WalletConnect({
-        bridge: "https://bridge.walletconnect.org", // Required
-        qrcodeModal: QRCodeModal,
-      });
+  // connectToWalletConnect = () => {
+  //   try {
+  //     // Create a connector
+  //     const connector = new WalletConnect({
+  //       bridge: "https://bridge.walletconnect.org", // Required
+  //       qrcodeModal: QRCodeModal,
+  //     });
 
-      // Check if connection is already established
-      if (!connector.connected) {
-        // create new session
-        connector.createSession();
-      }
+  //     // Check if connection is already established
+  //     if (!connector.connected) {
+  //       // create new session
+  //       connector.createSession();
+  //     }
 
-      // Subscribe to connection events
-      connector.on("connect", (error, payload) => {
-        if (error) {
-          throw error;
-        }
+  //     // Subscribe to connection events
+  //     connector.on("connect", (error, payload) => {
+  //       if (error) {
+  //         throw error;
+  //       }
 
-        // Get provided accounts
-        const { accounts } = payload.params[0];
-        console.log(accounts);
-      });
+  //       // Get provided accounts
+  //       const { accounts } = payload.params[0];
+  //       console.log(accounts);
+  //     });
 
-      connector.on("session_update", (error, payload) => {
-        if (error) {
-          throw error;
-        }
+  //     connector.on("session_update", (error, payload) => {
+  //       if (error) {
+  //         throw error;
+  //       }
 
-        // Get updated accounts
-        const { accounts } = payload.params[0];
-        console.log(accounts);
-      });
+  //       // Get updated accounts
+  //       const { accounts } = payload.params[0];
+  //       console.log(accounts);
+  //     });
 
-      connector.on("disconnect", (error, payload) => {
-        if (error) {
-          throw error;
-        }
+  //     connector.on("disconnect", (error, payload) => {
+  //       if (error) {
+  //         throw error;
+  //       }
 
 
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
   connectToMyAlgo = async () => {
     try {
@@ -112,13 +112,6 @@ export class WalletsConnectService {
             result.push(asset);
           }
         }
-
-        // const accountInfo = algodIndexer.lookupAccountByID(this.myAlgoAddress[0]);
-        // console.log('accountInfo', accountInfo);
-        // const accounts = await algodIndexer.searchAccounts().do();
-        // console.log('accounts', accounts);
-        // const assets = await algodIndexer.searchForAssets().do();
-        // console.log('assets', assets);
       }
 
     } catch (err) {
