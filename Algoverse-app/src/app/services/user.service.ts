@@ -30,9 +30,14 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  createTrade(): Observable<any> {
-    const url = `${this.baseUrl}/user/get/hot`;
+  getTradeIndex(senderAddress: string): Observable<any> {
+    const url = `${this.baseUrl}/trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
+  }
+
+  createTrade(params: any): Observable<any> {
+    const url = `${this.baseUrl}/user/get/hot`;
+    return this._http.post(url, params);
   }
 
   loadMetaData(url: string): Observable<any> {

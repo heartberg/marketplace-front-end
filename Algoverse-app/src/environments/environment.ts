@@ -18,6 +18,12 @@ export const environment = {
   ALGOD_URL:"http://localhost:4001",
   ALGOD_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   ALGOD_INDEXER_ADDRESS:"http://localhost",
+
+  TOKEN_APP_ID: 1,
+  TRADE_APP_ID: 2,
+  BID_APP_ID: 3,
+  AUCTION_APP_ID: 4,
+  STORE_APP_ID: 5
 };
 
 /*

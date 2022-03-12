@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CreateTradeComponent implements OnInit {
 
+  private selectedAssetID = 0;
   private assets: any[] = [];
   public assetIDs: string[] = [];
   public maxSupply = 1;
@@ -17,6 +18,8 @@ export class CreateTradeComponent implements OnInit {
   public metaDataProperties: any = {};
 
   public royalty: string = "0";
+  public amount: string = "0";
+  public price: string = "0";
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -39,6 +42,7 @@ export class CreateTradeComponent implements OnInit {
     this.assetIDs = asset_ids;
 
     if (this.assets.length > 0) {
+      this.selectedAssetID = this.assets[0].index;
       const firstAsset = this.assets[0];
       this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
 
@@ -60,6 +64,8 @@ export class CreateTradeComponent implements OnInit {
   }
 
   selectedAsset(assetID: string) {
+    this.selectedAssetID = +assetID;
+
     const asset = this.getAsset(assetID);
     console.log(asset);
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
@@ -92,12 +98,59 @@ export class CreateTradeComponent implements OnInit {
     console.log(this.royalty);
   }
 
-  createTrade() {
+  blurAmountEvent(event: any){
+    this.amount = event.target.value;
+    console.log(this.amount);
+  }
+
+  async createTrade() {
     console.log('clicked');
     console.log(this.royalty);
 
-    const params = {
-      
+    this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
+      async (res) => {
+        console.log('tradeIndex', res);
+
+        if (res.OptinPrice > 0) {
+          let result = await this._walletsConnectService.payTradeIndex(res.IndexAddress, res.OptinPrice);
+          if (result) {
+            this.sendCreateTradeRequest(res.IndexAddress);
+          }
+        } else {
+          this.sendCreateTradeRequest(res.IndexAddress);
+        }
+      },
+      (error) => console.log('error', error)
+    );
+
+
+
+  }
+
+  async sendCreateTradeRequest(indexAddress: string) {
+    const params1 = {
+      assetID: this.selectedAssetID,
+      amount: this.amount,
+      price: this.price,
+      tradeIndex: indexAddress
+    }
+    const txID = await this._walletsConnectService.createTrade(params1);
+
+    if (txID) {
+      const params2 = {
+        tradeId: txID,
+        assetId: this.selectedAssetID,
+        IndexAddress: indexAddress,
+        price: this.price,
+        creatorWallet: this._walletsConnectService.myAlgoAddress[0],
+        amount: this.amount
+      }
+      this._userService.createTrade(params2).subscribe(
+        res => {
+          console.log(res)
+        },
+        error => console.log(error)
+      );
     }
   }
 
