@@ -42,8 +42,8 @@ export class CreateTradeComponent implements OnInit {
     this.assetIDs = asset_ids;
 
     if (this.assets.length > 0) {
-      this.selectedAssetID = this.assets[0].index;
       const firstAsset = this.assets[0];
+      this.selectedAssetID = firstAsset.index;
       this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
 
       if (firstAsset.params.url) {
@@ -103,16 +103,18 @@ export class CreateTradeComponent implements OnInit {
     console.log(this.amount);
   }
 
-  async createTrade() {
-    console.log('clicked');
-    console.log(this.royalty);
+  blurPriceEvent(event: any){
+    this.price = event.target.value;
+    console.log(this.price);
+  }
 
+  async createTrade() {
     this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
       async (res) => {
         console.log('tradeIndex', res);
 
         if (res.OptinPrice > 0) {
-          let result = await this._walletsConnectService.payTradeIndex(res.IndexAddress, res.OptinPrice);
+          let result = await this._walletsConnectService.payToSetUpIndex(res.IndexAddress, res.OptinPrice);
           if (result) {
             this.sendCreateTradeRequest(res.IndexAddress);
           }
@@ -122,9 +124,6 @@ export class CreateTradeComponent implements OnInit {
       },
       (error) => console.log('error', error)
     );
-
-
-
   }
 
   async sendCreateTradeRequest(indexAddress: string) {
@@ -140,7 +139,7 @@ export class CreateTradeComponent implements OnInit {
       const params2 = {
         tradeId: txID,
         assetId: this.selectedAssetID,
-        IndexAddress: indexAddress,
+        indexAddress: indexAddress,
         price: this.price,
         creatorWallet: this._walletsConnectService.myAlgoAddress[0],
         amount: this.amount

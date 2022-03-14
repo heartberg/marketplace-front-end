@@ -10,6 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CreateSwapComponent implements OnInit {
 
+  private selectedAssetID = 0;
   private assets: any[] = [];
   public assetIDs: string[] = [];
   public maxSupply = 1;
@@ -17,6 +18,10 @@ export class CreateSwapComponent implements OnInit {
   public metaDataProperties: any = {};
 
   public royalty: string = "0";
+  public amount: string = "0";
+  public acceptAssetId = "0";
+  public acceptAmount: string = "0";
+  public collectionName: string = "";
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -40,6 +45,7 @@ export class CreateSwapComponent implements OnInit {
 
     if (this.assets.length > 0) {
       const firstAsset = this.assets[0];
+      this.selectedAssetID = firstAsset.index;
       this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
 
       if (firstAsset.params.url) {
@@ -60,6 +66,8 @@ export class CreateSwapComponent implements OnInit {
   }
 
   selectedAsset(assetID: string) {
+    this.selectedAssetID = +assetID;
+
     const asset = this.getAsset(assetID);
     console.log(asset);
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
@@ -92,10 +100,67 @@ export class CreateSwapComponent implements OnInit {
     console.log(this.royalty);
   }
 
+  blurAmountEvent(event: any){
+    this.amount = event.target.value;
+    console.log(this.amount);
+  }
+
+  blurAcceptAssetIndexEvent(event: any){
+    this.acceptAssetId = event.target.value;
+    console.log(this.acceptAssetId);
+  }
+
+  blurAcceptAmountEvent(event: any){
+    this.acceptAmount = event.target.value;
+    console.log(this.acceptAmount);
+  }
+
   createSwap() {
-    console.log('clicked');
-    console.log(this.royalty);
-    
+    this._userService.getSwapIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
+      async (res) => {
+        console.log('tradeIndex', res);
+
+        if (res.OptinPrice > 0) {
+          let result = await this._walletsConnectService.payToSetUpIndex(res.IndexAddress, res.OptinPrice);
+          if (result) {
+            this.sendCreateSwapRequest(res.IndexAddress);
+          }
+        } else {
+          this.sendCreateSwapRequest(res.IndexAddress);
+        }
+      },
+      (error) => console.log('error', error)
+    );
+  }
+
+  async sendCreateSwapRequest(indexAddress: string) {
+    const params1 = {
+      assetID: this.selectedAssetID,
+      amount: this.amount,
+      acceptAssetIndex: this.acceptAssetId,
+      acceptAssetAmount: this.acceptAmount,
+      swapIndex: indexAddress
+    }
+    const txID = await this._walletsConnectService.createSwap(params1);
+
+    if (txID) {
+      const params2 = {
+        swapId: txID,
+        indexAddress,
+        offerAddress: this._walletsConnectService.myAlgoAddress[0],
+        offerringAssetId: this.selectedAssetID,
+        offerringAmount: this.amount,
+        acceptingAssetId: this.acceptAssetId,
+        acceptingAmount: this.acceptAmount,
+        collectionInterestedIn: this.collectionName
+      }
+      this._userService.createSwap(params2).subscribe(
+        res => {
+          console.log(res)
+        },
+        error => console.log(error)
+      );
+    }
   }
 
 

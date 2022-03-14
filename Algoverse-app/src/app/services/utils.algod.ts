@@ -1,6 +1,10 @@
 import { environment } from 'src/environments/environment';
 import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient } from 'algosdk';
+import AlgodClient from 'algosdk/dist/types/src/client/v2/algod/algod';
+import * as sha512 from 'js-sha512';
+import * as hibase32 from 'hi-base32';
 
+const ALGORAND_ADDRESS_SIZE = 58;
 export enum AssetTransactionType {
   Transfer = "asset-transfer",
   OptIn = "asset-opt-in",
@@ -1950,3 +1954,63 @@ export const scenarios: Array<{ name: string; scenario: any }> = [
     scenario: tooManyTxns,
   },
 ];
+
+function addressFromByteBuffer(addr: string) {
+	const bytes = Buffer.from(addr, "base64");
+
+	//compute checksum
+	const checksum = sha512.sha512_256.array(bytes).slice(28, 32);
+
+	const c = new Uint8Array(bytes.length + checksum.length);
+	c.set(bytes);
+	c.set(checksum, bytes.length);
+
+	const v = hibase32.encode(c);
+
+	return v.toString().slice(0, ALGORAND_ADDRESS_SIZE);
+}
+
+export const appValueState = (stateValue: any): any => {
+	let text = "";
+
+	if (stateValue.type == 1) {
+		let addr = addressFromByteBuffer(stateValue.bytes);
+		if (addr.length == ALGORAND_ADDRESS_SIZE) {
+			text += addr;
+		} else {
+			text += stateValue.bytes;
+		}
+	} else if (stateValue.type == 2) {
+		text = stateValue.uint;
+	} else {
+		text += stateValue.bytes;
+	}
+
+	return text;
+}
+
+export const getAppLocalStateByKey = async (algodClient: AlgodClient, appId: number, accountAddr: string, key: string): Promise<any> => {
+	const accountInfoResponse = await algodClient
+		.accountInformation(accountAddr)
+		.do();
+
+	for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
+		if (accountInfoResponse["apps-local-state"][i].id === appId) {
+			const stateArray =
+				accountInfoResponse["apps-local-state"][i]["key-value"];
+
+			if (!stateArray) {
+				return null;
+			}
+			for (let j = 0; j < stateArray.length; j++) {
+				const text = Buffer.from(stateArray[j].key, "base64").toString();
+
+				if (key === text) {
+					return appValueState(stateArray[j].value);
+				}
+			}
+			// not found assume 0
+			return 0;
+		}
+	}
+}

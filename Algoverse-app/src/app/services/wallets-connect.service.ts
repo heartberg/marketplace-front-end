@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
-import { getAlgodClient, getTransactionParams, singlePayTxn, waitForTransaction } from './utils.algod';
+import { getAlgodClient, getAppLocalStateByKey, getTransactionParams, singlePayTxn, waitForTransaction } from './utils.algod';
 import MyAlgoConnect from '@randlabs/myalgo-connect';
 
 const client = getAlgodClient()
@@ -120,7 +120,7 @@ export class WalletsConnectService {
     return result;
   }
 
-  payTradeIndex = async (tradeIndex: string, amount: number): Promise<any> => {
+  payToSetUpIndex = async (tradeIndex: string, amount: number): Promise<any> => {
     try {
       const txn = await singlePayTxn(this.myAlgoAddress[0], tradeIndex, amount, "Payment for trade setup to opt app into asset");
       await myAlgoConnect.signTransaction(txn);
@@ -140,6 +140,19 @@ export class WalletsConnectService {
     try {
       const suggestedParams = await getTransactionParams();
       let txns = [];
+      let tokens = [params.assetID];
+
+      const client = getAlgodClient();
+      const indexTokenID = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, params.tradeIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, params.tradeIndex, "TA");
+      if (indexTokenID !== 0 && indexTokenID > 0 && indexTokenAmount > 0 && indexTokenID != params.assetID) {
+        tokens.push(indexTokenID);
+      }
+
+      suggestedParams.fee = 2000;
+      if (tokens.length > 1) {
+        suggestedParams.fee = 3000;
+      }
 
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.myAlgoAddress[0],
@@ -151,12 +164,14 @@ export class WalletsConnectService {
       });
       txns.push(tokenTxn);
 
+      suggestedParams.fee = 0;
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
         from: this.myAlgoAddress[0],
         appIndex: environment.TRADE_APP_ID,
         note: new Uint8Array(Buffer.from("Place trade")),
         appArgs: [new Uint8Array(Buffer.from("trade")), algosdk.encodeUint64(params.price)],
         accounts: [params.tradeIndex],
+        foreignAssets: tokens,
         suggestedParams,
       });
       txns.push(appCallTxn);
@@ -178,41 +193,44 @@ export class WalletsConnectService {
   }
 
   createSwap = async (params: any) => {
-    let result = [];
-
     try {
-      const tokenHeader = {
-        "X-Algo-API-Token": environment.ALGOD_TOKEN
-      };
+      const suggestedParams = await getTransactionParams();
+      let txns = [];
 
-      const algod = new Algodv2(tokenHeader, environment.ALGOD_URL, 4001);
-      const algodIndexer = new Indexer(environment.ALGOD_TOKEN, environment.ALGOD_INDEXER_ADDRESS, 8980);
+      const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+        from: this.myAlgoAddress[0],
+        to: getApplicationAddress(environment.SWAP_APP_ID),
+        amount: params.amount,
+        assetIndex: params.assetID,
+        note: new Uint8Array(Buffer.from("Amount to place swap")),
+        suggestedParams,
+      });
+      txns.push(tokenTxn);
 
-      if (Array.isArray(this.myAlgoAddress) && this.myAlgoAddress.length > 0) {
-        const accountInfo = await algod.accountInformation(this.myAlgoAddress[0]).do();
-        console.log('accountInfo', accountInfo);
+      const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+        from: this.myAlgoAddress[0],
+        appIndex: environment.TRADE_APP_ID,
+        note: new Uint8Array(Buffer.from("Place swap")),
+        appArgs: [new Uint8Array(Buffer.from("swap")), algosdk.encodeUint64(params.acceptAssetAmount)],
+        accounts: [params.tradeIndex],
+        suggestedParams,
+      });
+      txns.push(appCallTxn);
 
-        if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
-          for (let assetInfo of accountInfo.assets) {
-            const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
-            console.log('asset-id:' + assetInfo['asset-id'], asset);
-            result.push(asset);
-          }
-        }
+      const txnGroup = algosdk.assignGroupID(txns);
+      const signedTxns = await myAlgoConnect.signTransaction(txns.map(txn => txn.toByte()));
 
-        // const accountInfo = algodIndexer.lookupAccountByID(this.myAlgoAddress[0]);
-        // console.log('accountInfo', accountInfo);
-        // const accounts = await algodIndexer.searchAccounts().do();
-        // console.log('accounts', accounts);
-        // const assets = await algodIndexer.searchForAssets().do();
-        // console.log('assets', assets);
-      }
+      const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+      console.log("Transaction : " + results[1].txId);
+      await waitForTransaction(client, results[1].txId);
+
+      return results[1].txId;
 
     } catch (err) {
       console.error(err);
     }
 
-    return result;
+    return 0;
   }
 
   createAuction = async (params: any) => {

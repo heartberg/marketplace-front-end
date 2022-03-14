@@ -19,7 +19,7 @@
           </div>
           <div class="createoffer wrapper-border">
             <h4 class="amountheader">Amount</h4>
-            <input type="text" placeholder="Max is Supply" class="input-costum" >
+            <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAmountEvent($event)">
           </div>
           <div class="assets wrapper-border">
             <div class="assetsList height-_10">
@@ -100,9 +100,13 @@
             <h4>Assets</h4>
             <div class="dropdown">
               <div class="AssetsList">
-                <input type="text" class="input-costum" placeholder="Asset ID / Name">
+                <input type="text" class="input-costum" placeholder="Asset ID / Name" (blur)="blurAcceptAssetIndexEvent($event)">
               </div>
             </div>
+          </div>
+          <div class="createoffer wrapper-border">
+            <h4 class="amountheader">Amount</h4>
+            <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAcceptAmountEvent($event)">
           </div>
           <div class="dropdownborder wrapper-border">
             <h4>Collection</h4>

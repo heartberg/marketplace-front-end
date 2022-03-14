@@ -80,7 +80,7 @@
                 <h4 class="amountheader">Amount (< {{maxSupply}})</h4>
               </div>
               <div class="col-md-7">
-                <input type="text" placeholder="Max is Supply" class="input-costum" >
+                <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAmountEvent($event)">
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
                 <h4 class="priceheader">Price</h4>
               </div>
               <div class="col-md-7">
-                <input type="text" placeholder="Enter price for the offered item" class="input-costum">
+                <input type="text" placeholder="Enter price for the offered item" class="input-costum" (blur)="blurPriceEvent($event)">
               </div>
             </div>
           </div>

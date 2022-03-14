@@ -36,11 +36,22 @@ export class UserService {
   }
 
   createTrade(params: any): Observable<any> {
-    const url = `${this.baseUrl}/user/get/hot`;
+    const url = `${this.baseUrl}/trade/create`;
     return this._http.post(url, params);
   }
 
   loadMetaData(url: string): Observable<any> {
     return this._http.get<any>(url);
   }
+
+  getSwapIndex(senderAddress: string): Observable<any> {
+    const url = `${this.baseUrl}/swap/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
+    return this._http.get<any>(url);
+  }
+
+  createSwap(params: any): Observable<any> {
+    const url = `${this.baseUrl}/swap/create`;
+    return this._http.post(url, params);
+  }
+
 }
