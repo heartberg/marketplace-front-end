@@ -20,11 +20,11 @@ export const environment = {
   ALGOD_INDEXER_ADDRESS:"http://localhost",
 
   TOKEN_APP_ID: 1,
-  TRADE_APP_ID: 2,
-  SWAP_APP_ID: 3,
-  BID_APP_ID: 4,
-  AUCTION_APP_ID: 5,
-  STORE_APP_ID: 6
+  STORE_APP_ID: 5024,
+  TRADE_APP_ID: 5026,
+  SWAP_APP_ID: 5030,
+  BID_APP_ID: 5032,
+  AUCTION_APP_ID: 5034,
 };
 
 /*

@@ -16,27 +16,27 @@ export class UserService {
   }
 
   loadProfile(wallet: String): Observable<any> {
-    const url = `${this.baseUrl}/user/get/byWallet?wallet=${wallet}`;
+    const url = `${this.baseUrl}user/get/byWallet?wallet=${wallet}`;
     return this._http.get<any>(url);
   }
 
   userGetShuttle(): Observable<any> {
-    const url = `${this.baseUrl}/user/get/all/verified`;
+    const url = `${this.baseUrl}user/get/all/verified`;
     return this._http.get<any>(url);
   }
 
   getHot(): Observable<any> {
-    const url = `${this.baseUrl}/user/get/hot`;
+    const url = `${this.baseUrl}user/get/hot`;
     return this._http.get<any>(url);
   }
 
   getTradeIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}/trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
+    const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
   }
 
   createTrade(params: any): Observable<any> {
-    const url = `${this.baseUrl}/trade/create`;
+    const url = `${this.baseUrl}trade/create`;
     return this._http.post(url, params);
   }
 
@@ -45,12 +45,12 @@ export class UserService {
   }
 
   getSwapIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}/swap/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
+    const url = `${this.baseUrl}swap/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
   }
 
   createSwap(params: any): Observable<any> {
-    const url = `${this.baseUrl}/swap/create`;
+    const url = `${this.baseUrl}swap/create`;
     return this._http.post(url, params);
   }
 

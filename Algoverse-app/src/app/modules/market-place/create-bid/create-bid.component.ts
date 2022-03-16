@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-create-trade',
-  templateUrl: './create-trade.component.html',
-  styleUrls: ['./create-trade.component.scss']
+  selector: 'app-create-bid',
+  templateUrl: './create-bid.component.html',
+  styleUrls: ['./create-bid.component.scss'],
+  providers: ['app-card', 'app-drop-down-selector']
 })
-export class CreateTradeComponent implements OnInit {
+export class CreateBidComponent implements OnInit {
 
   private selectedAssetID = 0;
   private assets: any[] = [];
@@ -108,49 +109,8 @@ export class CreateTradeComponent implements OnInit {
     console.log(this.price);
   }
 
-  async createTrade() {
-    this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
-      async (res) => {
-        console.log('tradeIndex', res);
+  async createBid() {
 
-        if (res.OptinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(res.indexAddress, res.OptinPrice);
-          if (result) {
-            this.sendCreateTradeRequest(res.indexAddress);
-          }
-        } else {
-          this.sendCreateTradeRequest(res.indexAddress);
-        }
-      },
-      (error) => console.log('error', error)
-    );
-  }
-
-  async sendCreateTradeRequest(indexAddress: string) {
-    const params1 = {
-      assetID: this.selectedAssetID,
-      amount: this.amount,
-      price: this.price,
-      tradeIndex: indexAddress
-    }
-    const txID = await this._walletsConnectService.createTrade(params1);
-
-    if (txID) {
-      const params2 = {
-        tradeId: txID,
-        assetId: this.selectedAssetID,
-        indexAddress: indexAddress,
-        price: this.price,
-        creatorWallet: this._walletsConnectService.myAlgoAddress[0],
-        amount: this.amount
-      }
-      this._userService.createTrade(params2).subscribe(
-        res => {
-          console.log(res)
-        },
-        error => console.log(error)
-      );
-    }
   }
 
 }
