@@ -1,20 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { getAlgodClient } from 'src/app/services/utils.algod';
+import { debounceTime } from "rxjs/operators";
 
 @Component({
   selector: 'app-create-bid',
   templateUrl: './create-bid.component.html',
   styleUrls: ['./create-bid.component.scss'],
-  providers: ['app-card', 'app-drop-down-selector']
+  providers: []
 })
 export class CreateBidComponent implements OnInit {
 
   private selectedAssetID = 0;
-  private assets: any[] = [];
-  public assetIDs: string[] = [];
-  public maxSupply = 1;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
 
@@ -22,11 +22,18 @@ export class CreateBidComponent implements OnInit {
   public amount: string = "0";
   public price: string = "0";
 
+  searchAssetControl: FormControl;
+
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
-    private router: Router
+    private router: Router,
+    private _fb: FormBuilder
   ) {
+    this.searchAssetControl = new FormControl();
+    this.searchAssetControl.valueChanges.pipe(debounceTime(1000)).subscribe(async res => {
+      await this.selectedAsset(res);
+    });
   }
 
   async ngOnInit(): Promise<void> {
@@ -34,43 +41,14 @@ export class CreateBidComponent implements OnInit {
       this.router.navigate(['/', 'home']);
       return;
     }
-
-    this.assets = await this._walletsConnectService.getOwnAssets();
-    const asset_ids = [];
-    for (let asset of this.assets) {
-      asset_ids.push(asset.index);
-    }
-    this.assetIDs = asset_ids;
-
-    if (this.assets.length > 0) {
-      const firstAsset = this.assets[0];
-      this.selectedAssetID = firstAsset.index;
-      this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
-
-      if (firstAsset.params.url) {
-        this._userService.loadMetaData(firstAsset.params.url).subscribe(
-          (result) => {
-            console.log(result);
-            let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
-          },
-          (error) => console.log('error', error)
-        )
-      }
-
-    }
   }
 
-  selectedAsset(assetID: string) {
+  async selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
 
-    const asset = this.getAsset(assetID);
+    const asset = await this.getAsset(assetID);
     console.log(asset);
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
-    this.maxSupply = asset.params.total;
 
     if (asset.params.url) {
       this._userService.loadMetaData(asset.params.url).subscribe(
@@ -87,11 +65,11 @@ export class CreateBidComponent implements OnInit {
     }
   }
 
-  getAsset(assetID: string) {
-    var result = this.assets.find(asset => {
-      return asset.index == assetID
-    });
-    return result;
+  async getAsset(assetID: string): Promise<any> {
+    const client = getAlgodClient();
+    const asset = await client.getAssetByID(+assetID).do();
+    console.log(asset);
+    return asset;
   }
 
   blurRoyaltyEvent(event: any){
@@ -99,18 +77,65 @@ export class CreateBidComponent implements OnInit {
     console.log(this.royalty);
   }
 
+  blurAssetIDEvent(event: any){
+    this.price = event.target.value;
+    console.log(this.price);
+  }
+
   blurAmountEvent(event: any){
     this.amount = event.target.value;
     console.log(this.amount);
   }
 
-  blurPriceEvent(event: any){
-    this.price = event.target.value;
-    console.log(this.price);
+  blurAlgoEvent(event: any) {
+    this.selectedAssetID = event.target.value;
+    console.log(this.selectedAssetID);
   }
 
   async createBid() {
+    this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
+      async (res) => {
+        console.log('bidIndex', res);
 
+        if (res.OptinPrice > 0) {
+          let result = await this._walletsConnectService.payToSetUpIndex(res.indexAddress, res.optinPrice);
+          if (result) {
+            this.sendCreateBidRequest(res.indexAddress);
+          }
+        } else {
+          this.sendCreateBidRequest(res.indexAddress);
+        }
+      },
+      (error) => console.log('algo net create bid error', error)
+    );
+  }
+
+  async sendCreateBidRequest(indexAddress: string) {
+    const params1 = {
+      assetID: this.selectedAssetID,
+      amount: this.amount,
+      price: this.price,
+      bidIndex: indexAddress
+    }
+    const txID = await this._walletsConnectService.createBid(params1);
+    console.log('txID', txID);
+
+    if (txID) {
+      const params2 = {
+        bidId: txID,
+        assetId: this.selectedAssetID,
+        indexAddress: indexAddress,
+        price: this.price,
+        bidderAddress: this._walletsConnectService.myAlgoAddress[0],
+        amount: this.amount
+      }
+      this._userService.createBid(params2).subscribe(
+        res => {
+          console.log('created bid on backend', res)
+        },
+        error => console.log('created bid on backend error', error)
+      );
+    }
   }
 
 }

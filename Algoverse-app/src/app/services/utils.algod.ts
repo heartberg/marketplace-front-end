@@ -1956,61 +1956,61 @@ export const scenarios: Array<{ name: string; scenario: any }> = [
 ];
 
 function addressFromByteBuffer(addr: string) {
-	const bytes = Buffer.from(addr, "base64");
+  const bytes = Buffer.from(addr, "base64");
 
-	//compute checksum
-	const checksum = sha512.sha512_256.array(bytes).slice(28, 32);
+  //compute checksum
+  const checksum = sha512.sha512_256.array(bytes).slice(28, 32);
 
-	const c = new Uint8Array(bytes.length + checksum.length);
-	c.set(bytes);
-	c.set(checksum, bytes.length);
+  const c = new Uint8Array(bytes.length + checksum.length);
+  c.set(bytes);
+  c.set(checksum, bytes.length);
 
-	const v = hibase32.encode(c);
+  const v = hibase32.encode(c);
 
-	return v.toString().slice(0, ALGORAND_ADDRESS_SIZE);
+  return v.toString().slice(0, ALGORAND_ADDRESS_SIZE);
 }
 
 export const appValueState = (stateValue: any): any => {
-	let text = "";
+  let text = "";
 
-	if (stateValue.type == 1) {
-		let addr = addressFromByteBuffer(stateValue.bytes);
-		if (addr.length == ALGORAND_ADDRESS_SIZE) {
-			text += addr;
-		} else {
-			text += stateValue.bytes;
-		}
-	} else if (stateValue.type == 2) {
-		text = stateValue.uint;
-	} else {
-		text += stateValue.bytes;
-	}
+  if (stateValue.type == 1) {
+    let addr = addressFromByteBuffer(stateValue.bytes);
+    if (addr.length == ALGORAND_ADDRESS_SIZE) {
+      text += addr;
+    } else {
+      text += stateValue.bytes;
+    }
+  } else if (stateValue.type == 2) {
+    text = stateValue.uint;
+  } else {
+    text += stateValue.bytes;
+  }
 
-	return text;
+  return text;
 }
 
 export const getAppLocalStateByKey = async (algodClient: AlgodClient, appId: number, accountAddr: string, key: string): Promise<any> => {
-	const accountInfoResponse = await algodClient
-		.accountInformation(accountAddr)
-		.do();
+  const accountInfoResponse = await algodClient
+    .accountInformation(accountAddr)
+    .do();
 
-	for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
-		if (accountInfoResponse["apps-local-state"][i].id === appId) {
-			const stateArray =
-				accountInfoResponse["apps-local-state"][i]["key-value"];
+  for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
+    if (accountInfoResponse["apps-local-state"][i].id === appId) {
+      const stateArray =
+        accountInfoResponse["apps-local-state"][i]["key-value"];
 
-			if (!stateArray) {
-				return null;
-			}
-			for (let j = 0; j < stateArray.length; j++) {
-				const text = Buffer.from(stateArray[j].key, "base64").toString();
+      if (!stateArray) {
+        return null;
+      }
+      for (let j = 0; j < stateArray.length; j++) {
+        const text = Buffer.from(stateArray[j].key, "base64").toString();
 
-				if (key === text) {
-					return appValueState(stateArray[j].value);
-				}
-			}
-			// not found assume 0
-			return 0;
-		}
-	}
+        if (key === text) {
+          return appValueState(stateArray[j].value);
+        }
+      }
+      // not found assume 0
+      return 0;
+    }
+  }
 }

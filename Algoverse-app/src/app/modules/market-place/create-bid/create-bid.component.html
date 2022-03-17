@@ -7,13 +7,35 @@
       <div class="col-md-6">
         <div class="inside wrapper-border">
           <div class="header">
-            <h3>Create sale</h3>
+            <h3>Create bid</h3>
           </div>
-          <div class="dropdownborder wrapper-border">
-            <h4>Assets</h4>
-            <div class="dropdown">
-              <div class="AssetsList">
-                <app-drop-down-selector [dropDownValues]="assetIDs" (dropDownValue)="selectedAsset($event)"></app-drop-down-selector>
+          <div class="price wrapper-border">
+            <div class="row d-flex align-items-center" style="width: 100%">
+              <div class="col-md-5">
+                <h4 class="priceheader">Algo</h4>
+              </div>
+              <div class="col-md-7">
+                <input type="text" placeholder="Enter algo amount to offer" class="input-costum" (blur)="blurAlgoEvent($event)">
+              </div>
+            </div>
+          </div>
+          <div class="price wrapper-border">
+            <div class="row d-flex align-items-center" style="width: 100%">
+              <div class="col-md-5">
+                <h4 class="priceheader">Asset</h4>
+              </div>
+              <div class="col-md-7">
+                <input type="text" placeholder="Enter asset id to accept" class="input-costum" [formControl]="searchAssetControl">
+              </div>
+            </div>
+          </div>
+          <div class="createoffer wrapper-border">
+            <div class="row d-flex align-items-center" style="width: 100%">
+              <div class="col-md-5">
+                <h4 class="amountheader">Amount</h4>
+              </div>
+              <div class="col-md-7">
+                <input type="text" placeholder="Enter asset amount to accept" class="input-costum" (blur)="blurAmountEvent($event)">
               </div>
             </div>
           </div>
@@ -74,16 +96,6 @@
               </div>
             </div>
           </div>
-          <div class="createoffer wrapper-border">
-            <div class="row d-flex align-items-center" style="width: 100%">
-              <div class="col-md-5">
-                <h4 class="amountheader">Amount (< {{maxSupply}})</h4>
-              </div>
-              <div class="col-md-7">
-                <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAmountEvent($event)">
-              </div>
-            </div>
-          </div>
           <div class="duration wrapper-border">
             <div class="row d-flex align-items-center" style="width: 100%">
               <div class="col-md-5">
@@ -91,16 +103,6 @@
               </div>
               <div class="col-md-7">
                 <input type="date" placeholder="" class="input-costum">
-              </div>
-            </div>
-          </div>
-          <div class="price wrapper-border">
-            <div class="row d-flex align-items-center" style="width: 100%">
-              <div class="col-md-5">
-                <h4 class="priceheader">Price</h4>
-              </div>
-              <div class="col-md-7">
-                <input type="text" placeholder="Enter price for the offered item" class="input-costum" (blur)="blurPriceEvent($event)">
               </div>
             </div>
           </div>

@@ -40,6 +40,16 @@ export class UserService {
     return this._http.post(url, params);
   }
 
+  getBidIndex(senderAddress: string): Observable<any> {
+    const url = `${this.baseUrl}bid/getBidIndexAndPrice?senderAddress=${senderAddress}`;
+    return this._http.get<any>(url);
+  }
+
+  createBid(params: any): Observable<any> {
+    const url = `${this.baseUrl}bid/place`;
+    return this._http.post(url, params);
+  }
+
   loadMetaData(url: string): Observable<any> {
     return this._http.get<any>(url);
   }

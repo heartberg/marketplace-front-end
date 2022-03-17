@@ -9,6 +9,7 @@ import WalletConnect from '@walletconnect/client';
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
 import { getAlgodClient, getAppLocalStateByKey, getTransactionParams, singlePayTxn, waitForTransaction } from './utils.algod';
 import MyAlgoConnect from '@randlabs/myalgo-connect';
+import { Buffer } from 'buffer';
 
 const client = getAlgodClient()
 const myAlgoConnect = new MyAlgoConnect();
@@ -192,6 +193,50 @@ export class WalletsConnectService {
     return 0;
   }
 
+  createBid = async (params: any): Promise<number> => {
+    try {
+      const suggestedParams = await getTransactionParams();
+      let txns = [];
+      let tokens = [params.assetID];
+
+      const client = getAlgodClient();
+
+      const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+        from: this.myAlgoAddress[0],
+        to: getApplicationAddress(environment.BID_APP_ID),
+        amount: params.price,
+        note: new Uint8Array(Buffer.from("Amount to place bid")),
+        suggestedParams,
+      });
+      txns.push(payTxn);
+
+      const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+        from: this.myAlgoAddress[0],
+        appIndex: environment.BID_APP_ID,
+        note: new Uint8Array(Buffer.from("Place bid")),
+        appArgs: [new Uint8Array(Buffer.from("bid")), algosdk.encodeUint64(params.amount)],
+        accounts: [params.bidIndex],
+        foreignAssets: tokens,
+        suggestedParams,
+      });
+      txns.push(appCallTxn);
+
+      const txnGroup = algosdk.assignGroupID(txns);
+      const signedTxns = await myAlgoConnect.signTransaction(txns.map(txn => txn.toByte()));
+
+      const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+      console.log("Transaction : " + results[1].txId);
+      await waitForTransaction(client, results[1].txId);
+
+      return results[1].txId;
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    return 0;
+  }
+
   createSwap = async (params: any) => {
     try {
       const suggestedParams = await getTransactionParams();
@@ -199,7 +244,7 @@ export class WalletsConnectService {
 
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.myAlgoAddress[0],
-        to: getApplicationAddress(environment.SWAP_APP_ID),
+        to: getApplicationAddress(environment.BID_APP_ID),
         amount: params.amount,
         assetIndex: params.assetID,
         note: new Uint8Array(Buffer.from("Amount to place swap")),
@@ -209,10 +254,10 @@ export class WalletsConnectService {
 
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
         from: this.myAlgoAddress[0],
-        appIndex: environment.TRADE_APP_ID,
+        appIndex: environment.BID_APP_ID,
         note: new Uint8Array(Buffer.from("Place swap")),
         appArgs: [new Uint8Array(Buffer.from("swap")), algosdk.encodeUint64(params.acceptAssetAmount)],
-        accounts: [params.tradeIndex],
+        accounts: [params.swapIndex],
         suggestedParams,
       });
       txns.push(appCallTxn);

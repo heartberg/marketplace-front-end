@@ -121,7 +121,7 @@ export class CreateSwapComponent implements OnInit {
         console.log('tradeIndex', res);
 
         if (res.OptinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(res.IndexAddress, res.OptinPrice);
+          let result = await this._walletsConnectService.payToSetUpIndex(res.IndexAddress, res.optinPrice);
           if (result) {
             this.sendCreateSwapRequest(res.IndexAddress);
           }

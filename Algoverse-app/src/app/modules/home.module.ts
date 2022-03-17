@@ -17,6 +17,7 @@ import {ProfileSettingsComponent} from "./profile/profile-settings/profile-setti
 import {NotificationCentreComponent} from "./profile/notification-centre/notification-centre.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateTradeComponent } from './market-place/create-trade/create-trade.component';
+import { CreateBidComponent } from './market-place/create-bid/create-bid.component';
 import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
 import { AssetsDetailBuyComponent } from './market-place/assets-detail-buy/assets-detail-buy.component';
 import {MatTreeModule} from "@angular/material/tree";
@@ -33,6 +34,7 @@ import { AssetDetailSwapComponent } from './swap/asset-detail-swap/asset-detail-
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { CreateAuctionComponent } from './create-auction/create-auction.component';
 import {CarouselModule} from "../carousel/carousel.module";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import {CarouselModule} from "../carousel/carousel.module";
     ProfileSettingsComponent,
     NotificationCentreComponent,
     CreateTradeComponent,
+    CreateBidComponent,
     ProfileEditComponent,
     AssetsDetailBuyComponent,
     CreateAssetComponent,
@@ -72,6 +75,8 @@ import {CarouselModule} from "../carousel/carousel.module";
     MatTabsModule,
     MatCheckboxModule,
     CarouselModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   exports: [

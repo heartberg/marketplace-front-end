@@ -114,7 +114,7 @@ export class CreateTradeComponent implements OnInit {
         console.log('tradeIndex', res);
 
         if (res.OptinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(res.indexAddress, res.OptinPrice);
+          let result = await this._walletsConnectService.payToSetUpIndex(res.indexAddress, res.optinPrice);
           if (result) {
             this.sendCreateTradeRequest(res.indexAddress);
           }
