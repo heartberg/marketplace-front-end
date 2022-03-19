@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     CarouselModule,
     FormsModule
-    // OwlModule
+    // OwlModule,
   ],
   providers: [
   ],

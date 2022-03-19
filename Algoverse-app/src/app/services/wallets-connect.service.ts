@@ -22,52 +22,53 @@ export class WalletsConnectService {
 
   constructor(private userServce: UserService) { }
 
-  // connectToWalletConnect = () => {
-  //   try {
-  //     // Create a connector
-  //     const connector = new WalletConnect({
-  //       bridge: "https://bridge.walletconnect.org", // Required
-  //       qrcodeModal: QRCodeModal,
-  //     });
+  connectToWalletConnect = () => {
+    try {
+      // Create a connector
+      const connector = new WalletConnect({
+        bridge: "https://bridge.walletconnect.org", // Required
+        qrcodeModal: QRCodeModal,
+      });
 
-  //     // Check if connection is already established
-  //     if (!connector.connected) {
-  //       // create new session
-  //       connector.createSession();
-  //     }
+      // Check if connection is already established
+      if (!connector.connected) {
+        // create new session
+        connector.createSession();
+      }
 
-  //     // Subscribe to connection events
-  //     connector.on("connect", (error, payload) => {
-  //       if (error) {
-  //         throw error;
-  //       }
+      // Subscribe to connection events
+      connector.on("connect", (error, payload) => {
+        if (error) {
+          console.log(error);
+          throw error;
+        }
 
-  //       // Get provided accounts
-  //       const { accounts } = payload.params[0];
-  //       console.log(accounts);
-  //     });
+        // Get provided accounts
+        const { accounts } = payload.params[0];
+        console.log(accounts);
+      });
 
-  //     connector.on("session_update", (error, payload) => {
-  //       if (error) {
-  //         throw error;
-  //       }
+      connector.on("session_update", (error, payload) => {
+        if (error) {
+          console.log(error);
+          throw error;
+        }
 
-  //       // Get updated accounts
-  //       const { accounts } = payload.params[0];
-  //       console.log(accounts);
-  //     });
+        // Get updated accounts
+        const { accounts } = payload.params[0];
+        console.log(accounts);
+      });
 
-  //     connector.on("disconnect", (error, payload) => {
-  //       if (error) {
-  //         throw error;
-  //       }
-
-
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
+      connector.on("disconnect", (error, payload) => {
+        if (error) {
+          console.log(error);
+          throw error;
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   connectToMyAlgo = async () => {
     try {
@@ -108,7 +109,7 @@ export class WalletsConnectService {
         if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
           for (let assetInfo of accountInfo.assets) {
             const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
-            console.log('asset-id:' + assetInfo['asset-id'], asset);
+            //console.log('asset-id:' + assetInfo['asset-id'], asset);
             result.push(asset);
           }
         }
@@ -155,6 +156,8 @@ export class WalletsConnectService {
         suggestedParams.fee = 3000;
       }
 
+      console.log('amount', params.amount)
+
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.myAlgoAddress[0],
         to: getApplicationAddress(environment.TRADE_APP_ID),
@@ -170,7 +173,7 @@ export class WalletsConnectService {
         from: this.myAlgoAddress[0],
         appIndex: environment.TRADE_APP_ID,
         note: new Uint8Array(Buffer.from("Place trade")),
-        appArgs: [new Uint8Array(Buffer.from("trade")), algosdk.encodeUint64(params.price)],
+        appArgs: [new Uint8Array([...Buffer.from("trade")]), algosdk.encodeUint64(params.price)],
         accounts: [params.tradeIndex],
         foreignAssets: tokens,
         suggestedParams,

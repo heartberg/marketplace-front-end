@@ -30,8 +30,12 @@ export class PopUpComponent implements OnInit {
         this.isConnectedToWallet.emit(false);
         console.log('Connected to MyAlgoWallet')
       }
+    } else if (value == 'WalletConnect') {
+      this._walletsConnectService.connectToWalletConnect();
+      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
+        this.isConnectedToWallet.emit(false);
+        console.log('Connected to MyAlgoWallet')
+      }
     }
-
-
   }
 }
