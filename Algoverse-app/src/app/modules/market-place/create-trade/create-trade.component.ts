@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
+import { getApplicationAddress } from 'algosdk';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-trade',
@@ -40,6 +43,10 @@ export class CreateTradeComponent implements OnInit {
       asset_ids.push(asset.index);
     }
     this.assetIDs = asset_ids;
+
+    const algod = getAlgodClient();
+    const accountInfo = await algod.accountInformation('5V3RXJ76GKVG7F55LZIVN6DXOQLNRLAMMNQMFLJ57LP2PP5B7Q64A7IX7A').do();
+    console.log('accountInfo 0 0 0 ', accountInfo);
 
     if (this.assets.length > 0) {
       const firstAsset = this.assets[0];
@@ -113,13 +120,37 @@ export class CreateTradeComponent implements OnInit {
       async (res) => {
         console.log('tradeIndex', res);
 
+        const indexAddress = res.indexAddress;
         if (res.OptinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(res.indexAddress, res.optinPrice);
+          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
+          console.log('paid index address result', result)
           if (result) {
-            this.sendCreateTradeRequest(res.indexAddress);
+            this._userService.setupTrade(indexAddress).subscribe(
+              (res) => {
+                console.log('setup trade response: ', res);
+                this.sendCreateTradeRequest(indexAddress);
+              },
+              (err) => {
+                console.log('setup trade error: ', err);
+              }
+            );
           }
         } else {
-          this.sendCreateTradeRequest(res.indexAddress);
+          console.log('trade app address', getApplicationAddress(environment.TRADE_APP_ID));
+          if (await isOptinAsset(this.selectedAssetID, getApplicationAddress(environment.TRADE_APP_ID))) {
+            console.log('direct create trade', res);
+            this.sendCreateTradeRequest(indexAddress);
+          } else {
+            this._userService.setupTrade(indexAddress).subscribe(
+              (res) => {
+                console.log('setup trade response: ', res);
+                this.sendCreateTradeRequest(indexAddress);
+              },
+              (err) => {
+                console.log('setup trade error: ', err);
+              }
+            );
+          }
         }
       },
       (error) => console.log('error', error)

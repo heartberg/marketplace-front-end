@@ -2014,3 +2014,25 @@ export const getAppLocalStateByKey = async (algodClient: AlgodClient, appId: num
     }
   }
 }
+
+export const isOptinAsset = async (assetIndex: number, address: string) => {
+  try {
+    const algod = getAlgodClient();
+    const accountInfo = await algod.accountInformation(address).do();
+    console.log('accountInfo - ' + address, accountInfo);
+
+    if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
+      console.log(address + 'assets:', accountInfo.assets);
+      for (let assetInfo of accountInfo.assets) {
+        if (assetInfo['asset-id'] == assetIndex) {
+          return true;
+        }
+      }
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
+
+  return false;
+}

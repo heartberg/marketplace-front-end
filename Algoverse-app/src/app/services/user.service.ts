@@ -20,6 +20,14 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  createProfile(wallet: String): Observable<any> {
+    const url = `${this.baseUrl}user/create`;
+    const params = {
+      wallet
+    }
+    return this._http.post(url, params);
+  }
+
   userGetShuttle(): Observable<any> {
     const url = `${this.baseUrl}user/get/all/verified`;
     return this._http.get<any>(url);
@@ -33,6 +41,11 @@ export class UserService {
   getTradeIndex(senderAddress: string): Observable<any> {
     const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
+  }
+
+  setupTrade(indexAddress: string): Observable<any> {
+    const url = `${this.baseUrl}trade/setUpTrade?indexAddress=${indexAddress}`;
+    return this._http.get(url);
   }
 
   createTrade(params: any): Observable<any> {

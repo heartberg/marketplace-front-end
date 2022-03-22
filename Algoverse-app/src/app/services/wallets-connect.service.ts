@@ -83,7 +83,15 @@ export class WalletsConnectService {
       if (this.myAlgoAddress.length > 0) {
         this.userServce.loadProfile(this.myAlgoAddress[0]).subscribe(
           (result) => console.log('profile', result),
-          (error) => console.log('error', error)
+          (error) => {
+            console.log('error', error)
+            if (error.status == 404) {
+              this.userServce.createProfile(this.myAlgoAddress[0]).subscribe(
+                (result) => console.log('profile', result),
+                (error) => console.log('error', error),
+              );
+            }
+          }
         );
         setTimeout(() => {
 
@@ -107,10 +115,14 @@ export class WalletsConnectService {
         console.log('accountInfo', accountInfo);
 
         if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
+          console.log('assets:', accountInfo.assets);
           for (let assetInfo of accountInfo.assets) {
-            const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
-            //console.log('asset-id:' + assetInfo['asset-id'], asset);
-            result.push(asset);
+            if (assetInfo.amount > 0) {
+              const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
+              //console.log('asset-id:' + assetInfo['asset-id'], asset);
+
+              result.push(asset);
+            }
           }
         }
       }
@@ -140,9 +152,10 @@ export class WalletsConnectService {
 
   createTrade = async (params: any): Promise<number> => {
     try {
+      console.log(params);
       const suggestedParams = await getTransactionParams();
       let txns = [];
-      let tokens = [params.assetID];
+      let tokens = [Number(params.assetID)];
 
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, params.tradeIndex, "TK_ID");
@@ -156,13 +169,11 @@ export class WalletsConnectService {
         suggestedParams.fee = 3000;
       }
 
-      console.log('amount', params.amount)
-
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.myAlgoAddress[0],
         to: getApplicationAddress(environment.TRADE_APP_ID),
-        amount: params.amount,
-        assetIndex: params.assetID,
+        amount: Number(params.amount),
+        assetIndex: Number(params.assetID),
         note: new Uint8Array(Buffer.from("Amount to place trade")),
         suggestedParams,
       });
@@ -173,7 +184,7 @@ export class WalletsConnectService {
         from: this.myAlgoAddress[0],
         appIndex: environment.TRADE_APP_ID,
         note: new Uint8Array(Buffer.from("Place trade")),
-        appArgs: [new Uint8Array([...Buffer.from("trade")]), algosdk.encodeUint64(params.price)],
+        appArgs: [new Uint8Array([...Buffer.from("trade")]), algosdk.encodeUint64(Number(params.price))],
         accounts: [params.tradeIndex],
         foreignAssets: tokens,
         suggestedParams,
