@@ -3,8 +3,10 @@ import { FormControl, FormBuilder, FormGroup } from "@angular/forms";
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { getAlgodClient } from 'src/app/services/utils.algod';
+import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
 import { debounceTime } from "rxjs/operators";
+import { getApplicationAddress } from 'algosdk';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-bid',
@@ -96,14 +98,37 @@ export class CreateBidComponent implements OnInit {
     this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
       async (res) => {
         console.log('bidIndex', res);
-
-        if (res.OptinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(res.indexAddress, res.optinPrice);
+        const indexAddress = res.indexAddress;
+        if (res.optinPrice > 0) {
+          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
-            this.sendCreateBidRequest(res.indexAddress);
+            this._userService.setupBid(indexAddress).subscribe(
+              (res) => {
+                console.log('setup trade response: ', res);
+                this.sendCreateBidRequest(indexAddress);
+              },
+              (err) => {
+                console.log('setup trade error: ', err);
+              }
+            )
           }
         } else {
-          this.sendCreateBidRequest(res.indexAddress);
+          console.log('bid app address', getApplicationAddress(environment.BID_APP_ID));
+          if (await isOptinAsset(this.selectedAssetID, getApplicationAddress(environment.BID_APP_ID))) {
+            console.log('direct create trade', res);
+            this.sendCreateBidRequest(indexAddress);
+
+          } else {
+            this._userService.setupBid(indexAddress).subscribe(
+              (res) => {
+                console.log('setup trade response: ', res);
+                this.sendCreateBidRequest(indexAddress);
+              },
+              (err) => {
+                console.log('setup trade error: ', err);
+              }
+            );
+          }
         }
       },
       (error) => console.log('algo net create bid error', error)

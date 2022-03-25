@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment';
-import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient } from 'algosdk';
+import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, ALGORAND_MIN_TX_FEE } from 'algosdk';
 import AlgodClient from 'algosdk/dist/types/src/client/v2/algod/algod';
 import * as sha512 from 'js-sha512';
 import * as hibase32 from 'hi-base32';
@@ -29,7 +29,11 @@ export const getAlgodClient = () => {
 
 export const getTransactionParams = async () => {
   const algod = getAlgodClient();
-  return await algod.getTransactionParams().do();
+  const params = await algod.getTransactionParams().do();
+  params.fee = ALGORAND_MIN_TX_FEE;
+	params.flatFee = true;
+
+  return params;
 }
 
 export async function submitTransactions(
@@ -68,16 +72,16 @@ export const singlePayTxn = async (
   note: string
 ): Promise<any> => {
   const suggestedParams = await getTransactionParams();
-
-  const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+  const enc = new TextEncoder();
+  return algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from,
     to,
     amount,
-    note: new Uint8Array(Buffer.from(note)),
-    suggestedParams,
+    note: enc.encode(note),
+    suggestedParams: {
+      ...suggestedParams
+    }
   });
-
-  return txn;
 };
 
 export const singlePayTxnWithClose = async (
@@ -85,12 +89,13 @@ export const singlePayTxnWithClose = async (
   to: string,
 ): Promise<AlgoTxnReturnType> => {
   const suggestedParams = await getTransactionParams();
+  console.log('suggestedParams', suggestedParams);
 
   const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: from,
     to: to,
-    amount: 100000,
-    note: new Uint8Array(Buffer.from("example note value")),
+    amount: Number(100000),
+    note: new Uint8Array([...Buffer.from("example note value")]),
     closeRemainderTo: to,
     suggestedParams,
   });

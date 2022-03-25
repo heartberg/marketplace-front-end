@@ -58,6 +58,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  setupBid(indexAddress: string): Observable<any> {
+    const url = `${this.baseUrl}bid/setUpBid?indexAddress=${indexAddress}`;
+    return this._http.get(url);
+  }
+
   createBid(params: any): Observable<any> {
     const url = `${this.baseUrl}bid/place`;
     return this._http.post(url, params);
@@ -68,8 +73,17 @@ export class UserService {
   }
 
   getSwapIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}swap/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
+    const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
+  }
+
+  setupSwap(indexAddress: string, tokens: number[]): Observable<any> {
+    const url = `${this.baseUrl}swap/setUpSwap?indexAddress=${indexAddress}`;
+    const params = {
+      indexAddress,
+      tokens
+    }
+    return this._http.post(url, params);
   }
 
   createSwap(params: any): Observable<any> {

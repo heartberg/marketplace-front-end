@@ -15,16 +15,17 @@ export const environment = {
   ALGOD_LOCAL_TESTNET_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   ALGOD_LOCAL_TESTNET_INDEXER_ADDRESS:"http://localhost",
 
-  ALGOD_URL:"http://localhost:4001",
+  ALGOD_URL:"http://localhost",
   ALGOD_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   ALGOD_INDEXER_ADDRESS:"http://localhost",
 
   TOKEN_APP_ID: 1,
-  STORE_APP_ID: 5024,
-  TRADE_APP_ID: 5026,
-  SWAP_APP_ID: 5030,
-  BID_APP_ID: 5032,
-  AUCTION_APP_ID: 5034,
+  STORE_APP_ID: 13,
+  TRADE_APP_ID: 15,
+  BID_APP_ID: 17,
+  SWAP_APP_ID: 19,
+  AUCTION_APP_ID: 21,
+  STAKING_APP_ID: 24,
 };
 
 /*
