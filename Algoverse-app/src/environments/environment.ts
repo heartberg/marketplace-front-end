@@ -21,7 +21,7 @@ export const environment = {
 
   TOKEN_APP_ID: 1,
   STORE_APP_ID: 13,
-  TRADE_APP_ID: 15,
+  TRADE_APP_ID: 147,
   BID_APP_ID: 17,
   SWAP_APP_ID: 19,
   AUCTION_APP_ID: 21,

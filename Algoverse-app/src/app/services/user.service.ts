@@ -38,13 +38,13 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  getTradeIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
+  getTradeIndex(senderAddress: string, assetId: number): Observable<any> {
+    const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
     return this._http.get<any>(url);
   }
 
-  setupTrade(indexAddress: string): Observable<any> {
-    const url = `${this.baseUrl}trade/setUpTrade?indexAddress=${indexAddress}`;
+  setupTrade(indexAddress: string, assetId: number): Observable<any> {
+    const url = `${this.baseUrl}trade/setUpTrade?indexAddress=${indexAddress}&assetId=${assetId}`;
     return this._http.get(url);
   }
 

@@ -198,10 +198,10 @@ export class WalletsConnectService {
       const signedTxns = await myAlgoConnect.signTransaction(txns.map(txn => txn.toByte()));
 
       const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
-      console.log("Transaction : " + results[1].txId);
-      await waitForTransaction(client, results[1].txId);
+      console.log("Transaction : " + JSON.stringify(results));
+      await waitForTransaction(client, results.txId);
 
-      return results[1].txId;
+      return results.txId;
 
     } catch (err) {
       console.error(err);

@@ -117,7 +117,7 @@ export class CreateTradeComponent implements OnInit {
 
   async createTrade() {
     console.log('trade start');
-    this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
+    this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
       async (res) => {
         console.log('tradeIndex', res);
 
@@ -126,7 +126,7 @@ export class CreateTradeComponent implements OnInit {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           console.log('paid index address result', result)
           if (result) {
-            this._userService.setupTrade(indexAddress).subscribe(
+            this._userService.setupTrade(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
                 console.log('setup trade response: ', res);
                 this.sendCreateTradeRequest(indexAddress);
@@ -142,7 +142,7 @@ export class CreateTradeComponent implements OnInit {
             console.log('direct create trade', res);
             this.sendCreateTradeRequest(indexAddress);
           } else {
-            this._userService.setupTrade(indexAddress).subscribe(
+            this._userService.setupTrade(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
                 console.log('setup trade response: ', res);
                 this.sendCreateTradeRequest(indexAddress);
@@ -171,13 +171,14 @@ export class CreateTradeComponent implements OnInit {
       const params2 = {
         tradeId: txID,
         assetId: this.selectedAssetID,
-        indexAddress: indexAddress,
+        indexAddress,
         price: this.price,
         creatorWallet: this._walletsConnectService.myAlgoAddress[0],
         amount: this.amount
       }
       this._userService.createTrade(params2).subscribe(
         res => {
+          console.log("Created trade successfully");
           console.log(res)
         },
         error => console.log(error)
