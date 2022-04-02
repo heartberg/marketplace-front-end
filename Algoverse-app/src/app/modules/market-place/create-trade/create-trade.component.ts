@@ -171,11 +171,51 @@ export class CreateTradeComponent implements OnInit {
       const params2 = {
         tradeId: txID,
         assetId: this.selectedAssetID,
+        asset: {
+          assetId: this.selectedAssetID,
+          name: "string1",
+          unitName: "string1",
+          supply: 1000,
+          assetURL: "string",
+          creatorWallet: "string",
+          freezeAddress: "string",
+          managerAddress: "string",
+          clawbackAddress: "string",
+          reserveAddress: "string",
+          metadata: "string",
+          externalLink: "string",
+          description: "string",
+          assetCollectionID: "1",
+          assetCollection: {
+            assetCollectionID: "1",
+            name: "string1",
+            icon: "string",
+            banner: "string",
+            featuredImage: "string",
+            description: "string",
+            royalties: 0,
+            customURL: "string",
+            category: "string",
+            website: "string",
+            creatorWallet: "string"
+          },
+          properties: [
+            {
+              name: "string1",
+              value: "string1"
+            }
+          ],
+          file: "string",
+          cover: "string",
+          royalties: 0,
+          category: "string"
+        },
         indexAddress,
         price: this.price,
         creatorWallet: this._walletsConnectService.myAlgoAddress[0],
         amount: this.amount
       }
+      console.log(params2)
       this._userService.createTrade(params2).subscribe(
         res => {
           console.log("Created trade successfully");
