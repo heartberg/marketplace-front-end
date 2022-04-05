@@ -7,13 +7,9 @@ export const environment = {
   //baseUrl: 'https://algoverse-api.azurewebsites.net',
   baseUrl: 'http://localhost:5000/',
 
-  ALGOD_TESTNET_URL:"https://testnet-algorand.api.purestake.io/ps2",
-  ALGOD_TESTNET_TOKEN:"Z4lUOOfIOm8thZUeUK9n349ImUCpiCC190RtGnm6",
-  ALGOD_TESTNET_INDEXER_ADDRESS:"https://testnet-algorand.api.purestake.io/idx2",
-
-  ALGOD_LOCAL_TESTNET_URL:"http://localhost:4001",
-  ALGOD_LOCAL_TESTNET_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  ALGOD_LOCAL_TESTNET_INDEXER_ADDRESS:"http://localhost",
+  // ALGOD_URL:"https://testnet-algorand.api.purestake.io/ps2",
+  // ALGOD_TOKEN:"Z4lUOOfIOm8thZUeUK9n349ImUCpiCC190RtGnm6",
+  // ALGOD_INDEXER_ADDRESS:"https://testnet-algorand.api.purestake.io/idx2",
 
   ALGOD_URL:"http://localhost",
   ALGOD_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -22,7 +18,7 @@ export const environment = {
   TOKEN_APP_ID: 1,
   STORE_APP_ID: 13,
   TRADE_APP_ID: 147,
-  BID_APP_ID: 17,
+  BID_APP_ID: 400,
   SWAP_APP_ID: 19,
   AUCTION_APP_ID: 21,
   STAKING_APP_ID: 24,

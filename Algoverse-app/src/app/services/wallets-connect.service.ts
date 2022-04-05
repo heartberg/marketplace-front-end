@@ -134,9 +134,9 @@ export class WalletsConnectService {
     return result;
   }
 
-  payToSetUpIndex = async (tradeIndex: string, amount: number): Promise<any> => {
+  payToSetUpIndex = async (rekeyedIndex: string, amount: number): Promise<any> => {
     try {
-      const txn = await singlePayTxn(this.myAlgoAddress[0], tradeIndex, amount, "Payment for trade setup to opt app into asset");
+      const txn = await singlePayTxn(this.myAlgoAddress[0], rekeyedIndex, amount, "Payment for trade setup to opt app into asset");
       console.log('txn', txn);
       const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
       console.log('txId', signedTxn.txID);
@@ -214,14 +214,14 @@ export class WalletsConnectService {
     try {
       const suggestedParams = await getTransactionParams();
       let txns = [];
-      let tokens = [params.assetID];
+      let tokens = [Number(params.assetID)];
 
       const client = getAlgodClient();
 
       const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from: this.myAlgoAddress[0],
         to: getApplicationAddress(environment.BID_APP_ID),
-        amount: params.price,
+        amount: Number(params.price),
         note: new Uint8Array(Buffer.from("Amount to place bid")),
         suggestedParams,
       });
@@ -231,7 +231,7 @@ export class WalletsConnectService {
         from: this.myAlgoAddress[0],
         appIndex: environment.BID_APP_ID,
         note: new Uint8Array(Buffer.from("Place bid")),
-        appArgs: [new Uint8Array(Buffer.from("bid")), algosdk.encodeUint64(params.amount)],
+        appArgs: [new Uint8Array(Buffer.from("bid")), algosdk.encodeUint64(Number(params.amount))],
         accounts: [params.bidIndex],
         foreignAssets: tokens,
         suggestedParams,

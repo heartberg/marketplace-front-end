@@ -116,6 +116,9 @@ export class CreateTradeComponent implements OnInit {
   }
 
   async createTrade() {
+    // let result = await this._walletsConnectService.payToSetUpIndex('4TT75274EBUAF46CITUL6HQQ4C4D3GO7GEOVRZSQZ35VXSGRVHJ376GD64', 1);
+    // console.log(result);
+
     console.log('trade start');
     this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
       async (res) => {
@@ -168,23 +171,29 @@ export class CreateTradeComponent implements OnInit {
     const txID = await this._walletsConnectService.createTrade(params1);
 
     if (txID) {
+      const asset = this.getAsset('' + this.selectedAssetID);
+      if (!asset) {
+        console.log('exception occurred')
+        return;
+      }
+
       const params2 = {
         tradeId: txID,
         assetId: this.selectedAssetID,
         asset: {
           assetId: this.selectedAssetID,
-          name: "string1",
-          unitName: "string1",
-          supply: 1000,
+          name: asset.name,
+          unitName: asset['unit-name'],
+          supply: asset.total,
           assetURL: "string",
-          creatorWallet: "string",
-          freezeAddress: "string",
-          managerAddress: "string",
-          clawbackAddress: "string",
-          reserveAddress: "string",
-          metadata: "string",
-          externalLink: "string",
-          description: "string",
+          creatorWallet: asset.creator,
+          freezeAddress: asset.freeze?asset.freeze:'',
+          managerAddress: asset.manager?asset.manager:'',
+          clawbackAddress: asset.clawback?asset.clawback:'',
+          reserveAddress: asset.reserve?asset.reserve:'',
+          metadata: asset['metadata-hash']?asset['metadata-hash']:'',
+          externalLink: asset.url?asset.url:'',
+          description: asset.description?asset.description:'',
           assetCollectionID: "1",
           assetCollection: {
             assetCollectionID: "1",
@@ -199,12 +208,7 @@ export class CreateTradeComponent implements OnInit {
             website: "string",
             creatorWallet: "string"
           },
-          properties: [
-            {
-              name: "string1",
-              value: "string1"
-            }
-          ],
+          properties: Object.entries(this.metaDataProperties),
           file: "string",
           cover: "string",
           royalties: 0,

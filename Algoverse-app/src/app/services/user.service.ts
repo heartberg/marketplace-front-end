@@ -53,13 +53,13 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  getBidIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}bid/getBidIndexAndPrice?senderAddress=${senderAddress}`;
+  getBidIndex(senderAddress: string, assetId: number): Observable<any> {
+    const url = `${this.baseUrl}bid/getBidIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
     return this._http.get<any>(url);
   }
 
-  setupBid(indexAddress: string): Observable<any> {
-    const url = `${this.baseUrl}bid/setUpBid?indexAddress=${indexAddress}`;
+  setupBid(indexAddress: string, assetId: number): Observable<any> {
+    const url = `${this.baseUrl}bid/setUpBid?indexAddress=${indexAddress}&assetId=${assetId}`;
     return this._http.get(url);
   }
 

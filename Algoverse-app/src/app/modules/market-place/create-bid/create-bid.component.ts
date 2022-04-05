@@ -95,37 +95,46 @@ export class CreateBidComponent implements OnInit {
   }
 
   async createBid() {
-    this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
+    console.log('bid start');
+    this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
       async (res) => {
         console.log('bidIndex', res);
         const indexAddress = res.indexAddress;
         if (res.optinPrice > 0) {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
-            this._userService.setupBid(indexAddress).subscribe(
+            this._userService.setupBid(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
-                console.log('setup trade response: ', res);
-                this.sendCreateBidRequest(indexAddress);
+                console.log('setup bid response: ', res);
+                if (res) {
+                  this.sendCreateBidRequest(indexAddress);
+                } else {
+                  console.log('failed setup bid', res);
+                }
               },
               (err) => {
-                console.log('setup trade error: ', err);
+                console.log('setup bid error: ', err);
               }
             )
           }
         } else {
           console.log('bid app address', getApplicationAddress(environment.BID_APP_ID));
           if (await isOptinAsset(this.selectedAssetID, getApplicationAddress(environment.BID_APP_ID))) {
-            console.log('direct create trade', res);
+            console.log('direct create trade');
             this.sendCreateBidRequest(indexAddress);
 
           } else {
-            this._userService.setupBid(indexAddress).subscribe(
+            this._userService.setupBid(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
-                console.log('setup trade response: ', res);
-                this.sendCreateBidRequest(indexAddress);
+                if (res) {
+                  console.log('setup bid response: ', res);
+                  this.sendCreateBidRequest(indexAddress);
+                } else {
+                  console.log('failed setup bid', res);
+                }
               },
               (err) => {
-                console.log('setup trade error: ', err);
+                console.log('setup bid error: ', err);
               }
             );
           }

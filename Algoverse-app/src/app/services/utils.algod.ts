@@ -22,9 +22,11 @@ export type AlgoTxnReturnType = IAlgoTxn[][];
 export const getAlgodClient = () => {
   const tokenHeader = {
     "X-Algo-API-Token": environment.ALGOD_TOKEN
+    //"x-api-key": environment.ALGOD_TOKEN
   };
 
   return new Algodv2(tokenHeader, environment.ALGOD_URL, 4001);
+  //return new Algodv2(tokenHeader, environment.ALGOD_URL, 443);
 }
 
 export const getTransactionParams = async () => {
