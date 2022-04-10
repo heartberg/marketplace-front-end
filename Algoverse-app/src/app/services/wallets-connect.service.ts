@@ -8,99 +8,51 @@ import { UserService } from './user.service';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
 import { getAlgodClient, getAppLocalStateByKey, getTransactionParams, singlePayTxn, waitForTransaction } from './utils.algod';
-import MyAlgoConnect from '@randlabs/myalgo-connect';
 import { Buffer } from 'buffer';
+import { SessionWallet } from 'algorand-session-wallet';
 
 const client = getAlgodClient()
-const myAlgoConnect = new MyAlgoConnect();
 
 @Injectable()
 export class WalletsConnectService {
 
+  public sessionWallet: SessionWallet | undefined;
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
 
   constructor(private userServce: UserService) { }
 
-  connectToWalletConnect = () => {
-    try {
-      // Create a connector
-      const connector = new WalletConnect({
-        bridge: "https://bridge.walletconnect.org", // Required
-        qrcodeModal: QRCodeModal,
-      });
+  connect = async (choice: string) => {
+    console.log('choice', choice);
+    this.sessionWallet = new SessionWallet("TestNet");
 
-      // Check if connection is already established
-      if (!connector.connected) {
-        // create new session
-        connector.createSession();
-      }
+    if (!await this.sessionWallet.connect()) return alert("Couldnt connect")
 
-      // Subscribe to connection events
-      connector.on("connect", (error, payload) => {
-        if (error) {
-          console.log(error);
-          throw error;
+    this.myAlgoAddress = this.sessionWallet.accountList()
+    localStorage.setItem('wallet', this.sessionWallet.getDefaultAccount())
+    this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
+
+    if (this.myAlgoAddress.length > 0) {
+      this.userServce.loadProfile(this.myAlgoAddress[0]).subscribe(
+        (result) => console.log('profile', result),
+        (error) => {
+          console.log('error', error)
+          if (error.status == 404) {
+            this.userServce.createProfile(this.myAlgoAddress[0]).subscribe(
+              (result) => console.log('profile', result),
+              (error) => console.log('error', error),
+            );
+          }
         }
-
-        // Get provided accounts
-        const { accounts } = payload.params[0];
-        console.log(accounts);
-      });
-
-      connector.on("session_update", (error, payload) => {
-        if (error) {
-          console.log(error);
-          throw error;
-        }
-
-        // Get updated accounts
-        const { accounts } = payload.params[0];
-        console.log(accounts);
-      });
-
-      connector.on("disconnect", (error, payload) => {
-        if (error) {
-          console.log(error);
-          throw error;
-        }
-      });
-    } catch (err) {
-      console.error(err);
+      );
+      setTimeout(() => {
+      }, 1000)
     }
   }
 
-  connectToMyAlgo = async () => {
-    try {
-      const accounts = await myAlgoConnect.connect();
-
-      console.log('accounts', accounts);
-      this.myAlgoAddress = accounts.map(value => value.address)
-      console.log('addresses', this.myAlgoAddress);
-      // @ts-ignore
-      this.myAlgoName = accounts.map(value => value.name)
-
-      if (this.myAlgoAddress.length > 0) {
-        this.userServce.loadProfile(this.myAlgoAddress[0]).subscribe(
-          (result) => console.log('profile', result),
-          (error) => {
-            console.log('error', error)
-            if (error.status == 404) {
-              this.userServce.createProfile(this.myAlgoAddress[0]).subscribe(
-                (result) => console.log('profile', result),
-                (error) => console.log('error', error),
-              );
-            }
-          }
-        );
-        setTimeout(() => {
-
-        }, 1000)
-      }
-
-    } catch (err) {
-      console.error(err);
-    }
+  disconnect = async () => {
+    this.sessionWallet!.disconnect()
+    this.myAlgoAddress = []
   }
 
   getOwnAssets = async () => {
@@ -138,7 +90,7 @@ export class WalletsConnectService {
     try {
       const txn = await singlePayTxn(this.myAlgoAddress[0], rekeyedIndex, amount, "Payment for trade setup to opt app into asset");
       console.log('txn', txn);
-      const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
+      const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
       console.log('txId', signedTxn.txID);
       const result = await client.sendRawTransaction(signedTxn.blob).do();
       console.log('paid result', result);
@@ -195,7 +147,7 @@ export class WalletsConnectService {
       txns.push(appCallTxn);
 
       const txnGroup = algosdk.assignGroupID(txns);
-      const signedTxns = await myAlgoConnect.signTransaction(txns.map(txn => txn.toByte()));
+      const signedTxns = await this.sessionWallet!.signTxn(txns);
 
       const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
       console.log("Transaction : " + JSON.stringify(results));
@@ -239,7 +191,7 @@ export class WalletsConnectService {
       txns.push(appCallTxn);
 
       const txnGroup = algosdk.assignGroupID(txns);
-      const signedTxns = await myAlgoConnect.signTransaction(txns.map(txn => txn.toByte()));
+      const signedTxns = await this.sessionWallet!.signTxn(txns);
 
       const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
       console.log("Transaction : " + results[1].txId);
@@ -280,7 +232,7 @@ export class WalletsConnectService {
       txns.push(appCallTxn);
 
       const txnGroup = algosdk.assignGroupID(txns);
-      const signedTxns = await myAlgoConnect.signTransaction(txns.map(txn => txn.toByte()));
+      const signedTxns = await this.sessionWallet!.signTxn(txns);
 
       const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
       console.log("Transaction : " + results[1].txId);

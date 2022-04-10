@@ -20,13 +20,19 @@ export class HeaderComponent implements OnInit {
   public changeRespoNavAndProfileIconsCounter = 1;
   public SearchRespoOpened = false;
 
+  public isLoggedIn: boolean = false;
+
   @Output() themeWasChanged = new EventEmitter<boolean>();
 
   constructor(
     private router: Router,
+    private _walletsConnectService: WalletsConnectService,
   ) { }
 
   ngOnInit(): void {
+    if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
+      this.isLoggedIn = true;
+    }
   }
 
   openAvatar() {

@@ -13,7 +13,6 @@ export class PopUpComponent implements OnInit {
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
-    private _walletConnectConnector: WalletsConnectService,
   ) { }
 
   ngOnInit(): void {
@@ -25,13 +24,20 @@ export class PopUpComponent implements OnInit {
 
   async setelectWalletConnect(value: string) {
     if (value === 'MyAlgoWallet') {
-      await of(this._walletsConnectService.connectToMyAlgo()).toPromise();
+      await this._walletsConnectService.connect('my-algo-connect');
+      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
+        this.isConnectedToWallet.emit(false);
+        console.log('emited')
+        console.log('Connected to MyAlgoWallet')
+      }
+    } else if (value == 'WalletConnect') {
+      await this._walletsConnectService.connect('wallet-connect');
       if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
         this.isConnectedToWallet.emit(false);
         console.log('Connected to MyAlgoWallet')
       }
-    } else if (value == 'WalletConnect') {
-      this._walletsConnectService.connectToWalletConnect();
+    } else if (value == 'AlgoSigner') {
+      await this._walletsConnectService.connect('algo-signer');
       if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
         this.isConnectedToWallet.emit(false);
         console.log('Connected to MyAlgoWallet')
