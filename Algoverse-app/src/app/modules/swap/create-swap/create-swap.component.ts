@@ -68,7 +68,7 @@ export class CreateSwapComponent implements OnInit {
     }
   }
 
-  selectedAsset(assetID: string) {
+  onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
 
     const asset = this.getAsset(assetID);

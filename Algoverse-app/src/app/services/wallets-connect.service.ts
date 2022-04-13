@@ -24,7 +24,7 @@ export class WalletsConnectService {
 
   connect = async (choice: string) => {
     console.log('choice', choice);
-    this.sessionWallet = new SessionWallet("TestNet");
+    this.sessionWallet = new SessionWallet("TestNet", undefined, choice);
 
     if (!await this.sessionWallet.connect()) return alert("Couldnt connect")
 
@@ -164,6 +164,7 @@ export class WalletsConnectService {
 
   createBid = async (params: any): Promise<number> => {
     try {
+      console.log('params', params)
       const suggestedParams = await getTransactionParams();
       let txns = [];
       let tokens = [Number(params.assetID)];
@@ -183,11 +184,22 @@ export class WalletsConnectService {
         from: this.myAlgoAddress[0],
         appIndex: environment.BID_APP_ID,
         note: new Uint8Array(Buffer.from("Place bid")),
-        appArgs: [new Uint8Array(Buffer.from("bid")), algosdk.encodeUint64(Number(params.amount))],
+        appArgs: [new Uint8Array([...Buffer.from("bid")]), algosdk.encodeUint64(Number(params.amount))],
         accounts: [params.bidIndex],
         foreignAssets: tokens,
         suggestedParams,
       });
+      // const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+      //   from: this.myAlgoAddress[0],
+      //   appIndex: 563,
+      //   note: new Uint8Array(Buffer.from("Place bid")),
+      //   appArgs: [new Uint8Array([...Buffer.from("bid")]), algosdk.encodeUint64(1)],
+      //   accounts: ["FIJ2QNMSKJJQKZGU3ZVW644HOQF425OPUZ5XIN5AWO6KWYRG2OVKG34NVQ"],
+      //   foreignAssets: [12],
+      //   suggestedParams,
+      // });
+
+      console.log("appCallTxn", appCallTxn)
       txns.push(appCallTxn);
 
       const txnGroup = algosdk.assignGroupID(txns);
@@ -247,31 +259,59 @@ export class WalletsConnectService {
     return 0;
   }
 
-  createAuction = async (params: any) => {
-    let result = [];
+  createAuction = async (): Promise<any> => {
+    let result = {
+      appId: 0,
+      paidMinimumBalance: false
+    }
 
     try {
       const algod = getAlgodClient();
       const algodIndexer = new Indexer(environment.ALGOD_TOKEN, environment.ALGOD_INDEXER_ADDRESS, 8980);
 
-      if (Array.isArray(this.myAlgoAddress) && this.myAlgoAddress.length > 0) {
-        const accountInfo = await algod.accountInformation(this.myAlgoAddress[0]).do();
-        console.log('accountInfo', accountInfo);
+      const suggestedParams = await getTransactionParams();
+      const approvalProgram = Uint8Array.from([4, 129, 1, 67]);
+      const clearProgram = Uint8Array.from([3, 129, 1, 67]);
 
-        if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
-          for (let assetInfo of accountInfo.assets) {
-            const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
-            console.log('asset-id:' + assetInfo['asset-id'], asset);
-            result.push(asset);
-          }
-        }
+      const createAppTxn = algosdk.makeApplicationCreateTxnFromObject({
+        from: this.sessionWallet!.getDefaultAccount(),
+        approvalProgram,
+        clearProgram,
+        numGlobalInts: 1,
+        numGlobalByteSlices: 2,
+        numLocalInts: 8,
+        numLocalByteSlices: 2,
+        onComplete: algosdk.OnApplicationComplete.NoOpOC,
+        note: new Uint8Array(Buffer.from("Create Auction App")),
+        foreignApps: [environment.STORE_APP_ID],
+        accounts: [getApplicationAddress(environment.STAKING_APP_ID), environment.TEAM_WALLET_ADDRESS],
+        suggestedParams,
+      })
 
-        // const accountInfo = algodIndexer.lookupAccountByID(this.myAlgoAddress[0]);
-        // console.log('accountInfo', accountInfo);
-        // const accounts = await algodIndexer.searchAccounts().do();
-        // console.log('accounts', accounts);
-        // const assets = await algodIndexer.searchForAssets().do();
-        // console.log('assets', assets);
+      const signedTxns = await this.sessionWallet!.signTxn([createAppTxn]);
+      const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+      await waitForTransaction(client, results.txId);
+      console.log("Transaction : ", results);
+      const txRes = await algod.pendingTransactionInformation(results.txId).do();
+      console.log('appCreateResult', txRes);
+      result.appId = txRes['application-index'];
+
+      if (result.appId) {
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(result.appId),
+          amount: Number(100000),
+          note: new Uint8Array(Buffer.from("Payment for created app minimum balance.")),
+          suggestedParams,
+        });
+
+        const signedPayTxns = await this.sessionWallet!.signTxn([payTxn]);
+        const paidResults = await client.sendRawTransaction(signedPayTxns.map(txn => txn.blob)).do();
+        await waitForTransaction(client, paidResults.txId);
+        console.log("Transaction : " + paidResults.txId);
+
+        result.paidMinimumBalance = true
+        return result;
       }
 
     } catch (err) {

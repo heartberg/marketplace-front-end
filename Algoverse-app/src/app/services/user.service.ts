@@ -91,4 +91,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
+  createAuction(params: any): Observable<any> {
+    const url = `${this.baseUrl}auction/create`;
+    return this._http.post(url, params);
+  }
+
 }

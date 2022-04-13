@@ -103,6 +103,7 @@ export class CreateBidComponent implements OnInit {
         if (res.optinPrice > 0) {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
+            console.log(this.selectedAssetID)
             this._userService.setupBid(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
                 console.log('setup bid response: ', res);
