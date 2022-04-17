@@ -119,14 +119,30 @@ export class CreateSwapComponent implements OnInit {
   }
 
   createSwap() {
-    this._userService.getSwapIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
+    if (!this._walletsConnectService.sessionWallet!.getDefaultAccount()) {
+      return;
+    }
+
+    console.log('start create swap')
+    const getIndexParams = {
+      senderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+      offerAssetId: this.selectedAssetID,
+      acceptAssetId: this.acceptAssetId
+    }
+    this._userService.getSwapIndex(getIndexParams).subscribe(
       async (res) => {
         console.log('swapIndex', res);
         const indexAddress = res.indexAddress;
+        const setupParams = {
+          indexAddress,
+          offerAssetId: this.selectedAssetID,
+          acceptAssetId: this.acceptAssetId
+        }
+
         if (res.optinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(res.IndexAddress, res.optinPrice);
+          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
-            this._userService.setupSwap(indexAddress, [this.selectedAssetID, this.acceptAssetId]).subscribe(
+            this._userService.setupSwap(setupParams).subscribe(
               (res) => {
                 console.log('setup swap response: ', res);
                 this.sendCreateSwapRequest(indexAddress);
@@ -142,37 +158,15 @@ export class CreateSwapComponent implements OnInit {
             this.sendCreateSwapRequest(indexAddress);
 
           } else {
-            if (!(await isOptinAsset(this.selectedAssetID, getApplicationAddress(environment.BID_APP_ID)))) {
-              this._userService.setupSwap(indexAddress, [this.selectedAssetID]).subscribe(
-                (res) => {
-                  console.log('setup swap response: ', res);
-                  this.sendCreateSwapRequest(indexAddress);
-                },
-                (err) => {
-                  console.log('setup swap error: ', err);
-                }
-              );
-            } else if (!(await isOptinAsset(this.acceptAssetId, getApplicationAddress(environment.BID_APP_ID)))) {
-              this._userService.setupSwap(indexAddress, [this.acceptAssetId]).subscribe(
-                (res) => {
-                  console.log('setup swap response: ', res);
-                  this.sendCreateSwapRequest(indexAddress);
-                },
-                (err) => {
-                  console.log('setup swap error: ', err);
-                }
-              );
-            } else {
-              this._userService.setupSwap(indexAddress, [this.selectedAssetID, this.acceptAssetId]).subscribe(
-                (res) => {
-                  console.log('setup swap response: ', res);
-                  this.sendCreateSwapRequest(indexAddress);
-                },
-                (err) => {
-                  console.log('setup swap error: ', err);
-                }
-              );
-            }
+            this._userService.setupSwap(setupParams).subscribe(
+              (res) => {
+                console.log('setup swap response: ', res);
+                this.sendCreateSwapRequest(indexAddress);
+              },
+              (err) => {
+                console.log('setup swap error: ', err);
+              }
+            );
           }
         }
       },

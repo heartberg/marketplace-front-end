@@ -72,17 +72,13 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  getSwapIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${senderAddress}`;
+  getSwapIndex(params: any): Observable<any> {
+    const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${params.senderAddress}&offerAssetId=${params.offerAssetId}&acceptAssetId=${params.acceptAssetId}`;
     return this._http.get<any>(url);
   }
 
-  setupSwap(indexAddress: string, tokens: number[]): Observable<any> {
-    const url = `${this.baseUrl}swap/setUpSwap?indexAddress=${indexAddress}`;
-    const params = {
-      indexAddress,
-      tokens
-    }
+  setupSwap(params: any): Observable<any> {
+    const url = `${this.baseUrl}swap/setUpSwap`;
     return this._http.post(url, params);
   }
 

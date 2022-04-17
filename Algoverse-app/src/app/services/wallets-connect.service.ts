@@ -220,14 +220,15 @@ export class WalletsConnectService {
 
   createSwap = async (params: any) => {
     try {
+      console.log('create swap params', params)
       const suggestedParams = await getTransactionParams();
       let txns = [];
 
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.myAlgoAddress[0],
-        to: getApplicationAddress(environment.BID_APP_ID),
-        amount: params.amount,
-        assetIndex: params.assetID,
+        to: getApplicationAddress(environment.SWAP_APP_ID),
+        amount: Number(params.amount),
+        assetIndex: Number(params.assetID),
         note: new Uint8Array(Buffer.from("Amount to place swap")),
         suggestedParams: { ...suggestedParams },
       });
@@ -235,19 +236,21 @@ export class WalletsConnectService {
 
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
         from: this.myAlgoAddress[0],
-        appIndex: environment.BID_APP_ID,
+        appIndex: environment.SWAP_APP_ID,
         note: new Uint8Array(Buffer.from("Place swap")),
-        appArgs: [new Uint8Array(Buffer.from("swap")), algosdk.encodeUint64(params.acceptAssetAmount)],
+        appArgs: [new Uint8Array(Buffer.from("swap")), algosdk.encodeUint64(Number(params.acceptAssetAmount))],
         accounts: [params.swapIndex],
+        foreignAssets: [Number(params.assetID), Number(params.acceptAssetIndex)],
         suggestedParams: { ...suggestedParams },
       });
       txns.push(appCallTxn);
 
       const txnGroup = algosdk.assignGroupID(txns);
       const signedTxns = await this.sessionWallet!.signTxn(txns);
+      console.log('signedTxns', signedTxns)
 
       const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
-      console.log("Transaction : " + results[1].txId);
+      console.log("Transaction : " + results);
       await waitForTransaction(client, results[1].txId);
 
       return results[1].txId;
