@@ -182,17 +182,17 @@ export class CreateTradeComponent implements OnInit {
         assetId: this.selectedAssetID,
         asset: {
           assetId: this.selectedAssetID,
-          name: asset.name,
-          unitName: asset['unit-name'],
-          supply: asset.total,
-          assetURL: "string",
-          creatorWallet: asset.creator,
-          freezeAddress: asset.freeze?asset.freeze:'',
-          managerAddress: asset.manager?asset.manager:'',
-          clawbackAddress: asset.clawback?asset.clawback:'',
-          reserveAddress: asset.reserve?asset.reserve:'',
-          metadata: asset['metadata-hash']?asset['metadata-hash']:'',
-          externalLink: asset.url?asset.url:'',
+          name: asset.params.name,
+          unitName: asset.params['unit-name'],
+          supply: asset.params.total,
+          assetURL: asset.params.url?asset.params.url:'',
+          creatorWallet: asset.params.creator,
+          freezeAddress: asset.params.freeze?asset.params.freeze:'',
+          managerAddress: asset.params.manager?asset.params.manager:'',
+          clawbackAddress: asset.params.clawback?asset.params.clawback:'',
+          reserveAddress: asset.params.reserve?asset.params.reserve:'',
+          metadata: asset.params['metadata-hash']?asset.params['metadata-hash']:'',
+          externalLink: asset.params.url?asset.params.url:'',
           description: asset.description?asset.description:'',
           assetCollectionID: "1",
           assetCollection: {
@@ -219,7 +219,6 @@ export class CreateTradeComponent implements OnInit {
         creatorWallet: this._walletsConnectService.myAlgoAddress[0],
         amount: this.amount
       }
-      console.log(params2)
       this._userService.createTrade(params2).subscribe(
         res => {
           console.log("Created trade successfully");

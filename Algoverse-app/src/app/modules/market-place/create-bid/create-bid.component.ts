@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 export class CreateBidComponent implements OnInit {
 
   private selectedAssetID = 0;
+  private mSelectedAsset: any = null;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
 
@@ -49,8 +50,14 @@ export class CreateBidComponent implements OnInit {
     this.selectedAssetID = +assetID;
 
     const asset = await this.getAsset(assetID);
+    if (!asset) {
+      alert('Invalid asset id');
+      return;
+    }
+
     console.log(asset);
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+    this.mSelectedAsset = asset;
 
     if (asset.params.url) {
       this._userService.loadMetaData(asset.params.url).subscribe(
@@ -79,22 +86,21 @@ export class CreateBidComponent implements OnInit {
     console.log(this.royalty);
   }
 
-  blurAssetIDEvent(event: any){
-    this.price = event.target.value;
-    console.log(this.price);
-  }
-
   blurAmountEvent(event: any){
     this.amount = event.target.value;
     console.log(this.amount);
   }
 
   blurAlgoEvent(event: any) {
-    this.selectedAssetID = event.target.value;
-    console.log(this.selectedAssetID);
+    this.price = event.target.value;
+    console.log(this.price);
   }
 
   async createBid() {
+    if (!this.mSelectedAsset) {
+      alert('Please select valid asset id');
+      return;
+    }
     console.log('bid start');
     this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
       async (res) => {
@@ -155,18 +161,53 @@ export class CreateBidComponent implements OnInit {
     const txID = await this._walletsConnectService.createBid(params1);
     console.log('txID', txID);
 
-    if (txID) {
+    const asset = this.mSelectedAsset;
+    if (txID && asset) {
       const params2 = {
         bidId: txID,
         assetId: this.selectedAssetID,
+        asset: {
+          assetId: this.selectedAssetID,
+          name: asset.params.name,
+          unitName: asset.params['unit-name'],
+          supply: asset.params.total,
+          assetURL: asset.params.url?asset.params.url:'',
+          creatorWallet: asset.params.creator,
+          freezeAddress: asset.params.freeze?asset.params.freeze:'',
+          managerAddress: asset.params.manager?asset.params.manager:'',
+          clawbackAddress: asset.params.clawback?asset.params.clawback:'',
+          reserveAddress: asset.params.reserve?asset.params.reserve:'',
+          metadata: asset.params['metadata-hash']?asset.params['metadata-hash']:'',
+          externalLink: asset.params.url?asset.params.url:'',
+          description: asset.description?asset.description:'',
+          assetCollectionID: "1",
+          assetCollection: {
+            assetCollectionID: "1",
+            name: "string1",
+            icon: "string",
+            banner: "string",
+            featuredImage: "string",
+            description: "string",
+            royalties: 0,
+            customURL: "string",
+            category: "string",
+            website: "string",
+            creatorWallet: "string"
+          },
+          properties: Object.entries(this.metaDataProperties),
+          file: "string",
+          cover: "string",
+          royalties: 0,
+          category: "string"
+        },
         indexAddress: indexAddress,
         price: this.price,
-        bidderAddress: this._walletsConnectService.myAlgoAddress[0],
+        bidderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         amount: this.amount
       }
       this._userService.createBid(params2).subscribe(
         res => {
-          console.log('created bid on backend', res)
+          console.log('successfully created bid on backend')
         },
         error => console.log('created bid on backend error', error)
       );
