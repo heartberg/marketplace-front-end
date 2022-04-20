@@ -55,6 +55,13 @@ export class WalletsConnectService {
     this.myAlgoAddress = []
   }
 
+  async getAsset(assetID: number): Promise<any> {
+    const client = getAlgodClient();
+    const asset = await client.getAssetByID(assetID).do();
+    console.log(asset);
+    return asset;
+  }
+
   getOwnAssets = async () => {
     let result = [];
 
@@ -252,10 +259,10 @@ export class WalletsConnectService {
       console.log('signedTxns', signedTxns)
 
       const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
-      console.log("Transaction : " + results);
-      await waitForTransaction(client, results[1].txId);
+      console.log("Transaction : ", results);
+      await waitForTransaction(client, results.txId);
 
-      return results[1].txId;
+      return results.txId;
 
     } catch (err) {
       console.error(err);

@@ -49,7 +49,7 @@ export class CreateBidComponent implements OnInit {
   async selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
 
-    const asset = await this.getAsset(assetID);
+    const asset = await this._walletsConnectService.getAsset(+assetID);
     if (!asset) {
       alert('Invalid asset id');
       return;
@@ -72,13 +72,6 @@ export class CreateBidComponent implements OnInit {
         (error) => console.log('error', error)
       )
     }
-  }
-
-  async getAsset(assetID: string): Promise<any> {
-    const client = getAlgodClient();
-    const asset = await client.getAssetByID(+assetID).do();
-    console.log(asset);
-    return asset;
   }
 
   blurRoyaltyEvent(event: any){
