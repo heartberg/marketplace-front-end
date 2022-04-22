@@ -207,4 +207,15 @@ export class CreateBidComponent implements OnInit {
     }
   }
 
+  async cancelBid(bidIndex: string) {
+    console.log('start cancel trade');
+    const result = await this._walletsConnectService.cancelTrade(bidIndex);
+    if (result) {
+      const result1 = this._userService.cancelTrade(bidIndex);
+      if (result1) {
+        console.log('Successfully cancelled')
+      }
+    }
+  }
+
 }

@@ -169,6 +169,38 @@ export class WalletsConnectService {
     return 0;
   }
 
+  cancelTrade = async (tradeIndex: string): Promise<boolean> => {
+    try {
+      const client = getAlgodClient();
+      const indexTokenID = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TA");
+
+      if (indexTokenID > 0 && indexTokenAmount > 0) {
+        const suggestedParams = await getTransactionParams();
+        suggestedParams.fee = 2000;
+
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.myAlgoAddress[0],
+          appIndex: environment.TRADE_APP_ID,
+          note: new Uint8Array(Buffer.from("Cancel trade")),
+          appArgs: [new Uint8Array([...Buffer.from("cancel")])],
+          accounts: [tradeIndex],
+          foreignAssets: [indexTokenID],
+          suggestedParams,
+        });
+        const result: any = await this.sessionWallet!.signTxn([appCallTxn])
+        console.log("Cancel Transaction", JSON.stringify(result));
+        await waitForTransaction(client, result.txId);
+
+        return true;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
+  }
+
   createBid = async (params: any): Promise<number> => {
     try {
       console.log('params', params)
@@ -223,6 +255,37 @@ export class WalletsConnectService {
     }
 
     return 0;
+  }
+
+  cancelBid = async (bidIndex: string): Promise<boolean> => {
+    try {
+      const client = getAlgodClient();
+      const indexTokenID = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, bidIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, bidIndex, "TA");
+
+      if (indexTokenID > 0 && indexTokenAmount > 0) {
+        const suggestedParams = await getTransactionParams();
+        suggestedParams.fee = 2000;
+
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.BID_APP_ID,
+          note: new Uint8Array(Buffer.from("Cancel bid")),
+          appArgs: [new Uint8Array([...Buffer.from("cancel")])],
+          accounts: [bidIndex],
+          suggestedParams,
+        });
+        const result: any = await this.sessionWallet!.signTxn([appCallTxn])
+        console.log("Cancel Transaction", JSON.stringify(result));
+        await waitForTransaction(client, result.txId);
+
+        return true;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
   }
 
   createSwap = async (params: any) => {

@@ -292,5 +292,12 @@ export class CreateSwapComponent implements OnInit {
     }
   }
 
+  async cancelTrade(tradeIndex: string) {
+    const result = this._walletsConnectService.cancelTrade(tradeIndex);
+    if (result) {
+      this._userService.cancelTrade(tradeIndex);
+    }
+  }
+
 
 }

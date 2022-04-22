@@ -229,4 +229,15 @@ export class CreateTradeComponent implements OnInit {
     }
   }
 
+  async cancelTrade(tradeIndex: string) {
+    console.log('start cancel trade');
+    const result = await this._walletsConnectService.cancelTrade(tradeIndex);
+    if (result) {
+      const result1 = this._userService.cancelTrade(tradeIndex);
+      if (result1) {
+        console.log('Successfully cancelled')
+      }
+    }
+  }
+
 }

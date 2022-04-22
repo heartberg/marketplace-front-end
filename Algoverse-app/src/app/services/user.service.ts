@@ -53,6 +53,11 @@ export class UserService {
     return this._http.post(url, params);
   }
 
+  cancelTrade(tradeIndex: string): Observable<any> {
+    const url = `${this.baseUrl}trade/cancel`;
+    return this._http.post(url, {tradeIndex});
+  }
+
   getBidIndex(senderAddress: string, assetId: number): Observable<any> {
     const url = `${this.baseUrl}bid/getBidIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
     return this._http.get<any>(url);
@@ -66,6 +71,11 @@ export class UserService {
   createBid(params: any): Observable<any> {
     const url = `${this.baseUrl}bid/place`;
     return this._http.post(url, params);
+  }
+
+  cancelBid(bidIndex: string): Observable<any> {
+    const url = `${this.baseUrl}bid/cancel`;
+    return this._http.post(url, {bidIndex});
   }
 
   loadMetaData(url: string): Observable<any> {
