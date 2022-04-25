@@ -97,9 +97,24 @@ export class UserService {
     return this._http.post(url, params);
   }
 
+  cancelSwap(swapIndex: string): Observable<any> {
+    const url = `${this.baseUrl}swap/cancel`;
+    return this._http.post(url, {swapIndex});
+  }
+
+  getAuctionIndex(senderAddress: string, assetId: number) {
+    const url = `${this.baseUrl}bid/getAuctionIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
+    return this._http.get<any>(url);
+  }
+
   createAuction(params: any): Observable<any> {
     const url = `${this.baseUrl}auction/create`;
     return this._http.post(url, params);
+  }
+
+  cancelAuction(auctionIndex: string): Observable<any> {
+    const url = `${this.baseUrl}auction/cancel`;
+    return this._http.post(url, {auctionIndex});
   }
 
 }

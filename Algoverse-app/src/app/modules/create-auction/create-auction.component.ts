@@ -14,9 +14,15 @@ export class CreateAuctionComponent implements OnInit {
   private assets: any[] = [];
   public assetIDs: string[] = [];
   public maxSupply = 1;
+  public selectedAssetID = 0;
   public selectedAsset: any = {};
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
+  public price = 0;
+  public assetAmount = 0;
+  public minimumIncrement = 0;
+  public startTime = "";
+  public endTime = "";
 
   public royalty: string = "0";
 
@@ -42,6 +48,7 @@ export class CreateAuctionComponent implements OnInit {
 
     if (this.assets.length > 0) {
       this.selectedAsset = this.assets[0];
+      this.selectedAssetID = this.selectedAsset.index;
       this.selectedAssetDescription = `Name: ${this.selectedAsset.params.name} \nUnitName: ${this.selectedAsset.params['unit-name']}`;
 
       if (this.selectedAsset.params.url) {
@@ -62,6 +69,7 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   onSelectedAsset(assetID: string) {
+    this.selectedAssetID = +assetID;
     const asset = this.getAsset(assetID);
     this.selectedAsset = asset;
     console.log(asset);
@@ -95,19 +103,74 @@ export class CreateAuctionComponent implements OnInit {
     console.log(this.royalty);
   }
 
+  blurPriceEvent(event: any) {
+    this.price = event.target.value;
+    console.log(this.price);
+  }
+
+  blurAssetAmountEvent(event: any) {
+    this.assetAmount = event.target.value;
+    console.log(this.assetAmount);
+  }
+
+  blurMinimumIncrementEvent(event: any) {
+    this.minimumIncrement = event.target.value;
+    console.log(this.minimumIncrement);
+  }
+
+  blurStartTimeEvent(event: any) {
+    this.startTime = event.target.value;
+    console.log(this.startTime);
+  }
+
+  endStartTimeEvent(event: any) {
+    this.endTime = event.target.value;
+    console.log(this.endTime);
+  }
+
   async createAuction() {
+    console.log('auction start');
+    this._userService.getAuctionIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount(), this.selectedAssetID).subscribe(
+      async (res) => {
+        console.log('auctionIndex', res);
+
+        const indexAddress = res.indexAddress;
+        if (res.optinPrice > 0) {
+          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
+          if (result) {
+            this.sendCreateAuctionRequest(indexAddress);
+          } else {
+            console.log('Failed on setup payment')
+          }
+        }
+
+        this.sendCreateAuctionRequest(indexAddress);
+      },
+      (error) => console.log('error', error)
+    );
+  }
+
+  async sendCreateAuctionRequest(indexAddress: string) {
     console.log('started creating auction');
     console.log(this.royalty);
 
-    const result = await this._walletsConnectService.createAuction()
-    if (!result.appId) {
-      console.log('failed creating auction');
+    const params1 = {
+      bidIndex: indexAddress,
+      assetID: this.selectedAssetID,
+      amount: this.assetAmount,
+      price: this.price,
+      startTime: this.startTime,
+      endTime: this.endTime,
+      minimumIncrement: this.minimumIncrement,
     }
+    const txID = await this._walletsConnectService.createAuction(params1);
+    console.log('txID', txID);
 
     const asset = this.selectedAsset.params;
     console.log(asset);
     const params = {
-      smartContractId: "" + result.appId,
+      auctionID: txID,
+      auctionIndex: indexAddress,
       assetId: this.selectedAsset.index,
       asset: {
         assetId: this.selectedAsset.index,
@@ -145,12 +208,12 @@ export class CreateAuctionComponent implements OnInit {
       },
       amount: 2,
       creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
-      startTime: "2022-04-13T18:58:36.460Z",
-      closingTime: "2022-04-13T18:58:36.460Z",
-      isPaidMinimumBalance: result.paidMinimumBalance,
-      minimumBid: 0
+      startTime: this.startTime,
+      closingTime: this.endTime,
+      minimumIncrement: this.minimumIncrement
     }
     console.log('params', params)
+
     this._userService.createAuction(params).subscribe(
       res => {
         console.log("Created auction successfully");
@@ -160,32 +223,15 @@ export class CreateAuctionComponent implements OnInit {
     );
   }
 
-  async sendCreateAuctionRequest(indexAddress: string) {
-    // const params1 = {
-    //   assetID: this.selectedAssetID,
-    //   amount: this.amount,
-    //   price: this.price,
-    //   bidIndex: indexAddress
-    // }
-    // const txID = await this._walletsConnectService.createBid(params1);
-    // console.log('txID', txID);
-
-    // if (txID) {
-    //   const params2 = {
-    //     bidId: txID,
-    //     assetId: this.selectedAssetID,
-    //     indexAddress: indexAddress,
-    //     price: this.price,
-    //     bidderAddress: this._walletsConnectService.myAlgoAddress[0],
-    //     amount: this.amount
-    //   }
-    //   this._userService.createBid(params2).subscribe(
-    //     res => {
-    //       console.log('created bid on backend', res)
-    //     },
-    //     error => console.log('created bid on backend error', error)
-    //   );
-    // }
+  async cancelAuction(bidIndex: string) {
+    console.log('start cancel trade');
+    const result = await this._walletsConnectService.cancelAuction(bidIndex);
+    if (result) {
+      const result1 = this._userService.cancelAuction(bidIndex);
+      if (result1) {
+        console.log('Successfully cancelled')
+      }
+    }
   }
 
 }
