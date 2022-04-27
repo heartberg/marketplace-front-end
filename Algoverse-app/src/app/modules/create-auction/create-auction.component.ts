@@ -123,7 +123,7 @@ export class CreateAuctionComponent implements OnInit {
     console.log(this.startTime);
   }
 
-  endStartTimeEvent(event: any) {
+  blurEndTimeEvent(event: any) {
     this.endTime = event.target.value;
     console.log(this.endTime);
   }
@@ -138,13 +138,16 @@ export class CreateAuctionComponent implements OnInit {
         if (res.optinPrice > 0) {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
-            this.sendCreateAuctionRequest(indexAddress);
+            result = this._userService.setupAuction(indexAddress);
+            if (result) {
+              this.sendCreateAuctionRequest(indexAddress);
+            }
           } else {
-            console.log('Failed on setup payment')
+            console.log('Failed on setup payment');
           }
+        } else {
+          this.sendCreateAuctionRequest(indexAddress);
         }
-
-        this.sendCreateAuctionRequest(indexAddress);
       },
       (error) => console.log('error', error)
     );
@@ -152,75 +155,76 @@ export class CreateAuctionComponent implements OnInit {
 
   async sendCreateAuctionRequest(indexAddress: string) {
     console.log('started creating auction');
-    console.log(this.royalty);
 
     const params1 = {
-      bidIndex: indexAddress,
+      auctionIndex: indexAddress,
       assetID: this.selectedAssetID,
       amount: this.assetAmount,
-      price: this.price,
-      startTime: this.startTime,
-      endTime: this.endTime,
+      reserve: this.price,
+      startTime: Date.parse(this.startTime)/1000,
+      endTime: Date.parse(this.endTime)/1000,
       minimumIncrement: this.minimumIncrement,
     }
     const txID = await this._walletsConnectService.createAuction(params1);
     console.log('txID', txID);
 
-    const asset = this.selectedAsset.params;
-    console.log(asset);
-    const params = {
-      auctionID: txID,
-      auctionIndex: indexAddress,
-      assetId: this.selectedAsset.index,
-      asset: {
+    if (txID) {
+      const asset = this.selectedAsset.params;
+      console.log(asset);
+      const params = {
+        auctionID: txID,
+        auctionIndex: indexAddress,
         assetId: this.selectedAsset.index,
-        name: asset.name,
-        unitName: asset['unit-name'],
-        supply: asset.total,
-        assetURL: "string",
-        creatorWallet: asset.creator,
-        freezeAddress: asset.freeze?asset.freeze:'',
-        managerAddress: asset.manager?asset.manager:'',
-        clawbackAddress: asset.clawback?asset.clawback:'',
-        reserveAddress: asset.reserve?asset.reserve:'',
-        metadata: asset['metadata-hash']?asset['metadata-hash']:'',
-        externalLink: asset.url?asset.url:'',
-        description: asset.description?asset.description:'',
-        assetCollectionID: "1",
-        assetCollection: {
+        asset: {
+          assetId: this.selectedAsset.index,
+          name: asset.name,
+          unitName: asset['unit-name'],
+          supply: asset.total,
+          assetURL: "string",
+          creatorWallet: asset.creator,
+          freezeAddress: asset.freeze?asset.freeze:'',
+          managerAddress: asset.manager?asset.manager:'',
+          clawbackAddress: asset.clawback?asset.clawback:'',
+          reserveAddress: asset.reserve?asset.reserve:'',
+          metadata: asset['metadata-hash']?asset['metadata-hash']:'',
+          externalLink: asset.url?asset.url:'',
+          description: asset.description?asset.description:'',
           assetCollectionID: "1",
-          name: "string1",
-          icon: "string",
-          banner: "string",
-          featuredImage: "string",
-          description: "string",
+          assetCollection: {
+            assetCollectionID: "1",
+            name: "string1",
+            icon: "string",
+            banner: "string",
+            featuredImage: "string",
+            description: "string",
+            royalties: 0,
+            customURL: "string",
+            category: "string",
+            website: "string",
+            creatorWallet: "string"
+          },
+          properties: Object.entries(this.metaDataProperties),
+          file: "string",
+          cover: "string",
           royalties: 0,
-          customURL: "string",
-          category: "string",
-          website: "string",
-          creatorWallet: "string"
+          category: "string"
         },
-        properties: Object.entries(this.metaDataProperties),
-        file: "string",
-        cover: "string",
-        royalties: 0,
-        category: "string"
-      },
-      amount: 2,
-      creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
-      startTime: this.startTime,
-      closingTime: this.endTime,
-      minimumIncrement: this.minimumIncrement
-    }
-    console.log('params', params)
+        amount: 2,
+        creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
+        startTime: this.startTime,
+        closingTime: this.endTime,
+        minimumIncrement: this.minimumIncrement
+      }
+      console.log('params', params)
 
-    this._userService.createAuction(params).subscribe(
-      res => {
-        console.log("Created auction successfully");
-        console.log(res)
-      },
-      error => console.log(error)
-    );
+      this._userService.createAuction(params).subscribe(
+        res => {
+          console.log("Created auction successfully");
+          console.log(res)
+        },
+        error => console.log(error)
+      );
+    }
   }
 
   async cancelAuction(bidIndex: string) {

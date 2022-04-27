@@ -33,12 +33,12 @@ export class WalletsConnectService {
     this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
 
     if (this.myAlgoAddress.length > 0) {
-      this.userServce.loadProfile(this.myAlgoAddress[0]).subscribe(
+      this.userServce.loadProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => console.log('profile', result),
         (error) => {
           console.log('error', error)
           if (error.status == 404) {
-            this.userServce.createProfile(this.myAlgoAddress[0]).subscribe(
+            this.userServce.createProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
               (result) => console.log('profile', result),
               (error) => console.log('error', error),
             );
@@ -70,7 +70,7 @@ export class WalletsConnectService {
       const algodIndexer = new Indexer(environment.ALGOD_TOKEN, environment.ALGOD_INDEXER_ADDRESS, 8980);
 
       if (Array.isArray(this.myAlgoAddress) && this.myAlgoAddress.length > 0) {
-        const accountInfo = await algod.accountInformation(this.myAlgoAddress[0]).do();
+        const accountInfo = await algod.accountInformation(this.sessionWallet!.getDefaultAccount()).do();
         console.log('accountInfo', accountInfo);
 
         if (accountInfo.assets && Array.isArray(accountInfo.assets)) {
@@ -95,7 +95,7 @@ export class WalletsConnectService {
 
   payToSetUpIndex = async (rekeyedIndex: string, amount: number): Promise<any> => {
     try {
-      const txn = await singlePayTxn(this.myAlgoAddress[0], rekeyedIndex, amount, "Payment for trade setup to opt app into asset");
+      const txn = await singlePayTxn(this.sessionWallet!.getDefaultAccount(), rekeyedIndex, amount, "Payment for trade setup to opt app into asset");
       console.log('txn', txn);
       const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
       console.log('txId', signedTxn.txID);
@@ -132,7 +132,7 @@ export class WalletsConnectService {
       }
 
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.TRADE_APP_ID),
         amount: Number(params.amount),
         assetIndex: Number(params.assetID),
@@ -143,7 +143,7 @@ export class WalletsConnectService {
 
       suggestedParams.fee = 0;
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.TRADE_APP_ID,
         note: new Uint8Array(Buffer.from("Place trade")),
         appArgs: [new Uint8Array([...Buffer.from("trade")]), algosdk.encodeUint64(Number(params.price))],
@@ -180,7 +180,7 @@ export class WalletsConnectService {
         suggestedParams.fee = 2000;
 
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-          from: this.myAlgoAddress[0],
+          from: this.sessionWallet!.getDefaultAccount(),
           appIndex: environment.TRADE_APP_ID,
           note: new Uint8Array(Buffer.from("Cancel trade")),
           appArgs: [new Uint8Array([...Buffer.from("cancel")])],
@@ -211,7 +211,7 @@ export class WalletsConnectService {
       const client = getAlgodClient();
 
       const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.BID_APP_ID),
         amount: Number(params.price),
         note: new Uint8Array(Buffer.from("Amount to place bid")),
@@ -220,7 +220,7 @@ export class WalletsConnectService {
       txns.push(payTxn);
 
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.BID_APP_ID,
         note: new Uint8Array(Buffer.from("Place bid")),
         appArgs: [new Uint8Array([...Buffer.from("bid")]), algosdk.encodeUint64(Number(params.amount))],
@@ -229,7 +229,7 @@ export class WalletsConnectService {
         suggestedParams,
       });
       // const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-      //   from: this.myAlgoAddress[0],
+      //   from: this.sessionWallet!.getDefaultAccount(),
       //   appIndex: 563,
       //   note: new Uint8Array(Buffer.from("Place bid")),
       //   appArgs: [new Uint8Array([...Buffer.from("bid")]), algosdk.encodeUint64(1)],
@@ -295,7 +295,7 @@ export class WalletsConnectService {
       let txns = [];
 
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.SWAP_APP_ID),
         amount: Number(params.amount),
         assetIndex: Number(params.assetID),
@@ -306,7 +306,7 @@ export class WalletsConnectService {
       txns.push(tokenTxn);
 
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.SWAP_APP_ID,
         note: new Uint8Array(Buffer.from("Place swap")),
         appArgs: [new Uint8Array(Buffer.from("swap")), algosdk.encodeUint64(Number(params.acceptAssetAmount))],
@@ -345,7 +345,7 @@ export class WalletsConnectService {
         suggestedParams.fee = 2000;
 
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-          from: this.myAlgoAddress[0],
+          from: this.sessionWallet!.getDefaultAccount(),
           appIndex: environment.SWAP_APP_ID,
           note: new Uint8Array(Buffer.from("Cancel swap")),
           appArgs: [new Uint8Array([...Buffer.from("cancel")])],
@@ -430,21 +430,22 @@ export class WalletsConnectService {
 
   createAuction = async (params: any): Promise<any> => {
     try {
-      console.log(params);
+      console.log('params', params);
       const suggestedParams = await getTransactionParams();
       let txns = [];
       let tokens = [Number(params.assetID)];
 
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TK_ID");
-      const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TA");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TKA");
       if (indexTokenID !== 0 && indexTokenID > 0 && indexTokenAmount > 0 && indexTokenID != params.assetID) {
         tokens.push(indexTokenID);
       }
+      console.log('tokens', tokens);
 
       const fundingAmount = 101000;
       const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.AUCTION_APP_ID),
         amount: fundingAmount,
         note: new Uint8Array(Buffer.from("Amount to opt app into asset")),
@@ -453,7 +454,7 @@ export class WalletsConnectService {
       txns.push(payTxn);
 
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.AUCTION_APP_ID,
         note: new Uint8Array(Buffer.from("Place auction")),
         appArgs: [new Uint8Array([...Buffer.from("setup")]),
@@ -469,7 +470,7 @@ export class WalletsConnectService {
       txns.push(appCallTxn);
 
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-        from: this.myAlgoAddress[0],
+        from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.AUCTION_APP_ID),
         amount: Number(params.amount),
         assetIndex: Number(params.assetID),
@@ -505,7 +506,7 @@ export class WalletsConnectService {
         suggestedParams.fee = 2000;
 
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-          from: this.myAlgoAddress[0],
+          from: this.sessionWallet!.getDefaultAccount(),
           appIndex: environment.SWAP_APP_ID,
           note: new Uint8Array(Buffer.from("Cancel swap")),
           appArgs: [new Uint8Array([...Buffer.from("cancel")])],

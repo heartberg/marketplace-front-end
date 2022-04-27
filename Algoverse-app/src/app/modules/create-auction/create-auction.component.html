@@ -83,7 +83,7 @@
             <input type="date" placeholder="" class="input-costum">
           </div>
           <div class="price wrapper-border">
-            <h4 class="priceheader">Price</h4>
+            <h4 class="priceheader">Reserve</h4>
             <input type="text" placeholder="Enter price for the offered item" class="input-costum" (blur)="blurPriceEvent($event)">
           </div>
           <div class="wrapper-border">
@@ -91,13 +91,13 @@
               <div class="col-md-6">
                 <div class="price">
                   <h4 class="priceheader">Starting time</h4>
-                  <input type="text" placeholder="12:00" class="input-costum" (blur)="blurStartTimeEvent($event)">
+                  <input type="datetime-local" placeholder="12:00" class="input-costum" (blur)="blurStartTimeEvent($event)">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="price ">
                   <h4 class="priceheader">Ending time</h4>
-                  <input type="text" placeholder="15:00" class="input-costum" (blur)="blurEndTimeEvent($event)">
+                  <input type="datetime-local" placeholder="15:00" class="input-costum" (blur)="blurEndTimeEvent($event)">
                 </div>
               </div>
             </div>

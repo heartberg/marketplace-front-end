@@ -103,8 +103,13 @@ export class UserService {
   }
 
   getAuctionIndex(senderAddress: string, assetId: number) {
-    const url = `${this.baseUrl}bid/getAuctionIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
+    const url = `${this.baseUrl}auction/getAuctionIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
     return this._http.get<any>(url);
+  }
+
+  setupAuction(auctionIndex: string): Observable<any> {
+    const url = `${this.baseUrl}swap/setup?auctionIndex=auctionIndex`;
+    return this._http.get(url);
   }
 
   createAuction(params: any): Observable<any> {
