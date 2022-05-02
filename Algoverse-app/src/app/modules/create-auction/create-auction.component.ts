@@ -138,15 +138,36 @@ export class CreateAuctionComponent implements OnInit {
         if (res.optinPrice > 0) {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
-            result = this._userService.setupAuction(indexAddress);
-            if (result) {
-              this.sendCreateAuctionRequest(indexAddress);
-            }
+            this._userService.setupAuction(indexAddress).subscribe(
+              (res) => {
+                console.log('setup trade response: ', res);
+                if (res) {
+                  this.sendCreateAuctionRequest(indexAddress);
+                } else {
+                  console.log('Failed on setup auction');
+                }
+              },
+              (err) => {
+                console.log('setup trade error: ', err);
+              }
+            );
           } else {
-            console.log('Failed on setup payment');
+            console.log('Failed on setup auction');
           }
         } else {
-          this.sendCreateAuctionRequest(indexAddress);
+          this._userService.setupAuction(indexAddress).subscribe(
+            (res) => {
+              console.log('setup trade response: ', res);
+              if (res) {
+                this.sendCreateAuctionRequest(indexAddress);
+              } else {
+                console.log('Failed on setup auction');
+              }
+            },
+            (err) => {
+              console.log('setup trade error: ', err);
+            }
+          );
         }
       },
       (error) => console.log('error', error)

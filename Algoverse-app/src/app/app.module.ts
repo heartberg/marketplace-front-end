@@ -11,10 +11,12 @@ import {CarouselModule} from "./carousel/carousel.module";
 // import { CarouselComponent } from './carousel/carousel.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ItemsComponent } from './modules/profile/items/items.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ItemsComponent,
     // CarouselComponent,
   ],
   imports: [

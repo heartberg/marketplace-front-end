@@ -176,7 +176,7 @@ export const singleAssetOptInTxn = async (
     to: address,
     amount: 0,
     assetIndex,
-    note: new Uint8Array(Buffer.from("example note value")),
+    note: new Uint8Array(Buffer.from("Optin asset")),
     suggestedParams,
   });
 

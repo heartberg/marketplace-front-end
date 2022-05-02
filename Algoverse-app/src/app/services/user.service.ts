@@ -108,7 +108,7 @@ export class UserService {
   }
 
   setupAuction(auctionIndex: string): Observable<any> {
-    const url = `${this.baseUrl}swap/setup?auctionIndex=auctionIndex`;
+    const url = `${this.baseUrl}auction/setup?auctionIndex=${auctionIndex}`;
     return this._http.get(url);
   }
 

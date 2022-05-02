@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { async } from '@angular/core/testing';
-import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, getApplicationAddress } from 'algosdk';
+import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, getApplicationAddress, encodeAddress } from 'algosdk';
 import AccountInformation from 'algosdk/dist/types/src/client/v2/algod/accountInformation';
 import GetAssetByID from 'algosdk/dist/types/src/client/v2/algod/getAssetByID';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
-import { getAlgodClient, getAppLocalStateByKey, getTransactionParams, singlePayTxn, waitForTransaction } from './utils.algod';
+import { getAlgodClient, getAppLocalStateByKey, getTransactionParams, isOptinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
 
@@ -146,7 +146,8 @@ export class WalletsConnectService {
         from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.TRADE_APP_ID,
         note: new Uint8Array(Buffer.from("Place trade")),
-        appArgs: [new Uint8Array([...Buffer.from("trade")]), algosdk.encodeUint64(Number(params.price))],
+        appArgs: [new Uint8Array([...Buffer.from("trade")]),
+                  algosdk.encodeUint64(Number(params.price))],
         accounts: [params.tradeIndex],
         foreignAssets: tokens,
         suggestedParams,
@@ -223,7 +224,8 @@ export class WalletsConnectService {
         from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.BID_APP_ID,
         note: new Uint8Array(Buffer.from("Place bid")),
-        appArgs: [new Uint8Array([...Buffer.from("bid")]), algosdk.encodeUint64(Number(params.amount))],
+        appArgs: [new Uint8Array([...Buffer.from("bid")]),
+                  algosdk.encodeUint64(Number(params.amount))],
         accounts: [params.bidIndex],
         foreignAssets: tokens,
         suggestedParams,
@@ -309,7 +311,8 @@ export class WalletsConnectService {
         from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.SWAP_APP_ID,
         note: new Uint8Array(Buffer.from("Place swap")),
-        appArgs: [new Uint8Array(Buffer.from("swap")), algosdk.encodeUint64(Number(params.acceptAssetAmount))],
+        appArgs: [new Uint8Array(Buffer.from("swap")),
+                  algosdk.encodeUint64(Number(params.acceptAssetAmount))],
         accounts: [params.swapIndex],
         foreignAssets: [Number(params.assetID), Number(params.acceptAssetIndex)],
         suggestedParams: { ...suggestedParams },
@@ -474,7 +477,7 @@ export class WalletsConnectService {
         to: getApplicationAddress(environment.AUCTION_APP_ID),
         amount: Number(params.amount),
         assetIndex: Number(params.assetID),
-        note: new Uint8Array(Buffer.from("Amount to place trade")),
+        note: new Uint8Array(Buffer.from("Amount to place auction")),
         suggestedParams,
       });
       txns.push(tokenTxn);
@@ -495,22 +498,103 @@ export class WalletsConnectService {
     return 0;
   }
 
+  bidAuction = async (params: any) => {
+    try {
+      const client = getAlgodClient();
+      const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TKA");
+
+      const suggestedParams = await getTransactionParams();
+
+      if (indexTokenID > 0 && indexTokenAmount > 0) {
+        const ioa = await isOptinAsset(indexTokenID, this.sessionWallet!.getDefaultAccount())
+        if (!ioa) {
+          const txn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+            from: this.sessionWallet!.getDefaultAccount(),
+            to: this.sessionWallet!.getDefaultAccount(),
+            amount: 0,
+            assetIndex: indexTokenID,
+            note: new Uint8Array(Buffer.from("Optin asset")),
+            suggestedParams,
+          });
+          const result: any = this.sessionWallet!.signTxn([txn])
+          await waitForTransaction(client, result.txId);
+        }
+
+        suggestedParams.fee = 2000;
+
+        let accounts = [params.auctionIndex];
+        const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "LB_ADDR")
+        if (leadBidder) {
+          const leadBidderAddress = encodeAddress(leadBidder)
+          console.log("leadBidder", leadBidderAddress);
+          accounts.push(leadBidderAddress);
+        }
+
+        let txns = [];
+
+        const fundingAmount = params.bidAmount;
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.AUCTION_APP_ID),
+          amount: fundingAmount,
+          note: new Uint8Array(Buffer.from("Payment to bid on auction")),
+          suggestedParams,
+        });
+        txns.push(payTxn);
+
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.AUCTION_APP_ID,
+          note: new Uint8Array(Buffer.from("Bid Auction")),
+          appArgs: [new Uint8Array([...Buffer.from("bid")])],
+          accounts: accounts,
+          foreignAssets: [indexTokenID],
+          suggestedParams,
+        });
+        txns.push(appCallTxn)
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction : " + JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
+
+        return true;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
+  }
+
   cancelAuction = async (auctionIndex: string): Promise<boolean> => {
     try {
       const client = getAlgodClient();
-      const indexTokenID = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, auctionIndex, "TK_ID");
-      const indexTokenAmount = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, auctionIndex, "TA");
+      const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TKA");
 
       if (indexTokenID > 0 && indexTokenAmount > 0) {
         const suggestedParams = await getTransactionParams();
         suggestedParams.fee = 2000;
 
+        let accounts = [auctionIndex];
+        const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "LB_ADDR")
+        console.log("leadBidder", encodeAddress(leadBidder));
+        if (leadBidder) {
+          accounts.push(encodeAddress(leadBidder));
+          accounts.push(encodeAddress(await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "SA_ADDR")));
+          accounts.push(encodeAddress(await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TW_ADDR")));
+        }
+
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
-          appIndex: environment.SWAP_APP_ID,
-          note: new Uint8Array(Buffer.from("Cancel swap")),
-          appArgs: [new Uint8Array([...Buffer.from("cancel")])],
-          accounts: [auctionIndex],
+          appIndex: environment.AUCTION_APP_ID,
+          note: new Uint8Array(Buffer.from("Close Auction")),
+          appArgs: [new Uint8Array([...Buffer.from("close")])],
+          accounts: accounts,
           foreignAssets: [indexTokenID],
           suggestedParams,
         });

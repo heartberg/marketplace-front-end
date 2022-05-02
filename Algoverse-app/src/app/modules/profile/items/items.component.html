@@ -1,0 +1,31 @@
+<div class="main">
+  <div class="wrapper-border">
+    <div class="w-100">
+      <div class="collection-header position-absolute">
+        <div class="title">
+          <h3>My Items</h3>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="dropdownborder">
+            <div class="dropdown">
+              <div class="AssetsList">
+                <app-drop-down-selector [dropDownValues]="types" (dropDownValue)="onSelectedType($event)"></app-drop-down-selector>
+              </div>
+            </div>
+          </div>
+          <button class="btn-secondary-costum" routerLink="/create-offer">
+            Create Item
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="boxes-section">
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 p-2" *ngFor="let item of arr">
+          <app-card routerLink="/collection-detail" [isCollection]="true"></app-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
