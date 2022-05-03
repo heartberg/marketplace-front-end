@@ -33,6 +33,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadTrades(address: string): Observable<any> {
+    const url = `${this.baseUrl}trade/searchByAddress?address=${address}`;
+    return this._http.get<any>(url);
+  }
+
   getHot(): Observable<any> {
     const url = `${this.baseUrl}user/get/hot`;
     return this._http.get<any>(url);
@@ -56,6 +61,11 @@ export class UserService {
   cancelTrade(tradeIndex: string): Observable<any> {
     const url = `${this.baseUrl}trade/cancel`;
     return this._http.post(url, {tradeIndex});
+  }
+
+  loadBids(address: string): Observable<any> {
+    const url = `${this.baseUrl}bid/searchByAddress?address=${address}`;
+    return this._http.get<any>(url);
   }
 
   getBidIndex(senderAddress: string, assetId: number): Observable<any> {
@@ -82,6 +92,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadSwaps(address: string): Observable<any> {
+    const url = `${this.baseUrl}swap/searchByAddress?address=${address}`;
+    return this._http.get<any>(url);
+  }
+
   getSwapIndex(params: any): Observable<any> {
     const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${params.senderAddress}&offerAssetId=${params.offerAssetId}&acceptAssetId=${params.acceptAssetId}`;
     return this._http.get<any>(url);
@@ -100,6 +115,11 @@ export class UserService {
   cancelSwap(swapIndex: string): Observable<any> {
     const url = `${this.baseUrl}swap/cancel`;
     return this._http.post(url, {swapIndex});
+  }
+
+  loadAuctions(address: string): Observable<any> {
+    const url = `${this.baseUrl}auction/searchByAddress?address=${address}`;
+    return this._http.get<any>(url);
   }
 
   getAuctionIndex(senderAddress: string, assetId: number) {

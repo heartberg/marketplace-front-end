@@ -9,7 +9,7 @@ import { WalletsConnectService } from 'src/app/services/wallets-connect.service'
   styleUrls: ['./items.component.scss']
 })
 export class ItemsComponent implements OnInit {
-  public arr = [1,2,3,4,5,3,3,3,4,234,32,423,4,23,4,]
+  public arr = []
   public types: string[] = ['Trade', 'Bid', 'Swap', 'Auction'];
 
   constructor(
@@ -23,17 +23,49 @@ export class ItemsComponent implements OnInit {
       return;
     }
 
-    this._userService.loadTrades().subscribe(
+    this._userService.loadTrades(this._walletsConnectService.sessionWallet.getDefaultAccount()).subscribe(
       res => {
-        console.log('Successfully created')
         console.log(res)
+        this.arr = res
       },
       error => console.log(error)
     );
   }
 
   onSelectedType(type: string) {
-
+    if (type == 'Trade') {
+      this._userService.loadTrades(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        res => {
+          console.log(res)
+          this.arr = res
+        },
+        error => console.log(error)
+      );
+    } else if (type == 'Bid') {
+      this._userService.loadTrades(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        res => {
+          console.log(res)
+          this.arr = res
+        },
+        error => console.log(error)
+      );
+    } else if (type == 'Swap') {
+      this._userService.loadSwaps(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        res => {
+          console.log(res)
+          this.arr = res
+        },
+        error => console.log(error)
+      );
+    } else if (type == 'Auction') {
+      this._userService.loadAuctions(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        res => {
+          console.log(res)
+          this.arr = res
+        },
+        error => console.log(error)
+      );
+    }
   }
 
 }
