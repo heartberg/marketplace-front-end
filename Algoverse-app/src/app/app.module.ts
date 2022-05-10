@@ -12,11 +12,15 @@ import {CarouselModule} from "./carousel/carousel.module";
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ItemsComponent } from './modules/profile/items/items.component';
+import { TradeDetailComponent } from './trade-detail/trade-detail.component';
+import { TradeGridItemComponent } from './trade-grid-item/trade-grid-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ItemsComponent,
+    TradeDetailComponent,
+    TradeGridItemComponent,
     // CarouselComponent,
   ],
   imports: [

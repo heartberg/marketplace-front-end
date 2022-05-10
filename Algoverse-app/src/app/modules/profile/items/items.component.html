@@ -5,7 +5,7 @@
         <div class="title">
           <h3>My Items</h3>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between">
           <div class="dropdownborder">
             <div class="dropdown">
               <div class="AssetsList">
@@ -13,7 +13,7 @@
               </div>
             </div>
           </div>
-          <button class="btn-secondary-costum" routerLink="/create-offer">
+          <button class="btn-secondary-costum" style="height: 40px;" routerLink="/create-offer">
             Create Item
           </button>
         </div>
@@ -23,7 +23,7 @@
     <div class="boxes-section">
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 p-2" *ngFor="let item of arr">
-          <app-card routerLink="/collection-detail" [isCollection]="true"></app-card>
+          <app-trade-grid-item routerLink="/trade-detail"></app-trade-grid-item>
         </div>
       </div>
     </div>

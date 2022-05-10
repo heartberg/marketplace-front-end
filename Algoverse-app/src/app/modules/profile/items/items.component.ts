@@ -19,6 +19,11 @@ export class ItemsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
+      this.router.navigate(['/', 'home']);
+      return;
+    }
+
     if (!this._walletsConnectService.sessionWallet?.getDefaultAccount()) {
       return;
     }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
+import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 
 @Component({
   selector: 'app-create-offer',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateOfferComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _walletsConnectService: WalletsConnectService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
+    if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
+      this.router.navigate(['/', 'home']);
+      return;
+    }
   }
 
 }

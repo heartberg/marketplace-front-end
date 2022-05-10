@@ -24,6 +24,7 @@ import { AssetDetailSwapComponent } from "./modules/swap/asset-detail-swap/asset
 import { CreateAuctionComponent } from "./modules/create-auction/create-auction.component";
 import { CreateBidComponent } from './modules/market-place/create-bid/create-bid.component';
 import { ItemsComponent } from './modules/profile/items/items.component';
+import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'profile-settings', component: ProfileSettingsComponent },
   { path: 'notification-center', component: NotificationCentreComponent },
   { path: 'create-trade', component: CreateTradeComponent },
+  { path: 'trade-detail', component: TradeDetailComponent},
   { path: 'create-bid', component: CreateBidComponent },
   { path: 'edit-profile', component: ProfileEditComponent },
   { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },
