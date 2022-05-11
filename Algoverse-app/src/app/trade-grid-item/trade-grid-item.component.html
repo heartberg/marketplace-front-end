@@ -5,11 +5,11 @@
   <div class="card-info" [class.flex-column]="isCollection">
     <div class="card-info-left"  *ngIf="!isCollection">
       <div class="section">
-        <h4>Name: </h4>
-        <span class="unset-dm-style">ETH</span>
+        <h4>Name: {{mItem.asset.name}}</h4>
+        <span class="unset-dm-style">Algo</span>
       </div>
       <div class="section">
-        <h4>Creator </h4>
+        <h4>Creator: {{mItem.tradeCreator.name}}</h4>
         <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt="">
       </div>
       <div class="section">
@@ -18,15 +18,11 @@
       </div>
       <div class="section">
         <h4>Price </h4>
-        <span class="unset-dm-style">100$</span>
-      </div>
-      <div class="section">
-        <h4>Current Bid </h4>
-        <span class="unset-dm-style">50$</span>
+        <span class="unset-dm-style">{{mItem.price}}</span>
       </div>
     </div>
     <div class="name" *ngIf="isCollection">
-      <h4>Collection Name</h4>
+      <h4>{{mItem.asset.name}}</h4>
     </div>
     <div class="card-info-right" [class.my-page]="isCollection">
       <div class="section">

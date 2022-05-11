@@ -73,4 +73,9 @@ export class ItemsComponent implements OnInit {
     }
   }
 
+  getLink(item: any) {
+    console.log('item', item);
+    return `/trade-detail/${item.tradeId}`
+  }
+
 }

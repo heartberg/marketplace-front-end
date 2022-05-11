@@ -38,6 +38,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadTradeItem(tradeId: string): Observable<any> {
+    const url = `${this.baseUrl}trade/searchByAddress?address=${tradeId}`;
+    return this._http.get<any>(url);
+  }
+
   getHot(): Observable<any> {
     const url = `${this.baseUrl}user/get/hot`;
     return this._http.get<any>(url);

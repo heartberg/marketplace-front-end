@@ -40,7 +40,7 @@ const routes: Routes = [
   { path: 'profile-settings', component: ProfileSettingsComponent },
   { path: 'notification-center', component: NotificationCentreComponent },
   { path: 'create-trade', component: CreateTradeComponent },
-  { path: 'trade-detail', component: TradeDetailComponent},
+  { path: 'trade/:tradeId', component: TradeDetailComponent},
   { path: 'create-bid', component: CreateBidComponent },
   { path: 'edit-profile', component: ProfileEditComponent },
   { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-trade-grid-item',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./trade-grid-item.component.scss']
 })
 export class TradeGridItemComponent implements OnInit {
+
+  @Input() mItem: any = {};
+  isCollection: boolean = false;
 
   constructor() { }
 

@@ -22,8 +22,8 @@
 
     <div class="boxes-section">
       <div class="row">
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 p-2" *ngFor="let item of arr">
-          <app-trade-grid-item routerLink="/trade-detail"></app-trade-grid-item>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 p-2" *ngFor="let item of arr;">
+          <app-trade-grid-item [routerLink]="'/trade/' + item['tradeId']" [mItem]="item"></app-trade-grid-item>
         </div>
       </div>
     </div>

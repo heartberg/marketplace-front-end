@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
 import { getApplicationAddress } from 'algosdk';
@@ -27,47 +27,16 @@ export class TradeDetailComponent implements OnInit {
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
-      this.router.navigate(['/', 'home']);
-      return;
-    }
+    const routeParams = this.route.snapshot.paramMap;
+    const tradeIdFromRoute = Number(routeParams.get('tradeId'));
 
-    this.assets = await this._walletsConnectService.getOwnAssets();
-    const asset_ids = [];
-    for (let asset of this.assets) {
-      asset_ids.push(asset.index);
-    }
-    this.assetIDs = asset_ids;
-
-    const algod = getAlgodClient();
-    const accountInfo = await algod.accountInformation('5V3RXJ76GKVG7F55LZIVN6DXOQLNRLAMMNQMFLJ57LP2PP5B7Q64A7IX7A').do();
-    console.log('accountInfo 0 0 0 ', accountInfo);
-
-    if (this.assets.length > 0) {
-      const firstAsset = this.assets[0];
-      this.selectedAssetID = firstAsset.index;
-      this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
-
-      if (firstAsset.params.url) {
-        this._userService.loadMetaData(firstAsset.params.url).subscribe(
-          (result) => {
-            console.log(result);
-            let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
-          },
-          (error) => console.log('error', error)
-        )
-      }
-
-    }
+    this._userService.loadTrades(tradeIdFromRoute)
   }
 
   selectedAsset(assetID: string) {
