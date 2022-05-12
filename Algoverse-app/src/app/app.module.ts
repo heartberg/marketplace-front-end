@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { ItemsComponent } from './modules/profile/items/items.component';
 import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 import { TradeGridItemComponent } from './trade-grid-item/trade-grid-item.component';
+import { BidGridItemComponent } from './bid-grid-item/bid-grid-item.component';
+import { BidDetailComponent } from './bid-detail/bid-detail.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { TradeGridItemComponent } from './trade-grid-item/trade-grid-item.compon
     ItemsComponent,
     TradeDetailComponent,
     TradeGridItemComponent,
+    BidGridItemComponent,
+    BidDetailComponent,
     // CarouselComponent,
   ],
   imports: [

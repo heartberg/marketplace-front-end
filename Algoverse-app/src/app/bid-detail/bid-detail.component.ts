@@ -1,17 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
-import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
-import { getApplicationAddress } from 'algosdk';
-import { environment } from 'src/environments/environment';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { WalletsConnectService } from '../services/wallets-connect.service';
 
 @Component({
-  selector: 'app-trade-detail',
-  templateUrl: './trade-detail.component.html',
-  styleUrls: ['./trade-detail.component.scss']
+  selector: 'app-bid-detail',
+  templateUrl: './bid-detail.component.html',
+  styleUrls: ['./bid-detail.component.scss']
 })
-export class TradeDetailComponent implements OnInit {
+export class BidDetailComponent implements OnInit {
 
   private mAsset: any = null;
   private selectedAssetID = 0;
@@ -35,13 +32,13 @@ export class TradeDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const routeParams = this.route.snapshot.paramMap;
-    const tradeIdFromRoute = routeParams.get('tradeId');
-    if (!tradeIdFromRoute) {
+    const BidIdFromRoute = routeParams.get('BidId');
+    if (!BidIdFromRoute) {
       this.router.navigateByUrl('items');
       return;
     }
 
-    this._userService.loadTradeItem(tradeIdFromRoute).subscribe(
+    this._userService.loadBidItem(BidIdFromRoute).subscribe(
       res => {
         console.log('res', res);
         this.mAsset = res;
@@ -77,11 +74,11 @@ export class TradeDetailComponent implements OnInit {
     console.log(this.price);
   }
 
-  async cancelTrade(tradeIndex: string) {
-    console.log('start cancel trade');
-    const result = await this._walletsConnectService.cancelTrade(tradeIndex);
+  async cancelBid(BidIndex: string) {
+    console.log('start cancel Bid');
+    const result = await this._walletsConnectService.cancelBid(BidIndex);
     if (result) {
-      const result1 = this._userService.cancelTrade(tradeIndex);
+      const result1 = this._userService.cancelBid(BidIndex);
       if (result1) {
         console.log('Successfully cancelled')
       }

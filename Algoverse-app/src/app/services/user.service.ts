@@ -39,7 +39,7 @@ export class UserService {
   }
 
   loadTradeItem(tradeId: string): Observable<any> {
-    const url = `${this.baseUrl}trade/searchByAddress?address=${tradeId}`;
+    const url = `${this.baseUrl}trade/${tradeId}`;
     return this._http.get<any>(url);
   }
 
@@ -70,6 +70,11 @@ export class UserService {
 
   loadBids(address: string): Observable<any> {
     const url = `${this.baseUrl}bid/searchByAddress?address=${address}`;
+    return this._http.get<any>(url);
+  }
+
+  loadBidItem(bidId: string): Observable<any> {
+    const url = `${this.baseUrl}bid/${bidId}`;
     return this._http.get<any>(url);
   }
 
