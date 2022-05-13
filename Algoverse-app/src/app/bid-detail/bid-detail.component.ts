@@ -10,7 +10,7 @@ import { WalletsConnectService } from '../services/wallets-connect.service';
 })
 export class BidDetailComponent implements OnInit {
 
-  private mAsset: any = null;
+  private mBid: any = null;
   private selectedAssetID = 0;
   private assets: any[] = [];
   public assetIDs: string[] = [];
@@ -41,9 +41,9 @@ export class BidDetailComponent implements OnInit {
     this._userService.loadBidItem(BidIdFromRoute).subscribe(
       res => {
         console.log('res', res);
-        this.mAsset = res;
-        this.selectedAssetID = this.mAsset.assetId;
-        const asset = this.mAsset.asset;
+        this.mBid = res;
+        this.selectedAssetID = this.mBid.assetId;
+        const asset = this.mBid.asset;
         this.showAssetDetails(asset);
       },
       error => console.log(error)
@@ -74,11 +74,12 @@ export class BidDetailComponent implements OnInit {
     console.log(this.price);
   }
 
-  async cancelBid(BidIndex: string) {
+  async cancelBid() {
+    const bidIndex = this.mBid.indexAddress;
     console.log('start cancel Bid');
-    const result = await this._walletsConnectService.cancelBid(BidIndex);
+    const result = await this._walletsConnectService.cancelBid(bidIndex);
     if (result) {
-      const result1 = this._userService.cancelBid(BidIndex);
+      const result1 = this._userService.cancelBid(bidIndex);
       if (result1) {
         console.log('Successfully cancelled')
       }

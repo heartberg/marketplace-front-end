@@ -102,6 +102,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadSwapItem(swapId: string): Observable<any> {
+    const url = `${this.baseUrl}swap/${swapId}`;
+    return this._http.get<any>(url);
+  }
+
   loadSwaps(address: string): Observable<any> {
     const url = `${this.baseUrl}swap/searchByAddress?address=${address}`;
     return this._http.get<any>(url);

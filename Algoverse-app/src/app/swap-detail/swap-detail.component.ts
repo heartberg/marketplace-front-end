@@ -1,19 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
-import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
-import { getApplicationAddress } from 'algosdk';
-import { environment } from 'src/environments/environment';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { WalletsConnectService } from '../services/wallets-connect.service';
 
 @Component({
-  selector: 'app-trade-detail',
-  templateUrl: './trade-detail.component.html',
-  styleUrls: ['./trade-detail.component.scss']
+  selector: 'app-swap-detail',
+  templateUrl: './swap-detail.component.html',
+  styleUrls: ['./swap-detail.component.scss']
 })
-export class TradeDetailComponent implements OnInit {
+export class SwapDetailComponent implements OnInit {
 
-  private mTrade: any = null;
+  private mSwap: any = null;
   private selectedAssetID = 0;
   private assets: any[] = [];
   public assetIDs: string[] = [];
@@ -35,18 +32,18 @@ export class TradeDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const routeParams = this.route.snapshot.paramMap;
-    const tradeIdFromRoute = routeParams.get('tradeId');
-    if (!tradeIdFromRoute) {
+    const SwapIdFromRoute = routeParams.get('BidId');
+    if (!SwapIdFromRoute) {
       this.router.navigateByUrl('items');
       return;
     }
 
-    this._userService.loadTradeItem(tradeIdFromRoute).subscribe(
+    this._userService.loadSwapItem(SwapIdFromRoute).subscribe(
       res => {
         console.log('res', res);
-        this.mTrade = res;
-        this.selectedAssetID = this.mTrade.assetId;
-        const asset = this.mTrade.asset;
+        this.mSwap = res;
+        this.selectedAssetID = this.mSwap.assetId;
+        const asset = this.mSwap.asset;
         this.showAssetDetails(asset);
       },
       error => console.log(error)
@@ -77,12 +74,12 @@ export class TradeDetailComponent implements OnInit {
     console.log(this.price);
   }
 
-  async cancelTrade() {
-    const tradeIndex = this.mTrade.indexAddress;
-    console.log('start cancel trade');
-    const result = await this._walletsConnectService.cancelTrade(tradeIndex);
+  async cancelSwap() {
+    const swapIndex = this.mSwap.indexAddress;
+    console.log('start cancel Bid');
+    const result = await this._walletsConnectService.cancelBid(swapIndex);
     if (result) {
-      const result1 = this._userService.cancelTrade(tradeIndex);
+      const result1 = this._userService.cancelBid(swapIndex);
       if (result1) {
         console.log('Successfully cancelled')
       }

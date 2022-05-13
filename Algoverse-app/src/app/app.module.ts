@@ -16,6 +16,8 @@ import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 import { TradeGridItemComponent } from './trade-grid-item/trade-grid-item.component';
 import { BidGridItemComponent } from './bid-grid-item/bid-grid-item.component';
 import { BidDetailComponent } from './bid-detail/bid-detail.component';
+import { SwapDetailComponent } from './swap-detail/swap-detail.component';
+import { SwapGridItemComponent } from './swap-grid-item/swap-grid-item.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { BidDetailComponent } from './bid-detail/bid-detail.component';
     TradeGridItemComponent,
     BidGridItemComponent,
     BidDetailComponent,
+    SwapDetailComponent,
+    SwapGridItemComponent,
     // CarouselComponent,
   ],
   imports: [
