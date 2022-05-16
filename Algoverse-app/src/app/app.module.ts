@@ -18,6 +18,8 @@ import { BidGridItemComponent } from './bid-grid-item/bid-grid-item.component';
 import { BidDetailComponent } from './bid-detail/bid-detail.component';
 import { SwapDetailComponent } from './swap-detail/swap-detail.component';
 import { SwapGridItemComponent } from './swap-grid-item/swap-grid-item.component';
+import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
+import { AuctionGridItemComponent } from './auction-grid-item/auction-grid-item.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { SwapGridItemComponent } from './swap-grid-item/swap-grid-item.component
     BidDetailComponent,
     SwapDetailComponent,
     SwapGridItemComponent,
+    AuctionDetailComponent,
+    AuctionGridItemComponent,
     // CarouselComponent,
   ],
   imports: [

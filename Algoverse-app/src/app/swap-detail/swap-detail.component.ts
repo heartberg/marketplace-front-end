@@ -32,7 +32,7 @@ export class SwapDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const routeParams = this.route.snapshot.paramMap;
-    const SwapIdFromRoute = routeParams.get('BidId');
+    const SwapIdFromRoute = routeParams.get('swapId');
     if (!SwapIdFromRoute) {
       this.router.navigateByUrl('items');
       return;

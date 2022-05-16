@@ -32,7 +32,7 @@ export class BidDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const routeParams = this.route.snapshot.paramMap;
-    const BidIdFromRoute = routeParams.get('BidId');
+    const BidIdFromRoute = routeParams.get('bidId');
     if (!BidIdFromRoute) {
       this.router.navigateByUrl('items');
       return;

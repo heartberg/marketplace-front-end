@@ -23,7 +23,18 @@
     <div class="boxes-section">
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 p-2" *ngFor="let item of arr;">
-          <app-trade-grid-item [routerLink]="'/trade/' + item['tradeId']" [mItem]="item"></app-trade-grid-item>
+          <div *ngIf="item['tradeId']">
+            <app-trade-grid-item [routerLink]="'/trade/' + item['tradeId']" [mItem]="item"></app-trade-grid-item>
+          </div>
+          <div *ngIf="item['bidId']">
+            <app-bid-grid-item [routerLink]="'/bid/' + item['bidId']" [mItem]="item"></app-bid-grid-item>
+          </div>
+          <div *ngIf="item['swapId']">
+            <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
+          </div>
+          <div *ngIf="item['auctionId']">
+            <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
+          </div>
         </div>
       </div>
     </div>

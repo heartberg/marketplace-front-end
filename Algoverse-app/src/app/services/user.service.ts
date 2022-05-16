@@ -137,6 +137,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadAuctionItem(auctionId: string): Observable<any> {
+    const url = `${this.baseUrl}auction/${auctionId}`;
+    return this._http.get<any>(url);
+  }
+
   getAuctionIndex(senderAddress: string, assetId: number) {
     const url = `${this.baseUrl}auction/getAuctionIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
     return this._http.get<any>(url);
