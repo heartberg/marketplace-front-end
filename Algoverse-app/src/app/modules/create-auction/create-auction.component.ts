@@ -259,4 +259,8 @@ export class CreateAuctionComponent implements OnInit {
     }
   }
 
+  public actionBack() {
+    this.router.navigateByUrl('/create-offer')
+  }
+
 }

@@ -302,5 +302,9 @@ export class CreateSwapComponent implements OnInit {
     }
   }
 
+  public actionBack() {
+    this.router.navigateByUrl('/create-offer')
+  }
+
 
 }

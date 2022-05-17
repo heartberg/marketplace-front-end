@@ -89,7 +89,7 @@ export class UserService {
   }
 
   createBid(params: any): Observable<any> {
-    const url = `${this.baseUrl}bid/place`;
+    const url = `${this.baseUrl}bid/create`;
     return this._http.post(url, params);
   }
 
@@ -133,7 +133,7 @@ export class UserService {
   }
 
   loadAuctions(address: string): Observable<any> {
-    const url = `${this.baseUrl}auction/searchByAddress?address=${address}`;
+    const url = `${this.baseUrl}auction/searchByAddress?wallet=${address}`;
     return this._http.get<any>(url);
   }
 

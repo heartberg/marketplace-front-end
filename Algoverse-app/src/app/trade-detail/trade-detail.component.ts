@@ -14,12 +14,14 @@ import { environment } from 'src/environments/environment';
 export class TradeDetailComponent implements OnInit {
 
   private mTrade: any = null;
-  private selectedAssetID = 0;
-  private assets: any[] = [];
-  public assetIDs: string[] = [];
+  public isMine = false;
+  public assetName: string = ""
+  public assetUnit: string = ""
+  public creatorName: string = ""
   public maxSupply = 1;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
+
 
   public royalty: string = "0";
   public amount: string = "0";
@@ -45,7 +47,6 @@ export class TradeDetailComponent implements OnInit {
       res => {
         console.log('res', res);
         this.mTrade = res;
-        this.selectedAssetID = this.mTrade.assetId;
         const asset = this.mTrade.asset;
         this.showAssetDetails(asset);
       },
@@ -54,12 +55,16 @@ export class TradeDetailComponent implements OnInit {
   }
 
   showAssetDetails(asset: any) {
+    this.isMine = this.mTrade.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     console.log('masset', asset);
-    this.selectedAssetID = asset.assetId;
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+    this.assetName = asset.name;
+    this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
+    console.log('selectedAssetDescription', this.selectedAssetDescription)
     this.maxSupply = asset.supply;
-
+    this.amount = this.mTrade.amount;
     this.metaDataProperties = asset.properties;
+    this.creatorName = this.mTrade.tradeCreator.name;
+    this.assetUnit = asset.unitName;
   }
 
   blurRoyaltyEvent(event: any){
@@ -87,6 +92,10 @@ export class TradeDetailComponent implements OnInit {
         console.log('Successfully cancelled')
       }
     }
+  }
+
+  public actionBack() {
+    this.router.navigateByUrl("/items");
   }
 
 }

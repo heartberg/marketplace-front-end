@@ -47,7 +47,7 @@ export class ItemsComponent implements OnInit {
         error => console.log(error)
       );
     } else if (type == 'Bid') {
-      this._userService.loadTrades(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+      this._userService.loadBids(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         res => {
           console.log(res)
           this.arr = res

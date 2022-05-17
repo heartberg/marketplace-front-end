@@ -240,4 +240,8 @@ export class CreateTradeComponent implements OnInit {
     }
   }
 
+  public actionBack() {
+    this.router.navigateByUrl('/create-offer')
+  }
+
 }

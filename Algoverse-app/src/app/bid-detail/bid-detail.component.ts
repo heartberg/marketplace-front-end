@@ -11,9 +11,10 @@ import { WalletsConnectService } from '../services/wallets-connect.service';
 export class BidDetailComponent implements OnInit {
 
   private mBid: any = null;
-  private selectedAssetID = 0;
-  private assets: any[] = [];
-  public assetIDs: string[] = [];
+  public isMine = false;
+  public assetName: string = ""
+  public assetUnit: string = ""
+  public creatorName: string = ""
   public maxSupply = 1;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
@@ -42,7 +43,6 @@ export class BidDetailComponent implements OnInit {
       res => {
         console.log('res', res);
         this.mBid = res;
-        this.selectedAssetID = this.mBid.assetId;
         const asset = this.mBid.asset;
         this.showAssetDetails(asset);
       },
@@ -51,12 +51,17 @@ export class BidDetailComponent implements OnInit {
   }
 
   showAssetDetails(asset: any) {
+    this.isMine = this.mBid.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     console.log('masset', asset);
-    this.selectedAssetID = asset.assetId;
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+    this.assetName = asset.name;
+    this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
+    console.log('selectedAssetDescription', this.selectedAssetDescription)
     this.maxSupply = asset.supply;
-
+    this.amount = this.mBid.amount;
+    this.price = this.mBid.price;
     this.metaDataProperties = asset.properties;
+    this.creatorName = this.mBid.biddingUser.name;
+    this.assetUnit = asset.unitName;
   }
 
   blurRoyaltyEvent(event: any){
@@ -84,6 +89,10 @@ export class BidDetailComponent implements OnInit {
         console.log('Successfully cancelled')
       }
     }
+  }
+
+  public actionBack() {
+    this.router.navigateByUrl("/items");
   }
 
 }

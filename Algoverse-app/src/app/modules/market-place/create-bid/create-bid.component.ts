@@ -65,7 +65,8 @@ export class CreateBidComponent implements OnInit {
           console.log('result', result);
           let properties: any = {};
             for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
+              if (typeof value === 'string' || value instanceof String)
+                properties[key] = value;
             }
             this.metaDataProperties = properties;
         },
@@ -154,10 +155,19 @@ export class CreateBidComponent implements OnInit {
     const txID = await this._walletsConnectService.createBid(params1);
     console.log('txID', txID);
 
+    let assetProperties: { name: any; value: any; }[] = [];
+    for (const [key, value] of Object.entries(this.metaDataProperties)) {
+      assetProperties.push({
+        name: key,
+        value: value
+      })
+    }
+
     const asset = this.mSelectedAsset;
     if (txID && asset) {
       const params2 = {
         bidId: txID,
+        bidderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         assetId: this.selectedAssetID,
         asset: {
           assetId: this.selectedAssetID,
@@ -187,17 +197,17 @@ export class CreateBidComponent implements OnInit {
             website: "string",
             creatorWallet: "string"
           },
-          properties: Object.entries(this.metaDataProperties),
+          properties: assetProperties,
           file: "string",
           cover: "string",
           royalties: 0,
           category: "string"
         },
-        indexAddress: indexAddress,
+        indexAddress,
         price: this.price,
-        bidderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         amount: this.amount
       }
+      console.log('create bid param', params2)
       this._userService.createBid(params2).subscribe(
         res => {
           console.log('successfully created bid on backend')
@@ -216,6 +226,10 @@ export class CreateBidComponent implements OnInit {
         console.log('Successfully cancelled')
       }
     }
+  }
+
+  public actionBack() {
+    this.router.navigateByUrl('/create-offer')
   }
 
 }
