@@ -59,7 +59,8 @@ export class CreateTradeComponent implements OnInit {
             console.log(result);
             let properties: any = {};
             for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
+              if (typeof value === 'string' || value instanceof String)
+                properties[key] = value;
             }
             this.metaDataProperties = properties;
           },
@@ -83,10 +84,11 @@ export class CreateTradeComponent implements OnInit {
         (result) => {
           console.log('result', result);
           let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
+          for (const [key, value] of Object.entries(result)) {
+            if (typeof value === 'string' || value instanceof String)
+              properties[key] = value;
+          }
+          this.metaDataProperties = properties;
         },
         (error) => console.log('error', error)
       )
@@ -100,17 +102,17 @@ export class CreateTradeComponent implements OnInit {
     return result;
   }
 
-  blurRoyaltyEvent(event: any){
+  blurRoyaltyEvent(event: any) {
     this.royalty = event.target.value;
     console.log(this.royalty);
   }
 
-  blurAmountEvent(event: any){
+  blurAmountEvent(event: any) {
     this.amount = event.target.value;
     console.log(this.amount);
   }
 
-  blurPriceEvent(event: any){
+  blurPriceEvent(event: any) {
     this.price = event.target.value;
     console.log(this.price);
   }
@@ -177,6 +179,14 @@ export class CreateTradeComponent implements OnInit {
         return;
       }
 
+      let assetProperties: { name: any; value: any; }[] = [];
+      for (const [key, value] of Object.entries(this.metaDataProperties)) {
+        assetProperties.push({
+          name: key,
+          value: value
+        })
+      }
+
       const params2 = {
         tradeId: txID,
         assetId: this.selectedAssetID,
@@ -185,15 +195,15 @@ export class CreateTradeComponent implements OnInit {
           name: asset.params.name,
           unitName: asset.params['unit-name'],
           supply: asset.params.total,
-          assetURL: asset.params.url?asset.params.url:'',
+          assetURL: asset.params.url ? asset.params.url : '',
           creatorWallet: asset.params.creator,
-          freezeAddress: asset.params.freeze?asset.params.freeze:'',
-          managerAddress: asset.params.manager?asset.params.manager:'',
-          clawbackAddress: asset.params.clawback?asset.params.clawback:'',
-          reserveAddress: asset.params.reserve?asset.params.reserve:'',
-          metadata: asset.params['metadata-hash']?asset.params['metadata-hash']:'',
-          externalLink: asset.params.url?asset.params.url:'',
-          description: asset.description?asset.description:'',
+          freezeAddress: asset.params.freeze ? asset.params.freeze : '',
+          managerAddress: asset.params.manager ? asset.params.manager : '',
+          clawbackAddress: asset.params.clawback ? asset.params.clawback : '',
+          reserveAddress: asset.params.reserve ? asset.params.reserve : '',
+          metadata: asset.params['metadata-hash'] ? asset.params['metadata-hash'] : '',
+          externalLink: asset.params.url ? asset.params.url : '',
+          description: asset.description ? asset.description : '',
           assetCollectionID: "1",
           assetCollection: {
             assetCollectionID: "1",
@@ -208,7 +218,7 @@ export class CreateTradeComponent implements OnInit {
             website: "string",
             creatorWallet: "string"
           },
-          properties: Object.entries(this.metaDataProperties),
+          properties: assetProperties,
           file: "string",
           cover: "string",
           royalties: 0,

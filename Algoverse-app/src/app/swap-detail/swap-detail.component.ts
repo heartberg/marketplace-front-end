@@ -10,9 +10,8 @@ import { WalletsConnectService } from '../services/wallets-connect.service';
 })
 export class SwapDetailComponent implements OnInit {
 
-  private mSwap: any = null;
-  private selectedAssetID = 0;
-  private assets: any[] = [];
+  public mSwap: any = null;
+  public isMine = false;
   public assetIDs: string[] = [];
   public maxSupply = 1;
   public selectedAssetDescription = "";
@@ -42,8 +41,7 @@ export class SwapDetailComponent implements OnInit {
       res => {
         console.log('res', res);
         this.mSwap = res;
-        this.selectedAssetID = this.mSwap.assetId;
-        const asset = this.mSwap.asset;
+        const asset = this.mSwap.offeringAsset;
         this.showAssetDetails(asset);
       },
       error => console.log(error)
@@ -52,8 +50,7 @@ export class SwapDetailComponent implements OnInit {
 
   showAssetDetails(asset: any) {
     console.log('masset', asset);
-    this.selectedAssetID = asset.assetId;
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+    this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     this.maxSupply = asset.supply;
 
     this.metaDataProperties = asset.properties;
@@ -76,14 +73,21 @@ export class SwapDetailComponent implements OnInit {
 
   async cancelSwap() {
     const swapIndex = this.mSwap.indexAddress;
-    console.log('start cancel Bid');
-    const result = await this._walletsConnectService.cancelBid(swapIndex);
+    console.log('start cancel swap:', swapIndex);
+    const result = await this._walletsConnectService.cancelSwap(swapIndex);
     if (result) {
-      const result1 = this._userService.cancelBid(swapIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.cancelSwap(this.mSwap.swapId).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
     }
+  }
+
+  public actionBack() {
+    this.router.navigateByUrl('/create-offer')
   }
 
 }

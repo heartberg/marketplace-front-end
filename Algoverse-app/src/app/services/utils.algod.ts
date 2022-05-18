@@ -2043,3 +2043,18 @@ export const isOptinAsset = async (assetIndex: number, address: string) => {
 
   return false;
 }
+
+export const getAppGlobalState = async (appId: number, key: string) => {
+  const algod = getAlgodClient();
+  const app = await algod.getApplicationByID(appId).do();
+  console.log('app', app);
+  const stateArray = app.params['global-state'];
+
+  for (let j = 0; j < stateArray.length; j++) {
+    const text = Buffer.from(stateArray[j].key, "base64").toString();
+
+    if (key === text) {
+      return appValueState(stateArray[j].value);
+    }
+  }
+}

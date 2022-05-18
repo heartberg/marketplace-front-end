@@ -45,6 +45,8 @@ const routes: Routes = [
   { path: 'create-trade', component: CreateTradeComponent },
   { path: 'trade/:tradeId', component: TradeDetailComponent},
   { path: 'bid/:bidId', component: BidDetailComponent},
+  { path: 'create-swap', component: CreateSwapComponent },
+  { path: 'asset-detail-swap', component: AssetDetailSwapComponent },
   { path: 'swap/:swapId', component: SwapDetailComponent},
   { path: 'auction/:auctionId', component: AuctionDetailComponent},
   { path: 'create-bid', component: CreateBidComponent },
@@ -57,8 +59,6 @@ const routes: Routes = [
   { path: 'artists', component: ArtistsComponent },
   { path: 'artists/artist-application', component: ArtistApplicationComponent },
   { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
-  { path: 'swap/create-swap', component: CreateSwapComponent },
-  { path: 'swap/asset-detail-swap', component: AssetDetailSwapComponent }
 ];
 
 @NgModule({

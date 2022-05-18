@@ -194,7 +194,7 @@ export class CreateAuctionComponent implements OnInit {
       console.log(asset);
       const params = {
         auctionID: txID,
-        auctionIndex: indexAddress,
+        IndexAddress: indexAddress,
         assetId: this.selectedAsset.index,
         asset: {
           assetId: this.selectedAsset.index,

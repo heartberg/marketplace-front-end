@@ -87,10 +87,13 @@ export class TradeDetailComponent implements OnInit {
     console.log('start cancel trade');
     const result = await this._walletsConnectService.cancelTrade(tradeIndex);
     if (result) {
-      const result1 = this._userService.cancelTrade(tradeIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.cancelTrade(this.mTrade.tradeId).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
     }
   }
 

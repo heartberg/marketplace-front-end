@@ -63,9 +63,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  cancelTrade(tradeIndex: string): Observable<any> {
-    const url = `${this.baseUrl}trade/cancel`;
-    return this._http.post(url, {tradeIndex});
+  cancelTrade(tradeId: string): Observable<any> {
+    const url = `${this.baseUrl}trade/cancel?tradeId=${tradeId}`;
+    return this._http.post(url, {tradeId});
   }
 
   loadBids(address: string): Observable<any> {
@@ -93,9 +93,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  cancelBid(bidIndex: string): Observable<any> {
-    const url = `${this.baseUrl}bid/cancel`;
-    return this._http.post(url, {bidIndex});
+  cancelBid(bidId: string): Observable<any> {
+    const url = `${this.baseUrl}bid/cancel?bidId=${bidId}`;
+    return this._http.post(url, {bidId});
   }
 
   loadMetaData(url: string): Observable<any> {
@@ -127,9 +127,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  cancelSwap(swapIndex: string): Observable<any> {
-    const url = `${this.baseUrl}swap/cancel`;
-    return this._http.post(url, {swapIndex});
+  cancelSwap(swapId: string): Observable<any> {
+    const url = `${this.baseUrl}swap/cancel?swapId=${swapId}`;
+    return this._http.post(url, {swapId});
   }
 
   loadAuctions(address: string): Observable<any> {
@@ -157,9 +157,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  cancelAuction(auctionIndex: string): Observable<any> {
-    const url = `${this.baseUrl}auction/cancel`;
-    return this._http.post(url, {auctionIndex});
+  cancelAuction(auctionId: string): Observable<any> {
+    const url = `${this.baseUrl}auction/close?auctionId=${auctionId}`;
+    return this._http.post(url, {auctionId});
   }
 
 }

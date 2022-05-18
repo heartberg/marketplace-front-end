@@ -1,124 +1,41 @@
 <div class="wrapper wrapper-border">
-  <div class="backArrow">
+  <div class="backArrow" (click)="actionBack()">
     <img src="https://www.pngitem.com/pimgs/m/467-4678631_arrow-back-icon-png-transparent-png.png" alt="">
   </div>
-  <div class="whole wrapper-border">
+  <div class="whole">
     <div class="row w-100">
       <div class="col-md-6">
-        <div class="inside wrapper-border">
-          <div class="header">
-            <h3>Create sale</h3>
-          </div>
-          <div class="dropdownborder wrapper-border">
-            <h4>Assets</h4>
-            <div class="dropdown">
-              <div class="AssetsList">
-                <app-drop-down-selector [dropDownValues]="assetIDs" (dropDownValue)="onSelectedAsset($event)"></app-drop-down-selector>
-              </div>
+        <div class="inside">
+          <div class="wrapper-card">
+            <div class="img">
+              <img style="width: 100%;" src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
             </div>
-          </div>
-          <div class="metaheader">
-            <h3>Metadata</h3>
-          </div>
-          <div class="assets wrapper-border">
-            <div class="assetsList height-_10">
-              <div class="row d-flex align-items-center" style="width: 100%">
-                <div class="col-md-5">
-                  <div class="assetdesc">
-                    <h4>Asset Description</h4>
-                  </div>
+            <div class="card-info mt-3">
+              <div class="card-info-left">
+                <div class="section">
+                  <h4>Name: {{mAuction.asset.name}}</h4>
+                  <span class="unset-dm-style">{{mAuction.asset.unitName}}</span>
                 </div>
-                <div class="col-md-7 restyle-col">
-                  <div class="assetdescription">
-                    <textarea class="wrapper-border restyle-wrapper" style="width: 100%; height: 100%; resize: none;">{{selectedAssetDescription}}
-                    </textarea>
-                  </div>
+                <div class="section" *ngIf="!isMine">
+                  <h4 style="overflow-wrap: break-word;">Creator: {{mAuction.creator.name}}</h4>
+                  <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt="">
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="royalties wrapper-border">
-            <div class="royal height-_10">
-              <div class="row d-flex align-items-center" style="width: 100%">
-                <div class="col-md-5">
-                  <h4>Royalties</h4>
+                <div class="section">
+                  <h4>Amount</h4>
+                  <span class="unset-dm-style">{{mAuction.amount}}</span>
                 </div>
-                <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" placeholder="10" (blur)="blurRoyaltyEvent($event)">
+                <div class="section">
+                  <h4>Price</h4>
+                  <span class="unset-dm-style">{{mAuction.winningPrice}}</span>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="collectionborder wrapper-border">
-            <div class="collections">
-              <div class="row" style="width: 100%">
-                <div class="col-md-5 restyle-col-bottom">
-                  <h4>Collection</h4>
-                </div>
-                <div class="col-md-7 restyle-col-bottom">
-                  <span class="color-violet">Collection name</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="propertiesborder wrapper-border">
-            <h4 class="properties">Properties</h4>
-            <div *ngFor="let property of metaDataProperties | keyvalue">
-              <div class="row ml-1" style="width: 100%;">
-                <div class="col-md-5 restyle-col-bottom">
-                  <h4>{{property.key}}</h4>
-                </div>
-                <div class="col-md-7 restyle-col-bottom">
-                  <p class="color-violet" style="overflow-wrap: break-word;">{{property.value}}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="createoffer wrapper-border">
-            <h4 class="amountheader">Amount (< {{maxSupply}})</h4>
-            <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAssetAmountEvent($event)">
-          </div>
-          <div class="duration wrapper-border">
-            <h4 class="durationheader">Duration</h4>
-            <input type="date" placeholder="" class="input-costum">
-          </div>
-          <div class="price wrapper-border">
-            <h4 class="priceheader">Reserve</h4>
-            <input type="text" placeholder="Enter price for the offered item" class="input-costum" (blur)="blurPriceEvent($event)">
-          </div>
-          <div class="wrapper-border">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="price">
-                  <h4 class="priceheader">Starting time</h4>
-                  <input type="datetime-local" placeholder="12:00" class="input-costum" (blur)="blurStartTimeEvent($event)">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="price ">
-                  <h4 class="priceheader">Ending time</h4>
-                  <input type="datetime-local" placeholder="15:00" class="input-costum" (blur)="blurEndTimeEvent($event)">
-                </div>
-              </div>
-            </div>
-            <div class="price">
-              <h4 class="priceheader">Minimum Bid Increment</h4>
-              <input type="text" placeholder="2$" class="input-costum"  (blur)="blurMinimumIncrementEvent($event)">
             </div>
           </div>
           <div class="buttons">
             <button class="btn-secondary-costum aligner" (click)="cancelAuction()">
-              Create offer
+              Cancel offer
             </button>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="preview wrapper-border">
-          <div class="previewheader">
-            <h4>Preview</h4>
-          </div>
-          <app-card></app-card>
         </div>
       </div>
     </div>

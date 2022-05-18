@@ -84,10 +84,13 @@ export class BidDetailComponent implements OnInit {
     console.log('start cancel Bid');
     const result = await this._walletsConnectService.cancelBid(bidIndex);
     if (result) {
-      const result1 = this._userService.cancelBid(bidIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.cancelBid(bidIndex).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
     }
   }
 

@@ -10,7 +10,8 @@ import { WalletsConnectService } from '../services/wallets-connect.service';
 })
 export class AuctionDetailComponent implements OnInit {
 
-  private mAuction: any = {};
+  public mAuction: any = {};
+  public isMine = false;
   private assets: any[] = [];
   public assetIDs: string[] = [];
   public maxSupply = 1;
@@ -59,42 +60,21 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   showAuctionDetail() {
+    this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.index;
-    this.selectedAssetDescription = `Name: ${this.selectedAsset.params.name} \nUnitName: ${this.selectedAsset.params['unit-name']}`;
+    this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
 
-    if (this.selectedAsset.params.url) {
-      this._userService.loadMetaData(this.selectedAsset.params.url).subscribe(
+    if (this.selectedAsset.assetURL) {
+      this._userService.loadMetaData(this.selectedAsset.assetUrl).subscribe(
         (result) => {
           console.log(result);
           let properties: any = {};
           for (const [key, value] of Object.entries(result)) {
-            properties[key] = JSON.stringify(value);
+            if (typeof value === 'string' || value instanceof String)
+              properties[key] = value;
           }
           this.metaDataProperties = properties;
-        },
-        (error) => console.log('error', error)
-      )
-    }
-  }
-
-  onSelectedAsset(assetID: string) {
-    this.selectedAssetID = +assetID;
-    const asset = this.getAsset(assetID);
-    this.selectedAsset = asset;
-    console.log(asset);
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
-    this.maxSupply = asset.params.total;
-
-    if (asset.params.url) {
-      this._userService.loadMetaData(asset.params.url).subscribe(
-        (result) => {
-          console.log('result', result);
-          let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
         },
         (error) => console.log('error', error)
       )
@@ -139,14 +119,21 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   async cancelAuction() {
-    console.log('start cancel trade');
-    const result = await this._walletsConnectService.cancelAuction(this.mAuction.auctionIndex);
+    console.log('start cancel trade:', this.mAuction.indexAddress);
+    const result = await this._walletsConnectService.cancelAuction(this.mAuction.indexAddress);
     if (result) {
-      const result1 = this._userService.cancelAuction(this.mAuction.auctionIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.cancelAuction(this.mAuction.auctionId).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
     }
+  }
+
+  public actionBack() {
+    this.router.navigateByUrl('/create-offer')
   }
 
 }

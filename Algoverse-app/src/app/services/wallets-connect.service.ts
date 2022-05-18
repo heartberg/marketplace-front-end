@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
-import { getAlgodClient, getAppLocalStateByKey, getTransactionParams, isOptinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
+import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getTransactionParams, isOptinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
 
@@ -175,6 +175,7 @@ export class WalletsConnectService {
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TK_ID");
       const indexTokenAmount = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TA");
+      console.log(indexTokenID, indexTokenAmount)
 
       if (indexTokenID > 0 && indexTokenAmount > 0) {
         const suggestedParams = await getTransactionParams();
@@ -189,10 +190,14 @@ export class WalletsConnectService {
           foreignAssets: [indexTokenID],
           suggestedParams,
         });
-        const result: any = await this.sessionWallet!.signTxn([appCallTxn])
-        console.log("Cancel Transaction", JSON.stringify(result));
-        await waitForTransaction(client, result.txId);
+        const signedTxns = await this.sessionWallet!.signTxn([appCallTxn])
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Cancel Transaction", JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
 
+        return true;
+
+      } else {
         return true;
       }
     } catch (err) {
@@ -264,6 +269,7 @@ export class WalletsConnectService {
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.BID_APP_ID, bidIndex, "TK_ID");
       const indexTokenAmount = await getAppLocalStateByKey(client, environment.BID_APP_ID, bidIndex, "TA");
+      console.log(indexTokenID, indexTokenAmount)
 
       if (indexTokenID > 0 && indexTokenAmount > 0) {
         const suggestedParams = await getTransactionParams();
@@ -277,10 +283,14 @@ export class WalletsConnectService {
           accounts: [bidIndex],
           suggestedParams,
         });
-        const result: any = await this.sessionWallet!.signTxn([appCallTxn])
-        console.log("Cancel Transaction", JSON.stringify(result));
-        await waitForTransaction(client, result.txId);
+        const signedTxns = await this.sessionWallet!.signTxn([appCallTxn])
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Cancel Transaction", JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
 
+        return true;
+
+      } else {
         return true;
       }
     } catch (err) {
@@ -340,8 +350,9 @@ export class WalletsConnectService {
   cancelSwap = async (swapIndex: string): Promise<boolean> => {
     try {
       const client = getAlgodClient();
-      const indexTokenID = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "TK_ID");
-      const indexTokenAmount = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "TA");
+      const indexTokenID = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "O_TKID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "O_AMT");
+      console.log(indexTokenID, indexTokenAmount)
 
       if (indexTokenID > 0 && indexTokenAmount > 0) {
         const suggestedParams = await getTransactionParams();
@@ -356,10 +367,14 @@ export class WalletsConnectService {
           foreignAssets: [indexTokenID],
           suggestedParams,
         });
-        const result: any = await this.sessionWallet!.signTxn([appCallTxn])
-        console.log("Cancel Transaction", JSON.stringify(result));
-        await waitForTransaction(client, result.txId);
+        const signedTxns = await this.sessionWallet!.signTxn([appCallTxn])
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Cancel Transaction", JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
 
+        return true;
+
+      } else {
         return true;
       }
     } catch (err) {
@@ -575,6 +590,7 @@ export class WalletsConnectService {
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TK_ID");
       const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TKA");
+      console.log(indexTokenID, indexTokenAmount)
 
       if (indexTokenID > 0 && indexTokenAmount > 0) {
         const suggestedParams = await getTransactionParams();
@@ -583,11 +599,15 @@ export class WalletsConnectService {
         let accounts = [auctionIndex];
         const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "LB_ADDR")
         console.log("leadBidder", encodeAddress(leadBidder));
-        if (leadBidder) {
-          accounts.push(encodeAddress(leadBidder));
-          accounts.push(encodeAddress(await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "SA_ADDR")));
-          accounts.push(encodeAddress(await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TW_ADDR")));
+        if (leadBidder && leadBidder != 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') {
+          accounts.push(leadBidder);
         }
+        const stakingAddress = await getAppGlobalState(environment.AUCTION_APP_ID, "SA_ADDR");
+        console.log("stakingAddress", stakingAddress);
+        accounts.push(stakingAddress);
+        const teamWallet = await getAppGlobalState(environment.AUCTION_APP_ID, "TW_ADDR");
+        console.log("teamWallet", teamWallet);
+        accounts.push(teamWallet);
 
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
@@ -598,10 +618,14 @@ export class WalletsConnectService {
           foreignAssets: [indexTokenID],
           suggestedParams,
         });
-        const result: any = await this.sessionWallet!.signTxn([appCallTxn])
-        console.log("Cancel Transaction", JSON.stringify(result));
-        await waitForTransaction(client, result.txId);
+        const signedTxns = await this.sessionWallet!.signTxn([appCallTxn])
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Cancel Transaction", JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
 
+        return true;
+
+      } else {
         return true;
       }
     } catch (err) {

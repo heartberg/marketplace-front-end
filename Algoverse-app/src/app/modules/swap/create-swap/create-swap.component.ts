@@ -20,6 +20,7 @@ export class CreateSwapComponent implements OnInit {
   public maxSupply = 1;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
+  public acceptingMetaDataProperties: any = {};
 
   public royalty: string = "0";
   public amount: string = "0";
@@ -36,6 +37,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    console.log('nginit')
     if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
       this.router.navigate(['/', 'home']);
       return;
@@ -60,7 +62,8 @@ export class CreateSwapComponent implements OnInit {
             console.log(result);
             let properties: any = {};
             for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
+              if (typeof value === 'string' || value instanceof String)
+                properties[key] = value;
             }
             this.metaDataProperties = properties;
           },
@@ -85,10 +88,11 @@ export class CreateSwapComponent implements OnInit {
         (result) => {
           console.log('result', result);
           let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
+          for (const [key, value] of Object.entries(result)) {
+            if (typeof value === 'string' || value instanceof String)
+              properties[key] = value;
+          }
+          this.metaDataProperties = properties;
         },
         (error) => console.log('error', error)
       )
@@ -102,12 +106,12 @@ export class CreateSwapComponent implements OnInit {
     return result;
   }
 
-  blurRoyaltyEvent(event: any){
+  blurRoyaltyEvent(event: any) {
     this.royalty = event.target.value;
     console.log(this.royalty);
   }
 
-  blurAmountEvent(event: any){
+  blurAmountEvent(event: any) {
     this.amount = event.target.value;
     console.log(this.amount);
   }
@@ -121,9 +125,24 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
     this.accetingAsset = asset;
+
+    if (asset.params.url) {
+      this._userService.loadMetaData(asset.params.url).subscribe(
+        (result) => {
+          console.log('result', result);
+          let properties: any = {};
+          for (const [key, value] of Object.entries(result)) {
+            if (typeof value === 'string' || value instanceof String)
+              properties[key] = value;
+          }
+          this.acceptingMetaDataProperties = properties;
+        },
+        (error) => console.log('error', error)
+      )
+    }
   }
 
-  blurAcceptAmountEvent(event: any){
+  blurAcceptAmountEvent(event: any) {
     this.acceptAmount = event.target.value;
     console.log(this.acceptAmount);
   }
@@ -202,27 +221,44 @@ export class CreateSwapComponent implements OnInit {
     }
     const txID = await this._walletsConnectService.createSwap(params1);
 
+    let assetProperties: { name: any; value: any; }[] = [];
+    for (const [key, value] of Object.entries(this.metaDataProperties)) {
+      assetProperties.push({
+        name: key,
+        value: value
+      })
+    }
+
+    let acceptAssetProperties: { name: any; value: any; }[] = [];
+    for (const [key, value] of Object.entries(this.acceptingMetaDataProperties)) {
+      acceptAssetProperties.push({
+        name: key,
+        value: value
+      })
+    }
+
     const asset = this.offeringAsset;
     if (txID) {
       const params2 = {
         swapId: txID,
         indexAddress,
         offerAddress: this._walletsConnectService.myAlgoAddress[0],
-        offerringAssetId: this.selectedAssetID,
+        offeringAssetId: this.selectedAssetID,
+        offeringAmount: this.amount,
         offeringAsset: {
           assetId: this.selectedAssetID,
           name: asset.params.name,
           unitName: asset.params['unit-name'],
           supply: asset.params.total,
-          assetURL: asset.params.url?asset.params.url:'',
+          assetURL: asset.params.url ? asset.params.url : '',
           creatorWallet: asset.params.creator,
-          freezeAddress: asset.params.freeze?asset.params.freeze:'',
-          managerAddress: asset.params.manager?asset.params.manager:'',
-          clawbackAddress: asset.params.clawback?asset.params.clawback:'',
-          reserveAddress: asset.params.reserve?asset.params.reserve:'',
-          metadata: asset.params['metadata-hash']?asset.params['metadata-hash']:'',
-          externalLink: asset.params.url?asset.params.url:'',
-          description: asset.description?asset.description:'',
+          freezeAddress: asset.params.freeze ? asset.params.freeze : '',
+          managerAddress: asset.params.manager ? asset.params.manager : '',
+          clawbackAddress: asset.params.clawback ? asset.params.clawback : '',
+          reserveAddress: asset.params.reserve ? asset.params.reserve : '',
+          metadata: asset.params['metadata-hash'] ? asset.params['metadata-hash'] : '',
+          externalLink: asset.params.url ? asset.params.url : '',
+          description: asset.description ? asset.description : '',
           assetCollectionID: "1",
           assetCollection: {
             assetCollectionID: "1",
@@ -237,28 +273,27 @@ export class CreateSwapComponent implements OnInit {
             website: "string",
             creatorWallet: "string"
           },
-          properties: Object.entries(this.metaDataProperties),
+          properties: assetProperties,
           file: "string",
           cover: "string",
           royalties: 0,
           category: "string"
         },
-        offerringAmount: this.amount,
         acceptingAssetId: this.acceptAssetId,
         acceptingAsset: {
           assetId: this.acceptAssetId,
           name: this.accetingAsset.params.name,
           unitName: this.accetingAsset.params['unit-name'],
           supply: this.accetingAsset.params.total,
-          assetURL: this.accetingAsset.params.url?this.accetingAsset.params.url:'',
+          assetURL: this.accetingAsset.params.url ? this.accetingAsset.params.url : '',
           creatorWallet: this.accetingAsset.params.creator,
-          freezeAddress: this.accetingAsset.params.freeze?this.accetingAsset.params.freeze:'',
-          managerAddress: this.accetingAsset.params.manager?this.accetingAsset.params.manager:'',
-          clawbackAddress: this.accetingAsset.params.clawback?this.accetingAsset.params.clawback:'',
-          reserveAddress: this.accetingAsset.params.reserve?this.accetingAsset.params.reserve:'',
-          metadata: this.accetingAsset.params['metadata-hash']?this.accetingAsset.params['metadata-hash']:'',
-          externalLink: this.accetingAsset.params.url?this.accetingAsset.params.url:'',
-          description: this.accetingAsset.description?this.accetingAsset.description:'',
+          freezeAddress: this.accetingAsset.params.freeze ? this.accetingAsset.params.freeze : '',
+          managerAddress: this.accetingAsset.params.manager ? this.accetingAsset.params.manager : '',
+          clawbackAddress: this.accetingAsset.params.clawback ? this.accetingAsset.params.clawback : '',
+          reserveAddress: this.accetingAsset.params.reserve ? this.accetingAsset.params.reserve : '',
+          metadata: this.accetingAsset.params['metadata-hash'] ? this.accetingAsset.params['metadata-hash'] : '',
+          externalLink: this.accetingAsset.params.url ? this.accetingAsset.params.url : '',
+          description: this.accetingAsset.description ? this.accetingAsset.description : '',
           assetCollectionID: "1",
           assetCollection: {
             assetCollectionID: "1",
@@ -273,7 +308,7 @@ export class CreateSwapComponent implements OnInit {
             website: "string",
             creatorWallet: "string"
           },
-          properties: Object.entries(this.metaDataProperties),
+          properties: acceptAssetProperties,
           file: "string",
           cover: "string",
           royalties: 0,
@@ -282,6 +317,8 @@ export class CreateSwapComponent implements OnInit {
         acceptingAmount: this.acceptAmount,
         collectionInterestedIn: this.collectionName
       }
+
+      console.log('param', params2);
       this._userService.createSwap(params2).subscribe(
         res => {
           console.log('Successfully created')
