@@ -98,6 +98,11 @@ export class UserService {
     return this._http.post(url, {bidId});
   }
 
+  loadTrendingItems(): Observable<any> {
+    const url = `${this.baseUrl}global/trending`;
+    return this._http.get<any>(url);
+  }
+
   loadMetaData(url: string): Observable<any> {
     return this._http.get<any>(url);
   }

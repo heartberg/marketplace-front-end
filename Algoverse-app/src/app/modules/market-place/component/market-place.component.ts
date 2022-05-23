@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-market-place',
@@ -13,6 +14,12 @@ export class MarketPlaceComponent implements OnInit {
   public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
   public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
   public boxArray: number[] = [1,1,1,2,2,3,4,4,4];
+
+  public trades: number[] = [];
+  public bids: number[] = [];
+  public swaps: number[] = [];
+  public auctions: number[] = [];
+
   //drop down value
   public dropDownValue: string = '';
   public isSwap: boolean = false;
@@ -30,12 +37,27 @@ export class MarketPlaceComponent implements OnInit {
     return value;
   }
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private _userService: UserService
+  ) {
+  }
 
   ngOnInit(): void {
-    setTimeout( () => {
-      this.isLoaded = true;
-    },1000)
+    this._userService.loadTrendingItems().subscribe(
+      res => {
+        this.isLoaded = true;
+        console.log(res);
+
+        this.trades = res.trades;
+        this.bids = res.bids;
+        this.swaps = res.swaps;
+        this.auctions = res.auctions;
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 
   catchValue(event: string) {
