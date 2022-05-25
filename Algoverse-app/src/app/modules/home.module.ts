@@ -35,6 +35,15 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { CreateAuctionComponent } from './create-auction/create-auction.component';
 import {CarouselModule} from "../carousel/carousel.module";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ItemsComponent } from "./profile/items/items.component";
+import { TradeDetailComponent } from "../trade-detail/trade-detail.component";
+import { TradeGridItemComponent } from "../trade-grid-item/trade-grid-item.component";
+import { BidGridItemComponent } from "../bid-grid-item/bid-grid-item.component";
+import { BidDetailComponent } from "../bid-detail/bid-detail.component";
+import { SwapDetailComponent } from "../swap-detail/swap-detail.component";
+import { SwapGridItemComponent } from "../swap-grid-item/swap-grid-item.component";
+import { AuctionDetailComponent } from "../auction-detail/auction-detail.component";
+import { AuctionGridItemComponent } from "../auction-grid-item/auction-grid-item.component";
 
 @NgModule({
   declarations: [
@@ -60,7 +69,16 @@ import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
     SpaceshuttleComponent,
     CreateSwapComponent,
     AssetDetailSwapComponent,
-    CreateAuctionComponent
+    CreateAuctionComponent,
+    ItemsComponent,
+    TradeDetailComponent,
+    TradeGridItemComponent,
+    BidGridItemComponent,
+    BidDetailComponent,
+    SwapDetailComponent,
+    SwapGridItemComponent,
+    AuctionDetailComponent,
+    AuctionGridItemComponent,
   ],
   imports: [
     BrowserModule,

@@ -63,7 +63,9 @@
           <h3 class="color-violet title">Trades</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of trades">
-              <app-card *ngIf="isLoaded"></app-card>
+              <div *ngIf="isLoaded" >
+                <app-trade-grid-item [routerLink]="'/trade/' + item['tradeId']" [mItem]="item"></app-trade-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
@@ -72,7 +74,9 @@
           <h3 class="color-violet title">Bids</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of bids">
-              <app-card *ngIf="isLoaded"></app-card>
+              <div *ngIf="isLoaded">
+                <app-bid-grid-item [routerLink]="'/bid/' + item['bidId']" [mItem]="item"></app-bid-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
@@ -81,7 +85,9 @@
           <h3 class="color-violet title">Swaps</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of swaps">
-              <app-swap-card *ngIf="isLoaded"></app-swap-card>
+              <div *ngIf="isLoaded">
+                <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
@@ -90,7 +96,9 @@
           <h3 class="color-violet title">Timed Auctions</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of auctions">
-              <app-timed-auction-card *ngIf="isLoaded"></app-timed-auction-card>
+              <div *ngIf="isLoaded">
+                <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>

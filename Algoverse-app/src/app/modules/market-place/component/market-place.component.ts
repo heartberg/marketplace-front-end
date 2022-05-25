@@ -13,12 +13,11 @@ export class MarketPlaceComponent implements OnInit {
   public collectionsDropDown: string[] = ['All Collections', 'Collection 1', 'Collection 2', 'Collection 3'];
   public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
   public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
-  public boxArray: number[] = [1,1,1,2,2,3,4,4,4];
 
-  public trades: number[] = [];
-  public bids: number[] = [];
-  public swaps: number[] = [];
-  public auctions: number[] = [];
+  public trades: any[] = [];
+  public bids: any[] = [];
+  public swaps: any[] = [];
+  public auctions: any[] = [];
 
   //drop down value
   public dropDownValue: string = '';

@@ -134,7 +134,11 @@ export class CreateTradeComponent implements OnInit {
             this._userService.setupTrade(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
                 console.log('setup trade response: ', res);
-                this.sendCreateTradeRequest(indexAddress);
+                if (res) {
+                  this.sendCreateTradeRequest(indexAddress);
+                } else {
+                  console.log('setup trade failed');
+                }
               },
               (err) => {
                 console.log('setup trade error: ', err);
@@ -150,7 +154,11 @@ export class CreateTradeComponent implements OnInit {
             this._userService.setupTrade(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
                 console.log('setup trade response: ', res);
-                this.sendCreateTradeRequest(indexAddress);
+                if (res) {
+                  this.sendCreateTradeRequest(indexAddress);
+                } else {
+                  console.log('setup trade failed');
+                }
               },
               (err) => {
                 console.log('setup trade error: ', err);

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
+import { getAlgodClient, getBalance, isOptinAsset } from 'src/app/services/utils.algod';
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 
@@ -14,14 +14,14 @@ import { environment } from 'src/environments/environment';
 export class TradeDetailComponent implements OnInit {
 
   private mTrade: any = null;
-  public isMine = false;
+  public isMine = true;
+  public isOpen = true;
   public assetName: string = ""
   public assetUnit: string = ""
   public creatorName: string = ""
   public maxSupply = 1;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
-
 
   public royalty: string = "0";
   public amount: string = "0";
@@ -56,7 +56,9 @@ export class TradeDetailComponent implements OnInit {
 
   showAssetDetails(asset: any) {
     this.isMine = this.mTrade.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
-    console.log('masset', asset);
+    this.isOpen = this.mTrade.isOpen;
+    console.log('isMine', this.isMine);
+    console.log('isOpen', this.isOpen);
     this.assetName = asset.name;
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     console.log('selectedAssetDescription', this.selectedAssetDescription)
@@ -82,6 +84,30 @@ export class TradeDetailComponent implements OnInit {
     console.log(this.price);
   }
 
+  async actionTrade() {
+    if (!this._walletsConnectService.sessionWallet) {
+      alert('Connect your wallet!');
+      return;
+    }
+
+    if (this.isOpen) {
+      if (this.isMine) {
+        // cancel trade
+        await this.cancelTrade()
+
+      } else {
+        // bid on trade
+        await this.acceptTrade()
+      }
+    } else {
+      if (this.isMine) {
+
+      } else {
+
+      }
+    }
+  }
+
   async cancelTrade() {
     const tradeIndex = this.mTrade.indexAddress;
     console.log('start cancel trade');
@@ -91,6 +117,21 @@ export class TradeDetailComponent implements OnInit {
         (result) => {
           console.log('result', result);
           console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
+    }
+  }
+
+  async acceptTrade() {
+    const tradeIndex = this.mTrade.indexAddress;
+    console.log('start accept trade');
+    const result = await this._walletsConnectService.acceptTrade(tradeIndex, this.mTrade.creatorWallet);
+    if (result) {
+      this._userService.acceptTrade(this.mTrade.tradeId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully accepted')
         },
         (error) => console.log('error', error)
       )

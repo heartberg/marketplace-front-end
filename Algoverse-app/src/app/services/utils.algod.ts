@@ -1,8 +1,9 @@
 import { environment } from 'src/environments/environment';
-import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, ALGORAND_MIN_TX_FEE } from 'algosdk';
+import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, ALGORAND_MIN_TX_FEE, getApplicationAddress } from 'algosdk';
 import AlgodClient from 'algosdk/dist/types/src/client/v2/algod/algod';
 import * as sha512 from 'js-sha512';
 import * as hibase32 from 'hi-base32';
+import { Wallet } from 'algorand-session-wallet';
 
 const ALGORAND_ADDRESS_SIZE = 58;
 export enum AssetTransactionType {
@@ -2022,7 +2023,7 @@ export const getAppLocalStateByKey = async (algodClient: AlgodClient, appId: num
   }
 }
 
-export const isOptinAsset = async (assetIndex: number, address: string) => {
+export const isOptinAsset = async (assetIndex: number, address: string): Promise<boolean> => {
   try {
     const algod = getAlgodClient();
     const accountInfo = await algod.accountInformation(address).do();
@@ -2044,6 +2045,81 @@ export const isOptinAsset = async (assetIndex: number, address: string) => {
   return false;
 }
 
+export const optinAsset = async (tokenId: number, wallet: Wallet) => {
+  try {
+    const client = getAlgodClient();
+    const suggestedParams = await getTransactionParams();
+
+    const optinTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+      from: wallet.getDefaultAccount(),
+      to: wallet.getDefaultAccount(),
+      amount: 0,
+      assetIndex: Number(tokenId),
+      suggestedParams
+    });
+
+    const signedTxns = await wallet!.signTxn([optinTxn])
+    const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+    console.log("Optin Asset Transaction", JSON.stringify(results));
+    await waitForTransaction(client, results.txId);
+
+    return true;
+
+  } catch (err) {
+    console.error (err);
+  }
+
+  return false;
+}
+
+export const isOptinApp = async (appId: number, address: string) => {
+  try {
+    const algod = getAlgodClient();
+    const accountInfo = await algod.accountInformation(address).do();
+    console.log('accountInfo - ' + address, accountInfo);
+
+    if (accountInfo['apps-local-state'] && Array.isArray(accountInfo['apps-local-state'])) {
+      console.log(address + ' appsLocalState:', accountInfo['apps-local-state']);
+
+      for (let stateInfo of accountInfo['apps-local-state']) {
+        if (stateInfo['id'] == appId) {
+          return true;
+        }
+      }
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
+
+  return false;
+}
+
+export const optinApp = async (appId: number, wallet: Wallet) => {
+  try {
+    const client = getAlgodClient();
+    const suggestedParams = await getTransactionParams();
+
+    const optinTxn = algosdk.makeApplicationOptInTxnFromObject({
+      from: wallet.getDefaultAccount(),
+      appIndex: appId,
+      suggestedParams
+    });
+
+    const signedTxns = await wallet!.signTxn([optinTxn])
+    const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+    console.log("Optin Transaction", JSON.stringify(results));
+    await waitForTransaction(client, results.txId);
+
+    return true;
+
+  } catch (err) {
+    console.error (err);
+  }
+
+  return false;
+}
+
 export const getAppGlobalState = async (appId: number, key: string) => {
   const algod = getAlgodClient();
   const app = await algod.getApplicationByID(appId).do();
@@ -2057,4 +2133,24 @@ export const getAppGlobalState = async (appId: number, key: string) => {
       return appValueState(stateArray[j].value);
     }
   }
+}
+
+export const getBalance = async (address: string, token_id = 0): Promise<number> => {
+  const client = getAlgodClient();
+  const accountInfo = await client.accountInformation(address).do();
+  console.log('accountInfo', accountInfo);
+
+  if (token_id == 0) {
+    return accountInfo.amount;
+  }
+
+  const assets = accountInfo['assets'];
+  for (let asset of assets) {
+    console.log(asset);
+    if (asset['asset-id'] == token_id) {
+      return asset.amount;
+    }
+  }
+
+  return 0;
 }

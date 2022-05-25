@@ -140,7 +140,7 @@ export class CreateAuctionComponent implements OnInit {
           if (result) {
             this._userService.setupAuction(indexAddress).subscribe(
               (res) => {
-                console.log('setup trade response: ', res);
+                console.log('setup auction response: ', res);
                 if (res) {
                   this.sendCreateAuctionRequest(indexAddress);
                 } else {
@@ -148,7 +148,7 @@ export class CreateAuctionComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log('setup trade error: ', err);
+                console.log('setup auction error: ', err);
               }
             );
           } else {
@@ -157,7 +157,7 @@ export class CreateAuctionComponent implements OnInit {
         } else {
           this._userService.setupAuction(indexAddress).subscribe(
             (res) => {
-              console.log('setup trade response: ', res);
+              console.log('setup auction response: ', res);
               if (res) {
                 this.sendCreateAuctionRequest(indexAddress);
               } else {
@@ -165,7 +165,7 @@ export class CreateAuctionComponent implements OnInit {
               }
             },
             (err) => {
-              console.log('setup trade error: ', err);
+              console.log('setup auction error: ', err);
             }
           );
         }
@@ -249,7 +249,7 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   async cancelAuction(bidIndex: string) {
-    console.log('start cancel trade');
+    console.log('start cancel auction');
     const result = await this._walletsConnectService.cancelAuction(bidIndex);
     if (result) {
       const result1 = this._userService.cancelAuction(bidIndex);

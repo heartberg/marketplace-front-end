@@ -68,6 +68,11 @@ export class UserService {
     return this._http.post(url, {tradeId});
   }
 
+  acceptTrade(tradeId: string, accepter: string): Observable<any> {
+    const url = `${this.baseUrl}trade/cancel?tradeId=${tradeId}&accepter=${accepter}`;
+    return this._http.post(url, {tradeId});
+  }
+
   loadBids(address: string): Observable<any> {
     const url = `${this.baseUrl}bid/searchByAddress?address=${address}`;
     return this._http.get<any>(url);

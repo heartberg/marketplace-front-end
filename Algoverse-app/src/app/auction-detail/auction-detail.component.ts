@@ -12,6 +12,7 @@ export class AuctionDetailComponent implements OnInit {
 
   public mAuction: any = {};
   public isMine = false;
+  public isOpen = true;
   private assets: any[] = [];
   public assetIDs: string[] = [];
   public maxSupply = 1;
@@ -61,6 +62,7 @@ export class AuctionDetailComponent implements OnInit {
 
   showAuctionDetail() {
     this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
+    this.isOpen = this.mAuction.isOpen;
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.index;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;

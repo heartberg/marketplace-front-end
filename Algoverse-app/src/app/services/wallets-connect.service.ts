@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
-import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getTransactionParams, isOptinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
+import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, getTransactionParams, isOptinApp, isOptinAsset, optinApp, optinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
 
@@ -198,6 +198,113 @@ export class WalletsConnectService {
         return true;
 
       } else {
+        return true;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
+  }
+
+  acceptTrade = async (tradeIndex: string, seller: string): Promise<boolean> => {
+    try {
+      const client = getAlgodClient();
+      const isOptedInApp = await isOptinApp(environment.TRADE_APP_ID, tradeIndex)
+      if (!isOptedInApp) {
+        console.log('Invalid trade item')
+        return false;
+      }
+
+      const indexTokenID = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TA");
+      const tradingPrice = await getAppLocalStateByKey(client, environment.TRADE_APP_ID, tradeIndex, "TP");
+      console.log('token id', indexTokenID);
+      console.log('token amount', indexTokenAmount);
+      console.log('token price', tradingPrice);
+
+      if (indexTokenID > 0 && indexTokenAmount > 0) {
+
+        const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+        if (balance < Number(tradingPrice) + 4000 + 3000) {
+          console.log('Insufficient Balance');
+          return false;
+        }
+
+        const storeAppId = await getAppGlobalState(environment.TRADE_APP_ID, "SA_ID");
+        const isOptinStoreApp = await isOptinApp(storeAppId, this.sessionWallet!.getDefaultAccount())
+        console.log('isOptinStoreApp :' + storeAppId, isOptinStoreApp)
+        if (!isOptinStoreApp) {
+          const result = await optinApp(storeAppId, this.sessionWallet!.wallet);
+          if (!result) {
+            console.log('Failed on optin app');
+            return false;
+          }
+        }
+
+        const isOptedInAsset = await isOptinAsset(indexTokenID, this.sessionWallet!.getDefaultAccount())
+        console.log('isOptedInAsset', isOptedInAsset)
+        if (!isOptedInAsset) {
+          const result = await optinAsset(indexTokenID, this.sessionWallet!.wallet);
+          if (!result) {
+            console.log('Failed on optin asset');
+            return false;
+          }
+        }
+
+        let txns = [];
+        let tokens = [Number(indexTokenID)];
+        const suggestedParams = await getTransactionParams();
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.TRADE_APP_ID),
+          amount: Number(tradingPrice) + 4000,
+          note: new Uint8Array(Buffer.from("Amount to accept trade")),
+          suggestedParams,
+        });
+        txns.push(payTxn);
+
+        let accounts = [
+          seller,
+          tradeIndex,
+          await getAppGlobalState(environment.TRADE_APP_ID, 'SA_ADDR'),
+          await getAppGlobalState(environment.TRADE_APP_ID, 'TW_ADDR')
+        ];
+        console.log('accounts', accounts);
+
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.TRADE_APP_ID,
+          note: new Uint8Array(Buffer.from("Accept trade")),
+          appArgs: [new Uint8Array([...Buffer.from("accept")]),
+                    algosdk.encodeUint64(Number(indexTokenAmount))],
+          accounts,
+          foreignAssets: tokens,
+          suggestedParams,
+        });
+        txns.push(appCallTxn);
+
+        const storeAppCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: storeAppId,
+          note: new Uint8Array(Buffer.from("Store trading amounts")),
+          appArgs: [new Uint8Array([...Buffer.from("buy")])],
+          accounts: [seller],
+          suggestedParams,
+        });
+        txns.push(storeAppCallTxn);
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction : " + JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
+
+        return true;
+
+      } else {
+        console.log('Invalid trade item');
         return true;
       }
     } catch (err) {
