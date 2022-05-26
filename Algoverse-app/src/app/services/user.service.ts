@@ -69,7 +69,7 @@ export class UserService {
   }
 
   acceptTrade(tradeId: string, accepter: string): Observable<any> {
-    const url = `${this.baseUrl}trade/cancel?tradeId=${tradeId}&accepter=${accepter}`;
+    const url = `${this.baseUrl}trade/accept?tradeId=${tradeId}&accepter=${accepter}`;
     return this._http.post(url, {tradeId});
   }
 
@@ -101,6 +101,11 @@ export class UserService {
   cancelBid(bidId: string): Observable<any> {
     const url = `${this.baseUrl}bid/cancel?bidId=${bidId}`;
     return this._http.post(url, {bidId});
+  }
+
+  acceptBid(bidId: string, accepter: string): Observable<any> {
+    const url = `${this.baseUrl}bid/accept?bidId=${bidId}&accepter=${accepter}`;
+    return this._http.post(url, {});
   }
 
   loadTrendingItems(): Observable<any> {

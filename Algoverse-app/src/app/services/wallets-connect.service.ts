@@ -237,7 +237,7 @@ export class WalletsConnectService {
         if (!isOptinStoreApp) {
           const result = await optinApp(storeAppId, this.sessionWallet!.wallet);
           if (!result) {
-            console.log('Failed on optin app');
+            console.log('Failed on optin store app');
             return false;
           }
         }
@@ -398,6 +398,112 @@ export class WalletsConnectService {
         return true;
 
       } else {
+        return true;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
+  }
+
+  acceptBid = async (bidIndex: string, bidder: string): Promise<boolean> => {
+    try {
+      const client = getAlgodClient();
+      const isOptedInApp = await isOptinApp(environment.BID_APP_ID, bidIndex)
+      if (!isOptedInApp) {
+        console.log('Invalid bid item')
+        return false;
+      }
+
+      const indexTokenID = await getAppLocalStateByKey(client, environment.BID_APP_ID, bidIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.BID_APP_ID, bidIndex, "TA");
+      const bidPrice = await getAppLocalStateByKey(client, environment.BID_APP_ID, bidIndex, "TP");
+      console.log('token id', indexTokenID);
+      console.log('token amount', indexTokenAmount);
+      console.log('token price', bidPrice);
+
+      if (indexTokenID > 0 && indexTokenAmount > 0) {
+
+        const balance = await getBalance(this.sessionWallet!.getDefaultAccount(), indexTokenID);
+        if (balance < Number(indexTokenAmount)) {
+          console.log('Failed, Insufficient token holding');
+          return false;
+        }
+
+        const isOptedInAsset = await isOptinAsset(indexTokenID, getApplicationAddress(environment.BID_APP_ID))
+        console.log('isOptedInAsset', isOptedInAsset)
+        if (!isOptedInAsset) {
+          console.log('Invalid bid item, was not setup');
+          return false;
+        }
+
+        const storeAppId = await getAppGlobalState(environment.BID_APP_ID, "SA_ID");
+        const isOptinStoreApp = await isOptinApp(storeAppId, this.sessionWallet!.getDefaultAccount())
+        console.log('isOptinStoreApp :' + storeAppId, isOptinStoreApp)
+        if (!isOptinStoreApp) {
+          const result = await optinApp(storeAppId, this.sessionWallet!.wallet);
+          if (!result) {
+            console.log('Failed on optin store app');
+            return false;
+          }
+        }
+
+        let txns = [];
+        let tokens = [Number(indexTokenID)];
+        const suggestedParams = await getTransactionParams();
+
+        const assetTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.BID_APP_ID),
+          assetIndex: Number(indexTokenID),
+          amount: Number(indexTokenAmount),
+          note: new Uint8Array(Buffer.from("Transfer assets to accept bid")),
+          suggestedParams,
+        });
+        txns.push(assetTxn);
+
+        let accounts = [
+          bidder,
+          bidIndex,
+          await getAppGlobalState(environment.BID_APP_ID, 'SA_ADDR'),
+          await getAppGlobalState(environment.BID_APP_ID, 'TW_ADDR')
+        ];
+        console.log('accounts', accounts);
+
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.BID_APP_ID,
+          note: new Uint8Array(Buffer.from("Accept bid")),
+          appArgs: [new Uint8Array([...Buffer.from("accept")]),
+                    algosdk.encodeUint64(Number(bidPrice))],
+          accounts,
+          foreignAssets: tokens,
+          suggestedParams,
+        });
+        txns.push(appCallTxn);
+
+        const storeAppCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: storeAppId,
+          note: new Uint8Array(Buffer.from("Store bid accepting amounts")),
+          appArgs: [new Uint8Array([...Buffer.from("sell")])],
+          accounts: [bidder],
+          suggestedParams,
+        });
+        txns.push(storeAppCallTxn);
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction : " + JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
+
+        return true;
+
+      } else {
+        console.log('Invalid bid item');
         return true;
       }
     } catch (err) {

@@ -32,8 +32,18 @@
             </div>
           </div>
           <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="cancelBid()">
-              Cancel offer
+            <button class="btn-secondary-costum aligner" (click)="actionTrade()">
+              <ng-container *ngIf = "isOpen; then open else close"></ng-container>
+              <ng-template #open>
+                <ng-container *ngIf = "isMine; then cancel else bid"></ng-container>
+                <ng-template #cancel>Cancel offer</ng-template>
+                <ng-template #bid>Bid</ng-template>
+              </ng-template>
+              <ng-template #close>
+                <ng-container *ngIf = "isMine; then reopen else nothing"></ng-container>
+                <ng-template #reopen>Reopen</ng-template>
+                <ng-template #nothing>Test</ng-template>
+              </ng-template>
             </button>
           </div>
         </div>

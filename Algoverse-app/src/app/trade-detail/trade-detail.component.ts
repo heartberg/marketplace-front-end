@@ -14,8 +14,8 @@ import { environment } from 'src/environments/environment';
 export class TradeDetailComponent implements OnInit {
 
   private mTrade: any = null;
-  public isMine = true;
-  public isOpen = true;
+  public isMine = false;
+  public isOpen = false;
   public assetName: string = ""
   public assetUnit: string = ""
   public creatorName: string = ""
