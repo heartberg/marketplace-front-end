@@ -2002,6 +2002,8 @@ export const getAppLocalStateByKey = async (algodClient: AlgodClient, appId: num
     .accountInformation(accountAddr)
     .do();
 
+  console.log('accountInfoResponse', accountInfoResponse);
+
   for (let i = 0; i < accountInfoResponse["apps-local-state"].length; i++) {
     if (accountInfoResponse["apps-local-state"][i].id === appId) {
       const stateArray =

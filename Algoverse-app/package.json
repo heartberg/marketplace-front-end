@@ -22,8 +22,6 @@
     "@angular/router": "~12.2.0",
     "@json-rpc-tools/utils": "^1.7.6",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
-    "@randlabs/myalgo-connect": "^1.1.2",
-    "@randlabs/wallet-myalgo-js": "^1.0.2",
     "@walletconnect/browser": "^1.0.0",
     "@walletconnect/client": "^1.7.4",
     "@walletconnect/qrcode-modal": "^1.6.5",

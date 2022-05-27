@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="actionTrade()">
+            <button class="btn-secondary-costum aligner" (click)="actionBid()">
               <ng-container *ngIf = "isOpen; then open else close"></ng-container>
               <ng-template #open>
                 <ng-container *ngIf = "isMine; then cancel else bid"></ng-container>

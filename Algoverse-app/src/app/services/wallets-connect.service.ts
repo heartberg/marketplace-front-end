@@ -29,6 +29,7 @@ export class WalletsConnectService {
     if (!await this.sessionWallet.connect()) return alert("Couldnt connect")
 
     this.myAlgoAddress = this.sessionWallet.accountList()
+    console.log('myAlgoAddress', this.myAlgoAddress);
     localStorage.setItem('wallet', this.sessionWallet.getDefaultAccount())
     this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
 
@@ -305,7 +306,7 @@ export class WalletsConnectService {
 
       } else {
         console.log('Invalid trade item');
-        return true;
+        return false;
       }
     } catch (err) {
       console.error(err)
@@ -504,7 +505,7 @@ export class WalletsConnectService {
 
       } else {
         console.log('Invalid bid item');
-        return true;
+        return false;
       }
     } catch (err) {
       console.error(err)

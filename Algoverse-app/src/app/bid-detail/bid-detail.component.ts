@@ -126,7 +126,7 @@ export class BidDetailComponent implements OnInit {
     console.log('start accept Bid');
     const result = await this._walletsConnectService.acceptBid(BidIndex, this.mBid.creatorWallet);
     if (result) {
-      this._userService.acceptBid(this.mBid.BidId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+      this._userService.acceptBid(this.mBid.bidId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
           console.log('result', result);
           console.log('Successfully accepted')

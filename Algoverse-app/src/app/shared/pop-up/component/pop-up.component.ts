@@ -34,13 +34,13 @@ export class PopUpComponent implements OnInit {
       await this._walletsConnectService.connect('wallet-connect');
       if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
         this.isConnectedToWallet.emit(false);
-        console.log('Connected to MyAlgoWallet')
+        console.log('Connected to WalletConnect')
       }
     } else if (value == 'AlgoSigner') {
       await this._walletsConnectService.connect('algo-signer');
       if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
         this.isConnectedToWallet.emit(false);
-        console.log('Connected to MyAlgoWallet')
+        console.log('Connected to AlgoSigner')
       }
     }
   }
