@@ -598,6 +598,99 @@ export class WalletsConnectService {
     return false;
   }
 
+  acceptSwap = async (swapIndex: string, offer: string): Promise<boolean> => {
+    try {
+      const client = getAlgodClient();
+      const isOptedInApp = await isOptinApp(environment.SWAP_APP_ID, swapIndex)
+      if (!isOptedInApp) {
+        console.log('Invalid swap item')
+        return false;
+      }
+
+      //const offer = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "O_ADDR");
+      const offeringTokenID = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "O_TKID");
+      const offeringTokenAmount = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "O_AMT");
+      const acceptingTokenID = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "A_TKID");
+      const acceptingTokenAmount = await getAppLocalStateByKey(client, environment.SWAP_APP_ID, swapIndex, "A_AMT");
+      console.log('offer', offer);
+      console.log('offeringTokenID', offeringTokenID);
+      console.log('offeringTokenAmount', offeringTokenAmount);
+      console.log('acceptingTokenID', acceptingTokenID);
+      console.log('acceptingTokenAmount', acceptingTokenAmount);
+
+      if (offeringTokenID > 0 && offeringTokenAmount > 0 && acceptingTokenID > 0 && acceptingTokenAmount > 0) {
+
+        const balance = await getBalance(this.sessionWallet!.getDefaultAccount(), acceptingTokenID);
+        if (balance < acceptingTokenAmount) {
+          console.log('Insufficient Balance');
+          return false;
+        }
+
+        const isOptedInAsset = await isOptinAsset(offeringTokenID, this.sessionWallet!.getDefaultAccount())
+        console.log('isOptedInAsset', isOptedInAsset)
+        if (!isOptedInAsset) {
+          const result = await optinAsset(offeringTokenID, this.sessionWallet!.wallet);
+          if (!result) {
+            console.log('Failed on optin asset');
+            return false;
+          }
+        }
+
+        let txns = [];
+        let tokens = [Number(offeringTokenID), Number(acceptingTokenID)];
+        const suggestedParams = await getTransactionParams();
+
+        const assetTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.SWAP_APP_ID),
+          assetIndex: Number(acceptingTokenID),
+          amount: Number(acceptingTokenAmount),
+          note: new Uint8Array(Buffer.from("Transfer assets to accept swap")),
+          suggestedParams,
+        });
+        txns.push(assetTxn);
+
+        let accounts = [
+          offer,
+          swapIndex,
+          await getAppGlobalState(environment.SWAP_APP_ID, 'SA_ADDR'),
+          await getAppGlobalState(environment.SWAP_APP_ID, 'TW_ADDR')
+        ];
+        console.log('accounts', accounts);
+
+        suggestedParams.fee = 3000
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.SWAP_APP_ID,
+          note: new Uint8Array(Buffer.from("Accept swap")),
+          appArgs: [new Uint8Array([...Buffer.from("accept")]),
+                    algosdk.encodeUint64(Number(offeringTokenAmount))],
+          accounts,
+          foreignAssets: tokens,
+          suggestedParams,
+        });
+        txns.push(appCallTxn);
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction : " + JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
+
+        return true;
+
+      } else {
+        console.log('Invalid swap item');
+        return false;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
+  }
+
   createAuctionApp = async (): Promise<any> => {
     let result = {
       appId: 0,

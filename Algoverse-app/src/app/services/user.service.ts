@@ -147,6 +147,11 @@ export class UserService {
     return this._http.post(url, {swapId});
   }
 
+  acceptSwap(swapId: string, acceptorWallet: string): Observable<any> {
+    const url = `${this.baseUrl}swap/accept?swapId=${swapId}&acceptorWallet=${acceptorWallet}`;
+    return this._http.post(url, {swapId});
+  }
+
   loadAuctions(address: string): Observable<any> {
     const url = `${this.baseUrl}auction/searchByAddress?wallet=${address}`;
     return this._http.get<any>(url);

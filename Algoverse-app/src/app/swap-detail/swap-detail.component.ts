@@ -11,6 +11,7 @@ import { WalletsConnectService } from '../services/wallets-connect.service';
 export class SwapDetailComponent implements OnInit {
 
   public mSwap: any = null;
+  public isOpen = false;
   public isMine = false;
   public assetIDs: string[] = [];
   public maxSupply = 1;
@@ -49,6 +50,9 @@ export class SwapDetailComponent implements OnInit {
   }
 
   showAssetDetails(asset: any) {
+    this.isMine = this.mSwap.offererWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
+    this.isOpen = this.mSwap.isOpen;
+
     console.log('masset', asset);
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     this.maxSupply = asset.supply;
@@ -71,6 +75,30 @@ export class SwapDetailComponent implements OnInit {
     console.log(this.price);
   }
 
+  async actionSwap() {
+    if (!this._walletsConnectService.sessionWallet) {
+      alert('Connect your wallet!');
+      return;
+    }
+
+    if (this.isOpen) {
+      if (this.isMine) {
+        // cancel swap
+        await this.cancelSwap()
+
+      } else {
+        // bid on swap
+        await this.acceptSwap()
+      }
+    } else {
+      if (this.isMine) {
+
+      } else {
+
+      }
+    }
+  }
+
   async cancelSwap() {
     const swapIndex = this.mSwap.indexAddress;
     console.log('start cancel swap:', swapIndex);
@@ -80,6 +108,21 @@ export class SwapDetailComponent implements OnInit {
         (result) => {
           console.log('result', result);
           console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
+    }
+  }
+
+  async acceptSwap() {
+    const swapIndex = this.mSwap.indexAddress;
+    console.log('start accept swap');
+    const result = await this._walletsConnectService.acceptSwap(swapIndex, this.mSwap.offererWallet);
+    if (result) {
+      this._userService.acceptSwap(this.mSwap.swapId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        (res) => {
+          console.log('result', res);
+          console.log('Successfully accepted')
         },
         (error) => console.log('error', error)
       )
