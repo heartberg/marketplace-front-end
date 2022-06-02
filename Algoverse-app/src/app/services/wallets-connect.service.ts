@@ -820,78 +820,6 @@ export class WalletsConnectService {
     return 0;
   }
 
-  bidAuction = async (params: any) => {
-    try {
-      const client = getAlgodClient();
-      const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TK_ID");
-      const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "TKA");
-
-      const suggestedParams = await getTransactionParams();
-
-      if (indexTokenID > 0 && indexTokenAmount > 0) {
-        const ioa = await isOptinAsset(indexTokenID, this.sessionWallet!.getDefaultAccount())
-        if (!ioa) {
-          const txn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
-            from: this.sessionWallet!.getDefaultAccount(),
-            to: this.sessionWallet!.getDefaultAccount(),
-            amount: 0,
-            assetIndex: indexTokenID,
-            note: new Uint8Array(Buffer.from("Optin asset")),
-            suggestedParams,
-          });
-          const result: any = this.sessionWallet!.signTxn([txn])
-          await waitForTransaction(client, result.txId);
-        }
-
-        suggestedParams.fee = 2000;
-
-        let accounts = [params.auctionIndex];
-        const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, params.auctionIndex, "LB_ADDR")
-        if (leadBidder) {
-          const leadBidderAddress = encodeAddress(leadBidder)
-          console.log("leadBidder", leadBidderAddress);
-          accounts.push(leadBidderAddress);
-        }
-
-        let txns = [];
-
-        const fundingAmount = params.bidAmount;
-        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-          from: this.sessionWallet!.getDefaultAccount(),
-          to: getApplicationAddress(environment.AUCTION_APP_ID),
-          amount: fundingAmount,
-          note: new Uint8Array(Buffer.from("Payment to bid on auction")),
-          suggestedParams,
-        });
-        txns.push(payTxn);
-
-        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-          from: this.sessionWallet!.getDefaultAccount(),
-          appIndex: environment.AUCTION_APP_ID,
-          note: new Uint8Array(Buffer.from("Bid Auction")),
-          appArgs: [new Uint8Array([...Buffer.from("bid")])],
-          accounts: accounts,
-          foreignAssets: [indexTokenID],
-          suggestedParams,
-        });
-        txns.push(appCallTxn)
-
-        const txnGroup = algosdk.assignGroupID(txns);
-        const signedTxns = await this.sessionWallet!.signTxn(txns);
-
-        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
-        console.log("Transaction : " + JSON.stringify(results));
-        await waitForTransaction(client, results.txId);
-
-        return true;
-      }
-    } catch (err) {
-      console.error(err)
-    }
-
-    return false;
-  }
-
   cancelAuction = async (auctionIndex: string): Promise<boolean> => {
     try {
       const client = getAlgodClient();
@@ -934,6 +862,90 @@ export class WalletsConnectService {
 
       } else {
         return true;
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    return false;
+  }
+
+  bidAuction = async (auctionIndex: string, bidAmount: number) => {
+    try {
+      const client = getAlgodClient();
+      const suggestedParams = await getTransactionParams();
+
+      const ioa_index = await isOptinApp(environment.AUCTION_APP_ID, auctionIndex)
+      if (!ioa_index) {
+        console.error('Invalid auction item');
+        return false;
+      }
+
+      const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TK_ID");
+      const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TKA");
+      if (indexTokenID > 0 && indexTokenAmount > 0) {
+        const ioa = await isOptinAsset(indexTokenID, this.sessionWallet!.getDefaultAccount())
+        if (!ioa) {
+          const optinResult = optinAsset(indexTokenID, this.sessionWallet!.wallet)
+          if (!optinResult) {
+            console.error('Failed to optin asset, retry later');
+            return false;
+          }
+        }
+
+        const storeAppId = await getAppGlobalState(environment.AUCTION_APP_ID, "SA_ID");
+        const isOptinStoreApp = await isOptinApp(storeAppId, this.sessionWallet!.getDefaultAccount())
+        console.log('isOptinStoreApp :' + storeAppId, isOptinStoreApp)
+        if (!isOptinStoreApp) {
+          const result = await optinApp(storeAppId, this.sessionWallet!.wallet);
+          if (!result) {
+            console.log('Failed on optin store app');
+            return false;
+          }
+        }
+
+        let accounts = [auctionIndex];
+        const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "LB_ADDR")
+        if (leadBidder) {
+          //const leadBidderAddress = encodeAddress(leadBidder)
+          //console.log("leadBidder", leadBidderAddress);
+          accounts.push(leadBidder);
+        }
+
+        let txns = [];
+
+        const fundingAmount = bidAmount;
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.AUCTION_APP_ID),
+          amount: Number(fundingAmount),
+          note: new Uint8Array(Buffer.from("Payment to bid on auction")),
+          suggestedParams,
+        });
+        txns.push(payTxn);
+
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.AUCTION_APP_ID,
+          note: new Uint8Array(Buffer.from("Bid Auction")),
+          appArgs: [new Uint8Array([...Buffer.from("bid")])],
+          accounts: accounts,
+          foreignAssets: [indexTokenID],
+          suggestedParams,
+        });
+        txns.push(appCallTxn)
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction : " + JSON.stringify(results));
+        await waitForTransaction(client, results.txId);
+
+        return results.txId;
+
+      } else {
+        console.error('Invalid auction item');
       }
     } catch (err) {
       console.error(err)

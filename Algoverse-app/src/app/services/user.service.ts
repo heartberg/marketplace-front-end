@@ -182,4 +182,9 @@ export class UserService {
     return this._http.post(url, {auctionId});
   }
 
+  bidAuction(params: any): Observable<any> {
+    const url = `${this.baseUrl}auction/bid`;
+    return this._http.post(url, params);
+  }
+
 }

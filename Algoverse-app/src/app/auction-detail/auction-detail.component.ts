@@ -23,6 +23,7 @@ export class AuctionDetailComponent implements OnInit {
   public price = 0;
   public assetAmount = 0;
   public minimumIncrement = 0;
+  public bidAmount = 0;
   public startTime = "";
   public endTime = "";
 
@@ -37,11 +38,6 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
-      this.router.navigate(['/', 'home']);
-      return;
-    }
-
     const routeParams = this.route.snapshot.paramMap;
     const auctionIdFromRoute = routeParams.get('auctionId');
     if (!auctionIdFromRoute) {
@@ -120,6 +116,35 @@ export class AuctionDetailComponent implements OnInit {
     console.log(this.endTime);
   }
 
+  blurBidAmount(event: any) {
+    this.bidAmount = event.target.value;
+    console.log(this.bidAmount);
+  }
+
+  async actionAuction() {
+    if (!this._walletsConnectService.sessionWallet) {
+      alert('Connect your wallet!');
+      return;
+    }
+
+    if (this.isOpen) {
+      if (this.isMine) {
+        // cancel auction
+        await this.cancelAuction()
+
+      } else {
+        // bid on auction
+        await this.bidAuction()
+      }
+    } else {
+      if (this.isMine) {
+
+      } else {
+
+      }
+    }
+  }
+
   async cancelAuction() {
     console.log('start cancel trade:', this.mAuction.indexAddress);
     const result = await this._walletsConnectService.cancelAuction(this.mAuction.indexAddress);
@@ -128,6 +153,27 @@ export class AuctionDetailComponent implements OnInit {
         (result) => {
           console.log('result', result);
           console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
+    }
+  }
+
+  async bidAuction() {
+    const auctionIndex = this.mAuction.indexAddress;
+    console.log('start bidAuction', auctionIndex);
+    const result = await this._walletsConnectService.bidAuction(auctionIndex, this.bidAmount);
+    if (result) {
+      const params = {
+        auctionId: this.mAuction.auctionId,
+        auctionBidId: result,
+        biddingUserWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+        amount: this.bidAmount
+      }
+      this._userService.bidAuction(params).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully bid')
         },
         (error) => console.log('error', error)
       )

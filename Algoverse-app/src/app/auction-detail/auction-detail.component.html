@@ -35,16 +35,31 @@
               </div>
             </div>
           </div>
-          <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="cancelAuction()">
-              <div *ngif="isOpen">
-                <div *ngif="isMine">
-                  Cancel offer
-                </div>
-                <div ngIfElse="isMine">
-                  Bid
-                </div>
+
+          <div *ngIf="isOpen && !isMine">
+            <div class="row d-flex align-items-center mt-3" style="width: 100%">
+              <div class="col-md-5">
+                <h4>Bid Amount</h4>
               </div>
+              <div class="col-md-7 restyle-col">
+                <input type="text" class="input-costum" placeholder="1000" (blur)="blurBidAmount($event)">
+              </div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button class="btn-secondary-costum aligner" (click)="actionAuction()">
+              <ng-container *ngIf="isOpen; then open else close"></ng-container>
+              <ng-template #open>
+                <ng-container *ngIf="isMine; then cancel else bid"></ng-container>
+                <ng-template #cancel>Cancel offer</ng-template>
+                <ng-template #bid>Bid</ng-template>
+              </ng-template>
+              <ng-template #close>
+                <ng-container *ngIf="isMine; then reopen else nothing"></ng-container>
+                <ng-template #reopen>Reopen</ng-template>
+                <ng-template #nothing>Test</ng-template>
+              </ng-template>
             </button>
           </div>
         </div>
