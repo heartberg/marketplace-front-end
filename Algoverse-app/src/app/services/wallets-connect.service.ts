@@ -820,7 +820,7 @@ export class WalletsConnectService {
     return 0;
   }
 
-  cancelAuction = async (auctionIndex: string): Promise<boolean> => {
+  closeAuction = async (auctionIndex: string): Promise<boolean> => {
     try {
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TK_ID");

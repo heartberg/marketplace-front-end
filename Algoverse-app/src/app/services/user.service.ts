@@ -177,7 +177,7 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  cancelAuction(auctionId: string): Observable<any> {
+  closeAuction(auctionId: string): Observable<any> {
     const url = `${this.baseUrl}auction/close?auctionId=${auctionId}`;
     return this._http.post(url, {auctionId});
   }

@@ -130,7 +130,7 @@ export class AuctionDetailComponent implements OnInit {
     if (this.isOpen) {
       if (this.isMine) {
         // cancel auction
-        await this.cancelAuction()
+        await this.closeAuction()
 
       } else {
         // bid on auction
@@ -145,11 +145,11 @@ export class AuctionDetailComponent implements OnInit {
     }
   }
 
-  async cancelAuction() {
+  async closeAuction() {
     console.log('start cancel trade:', this.mAuction.indexAddress);
-    const result = await this._walletsConnectService.cancelAuction(this.mAuction.indexAddress);
+    const result = await this._walletsConnectService.closeAuction(this.mAuction.indexAddress);
     if (result) {
-      this._userService.cancelAuction(this.mAuction.auctionId).subscribe(
+      this._userService.closeAuction(this.mAuction.auctionId).subscribe(
         (result) => {
           console.log('result', result);
           console.log('Successfully cancelled')
@@ -167,9 +167,10 @@ export class AuctionDetailComponent implements OnInit {
       const params = {
         auctionId: this.mAuction.auctionId,
         auctionBidId: result,
-        biddingUserWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+        bidderWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         amount: this.bidAmount
       }
+      console.log('params', params)
       this._userService.bidAuction(params).subscribe(
         (result) => {
           console.log('result', result);

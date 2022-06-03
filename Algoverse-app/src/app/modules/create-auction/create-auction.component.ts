@@ -189,12 +189,20 @@ export class CreateAuctionComponent implements OnInit {
     const txID = await this._walletsConnectService.createAuction(params1);
     console.log('txID', txID);
 
+    let assetProperties: { name: any; value: any; }[] = [];
+    for (const [key, value] of Object.entries(this.metaDataProperties)) {
+      assetProperties.push({
+        name: key,
+        value: value
+      })
+    }
+
     if (txID) {
       const asset = this.selectedAsset.params;
       console.log(asset);
       const params = {
-        auctionID: txID,
-        IndexAddress: indexAddress,
+        auctionId: txID,
+        indexAddress,
         assetId: this.selectedAsset.index,
         asset: {
           assetId: this.selectedAsset.index,
@@ -224,13 +232,13 @@ export class CreateAuctionComponent implements OnInit {
             website: "string",
             creatorWallet: "string"
           },
-          properties: Object.entries(this.metaDataProperties),
+          properties: assetProperties,
           file: "string",
           cover: "string",
           royalties: 0,
           category: "string"
         },
-        amount: 2,
+        amount: this.assetAmount,
         creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
         startTime: this.startTime,
         closingTime: this.endTime,
@@ -248,11 +256,11 @@ export class CreateAuctionComponent implements OnInit {
     }
   }
 
-  async cancelAuction(bidIndex: string) {
+  async closeAuction(bidIndex: string) {
     console.log('start cancel auction');
-    const result = await this._walletsConnectService.cancelAuction(bidIndex);
+    const result = await this._walletsConnectService.closeAuction(bidIndex);
     if (result) {
-      const result1 = this._userService.cancelAuction(bidIndex);
+      const result1 = this._userService.closeAuction(bidIndex);
       if (result1) {
         console.log('Successfully cancelled')
       }

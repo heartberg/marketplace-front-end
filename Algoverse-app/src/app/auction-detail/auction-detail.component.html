@@ -52,7 +52,7 @@
               <ng-container *ngIf="isOpen; then open else close"></ng-container>
               <ng-template #open>
                 <ng-container *ngIf="isMine; then cancel else bid"></ng-container>
-                <ng-template #cancel>Cancel offer</ng-template>
+                <ng-template #cancel>Close</ng-template>
                 <ng-template #bid>Bid</ng-template>
               </ng-template>
               <ng-template #close>
