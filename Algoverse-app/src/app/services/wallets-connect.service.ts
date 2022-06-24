@@ -127,11 +127,6 @@ export class WalletsConnectService {
         tokens.push(indexTokenID);
       }
 
-      suggestedParams.fee = 2000;
-      if (tokens.length > 1) {
-        suggestedParams.fee = 3000;
-      }
-
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.TRADE_APP_ID),
@@ -142,7 +137,11 @@ export class WalletsConnectService {
       });
       txns.push(tokenTxn);
 
-      suggestedParams.fee = 0;
+      suggestedParams.fee = 2000;
+      if (tokens.length > 1) {
+        suggestedParams.fee = 3000;
+      }
+
       const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
         from: this.sessionWallet!.getDefaultAccount(),
         appIndex: environment.TRADE_APP_ID,
@@ -227,7 +226,7 @@ export class WalletsConnectService {
       if (indexTokenID > 0 && indexTokenAmount > 0) {
 
         const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
-        if (balance < Number(tradingPrice) + 4000 + 3000) {
+        if (balance < Number(tradingPrice) + 2000 + 9000) {
           console.log('Insufficient Balance');
           return false;
         }
@@ -254,37 +253,64 @@ export class WalletsConnectService {
         }
 
         let txns = [];
-        let tokens = [Number(indexTokenID)];
         const suggestedParams = await getTransactionParams();
         const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           to: getApplicationAddress(environment.TRADE_APP_ID),
-          amount: Number(tradingPrice) + 4000,
+          amount: Number(tradingPrice) + 2000,
           note: new Uint8Array(Buffer.from("Amount to accept trade")),
           suggestedParams,
         });
         txns.push(payTxn);
 
+        const verseAppId = await getAppGlobalState(environment.TRADE_APP_ID, "VID");
+        const verseAppAddress = getApplicationAddress(verseAppId);
+        const verseAssetId = await getAppGlobalState(environment.TRADE_APP_ID, "VAID");
+        console.log('verseAppId', verseAppId);
+        console.log('verseAppAddress', verseAppAddress);
+        console.log('verseAssetId', verseAssetId);
+
+        let tokens = [Number(indexTokenID), Number(verseAssetId)];
+
         let accounts = [
           seller,
           tradeIndex,
-          await getAppGlobalState(environment.TRADE_APP_ID, 'SA_ADDR'),
           await getAppGlobalState(environment.TRADE_APP_ID, 'TW_ADDR')
         ];
         console.log('accounts', accounts);
 
+        suggestedParams.fee = 4000
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           appIndex: environment.TRADE_APP_ID,
           note: new Uint8Array(Buffer.from("Accept trade")),
           appArgs: [new Uint8Array([...Buffer.from("accept")]),
-                    algosdk.encodeUint64(Number(indexTokenAmount))],
+          algosdk.encodeUint64(Number(indexTokenAmount))],
           accounts,
+          foreignApps: [Number(verseAppId)],
           foreignAssets: tokens,
           suggestedParams,
         });
         txns.push(appCallTxn);
 
+        suggestedParams.fee = 2000
+        const appCallBurnTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.TRADE_APP_ID,
+          note: new Uint8Array(Buffer.from("Burn call")),
+          appArgs: [new Uint8Array([...Buffer.from("burn")])],
+          accounts: [
+            tradeIndex,
+            await getAppGlobalState(environment.TRADE_APP_ID, 'BA'),
+            verseAppAddress
+          ],
+          foreignApps: [Number(verseAppId)],
+          foreignAssets: [Number(verseAssetId)],
+          suggestedParams,
+        });
+        txns.push(appCallBurnTxn);
+
+        suggestedParams.fee = 1000
         const storeAppCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           appIndex: storeAppId,
@@ -318,6 +344,24 @@ export class WalletsConnectService {
   createBid = async (params: any): Promise<number> => {
     try {
       console.log('params', params)
+
+      const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+      if (balance < Number(params.price) + 2000 + 2000) {
+        console.log('Insufficient Balance');
+        return 0;
+      }
+
+      let checkForReplace = false;
+      try {
+        checkForReplace = await getAppGlobalState(environment.TRADE_APP_ID, "TK_ID");
+      } catch (err) {
+        console.error(err);
+      }
+      if (checkForReplace && balance < Number(params.price) + 2000 + 3000) {
+        console.log('Insufficient Balance');
+        return 0;
+      }
+
       const suggestedParams = await getTransactionParams();
       let txns = [];
       let tokens = [Number(params.assetID)];
@@ -327,7 +371,7 @@ export class WalletsConnectService {
       const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.BID_APP_ID),
-        amount: Number(params.price),
+        amount: Number(params.price) + 2000,
         note: new Uint8Array(Buffer.from("Amount to place bid")),
         suggestedParams,
       });
@@ -338,7 +382,7 @@ export class WalletsConnectService {
         appIndex: environment.BID_APP_ID,
         note: new Uint8Array(Buffer.from("Place bid")),
         appArgs: [new Uint8Array([...Buffer.from("bid")]),
-                  algosdk.encodeUint64(Number(params.amount))],
+        algosdk.encodeUint64(Number(params.amount))],
         accounts: [params.bidIndex],
         foreignAssets: tokens,
         suggestedParams,
@@ -450,8 +494,12 @@ export class WalletsConnectService {
           }
         }
 
+        const verseAppId = await getAppGlobalState(environment.BID_APP_ID, "VID");
+        const verseAppAddress = getApplicationAddress(verseAppId);
+        const verseAssetId = await getAppGlobalState(environment.BID_APP_ID, "VAID");
+
         let txns = [];
-        let tokens = [Number(indexTokenID)];
+        let tokens = [Number(indexTokenID), Number(verseAssetId)];
         const suggestedParams = await getTransactionParams();
 
         const assetTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
@@ -467,23 +515,42 @@ export class WalletsConnectService {
         let accounts = [
           bidder,
           bidIndex,
-          await getAppGlobalState(environment.BID_APP_ID, 'SA_ADDR'),
           await getAppGlobalState(environment.BID_APP_ID, 'TW_ADDR')
         ];
         console.log('accounts', accounts);
 
+        suggestedParams.fee = 4000;
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           appIndex: environment.BID_APP_ID,
           note: new Uint8Array(Buffer.from("Accept bid")),
           appArgs: [new Uint8Array([...Buffer.from("accept")]),
-                    algosdk.encodeUint64(Number(bidPrice))],
+          algosdk.encodeUint64(Number(bidPrice))],
           accounts,
+          foreignApps: [Number(verseAppId)],
           foreignAssets: tokens,
           suggestedParams,
         });
         txns.push(appCallTxn);
 
+        suggestedParams.fee = 2000;
+        const appCallBurnTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.BID_APP_ID,
+          note: new Uint8Array(Buffer.from("Burn call")),
+          appArgs: [new Uint8Array([...Buffer.from("burn")])],
+          accounts: [
+            bidIndex,
+            await getAppGlobalState(environment.BID_APP_ID, 'BA'),
+            verseAppAddress
+          ],
+          foreignApps: [Number(verseAppId)],
+          foreignAssets: [Number(verseAssetId)],
+          suggestedParams,
+        });
+        txns.push(appCallBurnTxn);
+
+        suggestedParams.fee = 1000
         const storeAppCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           appIndex: storeAppId,
@@ -536,7 +603,7 @@ export class WalletsConnectService {
         appIndex: environment.SWAP_APP_ID,
         note: new Uint8Array(Buffer.from("Place swap")),
         appArgs: [new Uint8Array(Buffer.from("swap")),
-                  algosdk.encodeUint64(Number(params.acceptAssetAmount))],
+        algosdk.encodeUint64(Number(params.acceptAssetAmount))],
         accounts: [params.swapIndex],
         foreignAssets: [Number(params.assetID), Number(params.acceptAssetIndex)],
         suggestedParams: { ...suggestedParams },
@@ -652,9 +719,7 @@ export class WalletsConnectService {
 
         let accounts = [
           offer,
-          swapIndex,
-          await getAppGlobalState(environment.SWAP_APP_ID, 'SA_ADDR'),
-          await getAppGlobalState(environment.SWAP_APP_ID, 'TW_ADDR')
+          swapIndex
         ];
         console.log('accounts', accounts);
 
@@ -664,7 +729,7 @@ export class WalletsConnectService {
           appIndex: environment.SWAP_APP_ID,
           note: new Uint8Array(Buffer.from("Accept swap")),
           appArgs: [new Uint8Array([...Buffer.from("accept")]),
-                    algosdk.encodeUint64(Number(offeringTokenAmount))],
+          algosdk.encodeUint64(Number(offeringTokenAmount))],
           accounts,
           foreignAssets: tokens,
           suggestedParams,
@@ -768,32 +833,6 @@ export class WalletsConnectService {
       }
       console.log('tokens', tokens);
 
-      const fundingAmount = 101000;
-      const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-        from: this.sessionWallet!.getDefaultAccount(),
-        to: getApplicationAddress(environment.AUCTION_APP_ID),
-        amount: fundingAmount,
-        note: new Uint8Array(Buffer.from("Amount to opt app into asset")),
-        suggestedParams,
-      });
-      txns.push(payTxn);
-
-      const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-        from: this.sessionWallet!.getDefaultAccount(),
-        appIndex: environment.AUCTION_APP_ID,
-        note: new Uint8Array(Buffer.from("Place auction")),
-        appArgs: [new Uint8Array([...Buffer.from("setup")]),
-                  algosdk.encodeUint64(Number(params.startTime)),
-                  algosdk.encodeUint64(Number(params.endTime)),
-                  algosdk.encodeUint64(Number(params.reserve)),
-                  algosdk.encodeUint64(Number(params.minimumIncrement)),
-                ],
-        accounts: [params.auctionIndex],
-        foreignAssets: tokens,
-        suggestedParams,
-      });
-      txns.push(appCallTxn);
-
       const tokenTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
         from: this.sessionWallet!.getDefaultAccount(),
         to: getApplicationAddress(environment.AUCTION_APP_ID),
@@ -803,6 +842,22 @@ export class WalletsConnectService {
         suggestedParams,
       });
       txns.push(tokenTxn);
+
+      const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+        from: this.sessionWallet!.getDefaultAccount(),
+        appIndex: environment.AUCTION_APP_ID,
+        note: new Uint8Array(Buffer.from("Place auction")),
+        appArgs: [new Uint8Array([...Buffer.from("auction")]),
+        algosdk.encodeUint64(Number(params.startTime)),
+        algosdk.encodeUint64(Number(params.endTime)),
+        algosdk.encodeUint64(Number(params.reserve)),
+        algosdk.encodeUint64(Number(params.minimumIncrement)),
+        ],
+        accounts: [params.auctionIndex],
+        foreignAssets: tokens,
+        suggestedParams,
+      });
+      txns.push(appCallTxn);
 
       const txnGroup = algosdk.assignGroupID(txns);
       const signedTxns = await this.sessionWallet!.signTxn(txns);
@@ -836,14 +891,14 @@ export class WalletsConnectService {
         console.log("leadBidder", encodeAddress(leadBidder));
         if (leadBidder && leadBidder != 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') {
           accounts.push(leadBidder);
+          suggestedParams.fee = 4000;
         }
-        const stakingAddress = await getAppGlobalState(environment.AUCTION_APP_ID, "SA_ADDR");
-        console.log("stakingAddress", stakingAddress);
-        accounts.push(stakingAddress);
+
         const teamWallet = await getAppGlobalState(environment.AUCTION_APP_ID, "TW_ADDR");
         console.log("teamWallet", teamWallet);
         accounts.push(teamWallet);
 
+        let txns = [];
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           appIndex: environment.AUCTION_APP_ID,
@@ -853,10 +908,56 @@ export class WalletsConnectService {
           foreignAssets: [indexTokenID],
           suggestedParams,
         });
-        const signedTxns = await this.sessionWallet!.signTxn([appCallTxn])
-        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
-        console.log("Cancel Transaction", JSON.stringify(results));
-        await waitForTransaction(client, results.txId);
+        txns.push(appCallTxn);
+
+        if (accounts.length == 3) {
+          const verseAppId = await getAppGlobalState(environment.AUCTION_APP_ID, "VID");
+          const verseAppAddress = getApplicationAddress(verseAppId);
+          const verseAssetId = await getAppGlobalState(environment.AUCTION_APP_ID, "VAID");
+
+          suggestedParams.fee = 2000;
+          const appCallBurnTxn = algosdk.makeApplicationNoOpTxnFromObject({
+            from: this.sessionWallet!.getDefaultAccount(),
+            appIndex: environment.AUCTION_APP_ID,
+            note: new Uint8Array(Buffer.from("Burn call")),
+            appArgs: [new Uint8Array([...Buffer.from("burn")])],
+            accounts: [
+              auctionIndex,
+              await getAppGlobalState(environment.AUCTION_APP_ID, 'B_ADDR'),
+              verseAppAddress
+            ],
+            foreignApps: [Number(verseAppId)],
+            foreignAssets: [Number(verseAssetId)],
+            suggestedParams,
+          });
+          txns.push(appCallBurnTxn);
+
+          const storeAppId = await getAppGlobalState(environment.AUCTION_APP_ID, "SA_ID");
+          suggestedParams.fee = 1000
+          const storeAppCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+            from: this.sessionWallet!.getDefaultAccount(),
+            appIndex: storeAppId,
+            note: new Uint8Array(Buffer.from("Store bid accepting amounts")),
+            appArgs: [new Uint8Array([...Buffer.from("auction")])],
+            accounts: [leadBidder, auctionIndex],
+            foreignApps: [environment.AUCTION_APP_ID],
+            suggestedParams,
+          });
+          txns.push(storeAppCallTxn);
+
+          const txnGroup = algosdk.assignGroupID(txns);
+          const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+          const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+          console.log("Transaction : " + JSON.stringify(results));
+          await waitForTransaction(client, results.txId);
+
+        } else {
+          const signedTxns = await this.sessionWallet!.signTxn([appCallTxn])
+          const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+          console.log("Cancel Transaction", JSON.stringify(results));
+          await waitForTransaction(client, results.txId);
+        }
 
         return true;
 
@@ -923,6 +1024,10 @@ export class WalletsConnectService {
           suggestedParams,
         });
         txns.push(payTxn);
+
+        if (accounts.length == 2) {
+          suggestedParams.fee = 2000
+        }
 
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
           from: this.sessionWallet!.getDefaultAccount(),

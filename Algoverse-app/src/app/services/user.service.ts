@@ -69,7 +69,7 @@ export class UserService {
   }
 
   acceptTrade(tradeId: string, accepter: string): Observable<any> {
-    const url = `${this.baseUrl}trade/accept?tradeId=${tradeId}&accepter=${accepter}`;
+    const url = `${this.baseUrl}trade/accept?tradeId=${tradeId}&acceptorWallet=${accepter}`;
     return this._http.post(url, {tradeId});
   }
 
@@ -104,7 +104,7 @@ export class UserService {
   }
 
   acceptBid(bidId: string, accepter: string): Observable<any> {
-    const url = `${this.baseUrl}bid/accept?bidId=${bidId}&accepter=${accepter}`;
+    const url = `${this.baseUrl}bid/accept?bidId=${bidId}&acceptor=${accepter}`;
     return this._http.post(url, {});
   }
 
@@ -167,8 +167,8 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  setupAuction(auctionIndex: string): Observable<any> {
-    const url = `${this.baseUrl}auction/setup?auctionIndex=${auctionIndex}`;
+  setupAuction(auctionIndex: string, assetId: number): Observable<any> {
+    const url = `${this.baseUrl}auction/setup?auctionIndex=${auctionIndex}&assetId=${assetId}`;
     return this._http.get(url);
   }
 

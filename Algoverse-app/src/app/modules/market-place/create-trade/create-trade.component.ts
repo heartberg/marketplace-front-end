@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { getAlgodClient, isOptinAsset } from 'src/app/services/utils.algod';
+import { getAlgodClient, getBalance, isOptinAsset } from 'src/app/services/utils.algod';
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 
@@ -16,7 +16,7 @@ export class CreateTradeComponent implements OnInit {
   private selectedAssetID = 0;
   private assets: any[] = [];
   public assetIDs: string[] = [];
-  public maxSupply = 1;
+  public maxSupply = 0;
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
 
@@ -51,6 +51,7 @@ export class CreateTradeComponent implements OnInit {
     if (this.assets.length > 0) {
       const firstAsset = this.assets[0];
       this.selectedAssetID = firstAsset.index;
+      this.setMaxSupply(this.selectedAssetID);
       this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
 
       if (firstAsset.params.url) {
@@ -73,11 +74,11 @@ export class CreateTradeComponent implements OnInit {
 
   selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
+    this.setMaxSupply(+assetID);
 
     const asset = this.getAsset(assetID);
     console.log(asset);
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
-    this.maxSupply = asset.params.total;
 
     if (asset.params.url) {
       this._userService.loadMetaData(asset.params.url).subscribe(
@@ -93,6 +94,10 @@ export class CreateTradeComponent implements OnInit {
         (error) => console.log('error', error)
       )
     }
+  }
+
+  async setMaxSupply(assetID: number) {
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID)
   }
 
   getAsset(assetID: string) {

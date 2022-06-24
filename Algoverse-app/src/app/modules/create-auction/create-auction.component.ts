@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { getBalance } from 'src/app/services/utils.algod';
 
 @Component({
   selector: 'app-create-auction',
@@ -13,7 +14,7 @@ export class CreateAuctionComponent implements OnInit {
 
   private assets: any[] = [];
   public assetIDs: string[] = [];
-  public maxSupply = 1;
+  public maxSupply = 0;
   public selectedAssetID = 0;
   public selectedAsset: any = {};
   public selectedAssetDescription = "";
@@ -48,6 +49,7 @@ export class CreateAuctionComponent implements OnInit {
 
     if (this.assets.length > 0) {
       this.selectedAsset = this.assets[0];
+      this.setMaxSupply(this.selectedAsset);
       this.selectedAssetID = this.selectedAsset.index;
       this.selectedAssetDescription = `Name: ${this.selectedAsset.params.name} \nUnitName: ${this.selectedAsset.params['unit-name']}`;
 
@@ -70,11 +72,12 @@ export class CreateAuctionComponent implements OnInit {
 
   onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
+    this.setMaxSupply(+assetID);
+
     const asset = this.getAsset(assetID);
     this.selectedAsset = asset;
     console.log(asset);
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
-    this.maxSupply = asset.params.total;
 
     if (asset.params.url) {
       this._userService.loadMetaData(asset.params.url).subscribe(
@@ -89,6 +92,10 @@ export class CreateAuctionComponent implements OnInit {
         (error) => console.log('error', error)
       )
     }
+  }
+
+  async setMaxSupply(assetID: number) {
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID)
   }
 
   getAsset(assetID: string) {
@@ -138,7 +145,7 @@ export class CreateAuctionComponent implements OnInit {
         if (res.optinPrice > 0) {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
           if (result) {
-            this._userService.setupAuction(indexAddress).subscribe(
+            this._userService.setupAuction(indexAddress, this.selectedAssetID).subscribe(
               (res) => {
                 console.log('setup auction response: ', res);
                 if (res) {
@@ -155,7 +162,7 @@ export class CreateAuctionComponent implements OnInit {
             console.log('Failed on setup auction');
           }
         } else {
-          this._userService.setupAuction(indexAddress).subscribe(
+          this._userService.setupAuction(indexAddress, this.selectedAssetID).subscribe(
             (res) => {
               console.log('setup auction response: ', res);
               if (res) {
