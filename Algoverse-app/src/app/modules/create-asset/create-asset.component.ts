@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
 
 @Component({
   selector: 'app-create-asset',
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class CreateAssetComponent implements OnInit {
   public pushedItems: any[] = [1];
   public toggleCounter: number = 1;
-  constructor() { }
+  constructor(
+    private ipfsDaemonService: IpfsDaemonService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -27,4 +30,7 @@ export class CreateAssetComponent implements OnInit {
 
     }
   }
+
+
+
 }

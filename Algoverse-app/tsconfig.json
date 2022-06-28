@@ -22,12 +22,16 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
+    "target": "esnext",
     "module": "es2020",
     "lib": [
-      "es2018",
+      "esnext",
+      "es2020",
+      "es2017",
       "dom"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

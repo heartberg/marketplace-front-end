@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import { async } from '@angular/core/testing';
 import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, getApplicationAddress, encodeAddress } from 'algosdk';
-import AccountInformation from 'algosdk/dist/types/src/client/v2/algod/accountInformation';
-import GetAssetByID from 'algosdk/dist/types/src/client/v2/algod/getAssetByID';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
-import WalletConnect from '@walletconnect/client';
-import QRCodeModal from "algorand-walletconnect-qrcode-modal";
 import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, getTransactionParams, isOptinApp, isOptinAsset, optinApp, optinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
@@ -20,9 +15,9 @@ export class WalletsConnectService {
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
 
-  constructor(private userServce: UserService) { }
+  constructor(private userServce: UserService) {}
 
-  connect = async (choice: string) => {
+  connect = async (choice: string): Promise<void> => {
     console.log('choice', choice);
     this.sessionWallet = new SessionWallet("TestNet", undefined, choice);
 
@@ -51,7 +46,7 @@ export class WalletsConnectService {
     }
   }
 
-  disconnect = async () => {
+  disconnect = () => {
     this.sessionWallet!.disconnect()
     this.myAlgoAddress = []
   }
