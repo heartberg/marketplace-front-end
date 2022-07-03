@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'collection', component: MyCollectionComponent },
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
-  { path: 'collection-detail', component: CollectionDetailComponent },
+  { path: 'collection-detail/:collectionId', component: CollectionDetailComponent },
   { path: 'create-offer', component: CreateOfferComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'items', component: ItemsComponent },

@@ -1,62 +1,38 @@
 import { Injectable } from '@angular/core';
 
-import { IPFS, create } from 'ipfs-core';
+//import { IPFS, create } from 'ipfs-core';
 import * as IPFS_ROOT_TYPES from 'ipfs-core-types/src/root';
+import { create } from 'ipfs-http-client';
 import { BehaviorSubject, } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class IpfsDaemonService {
-  private _ipfsSource = new BehaviorSubject<null | IPFS>(null);
-  private _createIPFSNodePromise: Promise<IPFS>;
 
-  private get ipfs() {
-    const getter = async () => {
-      let node = this._ipfsSource.getValue();
+  private ipfsHttpClient = create({url: 'https://ipfs.infura.io:5001/api/v0'})
 
-      if (node == null) {
-        console.log("Waiting node creation...")
+  uploadFile = async (file: any): Promise<string> => {
+    try {
+        const added = await this.ipfsHttpClient.add(file)
+        const url = `https://ipfs.infura.io/ipfs/${added.path}`
+        return url;
 
-        node = await this._createIPFSNodePromise as IPFS
-        this._ipfsSource.next(node);
-      }
-
-      return node;
+    } catch (err) {
+        console.log('Error uploading the file : ', err)
     }
-
-    return getter();
+    return ''
   }
 
-  constructor() {
-    console.log("Starting new node...")
+  addMetaData = async (data: any): Promise<string> => {
+    try {
+      const added = await this.ipfsHttpClient.add(JSON.stringify(data))
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`
+      return url;
 
-    this._createIPFSNodePromise = create()
+    } catch (err) {
+        console.log('Error uploading the file : ', err)
+    }
+    return ''
   }
 
-  /**
-   * @description Get the ID information about the current IPFS node
-   * @return {Promise<IPFS_ROOT_TYPES.IDResult>}
-   */
-  async getId(): Promise<IPFS_ROOT_TYPES.IDResult> {
-    const node = await this.ipfs;
-    return await node.id();
-  }
-
-  /**
-   * @description Get the version information about the current IPFS node
-   * @return {Promise<IPFS_ROOT_TYPES.VersionResult>}
-   */
-  async getVersion(): Promise<IPFS_ROOT_TYPES.VersionResult> {
-    const node = await this.ipfs;
-    return await node.version();
-  }
-
-  /**
-   * @description Get the status of the current IPFS node
-   * @returns {Promise<boolean>}
-   */
-  async getStatus(): Promise<boolean> {
-    const node = await this.ipfs;
-    return await node.isOnline();
-  }
 }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { getBalance } from 'src/app/services/utils.algod';
+import { getBalance, getUUID } from 'src/app/services/utils.algod';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-auction',
@@ -18,7 +19,9 @@ export class CreateAuctionComponent implements OnInit {
   public selectedAssetID = 0;
   public selectedAsset: any = {};
   public selectedAssetDescription = "";
-  public metaDataProperties: any = {};
+
+  public metadata: any = {};
+  public metadataProperties: any = {};
   public price = 0;
   public assetAmount = 0;
   public minimumIncrement = 0;
@@ -30,7 +33,8 @@ export class CreateAuctionComponent implements OnInit {
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
-    private router: Router
+    private router: Router,
+    private httpClient: HttpClient
   ) {
   }
 
@@ -50,48 +54,37 @@ export class CreateAuctionComponent implements OnInit {
     if (this.assets.length > 0) {
       this.selectedAsset = this.assets[0];
       this.setMaxSupply(this.selectedAsset);
-      this.selectedAssetID = this.selectedAsset.index;
-      this.selectedAssetDescription = `Name: ${this.selectedAsset.params.name} \nUnitName: ${this.selectedAsset.params['unit-name']}`;
-
-      if (this.selectedAsset.params.url) {
-        this._userService.loadMetaData(this.selectedAsset.params.url).subscribe(
-          (result) => {
-            console.log(result);
-            let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
-          },
-          (error) => console.log('error', error)
-        )
-      }
-
+      this.onSelectedAsset(this.selectedAsset.index);
     }
   }
 
-  onSelectedAsset(assetID: string) {
+  async onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
     this.setMaxSupply(+assetID);
 
     const asset = this.getAsset(assetID);
     this.selectedAsset = asset;
     console.log(asset);
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
 
     if (asset.params.url) {
-      this._userService.loadMetaData(asset.params.url).subscribe(
-        (result) => {
-          console.log('result', result);
-          let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              properties[key] = JSON.stringify(value);
-            }
-            this.metaDataProperties = properties;
-        },
-        (error) => console.log('error', error)
-      )
+      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
+        this.metadata = await this.httpClient.get(asset.params.url).toPromise();
+      } else {
+        this.metadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
+      }
     }
+    console.log('metadata', this.metadata);
+
+    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+
+    let properties: any = {};
+    if (this.metadata.properties) {
+      for (const [key, value] of Object.entries(this.metadata.properties)) {
+        if (typeof value === 'string' || value instanceof String)
+          properties[key] = value;
+      }
+    }
+    this.metadataProperties = properties;
   }
 
   async setMaxSupply(assetID: number) {
@@ -196,17 +189,20 @@ export class CreateAuctionComponent implements OnInit {
     const txID = await this._walletsConnectService.createAuction(params1);
     console.log('txID', txID);
 
-    let assetProperties: { name: any; value: any; }[] = [];
-    for (const [key, value] of Object.entries(this.metaDataProperties)) {
-      assetProperties.push({
-        name: key,
-        value: value
-      })
-    }
-
     if (txID) {
       const asset = this.selectedAsset.params;
       console.log(asset);
+
+      const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
+
+      let assetProperties: { name: any; value: any; }[] = [];
+      for (const [key, value] of Object.entries(this.metadataProperties)) {
+        assetProperties.push({
+          name: key,
+          value: value
+        })
+      }
+
       const params = {
         auctionId: txID,
         indexAddress,
@@ -223,27 +219,28 @@ export class CreateAuctionComponent implements OnInit {
           clawbackAddress: asset.clawback?asset.clawback:'',
           reserveAddress: asset.reserve?asset.reserve:'',
           metadata: asset['metadata-hash']?asset['metadata-hash']:'',
-          externalLink: asset.url?asset.url:'',
-          description: asset.description?asset.description:'',
-          assetCollectionID: "1",
+          externalLink: this.metadata.external_link ? this.metadata.external_link : '',
+          description: this.metadata.description ? this.metadata.description : '',
+
+          assetCollectionID: collectionId,
           assetCollection: {
-            assetCollectionID: "1",
-            name: "string1",
-            icon: "string",
-            banner: "string",
-            featuredImage: "string",
-            description: "string",
-            royalties: 0,
-            customURL: "string",
-            category: "string",
-            website: "string",
-            creatorWallet: "string"
+            assetCollectionID: collectionId,
+            name: this.metadata.collection ? (this.metadata.collection.name ? this.metadata.collection.name: '') : '',
+            icon: this.metadata.collection ? (this.metadata.collection.icon ? this.metadata.collection.icon: '') : '',
+            banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
+            featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
+            description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
+            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: '') : '',
+            customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
+            category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
+            website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
+            creatorWallet: this.metadata.collection ? (this.metadata.collection.creatorWallet ? this.metadata.collection.creatorWallet: asset.params.creator) : asset.params.creator
           },
+
           properties: assetProperties,
-          file: "string",
-          cover: "string",
-          royalties: 0,
-          category: "string"
+          file: this.metadata.file? this.metadata.file : '',
+          cover: this.metadata.cover? this.metadata.cover : '',
+          royalties: this.metadata.royalty ? this.metadata.royalty : 0
         },
         amount: this.assetAmount,
         creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),

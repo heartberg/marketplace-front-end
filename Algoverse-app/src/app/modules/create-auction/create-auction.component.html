@@ -56,14 +56,14 @@
                   <h4>Collection</h4>
                 </div>
                 <div class="col-md-7 restyle-col-bottom">
-                  <span class="color-violet">Collection name</span>
+                  <span class="color-violet">{{metadata.collection?metadata.collection.name?metadata.collection.name:'':''}}</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="propertiesborder wrapper-border">
             <h4 class="properties">Properties</h4>
-            <div *ngFor="let property of metaDataProperties | keyvalue">
+            <div *ngFor="let property of metadataProperties | keyvalue">
               <div class="row ml-1" style="width: 100%;">
                 <div class="col-md-5 restyle-col-bottom">
                   <h4>{{property.key}}</h4>

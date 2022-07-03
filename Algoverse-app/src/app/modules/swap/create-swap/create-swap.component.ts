@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { isOptinAsset } from 'src/app/services/utils.algod';
+import { getBalance, getUUID, isOptinAsset } from 'src/app/services/utils.algod';
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-swap',
@@ -19,8 +20,12 @@ export class CreateSwapComponent implements OnInit {
   public assetIDs: string[] = [];
   public maxSupply = 1;
   public selectedAssetDescription = "";
-  public metaDataProperties: any = {};
-  public acceptingMetaDataProperties: any = {};
+  public acceptingAssetDescription = "";
+
+  public offerringMetadata: any = {};
+  public offerringMetadataProperties: any = {};
+  public acceptingMetadata: any = {};
+  public acceptingMetadataProperties: any = {};
 
   public royalty: string = "0";
   public amount: string = "0";
@@ -32,7 +37,8 @@ export class CreateSwapComponent implements OnInit {
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
-    private router: Router
+    private router: Router,
+    private httpClient: HttpClient
   ) {
   }
 
@@ -53,50 +59,44 @@ export class CreateSwapComponent implements OnInit {
     if (this.assets.length > 0) {
       const firstAsset = this.assets[0];
       this.offeringAsset = firstAsset;
-      this.selectedAssetID = firstAsset.index;
-      this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
 
-      if (firstAsset.params.url) {
-        this._userService.loadMetaData(firstAsset.params.url).subscribe(
-          (result) => {
-            console.log(result);
-            let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              if (typeof value === 'string' || value instanceof String)
-                properties[key] = value;
-            }
-            this.metaDataProperties = properties;
-          },
-          (error) => console.log('error', error)
-        )
-      }
-
+      this.onSelectedAsset(firstAsset.index);
     }
   }
 
-  onSelectedAsset(assetID: string) {
+  async onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
+    this.setMaxSupply(this.selectedAssetID);
 
     const asset = this.getAsset(assetID);
     this.offeringAsset = asset;
     console.log(asset);
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
-    this.maxSupply = asset.params.total;
+
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), +assetID);
 
     if (asset.params.url) {
-      this._userService.loadMetaData(asset.params.url).subscribe(
-        (result) => {
-          console.log('result', result);
-          let properties: any = {};
-          for (const [key, value] of Object.entries(result)) {
-            if (typeof value === 'string' || value instanceof String)
-              properties[key] = value;
-          }
-          this.metaDataProperties = properties;
-        },
-        (error) => console.log('error', error)
-      )
+      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
+        this.offerringMetadata = await this.httpClient.get(asset.params.url).toPromise();
+      } else {
+        this.offerringMetadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
+      }
     }
+    console.log('offerringMetadata', this.offerringMetadata);
+
+    this.selectedAssetDescription = this.offerringMetadata.description ? this.offerringMetadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+
+    let properties: any = {};
+    if (this.offerringMetadata.properties) {
+      for (const [key, value] of Object.entries(this.offerringMetadata.properties)) {
+        if (typeof value === 'string' || value instanceof String)
+          properties[key] = value;
+      }
+    }
+    this.offerringMetadataProperties = properties;
+  }
+
+  async setMaxSupply(assetID: number) {
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID)
   }
 
   getAsset(assetID: string) {
@@ -127,19 +127,24 @@ export class CreateSwapComponent implements OnInit {
     this.accetingAsset = asset;
 
     if (asset.params.url) {
-      this._userService.loadMetaData(asset.params.url).subscribe(
-        (result) => {
-          console.log('result', result);
-          let properties: any = {};
-          for (const [key, value] of Object.entries(result)) {
-            if (typeof value === 'string' || value instanceof String)
-              properties[key] = value;
-          }
-          this.acceptingMetaDataProperties = properties;
-        },
-        (error) => console.log('error', error)
-      )
+      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
+        this.acceptingMetadata = await this.httpClient.get(asset.params.url).toPromise();
+      } else {
+        this.acceptingMetadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
+      }
     }
+    console.log('acceptingMetadata', this.acceptingMetadata);
+
+    this.acceptingAssetDescription = this.acceptingMetadata.description ? this.acceptingMetadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+
+    let properties: any = {};
+    if (this.acceptingMetadata.properties) {
+      for (const [key, value] of Object.entries(this.acceptingMetadata.properties)) {
+        if (typeof value === 'string' || value instanceof String)
+          properties[key] = value;
+      }
+    }
+    this.acceptingMetadataProperties = properties;
   }
 
   blurAcceptAmountEvent(event: any) {
@@ -175,6 +180,7 @@ export class CreateSwapComponent implements OnInit {
           offerAssetId: this.selectedAssetID,
           acceptAssetId: this.acceptAssetId
         }
+        console.log('setupParams', setupParams);
 
         if (res.optinPrice > 0) {
           let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
@@ -182,7 +188,11 @@ export class CreateSwapComponent implements OnInit {
             this._userService.setupSwap(setupParams).subscribe(
               (res) => {
                 console.log('setup swap response: ', res);
-                this.sendCreateSwapRequest(indexAddress);
+                if (res) {
+                  this.sendCreateSwapRequest(indexAddress);
+                } else {
+                  console.log('setup swap failed');
+                }
               },
               (err) => {
                 console.log('setup swap error: ', err);
@@ -198,7 +208,11 @@ export class CreateSwapComponent implements OnInit {
             this._userService.setupSwap(setupParams).subscribe(
               (res) => {
                 console.log('setup swap response: ', res);
-                this.sendCreateSwapRequest(indexAddress);
+                if (res) {
+                  this.sendCreateSwapRequest(indexAddress);
+                } else {
+                  console.log('setup swap failed');
+                }
               },
               (err) => {
                 console.log('setup swap error: ', err);
@@ -221,24 +235,27 @@ export class CreateSwapComponent implements OnInit {
     }
     const txID = await this._walletsConnectService.createSwap(params1);
 
-    let assetProperties: { name: any; value: any; }[] = [];
-    for (const [key, value] of Object.entries(this.metaDataProperties)) {
-      assetProperties.push({
-        name: key,
-        value: value
-      })
-    }
-
-    let acceptAssetProperties: { name: any; value: any; }[] = [];
-    for (const [key, value] of Object.entries(this.acceptingMetaDataProperties)) {
-      acceptAssetProperties.push({
-        name: key,
-        value: value
-      })
-    }
-
     const asset = this.offeringAsset;
     if (txID) {
+
+      const offerringCollectionId = this.offerringMetadata.collectionId? this.offerringMetadata.collectionId: getUUID();
+      let offerringAssetProperties: { name: any; value: any; }[] = [];
+      for (const [key, value] of Object.entries(this.offerringMetadataProperties)) {
+        offerringAssetProperties.push({
+          name: key,
+          value: value
+        })
+      }
+
+      const acceptingCollectionId = this.acceptingMetadata.collectionId? this.acceptingMetadata.collectionId: getUUID();
+      let acceptingAssetProperties: { name: any; value: any; }[] = [];
+      for (const [key, value] of Object.entries(this.offerringMetadataProperties)) {
+        acceptingAssetProperties.push({
+          name: key,
+          value: value
+        })
+      }
+
       const params2 = {
         swapId: txID,
         indexAddress,
@@ -257,28 +274,30 @@ export class CreateSwapComponent implements OnInit {
           clawbackAddress: asset.params.clawback ? asset.params.clawback : '',
           reserveAddress: asset.params.reserve ? asset.params.reserve : '',
           metadata: asset.params['metadata-hash'] ? asset.params['metadata-hash'] : '',
-          externalLink: asset.params.url ? asset.params.url : '',
-          description: asset.description ? asset.description : '',
-          assetCollectionID: "1",
+          externalLink: this.offerringMetadata.external_link ? this.offerringMetadata.external_link : '',
+          description: this.offerringMetadata.description ? this.offerringMetadata.description : '',
+
+          assetCollectionID: offerringCollectionId,
           assetCollection: {
-            assetCollectionID: "1",
-            name: "string1",
-            icon: "string",
-            banner: "string",
-            featuredImage: "string",
-            description: "string",
-            royalties: 0,
-            customURL: "string",
-            category: "string",
-            website: "string",
-            creatorWallet: "string"
+            assetCollectionID: offerringCollectionId,
+            name: this.offerringMetadata.collection ? (this.offerringMetadata.collection.name ? this.offerringMetadata.collection.name: '') : '',
+            icon: this.offerringMetadata.collection ? (this.offerringMetadata.collection.icon ? this.offerringMetadata.collection.icon: '') : '',
+            banner: this.offerringMetadata.collection ? (this.offerringMetadata.collection.banner ? this.offerringMetadata.collection.banner: '') : '',
+            featuredImage: this.offerringMetadata.collection ? (this.offerringMetadata.collection.featuredImage ? this.offerringMetadata.collection.featuredImage: '') : '',
+            description: this.offerringMetadata.collection ? (this.offerringMetadata.collection.description ? this.offerringMetadata.collection.description: '') : '',
+            royalties: this.offerringMetadata.collection ? (this.offerringMetadata.collection.royalties ? this.offerringMetadata.collection.royalties: '') : '',
+            customURL: this.offerringMetadata.collection ? (this.offerringMetadata.collection.customURL ? this.offerringMetadata.collection.customURL: '') : '',
+            category: this.offerringMetadata.collection ? (this.offerringMetadata.collection.category ? this.offerringMetadata.collection.category: '') : '',
+            website: this.offerringMetadata.collection ? (this.offerringMetadata.collection.web ? this.offerringMetadata.collection.web: '') : '',
+            creatorWallet: this.offerringMetadata.collection ? (this.offerringMetadata.collection.creatorWallet ? this.offerringMetadata.collection.creatorWallet: asset.params.creator) : asset.params.creator
           },
-          properties: assetProperties,
-          file: "string",
-          cover: "string",
-          royalties: 0,
-          category: "string"
+
+          properties: offerringAssetProperties,
+          file: this.offerringMetadata.file? this.offerringMetadata.file : '',
+          cover: this.offerringMetadata.cover? this.offerringMetadata.cover : '',
+          royalties: this.offerringMetadata.royalty ? this.offerringMetadata.royalty : 0
         },
+
         acceptingAssetId: this.acceptAssetId,
         acceptingAsset: {
           assetId: this.acceptAssetId,
@@ -292,27 +311,28 @@ export class CreateSwapComponent implements OnInit {
           clawbackAddress: this.accetingAsset.params.clawback ? this.accetingAsset.params.clawback : '',
           reserveAddress: this.accetingAsset.params.reserve ? this.accetingAsset.params.reserve : '',
           metadata: this.accetingAsset.params['metadata-hash'] ? this.accetingAsset.params['metadata-hash'] : '',
-          externalLink: this.accetingAsset.params.url ? this.accetingAsset.params.url : '',
-          description: this.accetingAsset.description ? this.accetingAsset.description : '',
-          assetCollectionID: "1",
+          externalLink: this.acceptingMetadata.external_link ? this.acceptingMetadata.external_link : '',
+          description: this.acceptingMetadata.description ? this.acceptingMetadata.description : '',
+
+          assetCollectionID: acceptingCollectionId,
           assetCollection: {
-            assetCollectionID: "1",
-            name: "string1",
-            icon: "string",
-            banner: "string",
-            featuredImage: "string",
-            description: "string",
-            royalties: 0,
-            customURL: "string",
-            category: "string",
-            website: "string",
-            creatorWallet: "string"
+            assetCollectionID: acceptingCollectionId,
+            name: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.name ? this.acceptingMetadata.collection.name: '') : '',
+            icon: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.icon ? this.acceptingMetadata.collection.icon: '') : '',
+            banner: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.banner ? this.acceptingMetadata.collection.banner: '') : '',
+            featuredImage: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.featuredImage ? this.acceptingMetadata.collection.featuredImage: '') : '',
+            description: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.description ? this.acceptingMetadata.collection.description: '') : '',
+            royalties: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.royalties ? this.acceptingMetadata.collection.royalties: '') : '',
+            customURL: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.customURL ? this.acceptingMetadata.collection.customURL: '') : '',
+            category: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.category ? this.acceptingMetadata.collection.category: '') : '',
+            website: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.web ? this.acceptingMetadata.collection.web: '') : '',
+            creatorWallet: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.creatorWallet ? this.acceptingMetadata.collection.creatorWallet: asset.params.creator) : asset.params.creator
           },
-          properties: acceptAssetProperties,
-          file: "string",
-          cover: "string",
-          royalties: 0,
-          category: "string"
+
+          properties: acceptingAssetProperties,
+          file: this.acceptingMetadata.file? this.acceptingMetadata.file : '',
+          cover: this.acceptingMetadata.cover? this.acceptingMetadata.cover : '',
+          royalties: this.acceptingMetadata.royalty ? this.acceptingMetadata.royalty : 0
         },
         acceptingAmount: this.acceptAmount,
         collectionInterestedIn: this.collectionName

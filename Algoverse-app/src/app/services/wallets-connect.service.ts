@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, getApplicationAddress, encodeAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
-import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, getTransactionParams, isOptinApp, isOptinAsset, optinApp, optinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
+import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, getTransactionParams, isOptinApp, isOptinAsset, metadataHash, optinApp, optinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
+
 
 const client = getAlgodClient()
 
@@ -87,6 +88,36 @@ export class WalletsConnectService {
     }
 
     return result;
+  }
+
+  createAsset = async(params: any): Promise<any> => {
+    try {
+      const suggestedParams = await getTransactionParams();
+
+      const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
+        from: this.sessionWallet!.getDefaultAccount(),
+        decimals: 0,
+        defaultFrozen: false,
+        total: Number(params.supply),
+        assetName: params.name,
+        unitName: params.unitName,
+        assetURL: params.assetURL,
+        assetMetadataHash: params.hash,
+        manager: this.sessionWallet!.getDefaultAccount(),
+        note: new Uint8Array(Buffer.from("Mint asset")),
+        suggestedParams,
+      });
+      const signedTxns = await this.sessionWallet!.signTxn([txn])
+      const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+      console.log("Mint asset transaction", JSON.stringify(results));
+      const ptx = await algosdk.waitForConfirmation(client, results.txId, 4);
+      return ptx["asset-index"];
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    return false;
   }
 
   payToSetUpIndex = async (rekeyedIndex: string, amount: number): Promise<any> => {

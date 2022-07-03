@@ -28,6 +28,26 @@ export class UserService {
     return this._http.post(url, params);
   }
 
+  loadCollections(wallet: string): Observable<any> {
+    const url = `${this.baseUrl}collection/get/byWallet?wallet=${wallet}`;
+    return this._http.get<any>(url);
+  }
+
+  loadCollectionItem(collectionId: string): Observable<any> {
+    const url = `${this.baseUrl}collection/get/byId?id=${collectionId}`;
+    return this._http.get<any>(url);
+  }
+
+  createCollection(params: any): Observable<any> {
+    const url = `${this.baseUrl}collection/add`;
+    return this._http.post(url, params);
+  }
+
+  createAsset(params: any): Observable<any> {
+    const url = `${this.baseUrl}asset/add`;
+    return this._http.post(url, params);
+  }
+
   userGetShuttle(): Observable<any> {
     const url = `${this.baseUrl}user/get/all/verified`;
     return this._http.get<any>(url);

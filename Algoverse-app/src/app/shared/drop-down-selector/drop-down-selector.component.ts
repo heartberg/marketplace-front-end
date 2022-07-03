@@ -9,6 +9,8 @@ import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 })
 export class DropDownSelectorComponent implements OnInit {
   @Input() public dropDownValues: string[] = [];
+  @Input() public defaultValue: string = "";
+
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
   // profile
@@ -28,6 +30,7 @@ export class DropDownSelectorComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.showDropDownSelected = this.defaultValue?this.defaultValue:(this.dropDownValues.length>0?this.dropDownValues[0]:'')
   }
 
   openDropDown() {

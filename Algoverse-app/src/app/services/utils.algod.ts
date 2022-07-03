@@ -3,6 +3,7 @@ import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, ALGORAND_MIN_TX
 import AlgodClient from 'algosdk/dist/types/src/client/v2/algod/algod';
 import * as sha512 from 'js-sha512';
 import * as hibase32 from 'hi-base32';
+import * as sha256 from 'js-sha256';
 import { Wallet } from 'algorand-session-wallet';
 
 const ALGORAND_ADDRESS_SIZE = 58;
@@ -22,12 +23,19 @@ export type AlgoTxnReturnType = IAlgoTxn[][];
 
 export const getAlgodClient = () => {
   const tokenHeader = {
-    "X-Algo-API-Token": environment.ALGOD_TOKEN
-    //"x-api-key": environment.ALGOD_TOKEN
+    //"X-Algo-API-Token": environment.ALGOD_TOKEN // for local sandbox
+    "X-API-Key": environment.ALGOD_TOKEN // for testnet
   };
 
-  return new Algodv2(tokenHeader, environment.ALGOD_URL, 4001);
-  //return new Algodv2(tokenHeader, environment.ALGOD_URL, 443);
+  //return new Algodv2(tokenHeader, environment.ALGOD_URL, 4001); // for local sandbox
+  return new Algodv2(tokenHeader, environment.ALGOD_URL, 443); // for testnet
+}
+
+export const getUUID = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+ });
 }
 
 export const getTransactionParams = async () => {
@@ -2155,4 +2163,10 @@ export const getBalance = async (address: string, token_id = 0): Promise<number>
   }
 
   return 0;
+}
+
+export const metadataHash = (metadataJson: string): string => {
+  //return sha512.sha512_256("arc0003/am" || sha512.sha512_256("arc0003/amj" || metadataJson))
+  var hash2 = sha256.sha256.hmac.update('arc0003/amj', metadataJson);
+  return new TextDecoder().decode(new Uint8Array(hash2.digest()));
 }

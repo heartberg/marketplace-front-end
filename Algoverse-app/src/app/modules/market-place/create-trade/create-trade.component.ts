@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { getAlgodClient, getBalance, isOptinAsset } from 'src/app/services/utils.algod';
+import { getAlgodClient, getBalance, getUUID, isOptinAsset } from 'src/app/services/utils.algod';
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-trade',
@@ -18,7 +19,9 @@ export class CreateTradeComponent implements OnInit {
   public assetIDs: string[] = [];
   public maxSupply = 0;
   public selectedAssetDescription = "";
-  public metaDataProperties: any = {};
+
+  public metadata: any = {};
+  public metadataProperties: any = {};
 
   public royalty: string = "0";
   public amount: string = "0";
@@ -27,6 +30,7 @@ export class CreateTradeComponent implements OnInit {
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
+    private httpClient: HttpClient,
     private router: Router
   ) {
   }
@@ -50,50 +54,36 @@ export class CreateTradeComponent implements OnInit {
 
     if (this.assets.length > 0) {
       const firstAsset = this.assets[0];
-      this.selectedAssetID = firstAsset.index;
-      this.setMaxSupply(this.selectedAssetID);
-      this.selectedAssetDescription = `Name: ${firstAsset.params.name} \nUnitName: ${firstAsset.params['unit-name']}`;
-
-      if (firstAsset.params.url) {
-        this._userService.loadMetaData(firstAsset.params.url).subscribe(
-          (result) => {
-            console.log(result);
-            let properties: any = {};
-            for (const [key, value] of Object.entries(result)) {
-              if (typeof value === 'string' || value instanceof String)
-                properties[key] = value;
-            }
-            this.metaDataProperties = properties;
-          },
-          (error) => console.log('error', error)
-        )
-      }
-
+      this.selectedAsset(firstAsset.index);
     }
   }
 
-  selectedAsset(assetID: string) {
+  async selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
     this.setMaxSupply(+assetID);
 
     const asset = this.getAsset(assetID);
-    console.log(asset);
-    this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+    console.log('asset', asset);
 
     if (asset.params.url) {
-      this._userService.loadMetaData(asset.params.url).subscribe(
-        (result) => {
-          console.log('result', result);
-          let properties: any = {};
-          for (const [key, value] of Object.entries(result)) {
-            if (typeof value === 'string' || value instanceof String)
-              properties[key] = value;
-          }
-          this.metaDataProperties = properties;
-        },
-        (error) => console.log('error', error)
-      )
+      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
+        this.metadata = await this.httpClient.get(asset.params.url).toPromise();
+      } else {
+        this.metadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
+      }
     }
+    console.log('metadata', this.metadata);
+
+    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+
+    let properties: any = {};
+    if (this.metadata.properties) {
+      for (const [key, value] of Object.entries(this.metadata.properties)) {
+        if (typeof value === 'string' || value instanceof String)
+          properties[key] = value;
+      }
+    }
+    this.metadataProperties = properties;
   }
 
   async setMaxSupply(assetID: number) {
@@ -192,8 +182,10 @@ export class CreateTradeComponent implements OnInit {
         return;
       }
 
+      const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
+
       let assetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.metaDataProperties)) {
+      for (const [key, value] of Object.entries(this.metadataProperties)) {
         assetProperties.push({
           name: key,
           value: value
@@ -215,27 +207,29 @@ export class CreateTradeComponent implements OnInit {
           clawbackAddress: asset.params.clawback ? asset.params.clawback : '',
           reserveAddress: asset.params.reserve ? asset.params.reserve : '',
           metadata: asset.params['metadata-hash'] ? asset.params['metadata-hash'] : '',
-          externalLink: asset.params.url ? asset.params.url : '',
-          description: asset.description ? asset.description : '',
-          assetCollectionID: "1",
+
+          externalLink: this.metadata.external_link ? this.metadata.external_link : '',
+          description: this.metadata.description ? this.metadata.description : '',
+
+          assetCollectionID: collectionId,
           assetCollection: {
-            assetCollectionID: "1",
-            name: "string1",
-            icon: "string",
-            banner: "string",
-            featuredImage: "string",
-            description: "string",
-            royalties: 0,
-            customURL: "string",
-            category: "string",
-            website: "string",
-            creatorWallet: "string"
+            assetCollectionID: collectionId,
+            name: this.metadata.collection ? (this.metadata.collection.name ? this.metadata.collection.name: '') : '',
+            icon: this.metadata.collection ? (this.metadata.collection.icon ? this.metadata.collection.icon: '') : '',
+            banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
+            featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
+            description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
+            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: '') : '',
+            customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
+            category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
+            website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
+            creatorWallet: this.metadata.collection ? (this.metadata.collection.creatorWallet ? this.metadata.collection.creatorWallet: asset.params.creator) : asset.params.creator
           },
+
           properties: assetProperties,
-          file: "string",
-          cover: "string",
-          royalties: 0,
-          category: "string"
+          file: this.metadata.file? this.metadata.file : '',
+          cover: this.metadata.cover? this.metadata.cover : '',
+          royalties: this.metadata.royalty ? this.metadata.royalty : 0
         },
         indexAddress,
         price: this.price,
