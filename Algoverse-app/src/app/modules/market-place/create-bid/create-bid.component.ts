@@ -101,9 +101,22 @@ export class CreateBidComponent implements OnInit {
 
   async createBid() {
     if (!this.mSelectedAsset) {
-      alert('Please select valid asset id');
+      alert('Please select valid asset');
       return;
     }
+    if (!this.amount) {
+      alert('Please input amount');
+      return;
+    }
+    if (!this.royalty) {
+      alert('Please input royalty');
+      return;
+    }
+    if (+this.price < 1000) {
+      alert('Please input price at least 1000');
+      return;
+    }
+
     console.log('bid start');
     this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
       async (res) => {

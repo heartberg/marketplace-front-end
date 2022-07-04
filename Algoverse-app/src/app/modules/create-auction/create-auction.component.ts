@@ -129,6 +129,35 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   async createAuction() {
+    if (!this.selectedAssetID) {
+      alert('Please select valid asset');
+      return;
+    }
+    if (!this.assetAmount) {
+      alert('Please input asset amount');
+      return;
+    }
+    if (!this.royalty) {
+      alert('Please input royalty');
+      return;
+    }
+    if (+this.price < 1000) {
+      alert('Please input reserve at least 1000');
+      return;
+    }
+    if (this.minimumIncrement < 1000) {
+      alert('Please input minimun increament at least 1000');
+      return;
+    }
+    if (!this.startTime) {
+      alert('Please select start time');
+      return;
+    }
+    if (!this.endTime) {
+      alert('Please select start time');
+      return;
+    }
+
     console.log('auction start');
     this._userService.getAuctionIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount(), this.selectedAssetID).subscribe(
       async (res) => {

@@ -116,6 +116,27 @@ export class CreateTradeComponent implements OnInit {
     // let result = await this._walletsConnectService.payToSetUpIndex('4TT75274EBUAF46CITUL6HQQ4C4D3GO7GEOVRZSQZ35VXSGRVHJ376GD64', 1);
     // console.log(result);
 
+    if (!this.selectedAssetID) {
+      alert('Please select valid asset');
+      return;
+    }
+    if (+this.price < 1000) {
+      alert('Please input price at least 1000');
+      return;
+    }
+    if (!this.amount) {
+      alert('Please input amount');
+      return;
+    }
+    if (+this.amount > this.maxSupply) {
+      alert('Please input amount at least 1000');
+      return;
+    }
+    if (!this.royalty) {
+      alert('Please input royalty');
+      return;
+    }
+
     console.log('trade start');
     this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
       async (res) => {
@@ -178,7 +199,7 @@ export class CreateTradeComponent implements OnInit {
     if (txID) {
       const asset = this.getAsset('' + this.selectedAssetID);
       if (!asset) {
-        console.log('exception occurred')
+        console.log('exception occurred');
         return;
       }
 
@@ -219,7 +240,7 @@ export class CreateTradeComponent implements OnInit {
             banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
             featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
             description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
-            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: '') : '',
+            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: 0) : 0,
             customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
             category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
             website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
@@ -236,6 +257,7 @@ export class CreateTradeComponent implements OnInit {
         creatorWallet: this._walletsConnectService.myAlgoAddress[0],
         amount: this.amount
       }
+      console.log('params2', params2);
       this._userService.createTrade(params2).subscribe(
         res => {
           console.log("Created trade successfully");

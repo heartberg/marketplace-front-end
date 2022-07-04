@@ -164,6 +164,14 @@ export class CreateSwapComponent implements OnInit {
       alert('Select valid acceting asset');
       return;
     }
+    if (+this.amount > this.maxSupply) {
+      alert('Invalid offering amount');
+      return;
+    }
+    if (!+this.amount) {
+      alert('Invalid accepting amount');
+      return;
+    }
 
     console.log('start create swap')
     const getIndexParams = {
