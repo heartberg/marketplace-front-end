@@ -1,6 +1,11 @@
 <div class="wrapper-card">
   <div class="img">
-    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+    <div class="section" *ngIf="mItem.offeringAsset.file">
+      <img src="{{mItem.offeringAsset.file}}" alt="">
+    </div>
+    <div class="section" *ngIf="!mItem.offeringAsset.file">
+      <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+    </div>
   </div>
   <div class="card-info w-100" [class.flex-column]="isCollection">
     <div class="card-info-left w-100"  *ngIf="!isCollection">

@@ -16,7 +16,7 @@ export class WalletsConnectService {
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
 
-  constructor(private userServce: UserService) {}
+  constructor(private userServce: UserService) { }
 
   connect = async (choice: string): Promise<void> => {
     console.log('choice', choice);
@@ -90,7 +90,7 @@ export class WalletsConnectService {
     return result;
   }
 
-  createAsset = async(params: any): Promise<any> => {
+  createAsset = async (params: any): Promise<any> => {
     try {
       const suggestedParams = await getTransactionParams();
 
@@ -120,17 +120,84 @@ export class WalletsConnectService {
     return false;
   }
 
-  payToSetUpIndex = async (rekeyedIndex: string, amount: number): Promise<any> => {
+  setupTrade = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
-      const txn = await singlePayTxn(this.sessionWallet!.getDefaultAccount(), rekeyedIndex, amount, "Payment for trade setup to opt app into asset");
-      console.log('txn', txn);
-      const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
-      console.log('txId', signedTxn.txID);
-      const result = await client.sendRawTransaction(signedTxn.blob).do();
-      console.log('paid result', result);
-      await waitForTransaction(client, result.txId);
+      if (await isOptinAsset(assetId, getApplicationAddress(environment.TRADE_APP_ID))) {
+        if (amount > 0) {
+          const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+          if (balance < amount + 1000) {
+            console.log('Insufficient Balance');
+            return 0;
+          }
 
-      return result.txId;
+          const txn = await singlePayTxn(this.sessionWallet!.getDefaultAccount(), indexAddress, amount, "Payment for setup to opt app into app");
+          console.log('txn', txn);
+          const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
+          console.log('txId', signedTxn.txID);
+          const result = await client.sendRawTransaction(signedTxn.blob).do();
+          console.log('paid result', result);
+          await waitForTransaction(client, result.txId);
+
+          return result.txId;
+        }
+        else {
+          return true;
+        }
+      } else {
+        const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+        if (balance < 100000 + 3000 + (amount > 0 ? (amount + 1000) : 0)) {
+          console.log('Insufficient Balance');
+          return 0;
+        }
+
+        const client = getAlgodClient();
+        const suggestedParams = await getTransactionParams();
+        let txns = [];
+        let tokens = [assetId];
+
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.TRADE_APP_ID),
+          amount: 100000,
+          note: new Uint8Array(Buffer.from("Amount to setup bid")),
+          suggestedParams,
+        });
+        txns.push(payTxn);
+
+        suggestedParams.fee = 2000;
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.TRADE_APP_ID,
+          note: new Uint8Array(Buffer.from("Setup application call")),
+          appArgs: [new Uint8Array([...Buffer.from("setup")])],
+          foreignAssets: tokens,
+          suggestedParams,
+        });
+        console.log("appCallTxn", appCallTxn)
+        txns.push(appCallTxn);
+
+        let payToCreatePoolTxn;
+        if (amount > 0) {
+          suggestedParams.fee = 1000;
+          payToCreatePoolTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+            from: this.sessionWallet!.getDefaultAccount(),
+            to: indexAddress,
+            amount,
+            note: new Uint8Array(Buffer.from("Amount to optin app")),
+            suggestedParams,
+          });
+          txns.push(payToCreatePoolTxn);
+        }
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction result : ", results);
+        await waitForTransaction(client, results.txId);
+
+        return results.txId;
+      }
 
     } catch (err) {
       console.error(err);
@@ -173,7 +240,7 @@ export class WalletsConnectService {
         appIndex: environment.TRADE_APP_ID,
         note: new Uint8Array(Buffer.from("Place trade")),
         appArgs: [new Uint8Array([...Buffer.from("trade")]),
-                  algosdk.encodeUint64(Number(params.price))],
+        algosdk.encodeUint64(Number(params.price))],
         accounts: [params.tradeIndex],
         foreignAssets: tokens,
         suggestedParams,
@@ -362,6 +429,92 @@ export class WalletsConnectService {
       }
     } catch (err) {
       console.error(err)
+    }
+
+    return false;
+  }
+
+  setupBid = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
+    try {
+      if (await isOptinAsset(assetId, getApplicationAddress(environment.BID_APP_ID))) {
+        if (amount > 0) {
+          const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+          if (balance < amount + 1000) {
+            console.log('Insufficient Balance');
+            return 0;
+          }
+
+          const txn = await singlePayTxn(this.sessionWallet!.getDefaultAccount(), indexAddress, amount, "Payment for setup to opt app into app");
+          console.log('txn', txn);
+          const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
+          console.log('txId', signedTxn.txID);
+          const result = await client.sendRawTransaction(signedTxn.blob).do();
+          console.log('paid result', result);
+          await waitForTransaction(client, result.txId);
+
+          return result.txId;
+        }
+        else {
+          return true;
+        }
+      } else {
+        const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+        if (balance < 100000 + 3000 + (amount > 0 ? (amount + 1000) : 0)) {
+          console.log('Insufficient Balance');
+          return 0;
+        }
+
+        const client = getAlgodClient();
+        const suggestedParams = await getTransactionParams();
+        let txns = [];
+        let tokens = [assetId];
+
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.BID_APP_ID),
+          amount: 100000,
+          note: new Uint8Array(Buffer.from("Amount to setup bid")),
+          suggestedParams,
+        });
+        txns.push(payTxn);
+
+        suggestedParams.fee = 2000;
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.BID_APP_ID,
+          note: new Uint8Array(Buffer.from("Setup application call")),
+          appArgs: [new Uint8Array([...Buffer.from("setup")])],
+          foreignAssets: tokens,
+          suggestedParams,
+        });
+        console.log("appCallTxn", appCallTxn)
+        txns.push(appCallTxn);
+
+        let payToCreatePoolTxn;
+        if (amount > 0) {
+          suggestedParams.fee = 1000;
+          payToCreatePoolTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+            from: this.sessionWallet!.getDefaultAccount(),
+            to: indexAddress,
+            amount,
+            note: new Uint8Array(Buffer.from("Amount to optin app")),
+            suggestedParams,
+          });
+          txns.push(payToCreatePoolTxn);
+        }
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction result : ", results);
+        await waitForTransaction(client, results.txId);
+
+        return results.txId;
+      }
+
+    } catch (err) {
+      console.error(err);
     }
 
     return false;
@@ -607,6 +760,99 @@ export class WalletsConnectService {
     return false;
   }
 
+  setupSwap = async (indexAddress: string, offeringAssetId: number, acceptingAssetId: number, amount: number): Promise<any> => {
+    try {
+      if (await isOptinAsset(offeringAssetId, getApplicationAddress(environment.SWAP_APP_ID)) && await isOptinAsset(acceptingAssetId, getApplicationAddress(environment.SWAP_APP_ID))) {
+        if (amount > 0) {
+          const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+          if (balance < amount + 1000) {
+            console.log('Insufficient Balance');
+            return 0;
+          }
+
+          const txn = await singlePayTxn(this.sessionWallet!.getDefaultAccount(), indexAddress, amount, "Payment for trade setup to opt app into app");
+          console.log('txn', txn);
+          const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
+          console.log('txId', signedTxn.txID);
+          const result = await client.sendRawTransaction(signedTxn.blob).do();
+          console.log('paid result', result);
+          await waitForTransaction(client, result.txId);
+
+          return result.txId;
+        }
+        else {
+          return true;
+        }
+      } else if (!(await isOptinAsset(offeringAssetId, getApplicationAddress(environment.SWAP_APP_ID)))) {
+        return await this.callSetup(indexAddress, [offeringAssetId], amount);
+      } else if (!(await isOptinAsset(acceptingAssetId, getApplicationAddress(environment.SWAP_APP_ID)))) {
+        return await this.callSetup(indexAddress, [acceptingAssetId], amount);
+      } else {
+        return await this.callSetup(indexAddress, [offeringAssetId, acceptingAssetId], amount);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+
+    return false;
+  }
+
+  callSetup = async (indexAddress: string, assets: number[], amount: number): Promise<any> => {
+    const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+    if (balance < 100000 + 2000 + 1000 * assets.length + (amount > 0 ? (amount + 1000) : 0)) {
+      console.log('Insufficient Balance');
+      return 0;
+    }
+
+    const client = getAlgodClient();
+    const suggestedParams = await getTransactionParams();
+    let txns = [];
+
+    const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      from: this.sessionWallet!.getDefaultAccount(),
+      to: getApplicationAddress(environment.SWAP_APP_ID),
+      amount: 100000,
+      note: new Uint8Array(Buffer.from("Amount to setup bid")),
+      suggestedParams,
+    });
+    txns.push(payTxn);
+
+    suggestedParams.fee = 1000 + 1000 * assets.length;
+    const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+      from: this.sessionWallet!.getDefaultAccount(),
+      appIndex: environment.SWAP_APP_ID,
+      note: new Uint8Array(Buffer.from("Setup application call")),
+      appArgs: [new Uint8Array([...Buffer.from("setup")])],
+      foreignAssets: assets,
+      suggestedParams,
+    });
+    console.log("appCallTxn", appCallTxn)
+    txns.push(appCallTxn);
+
+    let payToCreatePoolTxn;
+    if (amount > 0) {
+      suggestedParams.fee = 1000;
+      payToCreatePoolTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+        from: this.sessionWallet!.getDefaultAccount(),
+        to: indexAddress,
+        amount,
+        note: new Uint8Array(Buffer.from("Amount to optin app")),
+        suggestedParams,
+      });
+      txns.push(payToCreatePoolTxn);
+    }
+
+    const txnGroup = algosdk.assignGroupID(txns);
+    const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+    const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+    console.log("Transaction result : ", results);
+    await waitForTransaction(client, results.txId);
+
+    return results.txId;
+  }
+
   createSwap = async (params: any) => {
     try {
       console.log('create swap params', params)
@@ -777,6 +1023,92 @@ export class WalletsConnectService {
       }
     } catch (err) {
       console.error(err)
+    }
+
+    return false;
+  }
+
+  setupAuction = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
+    try {
+      if (await isOptinAsset(assetId, getApplicationAddress(environment.AUCTION_APP_ID))) {
+        if (amount > 0) {
+          const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+          if (balance < amount + 1000) {
+            console.log('Insufficient Balance');
+            return 0;
+          }
+
+          const txn = await singlePayTxn(this.sessionWallet!.getDefaultAccount(), indexAddress, amount, "Payment for setup to opt app into app");
+          console.log('txn', txn);
+          const [signedTxn] = await this.sessionWallet!.signTxn([txn]);
+          console.log('txId', signedTxn.txID);
+          const result = await client.sendRawTransaction(signedTxn.blob).do();
+          console.log('paid result', result);
+          await waitForTransaction(client, result.txId);
+
+          return result.txId;
+        }
+        else {
+          return true;
+        }
+      } else {
+        const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+        if (balance < 100000 + 3000 + (amount > 0 ? (amount + 1000) : 0)) {
+          console.log('Insufficient Balance');
+          return 0;
+        }
+
+        const client = getAlgodClient();
+        const suggestedParams = await getTransactionParams();
+        let txns = [];
+        let tokens = [assetId];
+
+        const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: getApplicationAddress(environment.AUCTION_APP_ID),
+          amount: 100000,
+          note: new Uint8Array(Buffer.from("Amount to setup bid")),
+          suggestedParams,
+        });
+        txns.push(payTxn);
+
+        suggestedParams.fee = 2000;
+        const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          appIndex: environment.AUCTION_APP_ID,
+          note: new Uint8Array(Buffer.from("Setup application call")),
+          appArgs: [new Uint8Array([...Buffer.from("setup")])],
+          foreignAssets: tokens,
+          suggestedParams,
+        });
+        console.log("appCallTxn", appCallTxn)
+        txns.push(appCallTxn);
+
+        let payToCreatePoolTxn;
+        if (amount > 0) {
+          suggestedParams.fee = 1000;
+          payToCreatePoolTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+            from: this.sessionWallet!.getDefaultAccount(),
+            to: indexAddress,
+            amount,
+            note: new Uint8Array(Buffer.from("Amount to optin app")),
+            suggestedParams,
+          });
+          txns.push(payToCreatePoolTxn);
+        }
+
+        const txnGroup = algosdk.assignGroupID(txns);
+        const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+        const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+        console.log("Transaction result : ", results);
+        await waitForTransaction(client, results.txId);
+
+        return results.txId;
+      }
+
+    } catch (err) {
+      console.error(err);
     }
 
     return false;

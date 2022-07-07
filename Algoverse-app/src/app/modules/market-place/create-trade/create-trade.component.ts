@@ -6,6 +6,7 @@ import { getAlgodClient, getBalance, getUUID, isOptinAsset } from 'src/app/servi
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-trade',
@@ -31,7 +32,8 @@ export class CreateTradeComponent implements OnInit {
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {
   }
 
@@ -41,7 +43,16 @@ export class CreateTradeComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
     this.assets = await this._walletsConnectService.getOwnAssets();
+
+    if (this.assets.length == 0) {
+      alert('You don\'t have any asset to swap, please create assets');
+      this.router.navigate(['/', 'collection']);
+      this.spinner.hide();
+      return;
+    }
+
     const asset_ids = [];
     for (let asset of this.assets) {
       asset_ids.push(asset.index);
@@ -52,10 +63,9 @@ export class CreateTradeComponent implements OnInit {
     const accountInfo = await algod.accountInformation('5V3RXJ76GKVG7F55LZIVN6DXOQLNRLAMMNQMFLJ57LP2PP5B7Q64A7IX7A').do();
     console.log('accountInfo 0 0 0 ', accountInfo);
 
-    if (this.assets.length > 0) {
-      const firstAsset = this.assets[0];
-      this.selectedAsset(firstAsset.index);
-    }
+    const firstAsset = this.assets[0];
+    this.setMaxSupply(firstAsset.index);
+    this.selectedAsset(firstAsset.index);
   }
 
   async selectedAsset(assetID: string) {
@@ -66,11 +76,13 @@ export class CreateTradeComponent implements OnInit {
     console.log('asset', asset);
 
     if (asset.params.url) {
+      this.spinner.show();
       if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
         this.metadata = await this.httpClient.get(asset.params.url).toPromise();
       } else {
         this.metadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
       }
+      this.spinner.hide();
     }
     console.log('metadata', this.metadata);
 
@@ -113,9 +125,6 @@ export class CreateTradeComponent implements OnInit {
   }
 
   async createTrade() {
-    // let result = await this._walletsConnectService.payToSetUpIndex('4TT75274EBUAF46CITUL6HQQ4C4D3GO7GEOVRZSQZ35VXSGRVHJ376GD64', 1);
-    // console.log(result);
-
     if (!this.selectedAssetID) {
       alert('Please select valid asset');
       return;
@@ -136,54 +145,52 @@ export class CreateTradeComponent implements OnInit {
       alert('Please input royalty');
       return;
     }
+    const asset = this.getAsset('' + this.selectedAssetID);
+    if (!asset) {
+      alert('Please select a valid asset to auction');
+      return;
+    }
 
     console.log('trade start');
-    this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
+    this.spinner.show();
+    this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
       async (res) => {
         console.log('tradeIndex', res);
 
         const indexAddress = res.indexAddress;
-        if (res.optinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
-          console.log('paid index address result', result)
-          if (result) {
-            this._userService.setupTrade(indexAddress, this.selectedAssetID).subscribe(
-              (res) => {
-                console.log('setup trade response: ', res);
-                if (res) {
-                  this.sendCreateTradeRequest(indexAddress);
-                } else {
-                  console.log('setup trade failed');
-                }
-              },
-              (err) => {
-                console.log('setup trade error: ', err);
+        let result = await this._walletsConnectService.setupTrade(indexAddress, Number(this.selectedAssetID), res.optinPrice);
+        if (result) {
+          this._userService.optinAndRekeyToTrade(indexAddress).subscribe(
+            (res) => {
+              console.log('optin and rekey response: ', res);
+              if (res) {
+                this.sendCreateTradeRequest(indexAddress);
+
+              } else {
+                this.spinner.hide();
+                alert('Setup trade failed');
               }
-            );
-          }
+            },
+            (err) => {
+              this.spinner.hide();
+              console.log('optin and rekey error: ' + err);
+              alert('Network error, please try again later');
+            }
+          );
         } else {
-          console.log('trade app address', getApplicationAddress(environment.TRADE_APP_ID));
-          if (await isOptinAsset(this.selectedAssetID, getApplicationAddress(environment.TRADE_APP_ID))) {
-            console.log('direct create trade', res);
-            this.sendCreateTradeRequest(indexAddress);
+          this.spinner.hide();
+          if (result == 0) {
+            alert("Insufficient balance");
           } else {
-            this._userService.setupTrade(indexAddress, this.selectedAssetID).subscribe(
-              (res) => {
-                console.log('setup trade response: ', res);
-                if (res) {
-                  this.sendCreateTradeRequest(indexAddress);
-                } else {
-                  console.log('setup trade failed');
-                }
-              },
-              (err) => {
-                console.log('setup trade error: ', err);
-              }
-            );
+            alert("Exception occurred, please retry again later");
           }
         }
       },
-      (error) => console.log('error', error)
+      (error) => {
+        this.spinner.hide();
+        alert("Network error, please try again later");
+        console.log('error', error)
+      }
     );
   }
 
@@ -198,11 +205,6 @@ export class CreateTradeComponent implements OnInit {
 
     if (txID) {
       const asset = this.getAsset('' + this.selectedAssetID);
-      if (!asset) {
-        console.log('exception occurred');
-        return;
-      }
-
       const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
 
       let assetProperties: { name: any; value: any; }[] = [];
@@ -260,22 +262,42 @@ export class CreateTradeComponent implements OnInit {
       console.log('params2', params2);
       this._userService.createTrade(params2).subscribe(
         res => {
-          console.log("Created trade successfully");
+          this.spinner.hide();
+          alert("Created trade successfully");
           console.log(res)
         },
-        error => console.log(error)
+        error => {
+          this.spinner.hide();
+          alert(error);
+          console.log(error)
+        }
       );
+    } else {
+      this.spinner.hide();
+      alert("Failed creating trade on algorand network");
     }
   }
 
   async cancelTrade(tradeIndex: string) {
     console.log('start cancel trade');
+    this.spinner.show();
     const result = await this._walletsConnectService.cancelTrade(tradeIndex);
     if (result) {
-      const result1 = this._userService.cancelTrade(tradeIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.cancelTrade(tradeIndex).subscribe(
+        res => {
+          this.spinner.hide();
+          alert("Successfully cancelled");
+          console.log(res)
+        },
+        error => {
+          this.spinner.hide();
+          alert(error);
+          console.log(error)
+        }
+      );
+    } else {
+      this.spinner.hide();
+      alert("Failed cancel");
     }
   }
 

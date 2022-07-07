@@ -68,13 +68,18 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  getTradeIndex(senderAddress: string, assetId: number): Observable<any> {
-    const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
+  getTradeIndex(senderAddress: string): Observable<any> {
+    const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
   }
 
   setupTrade(indexAddress: string, assetId: number): Observable<any> {
     const url = `${this.baseUrl}trade/setUpTrade?indexAddress=${indexAddress}&assetId=${assetId}`;
+    return this._http.get(url);
+  }
+
+  optinAndRekeyToTrade(indexAddress: string): Observable<any> {
+    const url = `${this.baseUrl}trade/optinAndRekey?indexAddress=${indexAddress}`;
     return this._http.get(url);
   }
 
@@ -103,9 +108,14 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  getBidIndex(senderAddress: string, assetId: number): Observable<any> {
-    const url = `${this.baseUrl}bid/getBidIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
+  getBidIndex(senderAddress: string): Observable<any> {
+    const url = `${this.baseUrl}bid/getBidIndex?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
+  }
+
+  optinAndRekeyToBid(indexAddress: string): Observable<any> {
+    const url = `${this.baseUrl}bid/optinAndRekey?indexAddress=${indexAddress}`;
+    return this._http.get(url);
   }
 
   setupBid(indexAddress: string, assetId: number): Observable<any> {
@@ -147,9 +157,14 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  getSwapIndex(params: any): Observable<any> {
-    const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${params.senderAddress}&offerAssetId=${params.offerAssetId}&acceptAssetId=${params.acceptAssetId}`;
+  getSwapIndex(senderAddress: string): Observable<any> {
+    const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
+  }
+
+  optinAndRekeyToSwap(indexAddress: string): Observable<any> {
+    const url = `${this.baseUrl}swap/optinAndRekey?indexAddress=${indexAddress}`;
+    return this._http.post(url, {indexAddress});
   }
 
   setupSwap(params: any): Observable<any> {
@@ -182,14 +197,14 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  getAuctionIndex(senderAddress: string, assetId: number) {
-    const url = `${this.baseUrl}auction/getAuctionIndexAndPrice?senderAddress=${senderAddress}&assetId=${assetId}`;
+  getAuctionIndex(senderAddress: string) {
+    const url = `${this.baseUrl}auction/getAuctionIndex?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
   }
 
-  setupAuction(auctionIndex: string, assetId: number): Observable<any> {
-    const url = `${this.baseUrl}auction/setup?auctionIndex=${auctionIndex}&assetId=${assetId}`;
-    return this._http.get(url);
+  optinAndRekeyToAuction(indexAddress: string): Observable<any> {
+    const url = `${this.baseUrl}auction/optinAndRekey?indexAddress=${indexAddress}`;
+    return this._http.post(url, {indexAddress});
   }
 
   createAuction(params: any): Observable<any> {

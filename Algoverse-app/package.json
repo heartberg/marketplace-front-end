@@ -40,6 +40,7 @@
     "js-sha256": "^0.9.0",
     "js-sha512": "^0.8.0",
     "ngx-owl-carousel": "^2.0.7",
+    "ngx-spinner": "^11.0.1",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "owl.carousel": "^2.3.4",
     "rxjs": "~6.6.0",

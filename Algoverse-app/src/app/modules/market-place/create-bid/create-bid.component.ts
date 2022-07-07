@@ -8,6 +8,7 @@ import { debounceTime } from "rxjs/operators";
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-bid',
@@ -35,6 +36,7 @@ export class CreateBidComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private httpClient: HttpClient,
+    private spinner: NgxSpinnerService
   ) {
     this.searchAssetControl = new FormControl();
     this.searchAssetControl.valueChanges.pipe(debounceTime(1000)).subscribe(async res => {
@@ -52,8 +54,10 @@ export class CreateBidComponent implements OnInit {
   async selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
 
+    this.spinner.show();
     const asset = await this._walletsConnectService.getAsset(+assetID);
     if (!asset) {
+      this.spinner.hide();
       alert('Invalid asset id');
       return;
     }
@@ -71,6 +75,7 @@ export class CreateBidComponent implements OnInit {
       }
     }
     console.log('metadata', this.metadata);
+    this.spinner.hide();
 
     this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
 
@@ -116,54 +121,50 @@ export class CreateBidComponent implements OnInit {
       alert('Please input price at least 1000');
       return;
     }
+    if (!this.mSelectedAsset) {
+      alert('Please select asset to buy');
+      return;
+    }
 
     console.log('bid start');
-    this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0], this.selectedAssetID).subscribe(
+    this.spinner.show();
+    this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
       async (res) => {
         console.log('bidIndex', res);
         const indexAddress = res.indexAddress;
-        if (res.optinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
-          if (result) {
-            console.log(this.selectedAssetID)
-            this._userService.setupBid(indexAddress, this.selectedAssetID).subscribe(
-              (res) => {
-                console.log('setup bid response: ', res);
-                if (res) {
-                  this.sendCreateBidRequest(indexAddress);
-                } else {
-                  console.log('failed setup bid', res);
-                }
-              },
-              (err) => {
-                console.log('setup bid error: ', err);
-              }
-            )
-          }
-        } else {
-          console.log('bid app address', getApplicationAddress(environment.BID_APP_ID));
-          if (await isOptinAsset(this.selectedAssetID, getApplicationAddress(environment.BID_APP_ID))) {
-            console.log('direct create trade');
-            this.sendCreateBidRequest(indexAddress);
+        let result = await this._walletsConnectService.setupBid(indexAddress, Number(this.selectedAssetID), res.optinPrice);
+        if (result) {
+          console.log(this.selectedAssetID)
+          this._userService.optinAndRekeyToBid(indexAddress).subscribe(
+            (res) => {
+              console.log('setup bid response: ', res);
+              if (res) {
+                this.sendCreateBidRequest(indexAddress);
 
-          } else {
-            this._userService.setupBid(indexAddress, this.selectedAssetID).subscribe(
-              (res) => {
-                if (res) {
-                  console.log('setup bid response: ', res);
-                  this.sendCreateBidRequest(indexAddress);
-                } else {
-                  console.log('failed setup bid', res);
-                }
-              },
-              (err) => {
-                console.log('setup bid error: ', err);
+              } else {
+                this.spinner.hide();
+                alert('optin and rekey failed');
               }
-            );
+            },
+            (err) => {
+              this.spinner.hide();
+              alert('setup bid error: ' + err);
+            }
+          )
+        } else {
+          this.spinner.hide();
+          if (result == 0) {
+            alert("Insufficient balance");
+          } else {
+            alert("Exception occurred, please retry again later");
           }
         }
       },
-      (error) => console.log('algo net create bid error', error)
+      (error) => {
+        this.spinner.hide();
+        console.log('algo net create bid error', error)
+        alert('Network error, please try again later')
+      }
     );
   }
 
@@ -179,11 +180,6 @@ export class CreateBidComponent implements OnInit {
 
     if (txID) {
       const asset = this.mSelectedAsset;
-      if (!asset) {
-        console.log('exception occurred')
-        return;
-      }
-
       const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
 
       let assetProperties: { name: any; value: any; }[] = [];
@@ -223,7 +219,7 @@ export class CreateBidComponent implements OnInit {
               banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
               featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
               description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
-              royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: '') : '',
+              royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: 0) : 0,
               customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
               category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
               website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
@@ -242,23 +238,42 @@ export class CreateBidComponent implements OnInit {
         console.log('create bid param', params2)
         this._userService.createBid(params2).subscribe(
           res => {
-            console.log('successfully created bid on backend')
+            this.spinner.hide();
+            alert('Successfully created');
+            console.log(res);
           },
-          error => console.log('created bid on backend error', error)
+          error => {
+            this.spinner.hide();
+            alert(error);
+            console.log('Network error, please try again later');
+          }
         );
       }
+    } else {
+      this.spinner.hide();
+      alert("Failed creating bid on algorand network");
     }
-
   }
 
   async cancelBid(bidIndex: string) {
     console.log('start cancel trade');
     const result = await this._walletsConnectService.cancelBid(bidIndex);
     if (result) {
-      const result1 = this._userService.cancelBid(bidIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.cancelBid(bidIndex).subscribe(
+        res => {
+          this.spinner.hide();
+          alert('Successfully cancelled');
+          console.log(res);
+        },
+        error => {
+          this.spinner.hide();
+          console.log(error);
+          console.log('Network error, please try again later');
+        }
+      );
+    } else {
+      this.spinner.hide();
+      alert("Failed cancel");
     }
   }
 

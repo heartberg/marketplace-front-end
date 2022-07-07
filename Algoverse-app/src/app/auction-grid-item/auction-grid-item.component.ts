@@ -13,6 +13,7 @@ export class AuctionGridItemComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    
   }
 
 }

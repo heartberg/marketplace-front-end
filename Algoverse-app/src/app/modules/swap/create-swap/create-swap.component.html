@@ -11,7 +11,7 @@
             <h3>Create Swap</h3>
           </div>
           <div class="dropdownborder wrapper-border">
-            <h4>Assets</h4>
+            <h4>Asset</h4>
             <div class="dropdown">
               <div class="AssetsList">
                 <app-drop-down-selector [dropDownValues]="assetIDs" (dropDownValue)="onSelectedAsset($event)"></app-drop-down-selector>
@@ -78,7 +78,7 @@
                   <h4>Collection</h4>
                 </div>
                 <div class="col-md-7 restyle-col-bottom">
-                  <span class="color-violet">{{offerringMetadata.collection?offerringMetadata.collection.name?offerringMetadata.collection.name:'':''}}e</span>
+                  <span class="color-violet">{{offerringMetadata.collection?offerringMetadata.collection.name?offerringMetadata.collection.name:'':''}}</span>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
           </div>
           <h3 class="lookfor">Looking for</h3>
           <div class="dropdownborder wrapper-border">
-            <h4>Assets</h4>
+            <h4>Asset</h4>
             <div class="dropdown">
               <div class="AssetsList">
                 <input type="text" class="input-costum" placeholder="Asset ID / Name" (blur)="blurAcceptAssetIndexEvent($event)">
@@ -109,11 +109,15 @@
             <h4 class="amountheader">Amount</h4>
             <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAcceptAmountEvent($event)">
           </div>
-          <div class="dropdownborder wrapper-border">
-            <h4>Collection</h4>
-            <div class="dropdown">
-              <div class="Collectionlist">
-                <app-drop-down-selector [dropDownValues]="['Option 1', 'Option 2', 'Option 3', ]"></app-drop-down-selector>
+          <div class="collectionborder wrapper-border">
+            <div class="collections">
+              <div class="row" style="width: 100%">
+                <div class="col-md-5 restyle-col-bottom">
+                  <h4>Collection</h4>
+                </div>
+                <div class="col-md-7 restyle-col-bottom">
+                  <span class="color-violet">{{acceptingMetadata.collection?acceptingMetadata.collection.name?acceptingMetadata.collection.name:'':''}}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -139,3 +143,5 @@
     </div>
   </div>
 </div>
+
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

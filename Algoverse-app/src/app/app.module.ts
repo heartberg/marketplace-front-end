@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,7 @@ import {CarouselModule} from "./carousel/carousel.module";
 // import { CarouselComponent } from './carousel/carousel.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -25,12 +26,14 @@ import { FormsModule } from '@angular/forms';
     HomeModule,
     BrowserAnimationsModule,
     CarouselModule,
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
     // OwlModule,
   ],
   providers: [
   ],
   bootstrap: [AppComponent],
-  exports: []
+  exports: [NgxSpinnerModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { getBalance, getUUID } from 'src/app/services/utils.algod';
 import { HttpClient } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-auction',
@@ -11,7 +12,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./create-auction.component.scss']
 })
 export class CreateAuctionComponent implements OnInit {
-
 
   private assets: any[] = [];
   public assetIDs: string[] = [];
@@ -34,7 +34,8 @@ export class CreateAuctionComponent implements OnInit {
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private router: Router,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private spinner: NgxSpinnerService
   ) {
   }
 
@@ -44,22 +45,31 @@ export class CreateAuctionComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
     this.assets = await this._walletsConnectService.getOwnAssets();
+
+    if (this.assets.length == 0) {
+      alert('You don\'t have any asset to swap, please create assets');
+      this.router.navigate(['/', 'collection']);
+      this.spinner.hide();
+      return;
+    }
+
     const asset_ids = [];
     for (let asset of this.assets) {
       asset_ids.push(asset.index);
     }
     this.assetIDs = asset_ids;
 
-    if (this.assets.length > 0) {
-      this.selectedAsset = this.assets[0];
-      this.setMaxSupply(this.selectedAsset);
-      this.onSelectedAsset(this.selectedAsset.index);
-    }
+    const firstAsset = this.assets[0];
+    this.setMaxSupply(firstAsset.index);
+    this.onSelectedAsset(firstAsset.index);
   }
 
   async onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
+
+    this.spinner.show();
     this.setMaxSupply(+assetID);
 
     const asset = this.getAsset(assetID);
@@ -74,6 +84,7 @@ export class CreateAuctionComponent implements OnInit {
       }
     }
     console.log('metadata', this.metadata);
+    this.spinner.hide();
 
     this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
 
@@ -98,7 +109,7 @@ export class CreateAuctionComponent implements OnInit {
     return result;
   }
 
-  blurRoyaltyEvent(event: any){
+  blurRoyaltyEvent(event: any) {
     this.royalty = event.target.value;
     console.log(this.royalty);
   }
@@ -141,8 +152,8 @@ export class CreateAuctionComponent implements OnInit {
       alert('Please input royalty');
       return;
     }
-    if (+this.price < 1000) {
-      alert('Please input reserve at least 1000');
+    if (+this.price <= 1000) {
+      alert('Reserve amount should be greater than 1000');
       return;
     }
     if (this.minimumIncrement < 1000) {
@@ -157,49 +168,52 @@ export class CreateAuctionComponent implements OnInit {
       alert('Please select start time');
       return;
     }
+    const asset = this.getAsset('' + this.selectedAssetID);
+    if (!asset) {
+      alert('Please select a valid asset to auction');
+      return;
+    }
 
     console.log('auction start');
-    this._userService.getAuctionIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount(), this.selectedAssetID).subscribe(
+    this.spinner.show();
+    this._userService.getAuctionIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
       async (res) => {
         console.log('auctionIndex', res);
-
         const indexAddress = res.indexAddress;
-        if (res.optinPrice > 0) {
-          let result = await this._walletsConnectService.payToSetUpIndex(indexAddress, res.optinPrice);
-          if (result) {
-            this._userService.setupAuction(indexAddress, this.selectedAssetID).subscribe(
-              (res) => {
-                console.log('setup auction response: ', res);
-                if (res) {
-                  this.sendCreateAuctionRequest(indexAddress);
-                } else {
-                  console.log('Failed on setup auction');
-                }
-              },
-              (err) => {
-                console.log('setup auction error: ', err);
-              }
-            );
-          } else {
-            console.log('Failed on setup auction');
-          }
-        } else {
-          this._userService.setupAuction(indexAddress, this.selectedAssetID).subscribe(
+
+        let result = await this._walletsConnectService.setupAuction(indexAddress, Number(this.selectedAssetID), res.optinPrice);
+        if (result) {
+          this._userService.optinAndRekeyToAuction(indexAddress).subscribe(
             (res) => {
               console.log('setup auction response: ', res);
               if (res) {
                 this.sendCreateAuctionRequest(indexAddress);
+
               } else {
-                console.log('Failed on setup auction');
+                this.spinner.hide();
+                alert('Setup auction failed');
               }
             },
             (err) => {
-              console.log('setup auction error: ', err);
+              this.spinner.hide();
+              console.log('optin and rekey error: ' + err);
+              alert('Network error, please try again later');
             }
           );
+        } else {
+          this.spinner.hide();
+          if (result == 0) {
+            alert("Insufficient balance");
+          } else {
+            alert("Exception occurred, please retry again later");
+          }
         }
       },
-      (error) => console.log('error', error)
+      (error) => {
+        this.spinner.hide();
+        alert("Network error, please try again later");
+        console.log('error', error)
+      }
     );
   }
 
@@ -211,8 +225,8 @@ export class CreateAuctionComponent implements OnInit {
       assetID: this.selectedAssetID,
       amount: this.assetAmount,
       reserve: this.price,
-      startTime: Date.parse(this.startTime)/1000,
-      endTime: Date.parse(this.endTime)/1000,
+      startTime: Date.parse(this.startTime) / 1000,
+      endTime: Date.parse(this.endTime) / 1000,
       minimumIncrement: this.minimumIncrement,
     }
     const txID = await this._walletsConnectService.createAuction(params1);
@@ -221,8 +235,7 @@ export class CreateAuctionComponent implements OnInit {
     if (txID) {
       const asset = this.selectedAsset.params;
       console.log(asset);
-
-      const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
+      const collectionId = this.metadata.collectionId ? this.metadata.collectionId : getUUID();
 
       let assetProperties: { name: any; value: any; }[] = [];
       for (const [key, value] of Object.entries(this.metadataProperties)) {
@@ -243,32 +256,32 @@ export class CreateAuctionComponent implements OnInit {
           supply: asset.total,
           assetURL: "string",
           creatorWallet: asset.creator,
-          freezeAddress: asset.freeze?asset.freeze:'',
-          managerAddress: asset.manager?asset.manager:'',
-          clawbackAddress: asset.clawback?asset.clawback:'',
-          reserveAddress: asset.reserve?asset.reserve:'',
-          metadata: asset['metadata-hash']?asset['metadata-hash']:'',
+          freezeAddress: asset.freeze ? asset.freeze : '',
+          managerAddress: asset.manager ? asset.manager : '',
+          clawbackAddress: asset.clawback ? asset.clawback : '',
+          reserveAddress: asset.reserve ? asset.reserve : '',
+          metadata: asset['metadata-hash'] ? asset['metadata-hash'] : '',
           externalLink: this.metadata.external_link ? this.metadata.external_link : '',
           description: this.metadata.description ? this.metadata.description : '',
 
           assetCollectionID: collectionId,
           assetCollection: {
             assetCollectionID: collectionId,
-            name: this.metadata.collection ? (this.metadata.collection.name ? this.metadata.collection.name: '') : '',
-            icon: this.metadata.collection ? (this.metadata.collection.icon ? this.metadata.collection.icon: '') : '',
-            banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
-            featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
-            description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
-            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: '') : '',
-            customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
-            category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
-            website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
-            creatorWallet: this.metadata.collection ? (this.metadata.collection.creatorWallet ? this.metadata.collection.creatorWallet: asset.params.creator) : asset.params.creator
+            name: this.metadata.collection ? (this.metadata.collection.name ? this.metadata.collection.name : '') : '',
+            icon: this.metadata.collection ? (this.metadata.collection.icon ? this.metadata.collection.icon : '') : '',
+            banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner : '') : '',
+            featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage : '') : '',
+            description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description : '') : '',
+            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties : 0) : 0,
+            customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL : '') : '',
+            category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category : '') : '',
+            website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web : '') : '',
+            creatorWallet: this.metadata.collection ? (this.metadata.collection.creatorWallet ? this.metadata.collection.creatorWallet : asset.creator) : asset.creator
           },
 
           properties: assetProperties,
-          file: this.metadata.file? this.metadata.file : '',
-          cover: this.metadata.cover? this.metadata.cover : '',
+          file: this.metadata.file ? this.metadata.file : '',
+          cover: this.metadata.cover ? this.metadata.cover : '',
           royalties: this.metadata.royalty ? this.metadata.royalty : 0
         },
         amount: this.assetAmount,
@@ -281,11 +294,19 @@ export class CreateAuctionComponent implements OnInit {
 
       this._userService.createAuction(params).subscribe(
         res => {
-          console.log("Created auction successfully");
+          this.spinner.hide();
+          alert("Created auction successfully");
           console.log(res)
         },
-        error => console.log(error)
+        error => {
+          this.spinner.hide();
+          alert(error);
+          console.log(error)
+        }
       );
+    } else {
+      this.spinner.hide();
+      alert("Failed creating auction on algorand network");
     }
   }
 
@@ -293,10 +314,21 @@ export class CreateAuctionComponent implements OnInit {
     console.log('start cancel auction');
     const result = await this._walletsConnectService.closeAuction(bidIndex);
     if (result) {
-      const result1 = this._userService.closeAuction(bidIndex);
-      if (result1) {
-        console.log('Successfully cancelled')
-      }
+      this._userService.closeAuction(bidIndex).subscribe(
+        res => {
+          this.spinner.hide();
+          alert("Successfully closed");
+          console.log(res)
+        },
+        error => {
+          this.spinner.hide();
+          alert(error);
+          console.log(error)
+        }
+      );
+    } else {
+      this.spinner.hide();
+      alert("Failed cancel");
     }
   }
 

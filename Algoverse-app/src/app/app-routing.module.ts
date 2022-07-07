@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from "./modules/landing-page/component/landing-page.component";
 import { MarketPlaceComponent } from "./modules/market-place/component/market-place.component";
@@ -28,6 +28,7 @@ import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 import { BidDetailComponent } from './bid-detail/bid-detail.component';
 import { SwapDetailComponent } from './swap-detail/swap-detail.component';
 import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -62,7 +63,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes),
+    NgxSpinnerModule
+  ],
+  exports: [
+    RouterModule,
+    NgxSpinnerModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppRoutingModule { }

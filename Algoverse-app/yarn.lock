@@ -6011,7 +6011,7 @@ ipfs-core@^0.15.2:
 
 ipfs-http-client@^57.0.3:
   version "57.0.3"
-  resolved "https://registry.npmjs.org/ipfs-http-client/-/ipfs-http-client-57.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/ipfs-http-client/-/ipfs-http-client-57.0.3.tgz#8597726cda897bbe932d104dde5d754738614de5"
   integrity sha512-IOqxcMei7Y2bxU2Se98YB+HEv2rZp9aTbkQjNY4XgoeG3eMp0zU/6tpguOHzC5a6SOCojZRrcAAZq2RAwdmrhg==
   dependencies:
     "@ipld/dag-cbor" "^7.0.0"
@@ -7924,6 +7924,13 @@ ngx-owl-carousel@^2.0.7:
   dependencies:
     jquery ">= 2.2.0"
     owl.carousel "^2.2.0"
+
+ngx-spinner@^11.0.1:
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-spinner/-/ngx-spinner-11.0.2.tgz#7225e6de56d1f2f5f332cad6a7e087b758ca9499"
+  integrity sha512-F38W6Fow2BdIXz6V69to5lRje+woUKmJ+TByp6M/Z0osl4gzieOcUdHvu72BO4tKTLh6UgrbS1Owxj9uZ3CjKQ==
+  dependencies:
+    tslib "^2.0.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"
