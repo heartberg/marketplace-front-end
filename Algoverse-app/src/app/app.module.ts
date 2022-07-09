@@ -12,6 +12,7 @@ import {CarouselModule} from "./carousel/carousel.module";
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [
@@ -27,13 +28,14 @@ import { NgxSpinnerModule } from "ngx-spinner";
     BrowserAnimationsModule,
     CarouselModule,
     FormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxSliderModule
     // OwlModule,
   ],
   providers: [
   ],
   bootstrap: [AppComponent],
-  exports: [NgxSpinnerModule],
+  exports: [NgxSpinnerModule, NgxSliderModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

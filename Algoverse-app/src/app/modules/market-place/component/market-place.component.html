@@ -7,14 +7,15 @@
             Price
           </h3>
         </div>
-        <mat-slider
+        <ngx-slider [(value)]="lowPrice" [(highValue)]="highPrice" [options]="options" (mouseup)="sliderEvent()"></ngx-slider>
+        <!-- <mat-slider
           thumbLabel
           [displayWith]="formatLabel"
           tickInterval="1000"
           step="1000"
           min="0"
           max="100000"
-          aria-label="units"></mat-slider>
+          aria-label="units"></mat-slider> -->
       </div>
       <div class="section">
         <div class="title">
@@ -30,7 +31,7 @@
             Type
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="typesDropDown" (dropDownValue)="catchValue($event)"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="typesDropDown" (dropDownValue)="selectedType($event)"></app-drop-down-selector>
       </div>
       <div class="section">
         <div class="title">
@@ -46,7 +47,7 @@
             Artists
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="artistsDropDown" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="artistsDropDown" (dropDownValue)="selectedArtist($event)"></app-drop-down-selector>
       </div>
       <div class="section last">
         <div class="title">
@@ -54,7 +55,7 @@
             Sort by
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedSort($event)"></app-drop-down-selector>
       </div>
     </div>
     <div class="right-section">

@@ -133,6 +133,14 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  search(type: string, address: string, searchKey: string, category: string, collection: string,
+    artist: string, lowPrice: number, highPrice: number, sortBy: string): Observable<any> {
+    const url = `${this.baseUrl}global/search?type=${type}&address=${address}&searchKey=${searchKey}` +
+      `&category=${category}&collection=${collection}&artist=${artist}&lowPrice=${lowPrice}` +
+      `&highPrice=${highPrice}&sortBy=${sortBy}`;
+    return this._http.get<any>(url);
+  }
+
   loadMetaData(url: string): Observable<any> {
     return this._http.get<any>(url);
   }
