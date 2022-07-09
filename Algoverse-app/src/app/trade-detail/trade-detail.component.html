@@ -4,11 +4,16 @@
   </div>
   <div class="whole">
     <div class="row w-100">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="inside">
           <div class="wrapper-card">
             <div class="img">
-              <img style="width: 100%;" src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+              <div class="section" *ngIf="mTrade.asset.file">
+                <img src="{{mTrade.asset.file}}" alt="">
+              </div>
+              <div class="section" *ngIf="!mTrade.asset.file">
+                <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+              </div>
             </div>
             <div class="card-info mt-3">
               <div class="card-info-left">

@@ -22,7 +22,7 @@
             Cateogry
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="categoriesDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="categoriesDropDown" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
       </div>
       <div class="section">
         <div class="title">
@@ -38,7 +38,7 @@
             Collections
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="collectionsDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="collectionsDropDown" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
       </div>
       <div class="section">
         <div class="title">
@@ -46,7 +46,7 @@
             Artists
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="artistsDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="artistsDropDown" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
       </div>
       <div class="section last">
         <div class="title">
@@ -54,7 +54,7 @@
             Sort by
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="boxesSortDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
       </div>
     </div>
     <div class="right-section">

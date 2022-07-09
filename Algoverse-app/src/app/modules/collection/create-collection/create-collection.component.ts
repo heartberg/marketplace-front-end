@@ -4,6 +4,7 @@ import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { Location } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-collection',
@@ -28,7 +29,8 @@ export class CreateCollectionComponent implements OnInit {
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private router: Router,
-    private _location: Location
+    private _location: Location,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -139,12 +141,18 @@ export class CreateCollectionComponent implements OnInit {
       creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount()
     }
 
+    this.spinner.show();
     console.log('param', param);
     this._userService.createCollection(param).subscribe(
       res => {
-        console.log('Successfully created', res);
+        this.spinner.hide();
+        alert('Successfully added');
       },
-      error => console.log('error', error)
+      error => {
+        this.spinner.hide();
+        console.log('error', error);
+        alert('Failed, please retry later');
+      }
     )
   }
 

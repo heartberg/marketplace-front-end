@@ -53,10 +53,16 @@ export class WalletsConnectService {
   }
 
   async getAsset(assetID: number): Promise<any> {
-    const client = getAlgodClient();
-    const asset = await client.getAssetByID(assetID).do();
-    console.log(asset);
-    return asset;
+    try {
+      const client = getAlgodClient();
+      const asset = await client.getAssetByID(assetID).do();
+      console.log(asset);
+      return asset;
+
+    } catch (err) {
+      console.log('err', err);
+    }
+    return false;
   }
 
   getOwnAssets = async () => {
@@ -208,7 +214,7 @@ export class WalletsConnectService {
 
   createTrade = async (params: any): Promise<number> => {
     try {
-      console.log(params);
+      console.log('create trade params', params);
       const suggestedParams = await getTransactionParams();
       let txns = [];
       let tokens = [Number(params.assetID)];

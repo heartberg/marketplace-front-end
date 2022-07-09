@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import { UserService } from 'src/app/services/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-market-place',
@@ -8,11 +9,11 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./market-place.component.scss']
 })
 export class MarketPlaceComponent implements OnInit {
-  public categoriesDropDown: string[] = ['All NFTs', 'Art', 'Music', 'Packs', 'URLs', 'Real Estate'];
-  public typesDropDown: string[] = ['All Types', 'Sale', 'Auction', 'Swap'];
-  public collectionsDropDown: string[] = ['All Collections', 'Collection 1', 'Collection 2', 'Collection 3'];
-  public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
-  public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
+  public typesDropDown: string[] = ['All Types', 'Trade', 'Bid', 'Swap', 'Auction'];
+  public categoriesDropDown: string[] = ['All NFTs', 'Collectible items', 'Artwork', 'Event tickets', 'Music and media', 'Gaming', 'Big Sports Moments', 'Virtual Fashion', 'Real-world assets', 'Memes', 'Domain names'];
+  public collectionsDropDown: string[] = ['All Collections'];
+  public artistsDropDown: string[] = ['All Artists'];
+  public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked'];
 
   public trades: any[] = [];
   public bids: any[] = [];
@@ -27,6 +28,11 @@ export class MarketPlaceComponent implements OnInit {
   public isTimedAuction: boolean = false;
 
   public isLoaded: boolean = false;
+  public type: string = 'All Types';
+  public category: string = 'All NFTs';
+  public collection: string = 'All Collections';
+  public artist: string = 'All Artists';
+  public sort: string = 'Newest';
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -38,11 +44,13 @@ export class MarketPlaceComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private _userService: UserService
+    private _userService: UserService,
+    private spinner: NgxSpinnerService
   ) {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this._userService.loadTrendingItems().subscribe(
       res => {
         this.isLoaded = true;
@@ -59,33 +67,20 @@ export class MarketPlaceComponent implements OnInit {
     )
   }
 
-  catchValue(event: string) {
-   this.dropDownValue = event;
-
-    if(this.dropDownValue == 'Sale') {
-      this.isSale = true;
-      this.isSwap = false;
-      this.isTimedAuction = false;
-      this.isAll = false;
-      this.router.navigate(['marketplace/sale'])
-
-    } else if (this.dropDownValue == 'Auction') {
-      this.isSale = false;
-      this.isSwap = false;
-      this.isTimedAuction = true;
-      this.isAll = false;
-      this.router.navigate(['marketplace/auction'])
-
-    } else if (this.dropDownValue == 'Swap') {
-      this.isSale = false;
-      this.isTimedAuction = false;
-      this.isSwap = true;
-      this.isAll = false;
-      this.router.navigate(['marketplace/swap'])
-
-    } else if (this.dropDownValue == 'All Types') {
-      this.isAll = true;
-      this.router.navigate(['marketplace/all-types'])
-    }
+  selectedCategory(collectionName: string) {
+    this.collection = collectionName;
   }
+
+  selectedCollection(collectionName: string) {
+    this.passedCollection = this._stateService.getCollectionByName(collectionName);
+  }
+
+  selectedCollection(collectionName: string) {
+    this.passedCollection = this._stateService.getCollectionByName(collectionName);
+  }
+
+  selectedCollection(collectionName: string) {
+    this.passedCollection = this._stateService.getCollectionByName(collectionName);
+  }
+
 }

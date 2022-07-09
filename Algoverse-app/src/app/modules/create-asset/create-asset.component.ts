@@ -9,6 +9,7 @@ import { metadataHash } from 'src/app/services/utils.algod';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import * as sha256 from 'js-sha256';
 import { Location } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-asset',
@@ -37,7 +38,8 @@ export class CreateAssetComponent implements OnInit {
     private _userService: UserService,
     private _stateService: StateService,
     private router: Router,
-    private _location: Location
+    private _location: Location,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -163,6 +165,7 @@ export class CreateAssetComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
     delete this.passedCollection.creator;
     const metadata = {
       name: this.name,
@@ -220,15 +223,22 @@ export class CreateAssetComponent implements OnInit {
         properties: {},
         createOffer: true
       }
+
       console.log('params', params);
       this._userService.createAsset(params).subscribe(
         res => {
-          console.log('Successfully added', res)
+          this.spinner.hide();
+          alert('Successfully minted')
         },
         err => {
-          console.log(err)
+          this.spinner.hide();
+          console.log(err);
+          alert('Failed, please retry later');
         }
       )
+    } else {
+      this.spinner.hide();
+      alert('Failed to mint asset on network');
     }
   }
 

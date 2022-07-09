@@ -69,13 +69,8 @@ export class UserService {
   }
 
   getTradeIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}trade/getTradeIndexAndPrice?senderAddress=${senderAddress}`;
+    const url = `${this.baseUrl}trade/getTradeIndex?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
-  }
-
-  setupTrade(indexAddress: string, assetId: number): Observable<any> {
-    const url = `${this.baseUrl}trade/setUpTrade?indexAddress=${indexAddress}&assetId=${assetId}`;
-    return this._http.get(url);
   }
 
   optinAndRekeyToTrade(indexAddress: string): Observable<any> {
@@ -118,11 +113,6 @@ export class UserService {
     return this._http.get(url);
   }
 
-  setupBid(indexAddress: string, assetId: number): Observable<any> {
-    const url = `${this.baseUrl}bid/setUpBid?indexAddress=${indexAddress}&assetId=${assetId}`;
-    return this._http.get(url);
-  }
-
   createBid(params: any): Observable<any> {
     const url = `${this.baseUrl}bid/create`;
     return this._http.post(url, params);
@@ -158,18 +148,13 @@ export class UserService {
   }
 
   getSwapIndex(senderAddress: string): Observable<any> {
-    const url = `${this.baseUrl}swap/getSwapIndexAndPrice?senderAddress=${senderAddress}`;
+    const url = `${this.baseUrl}swap/getSwapIndex?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
   }
 
   optinAndRekeyToSwap(indexAddress: string): Observable<any> {
     const url = `${this.baseUrl}swap/optinAndRekey?indexAddress=${indexAddress}`;
     return this._http.post(url, {indexAddress});
-  }
-
-  setupSwap(params: any): Observable<any> {
-    const url = `${this.baseUrl}swap/setUpSwap`;
-    return this._http.post(url, params);
   }
 
   createSwap(params: any): Observable<any> {

@@ -10,7 +10,7 @@ import { WalletsConnectService } from '../services/wallets-connect.service';
 })
 export class BidDetailComponent implements OnInit {
 
-  private mBid: any = null;
+  public mBid: any = null;
   public isMine = false;
   public isOpen = false;
   public assetName: string = ""
