@@ -66,6 +66,7 @@ export class CreateTradeComponent implements OnInit {
     const firstAsset = this.assets[0];
     this.setMaxSupply(firstAsset.index);
     this.selectedAsset(firstAsset.index);
+    this.spinner.hide()
   }
 
   async selectedAsset(assetID: string) {

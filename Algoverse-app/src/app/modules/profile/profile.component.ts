@@ -13,6 +13,15 @@ export class ProfileComponent implements OnInit {
   public exampleArr:number[] = [1,2];
   userProfile: any;
   userCollections: any;
+  ownedAssets: any;
+  createdAssets: any;
+  forSale: any;
+  forSwap: any;
+  forAuction: any;
+  myBids: any;
+  myAuctionBids: any;
+  swapRequests: any;
+  starred: any;
 
   constructor(
     private userService: UserService,
@@ -32,6 +41,7 @@ export class ProfileComponent implements OnInit {
               this.userCollections = collections
             }
           )
+          this.userService
         }
       )
     }
