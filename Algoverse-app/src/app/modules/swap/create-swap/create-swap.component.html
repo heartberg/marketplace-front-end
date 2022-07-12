@@ -22,23 +22,6 @@
             <h4 class="amountheader">Amount (<= {{maxSupply}})</h4>
             <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAmountEvent($event)">
           </div>
-          <div class="assets wrapper-border">
-            <div class="assetsList height-_10">
-              <div class="row d-flex align-items-center" style="width: 100%">
-                <div class="col-md-5">
-                  <div class="assetdesc">
-                    <h4> Description</h4>
-                  </div>
-                </div>
-                <div class="col-md-7 restyle-col">
-                  <div class="assetdescription">
-                    <textarea class="wrapper-border restyle-wrapper" style="width: 100%; height: 100%; resize: none;">{{selectedAssetDescription}}
-                    </textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="metaheader">
             <h3>Metadata</h3>
           </div>
@@ -52,21 +35,9 @@
                 </div>
                 <div class="col-md-7 restyle-col">
                   <div class="assetdescription">
-                    <textarea class="wrapper-border restyle-wrapper" style="width: 100%; height: 100%; resize: none;">{{selectedAssetDescription}}
+                    <textarea class="wrapper-border restyle-wrapper" style="width: 100%; height: 100%; resize: none;" disabled>{{selectedAssetDescription}}
                     </textarea>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="royalties wrapper-border">
-            <div class="royal height-_10">
-              <div class="row d-flex align-items-center" style="width: 100%">
-                <div class="col-md-5">
-                  <h4>Royalties</h4>
-                </div>
-                <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" name="royalty" placeholder="10" (blur)="blurRoyaltyEvent($event)">
                 </div>
               </div>
             </div>
@@ -101,7 +72,7 @@
             <h4>Asset</h4>
             <div class="dropdown">
               <div class="AssetsList">
-                <input type="text" class="input-costum" placeholder="Asset ID / Name" (blur)="blurAcceptAssetIndexEvent($event)">
+                <input type="text" class="input-costum" placeholder="Asset ID" (blur)="blurAcceptAssetIndexEvent($event)">
               </div>
             </div>
           </div>
@@ -121,9 +92,6 @@
               </div>
             </div>
           </div>
-          <section class="example-section d-flex align-items-center">
-            <mat-checkbox class="example-margin"> <h4>Open for offers</h4> </mat-checkbox>
-          </section>
           <div class="btn-secondary-costum aligner" (click)="createSwap()">
             Create Swap
           </div>
