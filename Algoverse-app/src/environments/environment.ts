@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // baseUrl: 'https://algoverse.azurewebsites.net/',
-  baseUrl: 'http://localhost:5000/',
+  baseUrl: 'https://algoverse.azurewebsites.net/',
+  // baseUrl: 'http://localhost:5000/',
 
   ALGOD_URL:"https://testnet-algorand.api.purestake.io/ps2",
   ALGOD_TOKEN:"Z4lUOOfIOm8thZUeUK9n349ImUCpiCC190RtGnm6",

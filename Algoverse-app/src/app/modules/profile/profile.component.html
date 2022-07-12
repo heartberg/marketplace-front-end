@@ -13,10 +13,10 @@
               </div>
               <div class="avatar-info d-flex flex-column align-items-center">
                 <div class="avatar-name">
-                  <h4>Saba Ambro</h4>
+                  <h4>{{userProfile?.name.substring(0, 28)}}...</h4>
                 </div>
                 <div class="address">
-                  <span class="color-violet">California</span>
+                  <span class="color-violet">{{userProfile?.wallet.substring(0, 8)}}...</span>
                 </div>
               </div>
             </div>
@@ -24,54 +24,58 @@
               <div class="d-flex justify-content-between">
                 <div class="followers">
                   <span class="color-violet">Followers:</span>
-                  <span>250</span>
+                  <span>{{userProfile? userProfile.followers.length : 0}}</span>
                 </div>
                 <div class="followed">
                   <span class="color-violet">Followed:</span>
-                  <span>300</span>
+                  <span>{{userProfile? userProfile.followed.length : 0}}</span>
                 </div>
               </div>
             </div>
             <div class="scroll-bio">
               <div class="wrapper">
               <span>
-                Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM Bio Text LOREM IPSUM
+                {{userProfile? userProfile.bio : ""}}
               </span>
               </div>
             </div>
             <div class="collection-section">
               <h4>Collections</h4>
               <div class="collection-section-img">
-                <div class="row">
-                  <div class="col-4">
-                    <img src="https://www.annualreviews.org/pb-assets/journal-home/special-collections/collection-archive-extreme-weather-2021-1630444709857.png
-" alt="">
-                    <span class="color-violet">name</span>
-                  </div>
-                  <div class="col-4">
-                    <img src="https://www.annualreviews.org/pb-assets/journal-home/special-collections/collection-archive-extreme-weather-2021-1630444709857.png" alt="">
-                    <span class="color-violet">name</span>
-                  </div>
-                  <div class="col-4">
-                    <img src="https://www.annualreviews.org/pb-assets/journal-home/special-collections/collection-archive-extreme-weather-2021-1630444709857.png" alt="">
-                    <span class="color-violet">name</span>
+                <div class="row" *ngIf="userCollections">
+                  <div class="col-4" *ngFor="let collection of userCollections">
+                    <div routerLink="../collection-detail/{{collection.collectionId}}" style="cursor: pointer;">
+                      <img src="https://www.annualreviews.org/pb-assets/journal-home/special-collections/collection-archive-extreme-weather-2021-1630444709857.png" alt="">
+                      <span class="color-violet">{{collection.name}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="soc-section">
-              <div class="img">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" alt="">
+            <div class="soc-section" *ngIf="userProfile">
+              <div *ngIf="userProfile.website" class="img" style="cursor: pointer;">
+                <a href="{{userProfile.website}}" target="_blank">
+                  <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" alt="">
+                </a>
               </div>
-              <div class="img">
-                <img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-Twitter-icon-transparent-PNG.png" alt="">
+              <div *ngIf="userProfile.instagram" class="img" style="cursor: pointer;">
+                <a href="{{userProfile.instagram}}" target="_blank">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" alt="">
+                </a>
               </div>
-              <div class="img">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Facebook_icon_2013.svg/768px-Facebook_icon_2013.svg.png" alt="">
+              <div *ngIf="userProfile.twitter" class="img" style="cursor: pointer;">
+                <a href="{{userProfile.twitter}}" target="_blank">
+                  <img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-Twitter-icon-transparent-PNG.png" alt="">
+                </a>
+              </div>
+              <div *ngIf="userProfile.telegram" class="img" style="cursor: pointer;">
+                <a href="{{userProfile.telegram}}" target="_blank">
+                  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="">
+                </a>
               </div>
             </div>
-            <div class="verified-btn d-flex">
-              <button class="btn-secondary-costum">
+            <div *ngIf="userProfile" class="verified-btn d-flex" >
+              <button *ngIf="!userProfile.verified" class="btn-secondary-costum">
                 Get Verified
               </button>
             </div>
