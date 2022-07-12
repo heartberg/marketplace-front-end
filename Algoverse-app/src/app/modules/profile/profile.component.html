@@ -115,7 +115,31 @@
                       </div>
                     </div>
                   </mat-tab>
+                  <mat-tab label="For Auction">
+                    <div class="row">
+                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                        <app-card *ngIf="!last"></app-card>
+                        <app-swap-card *ngIf="last"></app-swap-card>
+                      </div>
+                    </div>
+                  </mat-tab>
                   <mat-tab label="For Swap">
+                    <div class="row">
+                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                        <app-card *ngIf="!last"></app-card>
+                        <app-swap-card *ngIf="last"></app-swap-card>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="My Bids">
+                    <div class="row">
+                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                        <app-card *ngIf="!last"></app-card>
+                        <app-swap-card *ngIf="last"></app-swap-card>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="My Auction Bids">
                     <div class="row">
                       <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
                         <app-card *ngIf="!last"></app-card>
