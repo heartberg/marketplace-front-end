@@ -48,8 +48,33 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  userGetShuttle(): Observable<any> {
-    const url = `${this.baseUrl}user/get/all/verified`;
+  loadFeaturedArtists(): Observable<any> {
+    const url = `${this.baseUrl}user/get/featured`;
+    return this._http.get<any>(url);
+  }
+
+  loadHotCollections(days: number): Observable<any> {
+    const url = `${this.baseUrl}collection/get/hot?lastDays=${days}`;
+    return this._http.get<any>(url);
+  }
+
+  loadHotAssets(days: number): Observable<any> {
+    const url = `${this.baseUrl}asset/get/hot?lastDays=${days}`;
+    return this._http.get<any>(url);
+  }
+
+  loadHotSellers(days: number): Observable<any> {
+    const url = `${this.baseUrl}user/get/hot/seller?lastDays=${days}`;
+    return this._http.get<any>(url);
+  }
+
+  loadHotBuyers(days: number): Observable<any> {
+    const url = `${this.baseUrl}user/get/hot/buyer?lastDays=${days}`;
+    return this._http.get<any>(url);
+  }
+
+  loadHotCreators(days: number): Observable<any> {
+    const url = `${this.baseUrl}user/get/hot?lastDays=${days}`;
     return this._http.get<any>(url);
   }
 
