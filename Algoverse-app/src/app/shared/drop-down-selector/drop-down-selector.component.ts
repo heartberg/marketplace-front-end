@@ -18,11 +18,14 @@ export class DropDownSelectorComponent implements OnInit {
   @Input() public profileSectionImg: string = ''
   @Input() public profileSectionInfo: string = ''
   // profile
+  // switcher
+  @Input() public isSwitcher: boolean = false;
+  // #switcher
   @Input() public tree: boolean = false;
   @Input() public hasTitle: string  = '';
-
+  @Input() public  widthPX: string = ''
   @Output() dropDownValue = new EventEmitter<string>();
-
+  @Output() switcherEmit = new EventEmitter<string>();
   public isDropDownOpened = false;
   public isDropDownOpenedCounter = 1;
   public showDropDownSelected: string = '';
@@ -49,4 +52,21 @@ export class DropDownSelectorComponent implements OnInit {
     this.dropDownValue.emit(value);
   }
 
+  returnAddress(acc: any) {
+    console.log(acc);
+    let finalAcc;
+    if (localStorage.getItem('wallet')) {
+      acc = localStorage.getItem('wallet')!;
+      finalAcc = acc;
+      console.log(finalAcc,
+        '22222222222')
+    }
+    let start: string = '';
+    let last: string = ''
+    start = finalAcc.substring(0,3);
+    last = finalAcc.substring(acc.length, acc.length - 3);
+    let final = start + '...' + last;
+    console.log(final);
+    return final
+  }
 }

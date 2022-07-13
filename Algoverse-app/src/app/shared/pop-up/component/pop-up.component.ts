@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
 import {of} from "rxjs";
 
@@ -10,7 +10,8 @@ import {of} from "rxjs";
 export class PopUpComponent implements OnInit {
   @Output() isConnectedToWallet = new EventEmitter<boolean>();
   @Output() isClosed = new EventEmitter<boolean>();
-
+  @Input() switcher = false;
+  walletsForSwitching: any = '';
   constructor(
     private _walletsConnectService: WalletsConnectService,
   ) { }
@@ -43,5 +44,22 @@ export class PopUpComponent implements OnInit {
         console.log('Connected to AlgoSigner')
       }
     }
+  }
+
+  wallet() {
+    this.walletsForSwitching = JSON.parse(localStorage.getItem('walletsOfUser')!);
+    return this.walletsForSwitching;
+  }
+
+  switchAcc(i: number) {
+    localStorage.removeItem('wallet');
+    localStorage.setItem('walletIndex', JSON.stringify(i));
+    this.setelectWalletConnect('MyAlgoWallet');
+  }
+
+  getValueFromDropDown($event: any) {
+    let index = +$event.i - 1;
+    this.switchAcc(+index);
+    console.log($event)
   }
 }

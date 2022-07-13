@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
+  public isPopUpOpenedSecond: boolean = false;
   @Output() themeWasChanged = new EventEmitter<boolean>();
 
   constructor(
@@ -32,6 +33,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
       this.isLoggedIn = true;
+    }
+    if (localStorage.getItem('wallet')) {
+      this.walletConnectionPassed = true;
     }
   }
 
@@ -57,6 +61,7 @@ export class HeaderComponent implements OnInit {
 
   closePopUp(event: boolean) {
     this.isPopUpOpened = event;
+    this.isPopUpOpenedSecond = event;
   }
 
   showMenuRespo() {
@@ -84,5 +89,13 @@ export class HeaderComponent implements OnInit {
   closeSearchRespo() {
     this.SearchRespoOpened = false;
     console.log('sa')
+  }
+
+  switcher() {
+    this.isPopUpOpenedSecond = true;
+  }
+
+  logOut() {
+    this._walletsConnectService.disconnect();
   }
 }

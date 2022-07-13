@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, getTransactionParams, isOptinApp, isOptinAsset, metadataHash, optinApp, optinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
+import {Router} from "@angular/router";
 
 
 const client = getAlgodClient()
@@ -16,24 +17,59 @@ export class WalletsConnectService {
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
 
-  constructor(private userServce: UserService) { }
+  constructor(private userServce: UserService, private router: Router) {
+    if (localStorage.getItem('wallet')) {
+      sessionStorage.setItem('acct-list', JSON.stringify([localStorage.getItem('wallet')]));
+      if (this.sessionWallet === undefined || !this.sessionWallet) {
+        this.connectOnDefault('my-algo-connect').then(response => response);
+      }
+    }
+  }
 
   connect = async (choice: string): Promise<void> => {
     console.log('choice', choice);
-    this.sessionWallet = new SessionWallet("TestNet", undefined, choice);
+    const sw = new SessionWallet("TestNet", undefined, choice);
 
-    if (!await this.sessionWallet.connect()) return alert("Couldnt connect")
+    if (!await sw.connect()) return alert("Couldnt connect")
 
-    this.myAlgoAddress = this.sessionWallet.accountList()
-    console.log('myAlgoAddress', this.myAlgoAddress);
-    localStorage.setItem('wallet', this.sessionWallet.getDefaultAccount())
+    this.myAlgoAddress = sw.accountList()
+    console.log("AlgoAddress: " + this.myAlgoAddress)
+    let index = localStorage.getItem('walletIndex');
+    let finalIndex = +index!;
+    if (localStorage.getItem('walletsOfUser')) {
+      localStorage.setItem('wallet', JSON.parse(localStorage.getItem('walletsOfUser')!)[finalIndex]);
+    } else {
+      localStorage.setItem('wallet', this.myAlgoAddress[finalIndex]);
+    }
     this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
+
+    sw.wallet.defaultAccount = finalIndex;
+    const finalSw = sw;
+    this.sessionWallet = finalSw!;
+    // check
+    if (sessionStorage.getItem('acct-list')!.length) {
+      let wallets = sessionStorage.getItem('acct-list');
+      let fWallets = JSON.parse(wallets!);
+      if (!localStorage.getItem('walletsOfUser')) {
+        localStorage.setItem('walletsOfUser', sessionStorage.getItem('acct-list')!);
+      }
+    }
+    let parsedWallets = localStorage.getItem('walletsOfUser');
+
+    this.sessionWallet.wallet.accounts = JSON.parse(parsedWallets!);
+    // check
+    localStorage.setItem('sessionWallet', JSON.stringify(this.sessionWallet));
+    // localStorage.setItem('walletsOfUser', JSON.stringify(this.sessionWallet.wallet.accounts));
+    console.log(this.sessionWallet, 'esaaa');
 
     if (this.myAlgoAddress.length > 0) {
       this.userServce.loadProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
           console.log('profile', result);
-          localStorage.setItem('profile', result);
+          localStorage.setItem('profile', JSON.stringify(result));
+          this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['home']);
+          });
         },
         (error) => {
           console.log('error', error)
@@ -50,9 +86,54 @@ export class WalletsConnectService {
     }
   }
 
+  connectOnDefault = async (choice: string) => {
+    console.log('choice', choice);
+    const sw = new SessionWallet("TestNet", undefined, choice);
+
+    console.log('check', new Uint8Array(Buffer.from("text")))
+
+    if (!await sw.connect()) return alert("Couldnt connect")
+
+    this.myAlgoAddress = sw.accountList()
+    console.log("AlgoAddress: " + this.myAlgoAddress)
+    let index = localStorage.getItem('walletIndex');
+    let finalIndex = +index!;
+    if (localStorage.getItem('walletsOfUser')) {
+      localStorage.setItem('wallet', JSON.parse(localStorage.getItem('walletsOfUser')!)[finalIndex]);
+    } else {
+      localStorage.setItem('wallet', this.myAlgoAddress[finalIndex]);
+    }
+    this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
+
+    sw.wallet.defaultAccount = finalIndex;
+    const finalSw = sw;
+    this.sessionWallet = finalSw!;
+    let userWallets = localStorage.getItem('walletsOfUser');
+    let finalWalletOfUser = JSON.parse(userWallets!);
+    this.sessionWallet.wallet.accounts = finalWalletOfUser;
+    localStorage.setItem('sessionWallet', JSON.stringify(this.sessionWallet))
+    console.log(this.sessionWallet, 'esaaa 22222');
+  }
+
   disconnect = () => {
     this.sessionWallet!.disconnect()
-    this.myAlgoAddress = []
+    this.myAlgoAddress = [];
+    localStorage.removeItem('walletIndex');
+    localStorage.removeItem('walletsOfUser');
+    localStorage.removeItem('wallet');
+    localStorage.removeItem('sessionWallet');
+    localStorage.removeItem('profile');
+    this.sessionWallet = undefined;
+    //setConnected(false)
+    localStorage.setItem('reload', 'true');
+    if (localStorage.getItem('reload')) {
+      location.reload();
+      setTimeout(() => {
+        localStorage.removeItem('reload');
+      }, 300)
+    } else {
+      return
+    }
   }
 
   async getAsset(assetID: number): Promise<any> {
