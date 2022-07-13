@@ -31,7 +31,10 @@ export class WalletsConnectService {
 
     if (this.myAlgoAddress.length > 0) {
       this.userServce.loadProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
-        (result) => console.log('profile', result),
+        (result) => {
+          console.log('profile', result);
+          localStorage.setItem('profile', result);
+        },
         (error) => {
           console.log('error', error)
           if (error.status == 404) {

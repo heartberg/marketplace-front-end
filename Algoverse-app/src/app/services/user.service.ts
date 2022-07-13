@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
+import {updateUser} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,11 @@ export class UserService {
   loadProfile(wallet: String): Observable<any> {
     const url = `${this.baseUrl}user/get/byWallet?wallet=${wallet}`;
     return this._http.get<any>(url);
+  }
+
+  userUpdate(data: updateUser):Observable<any> {
+    const url = `${this.baseUrl}user/update`;
+    return this._http.post<any>(url, data);
   }
 
   createProfile(wallet: String): Observable<any> {
