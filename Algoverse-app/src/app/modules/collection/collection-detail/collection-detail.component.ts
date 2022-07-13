@@ -11,8 +11,8 @@ import { WalletsConnectService } from 'src/app/services/wallets-connect.service'
 })
 export class CollectionDetailComponent implements OnInit {
 
-  public mCollection: any = {}
-  public mAssets = []
+  public mCollection: any = {};
+  public mAssets = [];
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
