@@ -40,6 +40,11 @@ export class HeaderComponent implements OnInit {
   }
 
   openAvatar() {
+    if (this.isProfileOpened) {
+      localStorage.setItem('opened', JSON.stringify(true))
+    } else {
+      localStorage.setItem('opened', JSON.stringify(false))
+    }
     if (!this.isMenuRespoOpened) {
       this.isProfileOpened = !this.isProfileOpened;
     } else {

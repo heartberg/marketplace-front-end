@@ -11,6 +11,7 @@ import { WalletsConnectService } from 'src/app/services/wallets-connect.service'
 export class ItemsComponent implements OnInit {
   public arr = []
   public types: string[] = ['Trade', 'Bid', 'Swap', 'Auction'];
+  profileOpened: boolean = false;
 
   constructor(
     private router: Router,
@@ -78,4 +79,13 @@ export class ItemsComponent implements OnInit {
     return `/trade-detail/${item.tradeId}`
   }
 
+  returnState() {
+    if (localStorage.getItem('opened') === 'true') {
+      this.profileOpened = true;
+      return true;
+    } else {
+      this.profileOpened = false;
+      return false;
+    }
+  }
 }

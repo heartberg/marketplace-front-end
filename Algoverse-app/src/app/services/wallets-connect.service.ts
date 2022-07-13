@@ -67,7 +67,7 @@ export class WalletsConnectService {
         (result) => {
           console.log('profile', result);
           localStorage.setItem('profile', JSON.stringify(result));
-          this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
+          this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
             this.router.navigate(['home']);
           });
         },
