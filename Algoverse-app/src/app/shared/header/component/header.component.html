@@ -152,4 +152,4 @@
   </div>
 </div>
 <app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" (isConnectedToWallet)="walletConnectionSucceed($event)"></app-pop-up>
-<app-pop-up *ngIf="isPopUpOpenedSecond" (isClosed)="closePopUp($event)" [switcher]="true"></app-pop-up>
+<app-pop-up *ngIf="isPopUpOpenedSecond" (isClosed)="closePopUp($event)" [switcher]="true" (isSwitched)="switched($event)"></app-pop-up>

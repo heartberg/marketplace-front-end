@@ -25,7 +25,7 @@ export class DropDownSelectorComponent implements OnInit {
   @Input() public hasTitle: string  = '';
   @Input() public  widthPX: string = ''
   @Output() dropDownValue = new EventEmitter<string>();
-  @Output() switcherEmit = new EventEmitter<string>();
+  @Output() switcherEmit = new EventEmitter<any>();
   public isDropDownOpened = false;
   public isDropDownOpenedCounter = 1;
   public showDropDownSelected: string = '';
@@ -45,7 +45,8 @@ export class DropDownSelectorComponent implements OnInit {
     }
   }
 
-  selectValue(value: string) {
+  selectValue(value: any, i: any) {
+    this.switcherEmit.emit({value, i})
     this.isDropDownOpenedCounter +=1;
     this.showDropDownSelected = value
     this.isDropDownOpened = false;
@@ -53,20 +54,16 @@ export class DropDownSelectorComponent implements OnInit {
   }
 
   returnAddress(acc: any) {
-    console.log(acc);
     let finalAcc;
     if (localStorage.getItem('wallet')) {
       acc = localStorage.getItem('wallet')!;
       finalAcc = acc;
-      console.log(finalAcc,
-        '22222222222')
     }
     let start: string = '';
     let last: string = ''
     start = finalAcc.substring(0,3);
     last = finalAcc.substring(acc.length, acc.length - 3);
     let final = start + '...' + last;
-    console.log(final);
     return final
   }
 }

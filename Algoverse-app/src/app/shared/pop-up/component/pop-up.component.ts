@@ -11,6 +11,7 @@ export class PopUpComponent implements OnInit {
   @Output() isConnectedToWallet = new EventEmitter<boolean>();
   @Output() isClosed = new EventEmitter<boolean>();
   @Input() switcher = false;
+  @Output() isSwitched = new EventEmitter<boolean>();
   walletsForSwitching: any = '';
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -55,6 +56,7 @@ export class PopUpComponent implements OnInit {
     localStorage.removeItem('wallet');
     localStorage.setItem('walletIndex', JSON.stringify(i));
     this.setelectWalletConnect('MyAlgoWallet');
+    this.isSwitched.emit(false)
   }
 
   getValueFromDropDown($event: any) {

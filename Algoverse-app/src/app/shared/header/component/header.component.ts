@@ -98,4 +98,8 @@ export class HeaderComponent implements OnInit {
   logOut() {
     this._walletsConnectService.disconnect();
   }
+
+  switched(event: any) {
+    this.isPopUpOpenedSecond = event;
+  }
 }
