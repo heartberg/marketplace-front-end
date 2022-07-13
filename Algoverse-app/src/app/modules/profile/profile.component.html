@@ -111,41 +111,36 @@
                   </mat-tab>
                   <mat-tab label="For Sale">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
-                        <app-card *ngIf="!last"></app-card>
-                        <app-swap-card *ngIf="last"></app-swap-card>
+                      <div class="col-4" *ngFor="let item of forSale; let i = index; last as last">
+                        <app-trade-grid-item [routerLink]="'/trade/' + item['tradeId']" [mItem]="item"></app-trade-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="For Auction">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
-                        <app-card *ngIf="!last"></app-card>
-                        <app-swap-card *ngIf="last"></app-swap-card>
+                      <div class="col-4" *ngFor="let item of forAuction; let i = index; last as last">
+                        <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="For Swap">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
-                        <app-card *ngIf="!last"></app-card>
-                        <app-swap-card *ngIf="last"></app-swap-card>
+                      <div class="col-4" *ngFor="let item of forSwap; let i = index; last as last">
+                        <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="My Bids">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
-                        <app-card *ngIf="!last"></app-card>
-                        <app-swap-card *ngIf="last"></app-swap-card>
+                      <div class="col-4" *ngFor="let item of myBids; let i = index; last as last">
+                        <app-bid-grid-item [routerLink]="'/bid/' + item['bidId']" [mItem]="item"></app-bid-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="My Auction Bids">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
-                        <app-card *ngIf="!last"></app-card>
-                        <app-swap-card *ngIf="last"></app-swap-card>
+                      <div class="col-4" *ngFor="let item of myAuctionBids; let i = index; last as last">
+                        <app-card></app-card>
                       </div>
                     </div>
                   </mat-tab>

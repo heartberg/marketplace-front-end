@@ -47,6 +47,34 @@ export class ProfileComponent implements OnInit {
           this.userService
         }
       )
+
+      this.userService.loadTrades(addr).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.forSale = res
+        }
+      )
+
+      this.userService.loadSwaps(addr).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.forSwap = res
+        }
+      )
+
+      this.userService.loadAuctions(addr).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.forAuction = res
+        }
+      )
+
+      this.userService.loadBids(addr).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.myBids = res
+        }
+      )
     }
   }
 
