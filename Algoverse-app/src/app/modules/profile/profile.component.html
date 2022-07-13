@@ -119,7 +119,20 @@
                       </div>
                     </div>
                   </mat-tab>
-                  <mat-tab label="Swap Requests"> Swap Requests </mat-tab>
+                  <mat-tab label="Swap Requests">
+                    <div class="">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="">
+                            <app-drop-down-selector [dropDownValues]="['']" class="dropDownSection" [tree]="true" [hasTitle]="'Asset: AssetName (ASAID: 000)'" [isProfileSection]="true" [profileSectionInfo]="profileTitle" [profileSectionImg]="profileImg" ></app-drop-down-selector>
+                          </div>
+                          <div class="dropDownSection">
+                            <app-drop-down-selector [dropDownValues]="['']" class="dropDownSection" [tree]="true" [hasTitle]="'Asset: AssetName (ASAID: 000)'" [isProfileSection]="true" [profileSectionInfo]="profileTitle" [profileSectionImg]="profileImg"></app-drop-down-selector>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
                   <mat-tab label="Starred"> Starred </mat-tab>
                 </mat-tab-group>
               </div>
@@ -128,21 +141,8 @@
         </div>
       </div>
     </div>
-    <div class="wrapper-bottom">
-      <h3>Swap Requests</h3>
-      <div class="wrapper-border">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="">
-              <app-drop-down-selector [dropDownValues]="['']" class="dropDownSection" [tree]="true" [hasTitle]="'Asset: AssetName (ASAID: 000)'" [isProfileSection]="true" [profileSectionInfo]="profileTitle" [profileSectionImg]="profileImg" ></app-drop-down-selector>
-            </div>
-            <div class="dropDownSection">
-              <app-drop-down-selector [dropDownValues]="['']" class="dropDownSection" [tree]="true" [hasTitle]="'Asset: AssetName (ASAID: 000)'" [isProfileSection]="true" [profileSectionInfo]="profileTitle" [profileSectionImg]="profileImg"></app-drop-down-selector>
-            </div>
-          </div>
-          <div class="col-md-4 d-none-respo"></div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="wrapper-bottom">-->
+<!--      <h3>Swap Requests</h3>-->
+<!--    </div>-->
   </div>
 </div>
