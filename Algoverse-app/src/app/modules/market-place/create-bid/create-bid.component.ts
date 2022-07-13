@@ -95,12 +95,12 @@ export class CreateBidComponent implements OnInit {
   }
 
   blurAmountEvent(event: any){
-    this.amount = event.target.value;
+    this.amount = (parseFloat(event.target.value) * Math.pow(10, this.mSelectedAsset.params.decimals)).toFixed(0);
     console.log(this.amount);
   }
 
   blurAlgoEvent(event: any) {
-    this.price = event.target.value;
+    this.price = (parseFloat(event.target.value) * Math.pow(10, 6)).toFixed(0);
     console.log(this.price);
   }
 

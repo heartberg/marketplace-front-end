@@ -115,17 +115,17 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   blurPriceEvent(event: any) {
-    this.price = event.target.value;
+    this.price = Math.floor(event.target.value * Math.pow(10, 6));
     console.log(this.price);
   }
 
   blurAssetAmountEvent(event: any) {
-    this.assetAmount = event.target.value;
+    this.assetAmount = Math.floor(parseFloat(event.target.value) * Math.pow(10, this.selectedAsset.params.decimals));
     console.log(this.assetAmount);
   }
 
   blurMinimumIncrementEvent(event: any) {
-    this.minimumIncrement = event.target.value;
+    this.minimumIncrement = Math.floor(event.target.value * Math.pow(10, 6));
     console.log(this.minimumIncrement);
   }
 
@@ -288,7 +288,8 @@ export class CreateAuctionComponent implements OnInit {
         creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
         startTime: this.startTime,
         closingTime: this.endTime,
-        minimumIncrement: this.minimumIncrement
+        minimumBid: this.minimumIncrement,
+        minimumPrice: this.price
       }
       console.log('params', params)
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StateService } from 'src/app/services/state.service';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 
@@ -25,7 +26,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private connectService: WalletsConnectService
+    private connectService: WalletsConnectService,
+    private _stateService: StateService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class ProfileComponent implements OnInit {
           this.userService.loadCollections(addr).subscribe(
             (collections: any) => {
               this.userCollections = collections
+              this._stateService.collections = res;
             }
           )
           this.userService

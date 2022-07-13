@@ -122,8 +122,8 @@ export class CreateSwapComponent implements OnInit {
     console.log(this.royalty);
   }
 
-  blurAmountEvent(event: any) {
-    this.amount = event.target.value;
+  blurAmountOfferEvent(event: any) {
+    this.amount = (parseFloat(event.target.value) * Math.pow(10, this.offeringAsset.params.decimals)).toFixed(0);
     console.log(this.amount);
   }
 
@@ -162,7 +162,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   blurAcceptAmountEvent(event: any) {
-    this.acceptAmount = event.target.value;
+    this.acceptAmount = (parseFloat(event.target.value) * Math.pow(10, this.accetingAsset.params.decimals)).toFixed(0);
     console.log(this.acceptAmount);
   }
 

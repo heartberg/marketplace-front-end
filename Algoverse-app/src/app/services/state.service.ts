@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class StateService {
 
-  public passingData: any = {}
+  public passingData: any = null
   public collections: Array<any> = []
 
   constructor() {}

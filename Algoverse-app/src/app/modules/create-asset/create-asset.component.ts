@@ -52,15 +52,30 @@ export class CreateAssetComponent implements OnInit {
     this.passedCollection = this._stateService.passingData;
     this.passedCollectionName = this.passedCollection?this.passedCollection.name:'';
 
-    if (this._stateService.collections.length > 0) {
-      if (!this.passedCollection) {
-        this.passedCollectionName = this._stateService.collections[0].name;
-      }
+    console.log(this.passedCollection)
 
-      for (let item of this._stateService.collections) {
-        this.collections.push(item.name);
+    this._userService.loadCollections(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+      (collections: any) => {
+        this._stateService.collections = collections
+        collections.forEach((col: any) => {
+          this.collections.push(col.name)
+        })
+        console.log(collections)
+        if (this.collections.length > 0) {
+          console.log("hit1")
+          if (!this.passedCollection) {
+            console.log("hit2")
+            this.passedCollectionName = this.collections[0];
+            this.selectedCollection(this.passedCollectionName)
+            console.log(this.passedCollection)
+          }
+        }
       }
-    }
+    )
+    
+      // for (let item of this._stateService.collections) {
+      //   this.collections.push(item.name);
+      // }
 
     const asd = new Uint8Array([77, 174, 24, 184, 124, 209, 85, 243, 77, 235, 109, 183, 108, 40, 0, 128, 37, 182, 20, 242, 65, 232, 91, 122, 47, 178, 56, 179,96,255,95,206])
     const hex = Buffer.from(asd).toString('hex');
