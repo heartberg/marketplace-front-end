@@ -20,6 +20,7 @@ export class CreateTradeComponent implements OnInit {
   public assetIDs: string[] = [];
   public maxSupply = 0;
   public selectedAssetDescription = "";
+  public chosenAsset: any;
 
   public metadata: any = {};
   public metadataProperties: any = {};
@@ -73,21 +74,21 @@ export class CreateTradeComponent implements OnInit {
     this.selectedAssetID = +assetID;
     this.setMaxSupply(+assetID);
 
-    const asset = this.getAsset(assetID);
-    console.log('asset', asset);
+    this.chosenAsset = this.getAsset(assetID);
+    console.log('asset', this.chosenAsset);
 
-    if (asset.params.url) {
+    if (this.chosenAsset.params.url) {
       this.spinner.show();
-      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
-        this.metadata = await this.httpClient.get(asset.params.url).toPromise();
+      if (this.chosenAsset.params.url.includes('https://') || this.chosenAsset.params.url.includes('http://')) {
+        this.metadata = await this.httpClient.get(this.chosenAsset.params.url).toPromise();
       } else {
-        this.metadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
+        this.metadata = await this.httpClient.get('https://' + this.chosenAsset.params.url).toPromise();
       }
       this.spinner.hide();
     }
     console.log('metadata', this.metadata);
 
-    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${this.chosenAsset.params.name} \nUnitName: ${this.chosenAsset.params['unit-name']}`;
 
     let properties: any = {};
     if (this.metadata.properties) {
@@ -116,12 +117,12 @@ export class CreateTradeComponent implements OnInit {
   }
 
   blurAmountEvent(event: any) {
-    this.amount = event.target.value;
+    this.amount = (parseFloat(event.target.value) * Math.pow(10, this.chosenAsset.params.decimals)).toFixed(0);
     console.log(this.amount);
   }
 
   blurPriceEvent(event: any) {
-    this.price = event.target.value;
+    this.price = (parseFloat(event.target.value) * Math.pow(10, 6)).toFixed(0);
     console.log(this.price);
   }
 
@@ -131,7 +132,7 @@ export class CreateTradeComponent implements OnInit {
       return;
     }
     if (+this.price < 1000) {
-      alert('Please input price at least 1000');
+      alert('Please input price at least 0.001');
       return;
     }
     if (!this.amount) {
@@ -139,7 +140,7 @@ export class CreateTradeComponent implements OnInit {
       return;
     }
     if (+this.amount > this.maxSupply) {
-      alert('Please input amount at least 1000');
+      alert('Please input amount smaller then max supply');
       return;
     }
     if (!this.royalty) {

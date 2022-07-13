@@ -57,6 +57,10 @@
             <input type="text" placeholder="1" class="input-costum" (blur)="blurSupplyEvent($event)">
           </div>
           <div class="price wrapper-border">
+            <h4 class="priceheader">Decimal</h4>
+            <input type="text" placeholder="0" class="input-costum" (blur)="blurDecimalsEvent($event)">
+          </div>
+          <div class="price wrapper-border">
             <h4 class="priceheader">Properties</h4>
             <div class="row">
               <ng-container *ngFor="let section of pushedItems">

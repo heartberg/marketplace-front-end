@@ -102,9 +102,9 @@ export class WalletsConnectService {
 
       const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
         from: this.sessionWallet!.getDefaultAccount(),
-        decimals: 0,
+        decimals: Number(params.decimals),
         defaultFrozen: false,
-        total: Number(params.supply),
+        total: Number(params.supply) * Math.pow(10, Number(params.decimals)),
         assetName: params.name,
         unitName: params.unitName,
         assetURL: params.assetURL,

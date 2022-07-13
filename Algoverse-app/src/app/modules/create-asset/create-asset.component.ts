@@ -31,6 +31,7 @@ export class CreateAssetComponent implements OnInit {
   public supply: string = "0";
   public fileUrl: string = "";
   public coverUrl: string = "";
+  public decimals: string = "0";
 
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
@@ -115,6 +116,11 @@ export class CreateAssetComponent implements OnInit {
     console.log(this.supply);
   }
 
+  blurDecimalsEvent(event: any) {
+    this.decimals = event.target.value;
+    console.log(this.decimals)
+  }
+
   async onFileInput(e: any) {
     console.log('e', e.target.files[0]);
     this.fileUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
@@ -195,7 +201,8 @@ export class CreateAssetComponent implements OnInit {
       supply: this.supply,
       assetURL: ipfsUrl.includes('https://')?ipfsUrl.substring(8):ipfsUrl,
       hash,
-      image: this.coverUrl
+      image: this.coverUrl,
+      decimals: this.decimals
     }
     console.log('params', params);
     const assetId = await this._walletsConnectService.createAsset(params);
