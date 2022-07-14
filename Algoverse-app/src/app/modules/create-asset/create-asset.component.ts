@@ -99,6 +99,8 @@ export class CreateAssetComponent implements OnInit {
 
   selectedCollection(collectionName: string) {
     this.passedCollection = this._stateService.getCollectionByName(collectionName);
+    delete this.passedCollection.stars
+    delete this.passedCollection.volume
   }
 
   blurNameEvent(event: any) {
@@ -190,21 +192,22 @@ export class CreateAssetComponent implements OnInit {
     delete this.passedCollection.creator;
     const metadata = {
       name: this.name,
-      unitName: this.unitName,
       description: this.description,
-      royalty: this.royalty,
-      external_link: this.externalLink,
-      supply: this.supply,
-      collection: this.passedCollection,
-      file: this.fileUrl,
-      image: this.coverUrl,
+      image: this.fileUrl,
+      external_url: this.externalLink,
       properties: {
-        width: 5,
-        height: 3
+        collection: this.passedCollection,
+        royalty: this.royalty,
+        attributes: {
+          height: 3,
+          length: 2
+        }
       }
     }
     const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
+    let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
     console.log('ipfsUrl', ipfsUrl);
+    console.log(assetUrl)
 
     const hash2 = sha256.sha256.hmac.update('arc0003/amj', JSON.stringify(metadata));
     const hash = new Uint8Array(hash2.digest());
@@ -214,7 +217,7 @@ export class CreateAssetComponent implements OnInit {
       name: this.name,
       unitName: this.unitName,
       supply: this.supply,
-      assetURL: ipfsUrl.includes('https://')?ipfsUrl.substring(8):ipfsUrl,
+      assetURL: assetUrl,
       hash,
       image: this.coverUrl,
       decimals: this.decimals

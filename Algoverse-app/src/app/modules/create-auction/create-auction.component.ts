@@ -5,6 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { getBalance, getUUID } from 'src/app/services/utils.algod';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-auction',
@@ -29,6 +30,7 @@ export class CreateAuctionComponent implements OnInit {
   public endTime = "";
 
   public royalty: string = "0";
+  metadataAttributes: any;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -60,7 +62,7 @@ export class CreateAuctionComponent implements OnInit {
       asset_ids.push(asset.index);
     }
     this.assetIDs = asset_ids;
-
+    this.spinner.hide()
     const firstAsset = this.assets[0];
     this.setMaxSupply(firstAsset.index);
     this.onSelectedAsset(firstAsset.index);
@@ -69,33 +71,50 @@ export class CreateAuctionComponent implements OnInit {
   async onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
 
-    this.spinner.show();
     this.setMaxSupply(+assetID);
-
+    this.spinner.show()
     const asset = this.getAsset(assetID);
     this.selectedAsset = asset;
     console.log(asset);
 
     if (asset.params.url) {
-      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
-        this.metadata = await this.httpClient.get(asset.params.url).toPromise();
-      } else {
-        this.metadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
-      }
+      await this.getMetadata(asset.params.url)
+    } else {
+      this.metadata = {}
     }
     console.log('metadata', this.metadata);
-    this.spinner.hide();
+    this.spinner.hide()
+    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : '';
 
-    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+  }
+
+  async getMetadata(ipfsUrl: string) {
+    console.log(ipfsUrl)
+    if (ipfsUrl.startsWith('ipfs://')) {
+      let url = environment.ipfs_base + this.selectedAsset.params.url.split("/")[this.selectedAsset.params.url.split("/").length - 1]
+      this.metadata = await this.httpClient.get(url).toPromise();
+    } else if(this.selectedAsset.params.url.includes('https://')){
+      this.metadata = await this.httpClient.get(this.selectedAsset.params.url).toPromise();
+    } else {
+      this.metadata = await this.httpClient.get('https://' + this.selectedAsset.params.url).toPromise();
+    }
 
     let properties: any = {};
+    let attributes: any = {};
     if (this.metadata.properties) {
       for (const [key, value] of Object.entries(this.metadata.properties)) {
-        if (typeof value === 'string' || value instanceof String)
-          properties[key] = value;
-      }
+        if(key === 'attributes') {
+          for (const [a_key, a_value] of Object.entries(value as Object)) {
+            attributes[a_key] = a_value
+          }
+        } else {
+          properties[key] = value
+        }
+      } 
     }
+    properties['attributes'] = attributes
     this.metadataProperties = properties;
+    this.metadataAttributes = attributes;
   }
 
   async setMaxSupply(assetID: number) {

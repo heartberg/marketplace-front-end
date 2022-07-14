@@ -28,6 +28,8 @@ export class CreateTradeComponent implements OnInit {
   public royalty: string = "0";
   public amount: string = "0";
   public price: string = "0";
+  public metadataAttributes: any = {};
+  public selectedAssetName: string = "";
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -78,26 +80,43 @@ export class CreateTradeComponent implements OnInit {
     console.log('asset', this.chosenAsset);
 
     if (this.chosenAsset.params.url) {
-      this.spinner.show();
-      if (this.chosenAsset.params.url.includes('https://') || this.chosenAsset.params.url.includes('http://')) {
-        this.metadata = await this.httpClient.get(this.chosenAsset.params.url).toPromise();
-      } else {
-        this.metadata = await this.httpClient.get('https://' + this.chosenAsset.params.url).toPromise();
-      }
-      this.spinner.hide();
+      await this.getMetadata(this.chosenAsset.params.url)
     }
     console.log('metadata', this.metadata);
 
-    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${this.chosenAsset.params.name} \nUnitName: ${this.chosenAsset.params['unit-name']}`;
+    this.selectedAssetDescription = this.metadata.description ? this.metadata.description : "";
 
+    this.selectedAssetName = this.chosenAsset.params.name
+  }
+
+  async getMetadata(ipfsUrl: string) {
+    this.spinner.show();
+    if (ipfsUrl.includes('ipfs://')) {
+      let url = environment.ipfs_base + this.chosenAsset.params.url.split("/")[this.chosenAsset.params.url.split("/").length - 1]
+      this.metadata = await this.httpClient.get(url).toPromise();
+    } else if(this.chosenAsset.params.url.includes('https://')){
+      this.metadata = await this.httpClient.get(this.chosenAsset.params.url).toPromise();
+    } else {
+      this.metadata = await this.httpClient.get('https://' + this.chosenAsset.params.url).toPromise();
+    }
+
+    this.spinner.hide();
     let properties: any = {};
+    let attributes: any = {};
     if (this.metadata.properties) {
       for (const [key, value] of Object.entries(this.metadata.properties)) {
-        if (typeof value === 'string' || value instanceof String)
-          properties[key] = value;
-      }
+        if(key === 'attributes') {
+          for (const [a_key, a_value] of Object.entries(value as Object)) {
+            attributes[a_key] = a_value
+          }
+        } else {
+          properties[key] = value
+        }
+      } 
     }
+    properties['attributes'] = attributes
     this.metadataProperties = properties;
+    this.metadataAttributes = attributes;
   }
 
   async setMaxSupply(assetID: number) {

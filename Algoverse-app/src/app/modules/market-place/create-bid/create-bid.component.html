@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <div class="inside wrapper-border">
           <div class="header">
-            <h3>Create bid</h3>
+            <h3>Create Bid</h3>
           </div>
           <div class="price wrapper-border">
             <div class="row d-flex align-items-center" style="width: 100%">
@@ -28,6 +28,7 @@
               <div class="col-md-7">
                 <input type="text" placeholder="Enter asset id to accept" class="input-costum" [formControl]="searchAssetControl">
               </div>
+                <h4>Name: {{mSelectedAsset?mSelectedAsset.params? mSelectedAsset.params.name : '' : ''}}</h4>
             </div>
           </div>
           <div class="createoffer wrapper-border">
@@ -47,7 +48,7 @@
                   <h4>Royalties</h4>
                 </div>
                 <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" name="royalty" placeholder="10" (blur)="blurRoyaltyEvent($event)">
+                  <input type="text" class="input-costum" name="royalty" disabled value="{{this.metadataProperties?.royalty ? this.metadataProperties.royalty : '-'}}">
                 </div>
               </div>
             </div>

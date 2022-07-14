@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <div class="inside wrapper-border">
           <div class="header">
-            <h3>Create sale</h3>
+            <h3>Create Sale</h3>
           </div>
           <div class="dropdownborder wrapper-border">
             <h4>Assets</h4>
@@ -16,6 +16,7 @@
               <div class="AssetsList">
                 <app-drop-down-selector [dropDownValues]="assetIDs" (dropDownValue)="selectedAsset($event)"></app-drop-down-selector>
               </div>
+              <h4>Name: {{selectedAssetName}}</h4>
             </div>
           </div>
           <div class="metaheader">
@@ -45,7 +46,7 @@
                   <h4>Royalties</h4>
                 </div>
                 <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" name="royalty" placeholder="10" (blur)="blurRoyaltyEvent($event)">
+                  <input type="text" class="input-costum" name="royalty" value="{{this.metadataProperties.royalty? this.metadataProperties.royalty : '-'}}" disabled>
                 </div>
               </div>
             </div>
@@ -57,14 +58,15 @@
                   <h4>Collection</h4>
                 </div>
                 <div class="col-md-7 restyle-col-bottom">
-                  <span class="color-violet">{{metadata.collection?metadata.collection.name?metadata.collection.name:'':''}}</span>
+                  <!-- <img src="{{metadata.properties?.collection?.icon}}" alt="" style="width: 50px; height: 50%"> -->
+                  <span class="color-violet">{{metadata.properties?.collection?metadata.properties.collection.name?metadata.properties.collection.name:'':''}}</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="propertiesborder wrapper-border">
             <h4 class="properties">Properties</h4>
-            <div *ngFor="let property of metadataProperties | keyvalue">
+            <div *ngFor="let property of metadataAttributes | keyvalue">
               <div class="row ml-1" style="width: 100%;">
                 <div class="col-md-5 restyle-col-bottom">
                   <h4>{{property.key}}</h4>

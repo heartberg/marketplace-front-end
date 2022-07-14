@@ -19,7 +19,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class CreateBidComponent implements OnInit {
 
   private selectedAssetID = 0;
-  private mSelectedAsset: any = null;
+  public mSelectedAsset: any = null;
   public selectedAssetDescription = "";
 
   public metadata: any = {};
@@ -30,6 +30,7 @@ export class CreateBidComponent implements OnInit {
   public price: string = "0";
 
   searchAssetControl: FormControl;
+  metadataAttributes: any;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -68,25 +69,43 @@ export class CreateBidComponent implements OnInit {
     this.mSelectedAsset = asset;
 
     if (asset.params.url) {
-      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
-        this.metadata = await this.httpClient.get(asset.params.url).toPromise();
-      } else {
-        this.metadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
-      }
+      await this.getMetadata(asset.params.url)
     }
     console.log('metadata', this.metadata);
     this.spinner.hide();
 
     this.selectedAssetDescription = this.metadata.description ? this.metadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
 
+  }
+
+  async getMetadata(ipfsUrl: string) {
+    this.spinner.show();
+    if (ipfsUrl.includes('ipfs://')) {
+      let url = environment.ipfs_base + this.mSelectedAsset.params.url.split("/")[this.mSelectedAsset.params.url.split("/").length - 1]
+      this.metadata = await this.httpClient.get(url).toPromise();
+    } else if(this.mSelectedAsset.params.url.includes('https://')){
+      this.metadata = await this.httpClient.get(this.mSelectedAsset.params.url).toPromise();
+    } else {
+      this.metadata = await this.httpClient.get('https://' + this.mSelectedAsset.params.url).toPromise();
+    }
+
+    this.spinner.hide();
     let properties: any = {};
+    let attributes: any = {};
     if (this.metadata.properties) {
       for (const [key, value] of Object.entries(this.metadata.properties)) {
-        if (typeof value === 'string' || value instanceof String)
-          properties[key] = value;
-      }
+        if(key === 'attributes') {
+          for (const [a_key, a_value] of Object.entries(value as Object)) {
+            attributes[a_key] = a_value
+          }
+        } else {
+          properties[key] = value
+        }
+      } 
     }
+    properties['attributes'] = attributes
     this.metadataProperties = properties;
+    this.metadataAttributes = attributes;
   }
 
   blurRoyaltyEvent(event: any){

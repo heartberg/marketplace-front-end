@@ -16,7 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class CreateSwapComponent implements OnInit {
 
   private offeringAssetId = 0;
-  private offeringAsset: any = null;
+  public offeringAsset: any = null;
   private assets: any[] = [];
   public assetIDs: string[] = [];
   public maxSupply = 1;
@@ -31,9 +31,11 @@ export class CreateSwapComponent implements OnInit {
   public royalty: string = "0";
   public amount: string = "0";
   public acceptingAssetId = 0;
-  private accetingAsset: any = null;
+  public acceptingAsset: any = null;
   public acceptAmount: string = "0";
   public collectionName: string = "";
+  acceptingMetadataAttributes: any;
+  offeringMetadataAttributes: any;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -85,25 +87,15 @@ export class CreateSwapComponent implements OnInit {
     this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), +assetID);
 
     if (asset.params.url) {
-      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
-        this.offerringMetadata = await this.httpClient.get(asset.params.url).toPromise();
-      } else {
-        this.offerringMetadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
-      }
+      await this.getMetadataOffer(asset.params.url)
+    } else {
+      this.offerringMetadata = {}
     }
     console.log('offerringMetadata', this.offerringMetadata);
     this.spinner.hide();
 
     this.selectedAssetDescription = this.offerringMetadata.description ? this.offerringMetadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
 
-    let properties: any = {};
-    if (this.offerringMetadata.properties) {
-      for (const [key, value] of Object.entries(this.offerringMetadata.properties)) {
-        if (typeof value === 'string' || value instanceof String)
-          properties[key] = value;
-      }
-    }
-    this.offerringMetadataProperties = properties;
   }
 
   async setMaxSupply(assetID: number) {
@@ -137,32 +129,82 @@ export class CreateSwapComponent implements OnInit {
       this.acceptingAssetId = 0;
       return;
     }
-    this.accetingAsset = asset;
+    this.acceptingAsset = asset;
 
     if (asset.params.url) {
-      if (asset.params.url.includes('https://') || asset.params.url.includes('http://')) {
-        this.acceptingMetadata = await this.httpClient.get(asset.params.url).toPromise();
-      } else {
-        this.acceptingMetadata = await this.httpClient.get('https://' + asset.params.url).toPromise();
-      }
+      await this.getMetadataAccepting(asset.params.url)
+    } else {
+      this.acceptingMetadata = {}
+      this.acceptingMetadataProperties = {}
     }
     console.log('acceptingMetadata', this.acceptingMetadata);
     this.spinner.hide();
 
     this.acceptingAssetDescription = this.acceptingMetadata.description ? this.acceptingMetadata.description : `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
+  }
 
+  async getMetadataAccepting(ipfsUrl: string) {
+    this.spinner.show();
+    if (ipfsUrl.includes('ipfs://')) {
+      let url = environment.ipfs_base + this.acceptingAsset.params.url.split("/")[this.acceptingAsset.params.url.split("/").length - 1]
+      this.acceptingMetadata = await this.httpClient.get(url).toPromise();
+    } else if(this.acceptingAsset.params.url.includes('https://')){
+      this.acceptingMetadata = await this.httpClient.get(this.acceptingAsset.params.url).toPromise();
+    } else {
+      this.acceptingMetadata = await this.httpClient.get('https://' + this.acceptingAsset.params.url).toPromise();
+    }
+
+    this.spinner.hide();
     let properties: any = {};
+    let attributes: any = {};
     if (this.acceptingMetadata.properties) {
       for (const [key, value] of Object.entries(this.acceptingMetadata.properties)) {
-        if (typeof value === 'string' || value instanceof String)
-          properties[key] = value;
-      }
+        if(key === 'attributes') {
+          for (const [a_key, a_value] of Object.entries(value as Object)) {
+            attributes[a_key] = a_value
+          }
+        } else {
+          properties[key] = value
+        }
+      } 
     }
+    properties['attributes'] = attributes
     this.acceptingMetadataProperties = properties;
+    this.acceptingMetadataAttributes = attributes;
+  }
+
+  async getMetadataOffer(ipfsUrl: string) {
+    this.spinner.show();
+    if (ipfsUrl.includes('ipfs://')) {
+      let url = environment.ipfs_base + this.offeringAsset.params.url.split("/")[this.offeringAsset.params.url.split("/").length - 1]
+      this.offerringMetadata = await this.httpClient.get(url).toPromise();
+    } else if(this.offeringAsset.params.url.includes('https://')){
+      this.offerringMetadata = await this.httpClient.get(this.offeringAsset.params.url).toPromise();
+    } else {
+      this.offerringMetadata = await this.httpClient.get('https://' + this.offeringAsset.params.url).toPromise();
+    }
+
+    this.spinner.hide();
+    let properties: any = {};
+    let attributes: any = {};
+    if (this.offerringMetadata.properties) {
+      for (const [key, value] of Object.entries(this.offerringMetadata.properties)) {
+        if(key === 'attributes') {
+          for (const [a_key, a_value] of Object.entries(value as Object)) {
+            attributes[a_key] = a_value
+          }
+        } else {
+          properties[key] = value
+        }
+      } 
+    }
+    properties['attributes'] = attributes
+    this.offerringMetadataProperties = properties;
+    this.offeringMetadataAttributes = attributes;
   }
 
   blurAcceptAmountEvent(event: any) {
-    this.acceptAmount = (parseFloat(event.target.value) * Math.pow(10, this.accetingAsset.params.decimals)).toFixed(0);
+    this.acceptAmount = (parseFloat(event.target.value) * Math.pow(10, this.acceptingAsset.params.decimals)).toFixed(0);
     console.log(this.acceptAmount);
   }
 
@@ -174,7 +216,7 @@ export class CreateSwapComponent implements OnInit {
       alert('Select valid offering asset');
       return;
     }
-    if (!this.accetingAsset) {
+    if (!this.acceptingAsset) {
       alert('Select valid acceting asset');
       return;
     }
@@ -304,16 +346,16 @@ export class CreateSwapComponent implements OnInit {
         acceptingAssetId: this.acceptingAssetId,
         acceptingAsset: {
           assetId: this.acceptingAssetId,
-          name: this.accetingAsset.params.name,
-          unitName: this.accetingAsset.params['unit-name'],
-          supply: this.accetingAsset.params.total,
-          assetURL: this.accetingAsset.params.url ? this.accetingAsset.params.url : '',
-          creatorWallet: this.accetingAsset.params.creator,
-          freezeAddress: this.accetingAsset.params.freeze ? this.accetingAsset.params.freeze : '',
-          managerAddress: this.accetingAsset.params.manager ? this.accetingAsset.params.manager : '',
-          clawbackAddress: this.accetingAsset.params.clawback ? this.accetingAsset.params.clawback : '',
-          reserveAddress: this.accetingAsset.params.reserve ? this.accetingAsset.params.reserve : '',
-          metadata: this.accetingAsset.params['metadata-hash'] ? this.accetingAsset.params['metadata-hash'] : '',
+          name: this.acceptingAsset.params.name,
+          unitName: this.acceptingAsset.params['unit-name'],
+          supply: this.acceptingAsset.params.total,
+          assetURL: this.acceptingAsset.params.url ? this.acceptingAsset.params.url : '',
+          creatorWallet: this.acceptingAsset.params.creator,
+          freezeAddress: this.acceptingAsset.params.freeze ? this.acceptingAsset.params.freeze : '',
+          managerAddress: this.acceptingAsset.params.manager ? this.acceptingAsset.params.manager : '',
+          clawbackAddress: this.acceptingAsset.params.clawback ? this.acceptingAsset.params.clawback : '',
+          reserveAddress: this.acceptingAsset.params.reserve ? this.acceptingAsset.params.reserve : '',
+          metadata: this.acceptingAsset.params['metadata-hash'] ? this.acceptingAsset.params['metadata-hash'] : '',
           externalLink: this.acceptingMetadata.external_link ? this.acceptingMetadata.external_link : '',
           description: this.acceptingMetadata.description ? this.acceptingMetadata.description : '',
 
