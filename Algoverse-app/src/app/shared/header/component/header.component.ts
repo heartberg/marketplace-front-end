@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
 
   public isLoggedIn: boolean = false;
 
+  public isPopUpOpenedSecond: boolean = false;
   @Output() themeWasChanged = new EventEmitter<boolean>();
 
   constructor(
@@ -33,9 +34,17 @@ export class HeaderComponent implements OnInit {
     if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
       this.isLoggedIn = true;
     }
+    if (localStorage.getItem('wallet')) {
+      this.walletConnectionPassed = true;
+    }
   }
 
   openAvatar() {
+    if (this.isProfileOpened) {
+      localStorage.setItem('opened', JSON.stringify(true))
+    } else {
+      localStorage.setItem('opened', JSON.stringify(false))
+    }
     if (!this.isMenuRespoOpened) {
       this.isProfileOpened = !this.isProfileOpened;
     } else {
@@ -57,6 +66,7 @@ export class HeaderComponent implements OnInit {
 
   closePopUp(event: boolean) {
     this.isPopUpOpened = event;
+    this.isPopUpOpenedSecond = event;
   }
 
   showMenuRespo() {
@@ -84,5 +94,17 @@ export class HeaderComponent implements OnInit {
   closeSearchRespo() {
     this.SearchRespoOpened = false;
     console.log('sa')
+  }
+
+  switcher() {
+    this.isPopUpOpenedSecond = true;
+  }
+
+  logOut() {
+    this._walletsConnectService.disconnect();
+  }
+
+  switched(event: any) {
+    this.isPopUpOpenedSecond = event;
   }
 }
