@@ -41,25 +41,13 @@
       <h3>Featured Artists</h3>
     </div>
     <div class="boxes d-unset">
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
+      <div class="scrolls">
+        <div class="box" *ngFor="let item of featuredArtists">
+          <div class="mitem">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+            <span>Vincet Van Gogh</span>
+          </div>
+        </div>
       </div>
       <div class="respo-show">
         <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>
@@ -70,25 +58,24 @@
   <div class="pre-last-section third-section second-section wrapper-border">
     <div class="title">
       <h3 class="title_hot">Hot</h3>
-      <app-drop-down-selector [dropDownValues]="hotDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+      <app-drop-down-selector [dropDownValues]="hotDropDown" [isNotAccordion]="false" (dropDownValue)="selectedType($event)"></app-drop-down-selector>
       <h3 class="title_in">In</h3>
-      <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+      <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false" (dropDownValue)="selectedLastDuration($event)"></app-drop-down-selector>
     </div>
-    <div class="boxes">
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
+    <div class="scrolls">
+      <div class="box" *ngFor="let item of hotItems">
+        <div class="mitem" *ngIf="item['isCollection']">
+          <img src="{{item['featuredImage']}}" alt="">
+          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        </div>
+        <div class="mitem" *ngIf="item['isAsset']">
+          <img src="{{item['file']}}" alt="">
+          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        </div>
+        <div class="mitem" *ngIf="item['isUser']">
+          <img src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt="">
+          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        </div>
       </div>
     </div>
   </div>
