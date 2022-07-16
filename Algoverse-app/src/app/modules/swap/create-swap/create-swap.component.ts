@@ -285,7 +285,7 @@ export class CreateSwapComponent implements OnInit {
     if (txID) {
       const offerringCollectionId = this.offerringMetadata.collectionId ? this.offerringMetadata.collectionId : getUUID();
       let offerringAssetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.offerringMetadataProperties)) {
+      for (const [key, value] of Object.entries(this.offeringMetadataAttributes)) {
         offerringAssetProperties.push({
           name: key,
           value: value
@@ -294,10 +294,10 @@ export class CreateSwapComponent implements OnInit {
 
       const acceptingCollectionId = this.acceptingMetadata.collectionId ? this.acceptingMetadata.collectionId : getUUID();
       let acceptingAssetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.offerringMetadataProperties)) {
+      for (const [key, value] of Object.entries(this.acceptingMetadataAttributes)) {
         acceptingAssetProperties.push({
           name: key,
-          value: value
+          value: value + ''
         })
       }
 

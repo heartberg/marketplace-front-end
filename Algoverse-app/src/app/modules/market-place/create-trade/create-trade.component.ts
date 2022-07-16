@@ -229,10 +229,10 @@ export class CreateTradeComponent implements OnInit {
       const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
 
       let assetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.metadataProperties)) {
+      for (const [key, value] of Object.entries(this.metadataAttributes)) {
         assetProperties.push({
           name: key,
-          value: value
+          value: value + ''
         })
       }
 
