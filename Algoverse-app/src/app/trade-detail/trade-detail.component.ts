@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { getAlgodClient, getBalance, isOptinAsset } from 'src/app/services/utils.algod';
 import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
+import {Asset} from "algosdk/dist/types/src/client/v2/algod/models/types";
+import {AssetService} from "../services/asset.service";
 
 @Component({
   selector: 'app-trade-detail',
@@ -27,11 +29,15 @@ export class TradeDetailComponent implements OnInit {
   public amount: string = "0";
   public price: string = "0";
 
+  public index: number = 111;
+  public indexSecond: number = 111;
+  isPopUpOpened: boolean = false;
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    private _assetService: AssetService
   ) {
   }
 
@@ -43,7 +49,7 @@ export class TradeDetailComponent implements OnInit {
       return;
     }
 
-    this._userService.loadTradeItem(tradeIdFromRoute).subscribe(
+    this._assetService.getAssetDetail(99478609).subscribe(
       res => {
         console.log('res', res);
         this.mTrade = res;
@@ -142,4 +148,31 @@ export class TradeDetailComponent implements OnInit {
     this.router.navigateByUrl("/items");
   }
 
+  select(item: any, i: any) {
+    const index = i;
+    if (this.index === index) {
+      this.index = 111;
+    } else {
+      this.index = index;
+    }
+
+  }
+  selectSecond(item: any, i: any) {
+    const index = i;
+    if (this.indexSecond === index) {
+      this.indexSecond = 111;
+    } else {
+      this.indexSecond = index;
+    }
+
+  }
+
+  selectBtn() {
+    this.isPopUpOpened = true;
+  }
+
+  closePopUp($event: boolean) {
+    this.isPopUpOpened = $event;
+
+  }
 }

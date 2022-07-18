@@ -7,7 +7,56 @@
     height: 35px;
   }
 }
+.last {
+  margin-bottom: 10px;
+}
+.card-info {
+  .section {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    button {
+      margin-left: 8px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    h4 {
+      color: #81007F;
+      margin-right: 5px;
+    }
+  }
+}
+.bid {
+  justify-content: flex-end;
+  align-items: center !important;
+  padding: 15px;
+  .show-info {
+    .first{
+      margin-right: 5px;
+    }
+    margin-left: 10px;
+    .show {
+      display: flex;
+    }
+  }
+}
+.top-info {
+  display: flex;
+  align-items: center;
+}
+.img {
+  .section {
+    display: flex;
+    justify-content: center;
 
+    img {
+      width: 250px;
+      height: 250px;
+    }
+  }
+}
 .header{
   margin-bottom: 15px;
   margin-left: 5px;
@@ -202,4 +251,12 @@ input[type=date] {
       margin-top: 10px;
     }
   }
+}
+.scroll {
+  height: 160px;
+  overflow-y: scroll;
+}
+.selected {
+  transform: scale(1.003);
+  border: 1px solid rgba(129, 0, 127, 0.4) !important;
 }
