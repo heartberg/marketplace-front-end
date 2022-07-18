@@ -12,7 +12,9 @@ export class PopUpComponent implements OnInit {
   @Output() isClosed = new EventEmitter<boolean>();
   @Input() switcher = false;
   @Output() isSwitched = new EventEmitter<boolean>();
+  @Input() selected = false;
   walletsForSwitching: any = '';
+
   constructor(
     private _walletsConnectService: WalletsConnectService,
   ) { }
@@ -63,5 +65,9 @@ export class PopUpComponent implements OnInit {
     let index = +$event.i - 1;
     this.switchAcc(+index);
     console.log($event)
+  }
+
+  cancel() {
+    this.isClosed.emit(false);
   }
 }

@@ -3,7 +3,7 @@
     <button class="btn-default btn-default close" (click)="closePopUp(false)">
       <i class="fa fa-close"></i>
     </button>
-    <ng-container *ngIf="!switcher">
+    <ng-container *ngIf="!switcher && !selected">
       <div class="top-side">
         <div class="title">
           <h3>Connect your Wallet</h3>
@@ -39,6 +39,20 @@
           [isSwitcher]="true"
         >
         </app-drop-down-selector>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="selected">
+        <div class="d-flex align-baseline">
+          <input type="text" class="input-costum">
+          <span class="color-violet" style="line-height: 57px;"> Algo</span>
+        </div>
+      <div class="btns d-flex justify-content-between">
+        <button class="btn-primary-costum" (click)="cancel()">
+          Cancel
+        </button>
+        <button class="btn-secondary-costum">
+          Bid
+        </button>
       </div>
     </ng-container>
   </div>
