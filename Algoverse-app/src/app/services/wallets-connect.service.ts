@@ -82,7 +82,9 @@ export class WalletsConnectService {
         }
       );
       setTimeout(() => {
-      }, 1000)
+      }, 1000);
+
+      this.userServce.syncUserAssets(this.sessionWallet!.getDefaultAccount());
     }
   }
 
