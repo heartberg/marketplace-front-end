@@ -10,10 +10,10 @@
         </button>
       </div>
     </div>
-    <div class="wrapper second-wrapper wrapper-border relative">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="" *ngIf="isLoaded">
+    <div class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" [routerLink]="">
+      <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded">
       <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
-      <span style="margin-top: 10px;">John Zat Burg</span>
+      <span style="margin-top: 10px;">{{featuredArtists[0].name}}</span>
     </div>
   </div>
   <div class="second-section wrapper-border relative">

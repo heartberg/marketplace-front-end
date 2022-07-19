@@ -41,7 +41,7 @@
             <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> EVO </li>
           </ng-container>
           <ng-container *ngIf="changeRespoNavAndProfileIcons">
-            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/profile">Profile</li>
+            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/profile/{{wallet}}">Profile</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/items">My Offers</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}"  routerLink="/create-offer">Create Offer</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">Collections</li>
@@ -105,7 +105,7 @@
             </ng-container>
             <div class="dropDown" *ngIf="isProfileOpened">
               <ul>
-                <li routerLink="/profile">Profile</li>
+                <li routerLink="/profile/{{wallet}}">Profile</li>
                 <li routerLink="/items">My Offers</li>
                 <li routerLink="/create-offer">Create Offer</li>
                 <li routerLink="/collection">Collections</li>

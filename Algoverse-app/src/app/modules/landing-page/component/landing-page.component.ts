@@ -13,7 +13,7 @@ export class LandingPageComponent implements OnInit {
   public hotInDropDown = ['1 Day', '7 Days', '30 Days', 'All Time',];
   public isLoaded:boolean = true;
 
-  public featuredArtists = [];
+  public featuredArtists: Array<any> = [];
   public hotItems: Array<any> = [];
 
   private loadingIndex = 0;
