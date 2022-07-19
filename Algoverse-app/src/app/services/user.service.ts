@@ -247,4 +247,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
+  getNotification(wallet: string): Observable<any> {
+    const url = `${this.baseUrl}notification/get/forWallet?wallet=${wallet}`;
+    return this._http.get<any>(url)
+  }
+
 }

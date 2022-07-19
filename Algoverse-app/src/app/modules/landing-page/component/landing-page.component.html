@@ -2,16 +2,17 @@
   <div class="first-section">
     <div class="wrapper first-wrapper wrapper-border">
       <div class="buttons">
-        <button class="btn-primary-costum">
+        <button class="btn-primary-costum" routerLink="../marketplace/all-types">
           Discover
         </button>
-        <button class="btn-secondary-costum">
+        <button class="btn-secondary-costum" routerLink="../create-asset">
           Create
         </button>
       </div>
     </div>
-    <div class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" [routerLink]="">
-      <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded">
+    <div class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" routerLink="/profile/{{featuredArtists[0].wallet}}">
+      <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded"
+      style="width: 50%; height: auto;">
       <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
       <span style="margin-top: 10px;">{{featuredArtists[0].name}}</span>
     </div>

@@ -11,13 +11,20 @@
             <h4>Filters</h4>
           </div>
           <div class="d-flex flex-column filter-wrapper">
-            <button class="btn-primary-costum">Show all</button>
-            <button class="btn-primary-costum">Sells</button>
-            <button class="btn-primary-costum">Auctions</button>
-            <button class="btn-primary-costum">Received Bids</button>
-            <button class="btn-primary-costum">Swap Requests</button>
-            <button class="btn-primary-costum">Starred</button>
-            <button class="btn-primary-costum">Re-Sell</button>
+            <button *ngIf="selectedType != 'all'" class="btn-primary-costum" (click)="selectType('all')">Show all</button>
+            <button *ngIf="selectedType == 'all'" class="btn-secondary-costum">Show all</button>
+            <button *ngIf="selectedType != 'sell'" class="btn-primary-costum" (click)="selectType('sell')">Sells</button>
+            <button *ngIf="selectedType == 'sell'" class="btn-secondary-costum">Sells</button>
+            <button *ngIf="selectedType != 'auction'" class="btn-primary-costum" (click)="selectType('auction')">Auctions</button>
+            <button *ngIf="selectedType == 'auction'" class="btn-secondary-costum">Auctions</button>
+            <button *ngIf="selectedType != 'bids'" class="btn-primary-costum" (click)="selectType('bids')">Received Bids</button>
+            <button *ngIf="selectedType == 'bids'" class="btn-secondary-costum">Received Bids</button>
+            <button *ngIf="selectedType != 'req'" class="btn-primary-costum" (click)="selectType('req')">Swap Requests</button>
+            <button *ngIf="selectedType == 'req'" class="btn-secondary-costum">Swap Requests</button>
+            <button *ngIf="selectedType != 'stars'" class="btn-primary-costum" (click)="selectType('stars')">Starred</button>
+            <button *ngIf="selectedType == 'stars'" class="btn-secondary-costum">Starred</button>
+            <button *ngIf="selectedType != 'resell'" class="btn-primary-costum" (click)="selectType('resell')">Re-Sell</button>
+            <button *ngIf="selectedType == 'resell'" class="btn-secondary-costum">Re-Sell</button>
           </div>
         </div>
       </div>
