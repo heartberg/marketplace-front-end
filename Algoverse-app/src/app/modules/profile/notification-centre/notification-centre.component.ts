@@ -31,4 +31,12 @@ export class NotificationCentreComponent implements OnInit {
     this.selectedType = type
   }
 
+  getType(type: number) {
+    if(type == 1) {
+      return "Bid"
+    } else {
+      return "some other Type"
+    }
+  }
+
 }
