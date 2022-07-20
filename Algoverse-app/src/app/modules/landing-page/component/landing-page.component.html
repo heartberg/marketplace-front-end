@@ -66,15 +66,16 @@
     <div class="scrolls">
       <div class="box" *ngFor="let item of hotItems">
         <div class="mitem" *ngIf="item['isCollection']">
-          <img src="{{item['featuredImage']}}" alt="">
+          <img src="{{item['featuredImage']}}" alt="" routerLink="../collection/{{item['collectionId']}}">
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
         <div class="mitem" *ngIf="item['isAsset']">
-          <img src="{{item['file']}}" alt="">
+          <img src="https://ipfs.infura.io/ipfs/{{item['file']}}" alt="">
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
         <div class="mitem" *ngIf="item['isUser']">
-          <img src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt="">
+          <img src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt=""
+          routerLink="../profile/{{item['wallet']}}">
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
       </div>

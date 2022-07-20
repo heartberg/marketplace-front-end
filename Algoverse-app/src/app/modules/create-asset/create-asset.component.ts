@@ -33,6 +33,11 @@ export class CreateAssetComponent implements OnInit {
   public coverUrl: string = "";
   public decimals: string = "0";
 
+  public isMusicUpload: boolean = false;
+  public isVideoUpload: boolean = false;
+  animation_url_mimetype: any;
+  image_mimetype: any;
+
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
     private _walletsConnectService: WalletsConnectService,
@@ -139,14 +144,30 @@ export class CreateAssetComponent implements OnInit {
   }
 
   async onFileInput(e: any) {
+    console.log("fileupload")
     console.log('e', e.target.files[0]);
+    console.log('e type: ', e.target.files[0].type)
     this.fileUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('fileUrl', this.fileUrl);
+    if(e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3") {
+      this.isMusicUpload = true;
+      this.isVideoUpload = false;
+      this.animation_url_mimetype = e.target.files[0].type.toString();
+    } else if(e.target.files[0].type.toString() == "video/mp4" || e.target.files[0].type.toString() == "video/mpeg") { 
+      this.isMusicUpload = false;
+      this.isVideoUpload = true;
+      this.animation_url_mimetype = e.target.files[0].type.toString();
+    } else {
+      this.isMusicUpload = false;
+      this.isVideoUpload = false;
+      this.image_mimetype = e.target.files[0].type.toString();
+    }
   }
 
   async onCoverInput(e: any) {
     console.log('e', e.target.files[0]);
     this.coverUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
+    this.image_mimetype = e.target.files[0].type.toString()
     console.log('coverUrl', this.coverUrl);
   }
 
@@ -183,27 +204,50 @@ export class CreateAssetComponent implements OnInit {
       alert('Please add file');
       return;
     }
-    if (!this.coverUrl) {
+    if (!this.coverUrl && (this.isMusicUpload || this.isVideoUpload)) {
       alert('Please add cover image');
       return;
     }
 
     this.spinner.show();
     delete this.passedCollection.creator;
-    const metadata = {
-      name: this.name,
-      description: this.description,
-      image: this.fileUrl,
-      external_url: this.externalLink,
-      properties: {
-        collection: this.passedCollection,
-        royalty: this.royalty,
-        attributes: {
-          height: 3,
-          length: 2
+    let metadata;
+    if(this.isMusicUpload || this.isVideoUpload) {
+      metadata = {
+        name: this.name,
+        description: this.description,
+        image: this.coverUrl,
+        image_mimetype: this.image_mimetype,
+        external_url: this.externalLink,
+        animation_url: this.fileUrl,
+        animation_url_mimetype: this.animation_url_mimetype,
+        properties: {
+          collection: this.passedCollection,
+          royalty: this.royalty,
+          attributes: {
+            height: 3,
+            length: 2
+          }
+        }
+      }
+    } else {
+      metadata = {
+        name: this.name,
+        description: this.description,
+        image: this.fileUrl,
+        image_mimetype: this.image_mimetype,
+        external_url: this.externalLink,
+        properties: {
+          collection: this.passedCollection,
+          royalty: this.royalty,
+          attributes: {
+            height: 3,
+            length: 2
+          }
         }
       }
     }
+    
     const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
     let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
     console.log('ipfsUrl', ipfsUrl);

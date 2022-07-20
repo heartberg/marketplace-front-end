@@ -17,7 +17,7 @@
               <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
             </button>
           </div>
-          <div class="wrapper-border section">
+          <div class="wrapper-border section" *ngIf="isMusicUpload || isVideoUpload">
             <h4>Upload Cover</h4>
             <button class="btn-primary-costum" (click)="coverInput.click()">
               Upload Cover
