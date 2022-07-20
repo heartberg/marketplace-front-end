@@ -7,6 +7,7 @@ import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import {Asset} from "algosdk/dist/types/src/client/v2/algod/models/types";
 import {AssetService} from "../services/asset.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-trade-detail',
@@ -42,7 +43,8 @@ export class TradeDetailComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private _assetService: AssetService
+    private _assetService: AssetService,
+    private _location: Location
   ) {
   }
 
@@ -178,7 +180,7 @@ export class TradeDetailComponent implements OnInit {
   }
 
   public actionBack() {
-    this.router.navigateByUrl("/items");
+    this._location.back()
   }
 
   select(item: any, i: any) {

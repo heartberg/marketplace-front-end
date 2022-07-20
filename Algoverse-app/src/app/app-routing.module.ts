@@ -37,7 +37,7 @@ const routes: Routes = [
   { path: 'update-collection', component: UpdateCollectionComponent },
   { path: 'collection-detail/:collectionId', component: CollectionDetailComponent },
   { path: 'create-offer', component: CreateOfferComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile/:wallet', component: ProfileComponent, runGuardsAndResolvers: 'always'},
   { path: 'items', component: ItemsComponent },
   { path: 'profile-settings', component: ProfileSettingsComponent },
   { path: 'notification-center', component: NotificationCentreComponent },
@@ -60,7 +60,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {onSameUrlNavigation: "reload"}),
     NgxSpinnerModule
   ],
   exports: [

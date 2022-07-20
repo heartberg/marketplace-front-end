@@ -21,6 +21,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  syncUserAssets(wallet: String): Observable<any> {
+    const url = `${this.baseUrl}user/syncAssets/byWallet?wallet=${wallet}`;
+    return this._http.get<any>(url);
+  }
+
   userUpdate(data: updateUser):Observable<any> {
     const url = `${this.baseUrl}user/update`;
     return this._http.post<any>(url, data);
@@ -245,6 +250,11 @@ export class UserService {
   bidAuction(params: any): Observable<any> {
     const url = `${this.baseUrl}auction/bid`;
     return this._http.post(url, params);
+  }
+
+  getNotification(wallet: string): Observable<any> {
+    const url = `${this.baseUrl}notification/get/forWallet?wallet=${wallet}`;
+    return this._http.get<any>(url)
   }
 
 }

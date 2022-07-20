@@ -112,7 +112,7 @@ export class CreateTradeComponent implements OnInit {
         } else {
           properties[key] = value
         }
-      } 
+      }
     }
     properties['attributes'] = attributes
     this.metadataProperties = properties;
@@ -200,7 +200,7 @@ export class CreateTradeComponent implements OnInit {
           );
         } else {
           this.spinner.hide();
-          if (result == 0) {
+          if (result === 0) {
             alert("Insufficient balance");
           } else {
             alert("Exception occurred, please retry again later");

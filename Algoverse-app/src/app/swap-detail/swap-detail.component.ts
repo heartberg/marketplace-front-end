@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-swap-detail',
@@ -27,6 +28,7 @@ export class SwapDetailComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    private _location: Location
   ) {
   }
 
@@ -130,7 +132,7 @@ export class SwapDetailComponent implements OnInit {
   }
 
   public actionBack() {
-    this.router.navigateByUrl('/create-offer')
+    this._location.back()
   }
 
 }

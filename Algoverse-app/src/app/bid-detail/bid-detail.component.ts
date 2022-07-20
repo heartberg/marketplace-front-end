@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-bid-detail',
@@ -29,6 +30,7 @@ export class BidDetailComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    private _location: Location
   ) {
   }
 
@@ -137,7 +139,7 @@ export class BidDetailComponent implements OnInit {
   }
 
   public actionBack() {
-    this.router.navigateByUrl("/items");
+    this._location.back()
   }
 
 }

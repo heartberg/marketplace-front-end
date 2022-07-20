@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   public changeRespoNavAndProfileIcons = false;
   public changeRespoNavAndProfileIconsCounter = 1;
   public SearchRespoOpened = false;
+  public wallet = "default";
 
   public isLoggedIn: boolean = false;
 
@@ -32,14 +33,17 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
+      console.log("hit1")
       this.isLoggedIn = true;
     }
     if (localStorage.getItem('wallet')) {
+      console.log("hit2")
       this.walletConnectionPassed = true;
     }
   }
 
   openAvatar() {
+    this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount()
     if (this.isProfileOpened) {
       localStorage.setItem('opened', JSON.stringify(true))
     } else {
