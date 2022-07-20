@@ -192,7 +192,7 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
-  loadAuctionItem(auctionId: string): Observable<any> {
+  loadAuctionItem(auctionId: any): Observable<any> {
     const url = `${this.baseUrl}auction/${auctionId}`;
     return this._http.get<any>(url);
   }

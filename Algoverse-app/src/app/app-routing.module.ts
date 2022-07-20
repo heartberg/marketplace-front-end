@@ -26,8 +26,6 @@ import { CreateBidComponent } from './modules/market-place/create-bid/create-bid
 import { ItemsComponent } from './modules/profile/items/items.component';
 import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 import { BidDetailComponent } from './bid-detail/bid-detail.component';
-import { SwapDetailComponent } from './swap-detail/swap-detail.component';
-import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 const routes: Routes = [
@@ -44,12 +42,10 @@ const routes: Routes = [
   { path: 'profile-settings', component: ProfileSettingsComponent },
   { path: 'notification-center', component: NotificationCentreComponent },
   { path: 'create-trade', component: CreateTradeComponent },
-  { path: 'trade/:tradeId', component: TradeDetailComponent},
+  { path: 'asset-detail/:tradeId', component: TradeDetailComponent},
   { path: 'bid/:bidId', component: BidDetailComponent},
   { path: 'create-swap', component: CreateSwapComponent },
   { path: 'asset-detail-swap', component: AssetDetailSwapComponent },
-  { path: 'swap/:swapId', component: SwapDetailComponent},
-  { path: 'auction/:auctionId', component: AuctionDetailComponent},
   { path: 'create-bid', component: CreateBidComponent },
   { path: 'edit-profile', component: ProfileEditComponent },
   { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },

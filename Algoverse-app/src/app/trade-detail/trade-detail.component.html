@@ -7,60 +7,134 @@
       <div class="col-md-12">
         <div class="inside">
           <div class="wrapper-card">
+            <ng-container *ngIf="isSwap">
+              <div class="d-flex justify-between" style="justify-content: space-between;">
+                <h4 class="color-violet">
+                    Offer
+                </h4>
+                <h4 class="color-violet">
+                    Looking for
+                </h4>
+              </div>
+            </ng-container>
             <div class="row">
               <div class="col-md-6">
-                <div class="img">
-                  <div class="section" *ngIf="mTrade.creator.profileImage">
-                    <img src="{{mTrade.creator.profileImage}}" alt="">
-                  </div>
-              </div>
+                <div class="img card-info">
+                  <ng-container *ngIf="isAuction">
+                    <div class="section">
+                      <img src="{{mTrade?.asset?.assetURL}}" alt="">
+                    </div>
+                    <div class="card-info-left">
+                      <div class="section">
+                        <h4>Name: </h4>
+                        <span class="unset-dm-style">{{mTrade?.asset.name}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset ID: </h4>
+                        <span class="unset-dm-style">{{mTrade?.asset.assetId}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset Unit:</h4>
+                        <span class="unset-dm-style">{{mTrade?.asset.unitName}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Total Supply:</h4>
+                        <span class="unset-dm-style">{{ 'TODO '}}</span>
+                      </div>
+                      <div class="section" *ngIf="!isMine" style="align-items: center; cursor: pointer" routerLink="../../profile/{{23833}}">
+                        <h4 style="overflow-wrap: break-word;">Creator: </h4>
+                        <img src="{{mTrade?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <span>{{mTrade?.creator?.name}}</span>
+                        <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
+                             *ngIf="mTrade?.creator?.verified">
+                      </div>
+                      <div class="section" *ngIf="!isMine" style="align-items: center; cursor: pointer" routerLink="../../profile/{{23833}}">
+                        <h4 style="overflow-wrap: break-word;">Collection: </h4>
+                        <img src="{{mTrade?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <span>{{mTrade?.collection?.name}}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="isNormal">
+                    <div class="section" *ngIf="mTrade?.creator?.profileImage">
+                      <img src="{{mTrade?.creator?.profileImage}}" alt="">
+                    </div>
+                    <div class="card-info-left">
+                      <div class="section">
+                        <h4>Name: </h4>
+                        <span class="unset-dm-style">{{mTrade?.name}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset ID: </h4>
+                        <span class="unset-dm-style">{{mTrade?.assetId}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset Unit:</h4>
+                        <span class="unset-dm-style">{{mTrade?.unitName}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Total Supply:</h4>
+                        <span class="unset-dm-style">{{ 'TODO '}}</span>
+                      </div>
+                      <div class="section" *ngIf="!isMine" style="align-items: center; cursor: pointer" routerLink="../../profile/{{23833}}">
+                        <h4 style="overflow-wrap: break-word;">Creator: </h4>
+                        <img src="{{mTrade?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <span>{{mTrade?.creator?.name}}</span>
+                        <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
+                             *ngIf="mTrade?.creator?.verified">
+                      </div>
+                      <div class="section" *ngIf="!isMine" style="align-items: center; cursor: pointer" routerLink="../../profile/{{23833}}">
+                        <h4 style="overflow-wrap: break-word;">Collection: </h4>
+                        <img src="{{mTrade?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <span>{{mTrade?.collection?.name}}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="isSwap">
+                    <div class="section">
+                      <img src="{{mTrade?.offeringAsset?.file}}" alt="">
+                    </div>
+                    <div class="card-info-left">
+                      <div class="section">
+                        <h4>Name: </h4>
+                        <span class="unset-dm-style">{{mTrade?.offeringAsset?.name}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset ID: </h4>
+                        <span class="unset-dm-style">{{mTrade?.offeringAsset?.assetId}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset Unit:</h4>
+                        <span class="unset-dm-style">{{mTrade?.offeringAsset?.unitName}}</span>
+                      </div>
+                      <div class="section" *ngIf="!isMine" style="align-items: center; cursor: pointer" routerLink="../../profile/{{23833}}">
+                        <h4 style="overflow-wrap: break-word;">Creator: </h4>
+                        <img src="{{mTrade?.offeringAsset?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <span>{{mTrade?.offeringAsset?.name}}</span>
+                        <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
+                             *ngIf="mTrade?.offeringAsset?.verified">
+                      </div>
+                      <div class="section">
+                        <h4>Total Supply:</h4>
+                        <span class="unset-dm-style">{{ 'TODO '}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Amount:</h4>
+                        <span class="unset-dm-style">{{ mTrade?.offeringAmount}}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
             </div>
               <div class="col-md-6" *ngIf="mTrade">
-                <div class="card-info mt-3">
-                  <div class="card-info-left">
-                    <div class="section">
-                      <h4>Name: </h4>
-                      <span class="unset-dm-style">{{mTrade?.name}}</span>
-                    </div>
-                    <div class="section">
-                      <h4>Asset ID: </h4>
-                      <span class="unset-dm-style">{{mTrade?.assetId}}</span>
-                    </div>
-                    <div class="section">
-                      <h4>Asset Unit:</h4>
-                      <span class="unset-dm-style">{{mTrade?.unitName}}</span>
-                    </div>
-                    <div class="section">
-                      <h4>Total Supply:</h4>
-                      <span class="unset-dm-style">{{ 'TODO '}}</span>
-                    </div>
-                    <div class="section" *ngIf="!isMine" style="align-items: center" routerLink="../../profile/{{23833}}">
-                      <h4 style="overflow-wrap: break-word;">Creator: </h4>
-                      <img src="{{mTrade?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
-                      <span>{{mTrade?.creator?.name}}</span>
-                      <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
-                      *ngIf="mTrade?.creator?.verified">
-                    </div>
-                    <div class="section" *ngIf="!isMine" style="align-items: center" routerLink="../../profile/{{23833}}">
-                      <h4 style="overflow-wrap: break-word;">Collection: </h4>
-                      <img src="{{mTrade?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
-                      <span>{{mTrade?.collection?.name}}</span>
-                    </div>
-                    <div class="section">
-                      <h4>Amount:</h4>
-                      <span class="unset-dm-style">{{mTrade?.creator?.volume}}</span>
-                    </div>
-                    <div class="section">
-                      <h4>Owned:</h4>
-                      <span class="unset-dm-style">{{'TODO'}}</span>
-                    </div>
-                    <div class="section d-flex last" style="margin-top: 30px;
-    margin-bottom: 30px;">
+                <ng-container *ngIf="isNormal">
+                  <div class="card-info mt-3">
+                    <div class="section d-flex last right" style="margin-top: 30px; margin-bottom: 30px;">
                       <h4>Open Bids:</h4>
                       <div class="bids img scroll">
                         <div class="bid section d-flex align-items-center wrapper-card d-flex"
                              *ngFor="let item of mTrade.bids;  let i = index" (click)="select(item, i)"
-                        [class.selected]="index === i">
+                             [class.selected]="index === i">
                           <div class="top-info d-flex">
                             <img src="{{item?.biddingUser?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
                             <span>{{item?.biddingUser?.name}}</span>
@@ -76,15 +150,15 @@
                             </div>
                           </div>
                         </div>
-<!--                        <div class="bid" *ngFor="let item of mTrade.biddingUser">-->
-<!--                          <h4>profileImage:</h4>-->
-<!--                          <span>{{item.name}}</span>-->
-<!--                        </div>-->
+                        <!--                        <div class="bid" *ngFor="let item of mTrade.biddingUser">-->
+                        <!--                          <h4>profileImage:</h4>-->
+                        <!--                          <span>{{item.name}}</span>-->
+                        <!--                        </div>-->
                       </div>
                     </div>
-                    <div class="section scroll">
+                    <div class="section right">
                       <h4>Open Trades:</h4>
-                      <div class="bids img">
+                      <div class="bids img scroll">
                         <div class="bid section d-flex align-items-center wrapper-card"
                              *ngFor="let item of mTrade.openTrades; let i = index"
                              (click)="selectSecond(item, i)"
@@ -111,24 +185,99 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </ng-container>
+                <ng-container *ngIf="isAuction">
+                  <div class="info card-info">
+                    <div class="section">
+                      <h4>Start Data:</h4>
+                      <span class="unset-dm-style">{{ mTrade?.creationDate}}</span>
+                    </div>
+                    <div class="section">
+                      <h4>End Date:</h4>
+                      <span class="unset-dm-style">{{mTrade?.closingDate}}</span>
+                    </div>
+                    <div class="section">
+                      <h4>Reserve Price:</h4>
+                      <span class="unset-dm-style">{{ mTrade?.reserve }}</span>
+                    </div>
+                    <div class="section">
+                      <h4>Minimum Bid:</h4>
+                      <span class="unset-dm-style">{{ mTrade?.minimumBid }}</span>
+                    </div>
+                  </div>
+                  <div class="auction" style="margin-top: 100px;">
+                    <div class="d-flex" style="justify-content: flex-start; align-items: center;">
+                      <h4 style="margin-right: 12px">Bid Amount</h4>
+                      <input type="text" class="input-costum" placeholder="1000" style="width: 350px;">
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="isSwap">
+                  <div class="wrapper">
+                    <div class="img">
+                      <div class="section">
+                        <img src="{{mTrade?.acceptingAsset?.file}}" alt="">
+                      </div>
+                    </div>
+                    <div class="card-info mt-3">
+                      <div class="card-info-left" style="display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;">
+                        <div class="section">
+                          <h4>Name: </h4>
+                          <span>{{mTrade?.acceptingAsset?.name}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Asset ID:</h4>
+                          <span> {{mTrade?.acceptingAsset.assetId}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Asset Unit: </h4>
+                          <span class="unset-dm-style">{{mTrade?.acceptingAsset?.unitName}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Total Supply:</h4>
+                          <span> {{'TODO'}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Creator:</h4>
+                          <span> {{mTrade?.acceptingAsset?.creator}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Amount:</h4>
+                          <span class="unset-dm-style">{{  mTrade?.acceptingAmount}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
               </div>
           </div>
           <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="actionTrade()" *ngIf="index === 111 && indexSecond === 111">
-              <ng-container *ngIf = "isOpen; then open else close"></ng-container>
-              <ng-template #open>
-                <ng-container *ngIf = "isMine; then cancel else bid"></ng-container>
-                <ng-template #cancel>Cancel offer</ng-template>
-                <ng-template #bid>Bid</ng-template>
-              </ng-template>
-              <ng-template #close>
-                <ng-container *ngIf = "isMine; then reopen else nothing"></ng-container>
-                <ng-template #reopen>Reopen</ng-template>
-                <ng-template #nothing>Test</ng-template>
-              </ng-template>
+            <button class="btn-secondary-costum aligner" (click)="actionTrade()" *ngIf="index === 111 && indexSecond === 111" style="width: 160px;">
+<!--              <ng-container *ngIf = "isOpen; then open else close"></ng-container>-->
+<!--              <ng-template #open>-->
+<!--                <ng-container *ngIf = "isMine; then cancel else bid"></ng-container>-->
+<!--                <ng-template #cancel>Cancel offer</ng-template>-->
+<!--                <ng-template #bid>Bid</ng-template>-->
+<!--              </ng-template>-->
+<!--              <ng-template #close>-->
+<!--                <ng-container *ngIf = "isMine; then reopen else nothing"></ng-container>-->
+<!--                <ng-template #reopen>Reopen</ng-template>-->
+<!--                <ng-template #nothing>Test</ng-template>-->
+<!--              </ng-template>-->
+              <ng-container *ngIf="isNormal">
+                Offer
+              </ng-container>
+              <ng-container *ngIf="isAuction">
+                Bid
+              </ng-container>
+              <ng-container *ngIf="isSwap">
+                Swap
+              </ng-container>
             </button>
-            <button class="btn-secondary-costum " *ngIf="index !== 111 || indexSecond !== 111" (click)="selectBtn()"> Select</button>
+            <button class="btn-secondary-costum " *ngIf="index !== 111 || indexSecond !== 111" (click)="selectBtn()" style="width: 160px;"> Select</button>
           </div>
         </div>
       </div>

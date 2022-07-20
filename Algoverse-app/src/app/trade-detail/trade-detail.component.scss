@@ -260,3 +260,17 @@ input[type=date] {
   transform: scale(1.003);
   border: 1px solid rgba(129, 0, 127, 0.4) !important;
 }
+.wrapper-card {
+  &:hover {
+    cursor: unset;
+  }
+}
+.bid{
+  &:hover {
+    cursor: pointer;
+  }
+}
+.right {
+  display: flex;
+  flex-direction: column;
+}

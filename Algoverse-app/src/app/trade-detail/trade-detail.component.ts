@@ -32,6 +32,11 @@ export class TradeDetailComponent implements OnInit {
   public index: number = 111;
   public indexSecond: number = 111;
   isPopUpOpened: boolean = false;
+
+  isAuction: boolean = false;
+  isSwap: boolean = false;
+  isNormal: boolean = false;
+
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
@@ -42,22 +47,50 @@ export class TradeDetailComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    if (localStorage.getItem('action') === 'swap') {
+      this.isSwap = true;
+    } else if (localStorage.getItem('action') === 'normal') {
+      this.isNormal = true
+    } else if (localStorage.getItem('action') === 'auction') {
+      this.isAuction = true
+    }
+
+
     const routeParams = this.route.snapshot.paramMap;
     const tradeIdFromRoute = routeParams.get('tradeId');
     if (!tradeIdFromRoute) {
       this.router.navigateByUrl('items');
       return;
     }
-
-    this._assetService.getAssetDetail(99478609).subscribe(
-      res => {
-        console.log('res', res);
-        this.mTrade = res;
-        const asset = this.mTrade.asset;
-        this.showAssetDetails(asset);
-      },
-      error => console.log(error)
-    )
+    if (this.isNormal) {
+      this._assetService.getAssetDetail(99478609).subscribe(
+        res => {
+          console.log('res', res);
+          this.mTrade = res;
+          const asset = this.mTrade.asset;
+          this.showAssetDetails(asset);
+        },
+        error => console.log(error)
+      )
+    } else if (this.isAuction) {
+      this._userService.loadAuctionItem('RR5VI3PTOUSUJLJR74G2RBNF4FM5JMC5G2U6JZT5UQYFMX66JLMQ').subscribe(
+        res => {
+          console.log('res', res);
+          this.mTrade = res;
+          const asset = this.mTrade.asset;
+          this.showAssetDetails(asset);
+        },
+        error => console.log(error)
+      )
+    } else if (this.isSwap) {
+      this._userService.loadSwapItem('HREG2BO7ZNSBC2W2ZQ3UZSX2P7UGIWYLV77EQAWU3DOOQL4SEYRA').subscribe(
+        res => {
+          console.log('res', res);
+          this.mTrade = res;
+        },
+        error => console.log(error)
+      )
+    }
   }
 
   showAssetDetails(asset: any) {
@@ -155,8 +188,12 @@ export class TradeDetailComponent implements OnInit {
     } else {
       this.index = index;
     }
-
+    if (this.index !== 111) {
+      this.indexSecond = 111;
+    }
+    localStorage.setItem('asset', JSON.stringify(item));
   }
+
   selectSecond(item: any, i: any) {
     const index = i;
     if (this.indexSecond === index) {
@@ -164,7 +201,10 @@ export class TradeDetailComponent implements OnInit {
     } else {
       this.indexSecond = index;
     }
-
+    if (this.indexSecond !== 111) {
+       this.index = 111;
+    }
+    localStorage.setItem('asset', JSON.stringify(item));
   }
 
   selectBtn() {
