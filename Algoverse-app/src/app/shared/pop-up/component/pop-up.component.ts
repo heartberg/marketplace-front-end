@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
-import {of} from "rxjs";
+import { UserService } from 'src/app/services/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-pop-up',
@@ -13,10 +14,16 @@ export class PopUpComponent implements OnInit {
   @Input() switcher = false;
   @Output() isSwitched = new EventEmitter<boolean>();
   @Input() selected = false;
+  @Input() asset: any;
+  
   walletsForSwitching: any = '';
+  enteredOffer: any;
+  enteredAmount: any;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
+    private _userService: UserService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -70,4 +77,109 @@ export class PopUpComponent implements OnInit {
   cancel() {
     this.isClosed.emit(false);
   }
+
+  blurOfferEvent(event: any) {
+    this.enteredOffer = event.target.value * Math.pow(10, 6);
+    console.log(this.enteredOffer);
+  }
+
+  blurAmount(event: any) {
+    this.enteredAmount = event.target.value;
+    console.log(this.enteredAmount);
+  }
+
+  async sendCreateBidRequest(indexAddress: string) {
+    this.spinner.show()
+    const params1 = {
+      assetID: this.asset.assetId,
+      amount: this.enteredAmount,
+      price: this.enteredOffer,
+      bidIndex: indexAddress
+    }
+    const txID = await this._walletsConnectService.createBid(params1);
+    console.log('txID', txID);
+
+    if (txID) {
+      const asset = this.asset;
+      if (txID && asset) {
+        const params2 = {
+          bidId: txID,
+          bidderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+          assetId: this.asset.assetId,
+          asset: this.asset,
+          indexAddress,
+          price: this.enteredOffer,
+          amount: this.enteredAmount
+        }
+        console.log('create bid param', params2)
+        this._userService.createBid(params2).subscribe(
+          res => {
+            this.spinner.hide();
+            alert('Successfully created');
+            console.log(res);
+          },
+          error => {
+            this.spinner.hide();
+            alert(error);
+            console.log('Network error, please try again later');
+          }
+        );
+      }
+    } else {
+      this.spinner.hide();
+      alert("Failed creating bid on algorand network");
+    }
+  }
+
+  placeBid() {
+    if(!this.enteredOffer) {
+      alert("Please enter offered amount!");
+      return;
+    }
+
+    if(!this.enteredAmount) {
+      alert("Please enter amount!");
+      return;
+    }
+
+    this._userService.getBidIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+      async (res) => {
+        console.log('bidIndex', res);
+        const indexAddress = res.indexAddress;
+        let result = await this._walletsConnectService.setupBid(indexAddress, Number(this.asset!.assetId), res.optinPrice);
+        if (result) {
+          console.log(this.asset!.assetId)
+          this._userService.optinAndRekeyToBid(indexAddress).subscribe(
+            (res) => {
+              console.log('setup bid response: ', res);
+              if (res) {
+                this.sendCreateBidRequest(indexAddress);
+
+              } else {
+                alert('optin and rekey failed');
+              }
+            },
+            (err) => {
+              this.spinner.hide();
+              alert('setup bid error: ' + err);
+            }
+          )
+        } else {
+          this.spinner.hide();
+          if (result === 0) {
+            alert("Insufficient balance");
+          } else {
+            alert("Exception occurred, please retry again later");
+          }
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        console.log('algo net create bid error', error)
+        alert('Network error, please try again later')
+      }
+    );
+
+  }
+
 }

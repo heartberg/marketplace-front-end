@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import {Asset} from "algosdk/dist/types/src/client/v2/algod/models/types";
 import {AssetService} from "../services/asset.service";
 import {Location} from '@angular/common';
+import { removeUndefinedProperties } from 'algosdk/dist/types/src/utils/utils';
 
 @Component({
   selector: 'app-trade-detail',
@@ -16,8 +17,8 @@ import {Location} from '@angular/common';
 })
 export class TradeDetailComponent implements OnInit {
 
-  public mTrade: any = null;
-  public isMine = false;
+  public mItem: any = null;
+
   public isOpen = false;
   public assetName: string = ""
   public assetUnit: string = ""
@@ -30,13 +31,13 @@ export class TradeDetailComponent implements OnInit {
   public amount: string = "0";
   public price: string = "0";
 
-  public index: number = 111;
-  public indexSecond: number = 111;
+  public index: number = -1;
+  public indexSecond: number = -1;
   isPopUpOpened: boolean = false;
 
   isAuction: boolean = false;
   isSwap: boolean = false;
-  isNormal: boolean = false;
+  isNormal: boolean = true;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -49,112 +50,56 @@ export class TradeDetailComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (localStorage.getItem('action') === 'swap') {
-      this.isSwap = true;
-    } else if (localStorage.getItem('action') === 'normal') {
-      this.isNormal = true
-    } else if (localStorage.getItem('action') === 'auction') {
-      this.isAuction = true
-    }
-
-
     const routeParams = this.route.snapshot.paramMap;
-    const tradeIdFromRoute = routeParams.get('tradeId');
-    if (!tradeIdFromRoute) {
-      this.router.navigateByUrl('items');
+    const itemIdFromRoute = routeParams.get('itemId');
+    console.log(itemIdFromRoute)
+    if (!itemIdFromRoute) {
+      this._location.back();
       return;
     }
-    if (this.isNormal) {
-      this._assetService.getAssetDetail(99478609).subscribe(
-        res => {
-          console.log('res', res);
-          this.mTrade = res;
-          const asset = this.mTrade.asset;
-          this.showAssetDetails(asset);
-        },
-        error => console.log(error)
-      )
-    } else if (this.isAuction) {
-      this._userService.loadAuctionItem('RR5VI3PTOUSUJLJR74G2RBNF4FM5JMC5G2U6JZT5UQYFMX66JLMQ').subscribe(
-        res => {
-          console.log('res', res);
-          this.mTrade = res;
-          const asset = this.mTrade.asset;
-          this.showAssetDetails(asset);
-        },
-        error => console.log(error)
-      )
-    } else if (this.isSwap) {
-      this._userService.loadSwapItem('HREG2BO7ZNSBC2W2ZQ3UZSX2P7UGIWYLV77EQAWU3DOOQL4SEYRA').subscribe(
-        res => {
-          console.log('res', res);
-          this.mTrade = res;
-        },
-        error => console.log(error)
-      )
-    }
+
+    this._assetService.getAssetDetail(itemIdFromRoute).subscribe(
+      res => {
+        console.log('res', res);
+        this.mItem = res;
+        this.showAssetDetails(this.mItem);
+      },
+      error => console.log(error)
+    )
   }
 
   showAssetDetails(asset: any) {
-    this.isMine = this.mTrade.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
-    this.isOpen = this.mTrade.isOpen;
-    console.log('isMine', this.isMine);
-    console.log('isOpen', this.isOpen);
     this.assetName = asset.name;
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     console.log('selectedAssetDescription', this.selectedAssetDescription)
     this.maxSupply = asset.supply;
-    this.amount = this.mTrade.amount;
+    this.amount = this.mItem.amount;
     this.metaDataProperties = asset.properties;
-    this.creatorName = this.mTrade.tradeCreator.name;
+    this.creatorName = this.mItem.creator.name;
     this.assetUnit = asset.unitName;
   }
 
-  blurRoyaltyEvent(event: any){
-    this.royalty = event.target.value;
-    console.log(this.royalty);
-  }
-
-  blurAmountEvent(event: any){
-    this.amount = event.target.value;
-    console.log(this.amount);``
-  }
-
-  blurPriceEvent(event: any){
-    this.price = event.target.value;
-    console.log(this.price);
-  }
-
-  async actionTrade() {
-    if (!this._walletsConnectService.sessionWallet) {
-      alert('Connect your wallet!');
-      return;
-    }
-
-    if (this.isOpen) {
-      if (this.isMine) {
-        // cancel trade
-        await this.cancelTrade()
-
-      } else {
-        // bid on trade
-        await this.acceptTrade()
-      }
-    } else {
-      if (this.isMine) {
-
-      } else {
-
-      }
-    }
-  }
-
-  async cancelTrade() {
-    const tradeIndex = this.mTrade.indexAddress;
-    console.log('start cancel trade');
-    const result = await this._walletsConnectService.cancelTrade(tradeIndex);
+  async acceptBid() {
+    const BidIndex = this.mItem.bids[this.index].indexAddress;
+    console.log('start accept Bid');
+    const result = await this._walletsConnectService.acceptBid(BidIndex, this.mItem.bids[this.index].creatorWallet);
     if (result) {
-      this._userService.cancelTrade(this.mTrade.tradeId).subscribe(
+      this._userService.acceptBid(this.mItem.bids[this.index].bidId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully accepted')
+        },
+        (error) => console.log('error', error)
+      )
+    }
+  }
+
+  async cancelBid() {
+    const bidIndex = this.mItem.bids[this.index].indexAddress;
+    console.log('start cancel Bid');
+    const result = await this._walletsConnectService.cancelBid(bidIndex);
+    if (result) {
+      this._userService.cancelBid(bidIndex).subscribe(
         (result) => {
           console.log('result', result);
           console.log('Successfully cancelled')
@@ -164,12 +109,35 @@ export class TradeDetailComponent implements OnInit {
     }
   }
 
-  async acceptTrade() {
-    const tradeIndex = this.mTrade.indexAddress;
-    console.log('start accept trade');
-    const result = await this._walletsConnectService.acceptTrade(tradeIndex, this.mTrade.creatorWallet);
+  async cancelTrade() {
+    if (!this._walletsConnectService.sessionWallet) {
+      alert('Connect your wallet!');
+      return;
+    }
+    const tradeIndex = this.mItem.openTrades[this.indexSecond].indexAddress;
+    console.log('start cancel trade');
+    const result = await this._walletsConnectService.cancelTrade(tradeIndex);
     if (result) {
-      this._userService.acceptTrade(this.mTrade.tradeId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+      this._userService.cancelTrade(this.mItem.openTrades[this.indexSecond].tradeId).subscribe(
+        (result) => {
+          console.log('result', result);
+          console.log('Successfully cancelled')
+        },
+        (error) => console.log('error', error)
+      )
+    }
+  }
+ 
+  async acceptTrade() {
+    if (!this._walletsConnectService.sessionWallet) {
+      alert('Connect your wallet!');
+      return;
+    }
+    const tradeIndex = this.mItem.openTrades[this.indexSecond].indexAddress;
+    console.log('start accept trade');
+    const result = await this._walletsConnectService.acceptTrade(tradeIndex, this.mItem.openTrades[this.indexSecond].creatorWallet);
+    if (result) {
+      this._userService.acceptTrade(this.mItem.openTrades[this.indexSecond].tradeId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
           console.log('result', result);
           console.log('Successfully accepted')
@@ -186,12 +154,12 @@ export class TradeDetailComponent implements OnInit {
   select(item: any, i: any) {
     const index = i;
     if (this.index === index) {
-      this.index = 111;
+      this.index = -1;
     } else {
       this.index = index;
     }
-    if (this.index !== 111) {
-      this.indexSecond = 111;
+    if (this.index !== -1) {
+      this.indexSecond = -1;
     }
     localStorage.setItem('asset', JSON.stringify(item));
   }
@@ -199,12 +167,12 @@ export class TradeDetailComponent implements OnInit {
   selectSecond(item: any, i: any) {
     const index = i;
     if (this.indexSecond === index) {
-      this.indexSecond = 111;
+      this.indexSecond = -1;
     } else {
       this.indexSecond = index;
     }
-    if (this.indexSecond !== 111) {
-       this.index = 111;
+    if (this.indexSecond !== -1) {
+       this.index = -1;
     }
     localStorage.setItem('asset', JSON.stringify(item));
   }
@@ -215,6 +183,22 @@ export class TradeDetailComponent implements OnInit {
 
   closePopUp($event: boolean) {
     this.isPopUpOpened = $event;
-
   }
+
+  isMine(isBid: boolean, index: number): boolean {
+    if(isBid) {
+      if(this.mItem.bids[index].biddingUser.wallet == this._walletsConnectService.sessionWallet?.getDefaultAccount()) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if(this.mItem.openTrades[index].tradeCreator.wallet == this._walletsConnectService.sessionWallet?.getDefaultAccount()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
 }

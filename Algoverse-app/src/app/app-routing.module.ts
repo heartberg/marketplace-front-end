@@ -27,6 +27,7 @@ import { ItemsComponent } from './modules/profile/items/items.component';
 import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 import { BidDetailComponent } from './bid-detail/bid-detail.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SwapDetailComponent } from './swap-detail/swap-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -42,7 +43,8 @@ const routes: Routes = [
   { path: 'profile-settings', component: ProfileSettingsComponent },
   { path: 'notification-center', component: NotificationCentreComponent },
   { path: 'create-trade', component: CreateTradeComponent },
-  { path: 'asset-detail/:tradeId', component: TradeDetailComponent},
+  { path: 'asset-detail/:itemId', component: TradeDetailComponent},
+  { path: 'swap/:swapId', component: SwapDetailComponent},
   { path: 'bid/:bidId', component: BidDetailComponent},
   { path: 'create-swap', component: CreateSwapComponent },
   { path: 'asset-detail-swap', component: AssetDetailSwapComponent },
