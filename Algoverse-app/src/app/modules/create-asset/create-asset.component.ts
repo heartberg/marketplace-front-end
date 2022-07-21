@@ -10,6 +10,7 @@ import { WalletsConnectService } from 'src/app/services/wallets-connect.service'
 import * as sha256 from 'js-sha256';
 import { Location } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-create-asset',
@@ -37,7 +38,17 @@ export class CreateAssetComponent implements OnInit {
   public isVideoUpload: boolean = false;
   animation_url_mimetype: any;
   image_mimetype: any;
-
+  FORM: any = 2;
+  first: boolean = true;
+  second: boolean = false;
+  third: boolean = false;
+  fourth: boolean = false;
+  fiveth: boolean = false;
+  sixth: boolean = false;
+  seventh: boolean = false;
+  eighth: boolean = false;
+  assetMappingdata: any = []
+  // ff first form // sf second form
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
     private _walletsConnectService: WalletsConnectService,
@@ -45,10 +56,30 @@ export class CreateAssetComponent implements OnInit {
     private _stateService: StateService,
     private router: Router,
     private _location: Location,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.FORM = this.fb.group({
+      ff: [],
+      sf: [],
+      ff2: [],
+      sf2: [],
+      ff3: [],
+      sf3: [],
+      ff4: [],
+      sf4: [],
+      ff5: [],
+      sf5: [],
+      ff6: [],
+      sf6: [],
+      ff7: [],
+      sf7: [],
+      ff8: [],
+      sf8: [],
+
+    })
     if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
       this.router.navigate(['/', 'home']);
       return;
@@ -77,7 +108,7 @@ export class CreateAssetComponent implements OnInit {
         }
       }
     )
-    
+
       // for (let item of this._stateService.collections) {
       //   this.collections.push(item.name);
       // }
@@ -87,12 +118,116 @@ export class CreateAssetComponent implements OnInit {
     console.log('hex', hex);
   }
 
-  addSection() {
-    this.pushedItems.push(1);
+  addSection(i: any) {
+    if (i === 1) {
+      if (!this.second) {
+        this.assetMappingdata.push({first: this.FORM.value.ff, second: this.FORM.value.sf})
+      } else {
+        return
+      }
+      this.second = true;
+    } else if (i === 2) {
+      if (!this.third) {
+        this.assetMappingdata.push({first: this.FORM.value.ff2, second: this.FORM.value.sf2})
+
+      } else {
+        return
+      }
+      this.third = true;
+
+    } else if (i === 3) {
+      if (!this.fourth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff3, second: this.FORM.value.sf3})
+
+      } else {
+        return
+      }
+      this.fourth = true;
+
+    } else if (i === 4) {
+      if (!this.fiveth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff4, second: this.FORM.value.sf4})
+      } else {
+        return
+      }
+      this.fiveth = true;
+
+    } else if (i === 5) {
+      if (!this.sixth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff5, second: this.FORM.value.sf5})
+      } else {
+        return
+      }
+      this.sixth = true;
+
+    } else if (i === 6) {
+      if (!this.seventh) {
+        this.assetMappingdata.push({first: this.FORM.value.ff6, second: this.FORM.value.sf6})
+
+      } else {
+        return
+      }
+      this.seventh = true;
+
+    } else if (i === 7) {
+      if (!this.eighth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff7, second: this.FORM.value.sf7})
+
+      } else {
+        return
+      }
+      this.eighth = true;
+
+    } else if (i === 8) {
+      this.assetMappingdata.push({first: this.FORM.value.ff8, second: this.FORM.value.sf8})
+
+    }
   }
 
-  minus() {
-    this.pushedItems.pop();
+  minus(i: any) {
+   if (i === 2) {
+       this.second = false;
+       this.FORM.value.ff2 = ''
+       this.FORM.value.sf2 = ''
+      this.assetMappingdata[1] = null;
+   } else  if (i === 3) {
+     this.third = false;
+     this.FORM.value.ff3 = ''
+     this.FORM.value.sf3 = ''
+     this.assetMappingdata[2] = null;
+   }
+   else  if (i === 4) {
+     this.fourth = false;
+     this.FORM.value.ff4 = ''
+     this.FORM.value.sf4 = ''
+     this.assetMappingdata[3] = null;
+   }
+   else  if (i === 5) {
+     this.fiveth = false;
+     this.FORM.value.ff5 = ''
+     this.FORM.value.sf5 = ''
+     this.assetMappingdata[4] = null;
+   }
+   else  if (i === 6) {
+     this.sixth = false;
+     this.FORM.value.ff6 = ''
+     this.FORM.value.sf6 = ''
+     this.assetMappingdata[5] = null;
+   }
+   else  if (i === 7) {
+     this.seventh = false;
+     this.FORM.value.ff7 = ''
+     this.FORM.value.sf7 = ''
+     this.assetMappingdata[6] = null;
+   }else  if (i === 8) {
+     this.eighth = false;
+     this.FORM.value.ff8 = ''
+     this.FORM.value.sf8 = ''
+     this.assetMappingdata[7] = null;
+   }
+
+
+
   }
 
   toggleEvent() {
@@ -153,7 +288,7 @@ export class CreateAssetComponent implements OnInit {
       this.isMusicUpload = true;
       this.isVideoUpload = false;
       this.animation_url_mimetype = e.target.files[0].type.toString();
-    } else if(e.target.files[0].type.toString() == "video/mp4" || e.target.files[0].type.toString() == "video/mpeg") { 
+    } else if(e.target.files[0].type.toString() == "video/mp4" || e.target.files[0].type.toString() == "video/mpeg") {
       this.isMusicUpload = false;
       this.isVideoUpload = true;
       this.animation_url_mimetype = e.target.files[0].type.toString();
@@ -172,6 +307,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   async submitAsset() {
+
     if (!this.passedCollection) {
       alert('Please select a collection');
       return;
@@ -247,7 +383,7 @@ export class CreateAssetComponent implements OnInit {
         }
       }
     }
-    
+
     const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
     let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
     console.log('ipfsUrl', ipfsUrl);

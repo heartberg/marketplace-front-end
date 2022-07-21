@@ -63,21 +63,146 @@
           <div class="price wrapper-border">
             <h4 class="priceheader">Properties</h4>
             <div class="row">
-              <ng-container *ngFor="let section of pushedItems">
-                <div class="col-md-5">
-                  <input type="text" placeholder="e.g height" class="input-costum">
-                </div>
-                <div class="col-md-7">
-                  <input type="text" placeholder="e.g 4m" class="input-costum">
-                </div>
-              </ng-container>
-              <div class="plus-icon" (click)="addSection()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-              </div>
-              <div class="plus-icon" *ngIf="pushedItems.length > 1"
-                   (click)="minus()">
-                <i class="fa fa-minus" aria-hidden="true"></i>
-              </div>
+              <form action="" [formGroup]="FORM">
+                <ng-container *ngIf="first">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(1)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="pushedItems.length > 1"
+                         (click)="minus(1)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container  *ngIf="second">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum"  formControlName="ff2">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum"  formControlName="sf2">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(2)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="second"
+                         (click)="minus(2)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="third">
+                  <div class="form">
+                    <div class="row">
+                      <div class="col-md-5">
+                        <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff3">
+                      </div>
+                      <div class="col-md-5">
+                        <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf3">
+                      </div>
+                      <div class="plus-icon" (click)="addSection(3)">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                      </div>
+                      <div class="plus-icon" *ngIf="third"
+                           (click)="minus(3)">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="fourth">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff4">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf4">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(4)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="fourth"
+                         (click)="minus(4)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="fiveth">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff5">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf5">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(5)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="fiveth"
+                         (click)="minus(5)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="sixth">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff6">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf6">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(6)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="sixth"
+                         (click)="minus(6)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="seventh">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff7">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf7">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(7)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="seventh"
+                         (click)="minus(7)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="eighth">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(8)">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="eighth"
+                         (click)="minus(8)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+              </form>
             </div>
           </div>
           <!-- <div class="price wrapper-border">
