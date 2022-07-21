@@ -192,6 +192,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadStarredAssets(addr: string) {
+    const url = `${this.baseUrl}asset/starredByAddress?address=${addr}`;
+    return this._http.get<any>(url);
+  }
+
   getSwapIndex(senderAddress: string): Observable<any> {
     const url = `${this.baseUrl}swap/getSwapIndex?senderAddress=${senderAddress}`;
     return this._http.get<any>(url);
@@ -224,6 +229,11 @@ export class UserService {
 
   loadAuctionItem(auctionId: any): Observable<any> {
     const url = `${this.baseUrl}auction/${auctionId}`;
+    return this._http.get<any>(url);
+  }
+
+  loadAuctionsWithMyBids(wallet: string) {
+    const url = `${this.baseUrl}auction/bidAuctionsByWallet?wallet=${wallet}`;
     return this._http.get<any>(url);
   }
 

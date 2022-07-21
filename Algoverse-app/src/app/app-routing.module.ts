@@ -28,6 +28,7 @@ import { TradeDetailComponent } from './trade-detail/trade-detail.component';
 import { BidDetailComponent } from './bid-detail/bid-detail.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SwapDetailComponent } from './swap-detail/swap-detail.component';
+import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -45,7 +46,7 @@ const routes: Routes = [
   { path: 'create-trade', component: CreateTradeComponent },
   { path: 'asset-detail/:itemId', component: TradeDetailComponent},
   { path: 'swap/:swapId', component: SwapDetailComponent},
-  { path: 'bid/:bidId', component: BidDetailComponent},
+  { path: 'auction/:auctionId', component: AuctionDetailComponent},
   { path: 'create-swap', component: CreateSwapComponent },
   { path: 'asset-detail-swap', component: AssetDetailSwapComponent },
   { path: 'create-bid', component: CreateBidComponent },

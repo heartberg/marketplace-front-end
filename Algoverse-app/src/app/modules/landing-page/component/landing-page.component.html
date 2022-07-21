@@ -70,7 +70,7 @@
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
         <div class="mitem" *ngIf="item['isAsset']">
-          <img src="https://ipfs.infura.io/ipfs/{{item['file']}}" alt="">
+          <img src="https://ipfs.infura.io/ipfs/{{item['file']}}" alt="" routerLink="../asset-details/{{item['assetId']}}">
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
         <div class="mitem" *ngIf="item['isUser']">

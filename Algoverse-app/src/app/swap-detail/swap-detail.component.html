@@ -6,7 +6,7 @@
     <div class="row w-100">
       <div class="col-md-12">
         <div class="inside">
-          <div class="wrapper-card">
+          <div class="wrapper-border">
             <div class="d-flex justify-between" style="justify-content: space-between;">
               <h4 class="color-violet">
                   Offer
@@ -20,7 +20,7 @@
                 <div class="img card-info">
                   <ng-container>
                     <div class="section">
-                      <img src="{{mSwap?.offeringAsset?.file}}" alt="">
+                      <img src="https://ipfs.infura.io/ipfs/{{mSwap?.offeringAsset?.file}}" alt="">
                     </div>
                     <div class="card-info-left">
                       <div class="section">
@@ -59,14 +59,14 @@
                   <div class="wrapper">
                     <div class="img">
                       <div class="section">
-                        <img src="{{mSwap?.acceptingAsset?.file}}" alt="">
+                        <img src="https://ipfs.infura.io/ipfs/{{mSwap?.acceptingAsset?.file}}" alt="">
                       </div>
                     </div>
                     <div class="card-info mt-3">
                       <div class="card-info-left" style="display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;">
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;">
                         <div class="section">
                           <h4>Name: </h4>
                           <span>{{mSwap?.acceptingAsset?.name}}</span>
@@ -99,7 +99,12 @@
           </div>
           <div class="buttons">
             <button class="btn-secondary-costum aligner" (click)="actionSwap()" style="width: 160px;">
+              <ng-container *ngIf="isMine">
+                Cancel Swap
+              </ng-container>  
+              <ng-container *ngIf="!isMine">
                 Swap
+              </ng-container>  
             </button>
           </div>
         </div>
