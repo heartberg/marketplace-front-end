@@ -260,3 +260,26 @@ form {
     margin-bottom: 15px;
   }
 }
+@keyframes alert {
+  0%{
+    top: 30px;
+    background: transparent;
+    color: transparent;
+    border: transparent;
+  }
+  100% {
+    top: 110px;
+    background: #f8d7da;
+  }
+}
+.anim {
+  position: absolute;
+  right: 40px;
+  top: 110px;
+  width: 265px;
+  display: flex;
+  justify-content: center;
+  z-index: 9999999999999;
+  animation-name: alert;
+  animation-duration: 1s;
+}

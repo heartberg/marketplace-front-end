@@ -1,4 +1,7 @@
 <div class="wrapper wrapper-border">
+  <div class="alert alert-danger anim" role="alert" *ngIf="alert">
+    {{'Fill Both Fields'}}
+  </div>
   <div class="backArrow" (click)="onBack()">
     <img src="https://www.pngitem.com/pimgs/m/467-4678631_arrow-back-icon-png-transparent-png.png" alt="">
   </div>
@@ -193,10 +196,10 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
                     </div>
-                    <div class="plus-icon" (click)="addSection(8)" *ngIf="eighth">
+                    <div class="plus-icon" (click)="addSection(8)" *ngIf="!nineth">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="eighth"
+                    <div class="plus-icon" *ngIf="!nineth"
                          (click)="minus(8)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -210,10 +213,10 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
                     </div>
-                    <div class="plus-icon" (click)="addSection(9)" *ngIf="nineth">
+                    <div class="plus-icon" (click)="addSection(9)" *ngIf="!tenth">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="nineth"
+                    <div class="plus-icon" *ngIf="!tenth"
                          (click)="minus(9)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -227,7 +230,7 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
                     </div>
-                    <div class="plus-icon" (click)="addSection(10)" *ngIf="tenth">
+                    <div class="plus-icon" (click)="addSection(10)" *ngIf="false">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
                     <div class="plus-icon" *ngIf="tenth"
