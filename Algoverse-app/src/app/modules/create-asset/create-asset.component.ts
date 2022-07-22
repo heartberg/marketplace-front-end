@@ -47,6 +47,8 @@ export class CreateAssetComponent implements OnInit {
   sixth: boolean = false;
   seventh: boolean = false;
   eighth: boolean = false;
+  ninth: boolean = false;
+  tenth: boolean = false;
   assetMappingdata: any = []
   // ff first form // sf second form
   constructor(
@@ -78,7 +80,10 @@ export class CreateAssetComponent implements OnInit {
       sf7: [],
       ff8: [],
       sf8: [],
-
+      ff9: [],
+      sf9: [],
+      ff10: [],
+      sf10: [],
     })
     if (!Array.isArray(this._walletsConnectService.myAlgoAddress) || this._walletsConnectService.myAlgoAddress.length == 0) {
       this.router.navigate(['/', 'home']);
@@ -179,9 +184,25 @@ export class CreateAssetComponent implements OnInit {
       this.eighth = true;
 
     } else if (i === 8) {
-      this.assetMappingdata.push({first: this.FORM.value.ff8, second: this.FORM.value.sf8})
-
+      if(!this.ninth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff8, second: this.FORM.value.sf8})
+      } else {
+        return
+      }
+      this.ninth = true;
+      
+    } else if (i === 9) {
+      if(!this.tenth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff9, second: this.FORM.value.sf9})
+      } else {
+        return
+      }
+      this.tenth = true
+      
+    } else if(i === 10) {
+      this.assetMappingdata.push({first: this.FORM.value.ff9, second: this.FORM.value.sf9})
     }
+    console.log(this.assetMappingdata)
   }
 
   minus(i: any) {
@@ -194,7 +215,7 @@ export class CreateAssetComponent implements OnInit {
      this.third = false;
      this.FORM.value.ff3 = ''
      this.FORM.value.sf3 = ''
-     this.assetMappingdata[2] = null;
+    this.assetMappingdata[2] = null;
    }
    else  if (i === 4) {
      this.fourth = false;
@@ -224,8 +245,18 @@ export class CreateAssetComponent implements OnInit {
      this.FORM.value.ff8 = ''
      this.FORM.value.sf8 = ''
      this.assetMappingdata[7] = null;
-   }
-
+   }else  if (i === 9) {
+    this.ninth = false;
+    this.FORM.value.ff9 = ''
+    this.FORM.value.sf9 = ''
+    this.assetMappingdata[8] = null;
+  }else  if (i === 10) {
+    this.tenth = false;
+    this.FORM.value.ff10 = ''
+    this.FORM.value.sf10 = ''
+    this.assetMappingdata[9] = null;
+  }
+  console.log(this.assetMappingdata)
 
 
   }
@@ -308,6 +339,8 @@ export class CreateAssetComponent implements OnInit {
 
   async submitAsset() {
 
+    console.log(this.assetMappingdata)
+
     if (!this.passedCollection) {
       alert('Please select a collection');
       return;
@@ -344,6 +377,8 @@ export class CreateAssetComponent implements OnInit {
       alert('Please add cover image');
       return;
     }
+
+
 
     this.spinner.show();
     delete this.passedCollection.creator;
