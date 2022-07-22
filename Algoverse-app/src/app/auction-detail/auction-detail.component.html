@@ -52,7 +52,7 @@
                   <div class="info card-info">
                     <div class="section">
                       <h4>Start Date:</h4>
-                      <span class="unset-dm-style">{{ mAuction?.creationDate}}</span>
+                      <span class="unset-dm-style">{{ mAuction?.startingTime}}</span>
                     </div>
                     <div class="section">
                       <h4>End Date:</h4>
@@ -89,7 +89,12 @@
 <!--                <ng-template #reopen>Reopen</ng-template>-->
 <!--                <ng-template #nothing>Test</ng-template>-->
 <!--              </ng-template>-->
+              <ng-container *ngIf="isMine">
+                Cancel
+              </ng-container>                
+              <ng-container *ngIf="!isMine">
                 Bid
+              </ng-container>        
             </button>
           </div>
         </div>
