@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import {FormBuilder, FormGroup,} from "@angular/forms";
 import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profile-edit',
@@ -19,7 +20,8 @@ export class ProfileEditComponent implements OnInit {
   constructor(
     private userServie: UserService, 
     private fb: FormBuilder,
-    private ipfs: IpfsDaemonService
+    private ipfs: IpfsDaemonService,
+    private _location: Location
     ) { }
 
   ngOnInit(): void {
@@ -70,5 +72,9 @@ export class ProfileEditComponent implements OnInit {
     console.log('e', event.target.files[0]);
     this.profileFeaturedUrl = await this.ipfs.uploadFile(event.target.files[0]);
     console.log(this.profileFeaturedUrl)
+  }
+
+  back() {
+    this._location.back()
   }
 }

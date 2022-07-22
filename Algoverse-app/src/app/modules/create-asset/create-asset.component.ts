@@ -61,8 +61,7 @@ export class CreateAssetComponent implements OnInit {
     private _location: Location,
     private spinner: NgxSpinnerService,
     private fb: FormBuilder
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.FORM = this.fb.group({
@@ -117,11 +116,11 @@ export class CreateAssetComponent implements OnInit {
       }
     )
 
-    // for (let item of this._stateService.collections) {
-    //   this.collections.push(item.name);
-    // }
+      // for (let item of this._stateService.collections) {
+      //   this.collections.push(item.name);
+      // }
 
-    const asd = new Uint8Array([77, 174, 24, 184, 124, 209, 85, 243, 77, 235, 109, 183, 108, 40, 0, 128, 37, 182, 20, 242, 65, 232, 91, 122, 47, 178, 56, 179, 96, 255, 95, 206])
+    const asd = new Uint8Array([77, 174, 24, 184, 124, 209, 85, 243, 77, 235, 109, 183, 108, 40, 0, 128, 37, 182, 20, 242, 65, 232, 91, 122, 47, 178, 56, 179,96,255,95,206])
     const hex = Buffer.from(asd).toString('hex');
     console.log('hex', hex);
   }
@@ -189,34 +188,33 @@ export class CreateAssetComponent implements OnInit {
       this.eighth = true;
 
     } else if (i === 8) {
-      if (!this.eighth) {
-        this.assetMappingdata.push({first: this.FORM.value.ff8, second: this.FORM.value.sf8})
-
-      } else {
-        return
-      }
-      this.eighth = true;
-
-    } else if (i === 9) {
       if (!this.nineth) {
-        this.assetMappingdata.push({first: this.FORM.value.ff9, second: this.FORM.value.sf9})
+        this.assetMappingdata.push({first: this.FORM.value.ff8, second: this.FORM.value.sf8})
 
       } else {
         return
       }
       this.nineth = true;
 
+    } else if (i === 9) {
+      if (!this.tenth) {
+        this.assetMappingdata.push({first: this.FORM.value.ff9, second: this.FORM.value.sf9})
+
+      } else {
+        return
+      }
+      this.tenth = true;
+
     } else if (i === 10) {
       this.assetMappingdata.push({first: this.FORM.value.ff10, second: this.FORM.value.sf10})
     }
-
   }
 
   minus(i: any) {
-    if (i === 2) {
-      this.second = false;
-      this.FORM.value.ff2 = ''
-      this.FORM.value.sf2 = ''
+   if (i === 2) {
+       this.second = false;
+       this.FORM.value.ff2 = ''
+       this.FORM.value.sf2 = ''
       this.assetMappingdata[1] = null;
     } else if (i === 3) {
       this.third = false;
@@ -263,7 +261,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   toggleEvent() {
-    this.toggleCounter++;
+    this.toggleCounter ++;
     if (this.toggleCounter % 2 === 0) {
 
     }
@@ -316,11 +314,11 @@ export class CreateAssetComponent implements OnInit {
     console.log('e type: ', e.target.files[0].type)
     this.fileUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('fileUrl', this.fileUrl);
-    if (e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3") {
+    if(e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3") {
       this.isMusicUpload = true;
       this.isVideoUpload = false;
       this.animation_url_mimetype = e.target.files[0].type.toString();
-    } else if (e.target.files[0].type.toString() == "video/mp4" || e.target.files[0].type.toString() == "video/mpeg") {
+    } else if(e.target.files[0].type.toString() == "video/mp4" || e.target.files[0].type.toString() == "video/mpeg") {
       this.isMusicUpload = false;
       this.isVideoUpload = true;
       this.animation_url_mimetype = e.target.files[0].type.toString();
@@ -344,143 +342,143 @@ export class CreateAssetComponent implements OnInit {
     });
     this.assetMappingdata = [...filtered]
     console.log(this.assetMappingdata);
-    // if (!this.passedCollection) {
-    //   alert('Please select a collection');
-    //   return;
-    // }
-    // if (!this.name) {
-    //   alert('Please input name');
-    //   return;
-    // }
-    // if (!this.unitName) {
-    //   alert('Please input unit name');
-    //   return;
-    // }
-    // if (!this.description) {
-    //   alert('Please input description');
-    //   return;
-    // }
-    // if (!this.royalty) {
-    //   alert('Please input royalty');
-    //   return;
-    // }
-    // if (!this.externalLink) {
-    //   alert('Please input url');
-    //   return;
-    // }
-    // if (!this.supply) {
-    //   alert('Please input supply');
-    //   return;
-    // }
-    // if (!this.fileUrl) {
-    //   alert('Please add file');
-    //   return;
-    // }
-    // if (!this.coverUrl && (this.isMusicUpload || this.isVideoUpload)) {
-    //   alert('Please add cover image');
-    //   return;
-    // }
-    //
-    // this.spinner.show();
-    // delete this.passedCollection.creator;
-    // let metadata;
-    // if(this.isMusicUpload || this.isVideoUpload) {
-    //   metadata = {
-    //     name: this.name,
-    //     description: this.description,
-    //     image: this.coverUrl,
-    //     image_mimetype: this.image_mimetype,
-    //     external_url: this.externalLink,
-    //     animation_url: this.fileUrl,
-    //     animation_url_mimetype: this.animation_url_mimetype,
-    //     properties: {
-    //       collection: this.passedCollection,
-    //       royalty: this.royalty,
-    //       attributes: {
-    //         height: 3,
-    //         length: 2
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   metadata = {
-    //     name: this.name,
-    //     description: this.description,
-    //     image: this.fileUrl,
-    //     image_mimetype: this.image_mimetype,
-    //     external_url: this.externalLink,
-    //     properties: {
-    //       collection: this.passedCollection,
-    //       royalty: this.royalty,
-    //       attributes: {
-    //         height: 3,
-    //         length: 2
-    //       }
-    //     }
-    //   }
-    // }
-    //
-    // const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
-    // let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
-    // console.log('ipfsUrl', ipfsUrl);
-    // console.log(assetUrl)
-    //
-    // const hash2 = sha256.sha256.hmac.update('arc0003/amj', JSON.stringify(metadata));
-    // const hash = new Uint8Array(hash2.digest());
-    // console.log('hash', hash)
-    //
-    // const params = {
-    //   name: this.name,
-    //   unitName: this.unitName,
-    //   supply: this.supply,
-    //   assetURL: assetUrl,
-    //   hash,
-    //   image: this.coverUrl,
-    //   decimals: this.decimals
-    // }
-    // console.log('params', params);
-    // const assetId = await this._walletsConnectService.createAsset(params);
-    // console.log('assetId', assetId);
-    //
-    // if (assetId) {
-    //   const params = {
-    //     assetId: assetId,
-    //     name: this.name,
-    //     unitName: this.unitName,
-    //     creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
-    //     assetURL: ipfsUrl,
-    //     description: this.description,
-    //     supply: this.supply,
-    //     clawbackAddress: "",
-    //     managerAddress: "",
-    //     freezeAddress: "",
-    //     reserveAddress: "",
-    //     metadata: Buffer.from(hash).toString('hex'),
-    //     file: this.fileUrl,
-    //     cover: this.coverUrl,
-    //     royalties: this.royalty,
-    //     externalLink: this.externalLink,
-    //     collectionId: this.passedCollection.collectionId,
-    //     properties: {},
-    //     createOffer: true
-    //   }
-    //
-    //   console.log('params', params);
-    //   this._userService.createAsset(params).subscribe(
-    //     res => {
-    //       this.spinner.hide();
-    //       alert('Successfully minted')
-    //     },
-    //     err => {
-    //       this.spinner.hide();
-    //       console.log(err);
-    //       alert('Failed, please retry later');
-    //     }
-    //   )
-    // } else {
-    //   this.spinner.hide();
-    //   alert('Failed to mint asset on network');
-    // }
+    if (!this.passedCollection) {
+      alert('Please select a collection');
+      return;
+    }
+    if (!this.name) {
+      alert('Please input name');
+      return;
+    }
+    if (!this.unitName) {
+      alert('Please input unit name');
+      return;
+    }
+    if (!this.description) {
+      alert('Please input description');
+      return;
+    }
+    if (!this.royalty) {
+      alert('Please input royalty');
+      return;
+    }
+    if (!this.externalLink) {
+      alert('Please input url');
+      return;
+    }
+    if (!this.supply) {
+      alert('Please input supply');
+      return;
+    }
+    if (!this.fileUrl) {
+      alert('Please add file');
+      return;
+    }
+    if (!this.coverUrl && (this.isMusicUpload || this.isVideoUpload)) {
+      alert('Please add cover image');
+      return;
+    }
+
+    this.spinner.show();
+    delete this.passedCollection.creator;
+    let metadata;
+    if(this.isMusicUpload || this.isVideoUpload) {
+      metadata = {
+        name: this.name,
+        description: this.description,
+        image: this.coverUrl,
+        image_mimetype: this.image_mimetype,
+        external_url: this.externalLink,
+        animation_url: this.fileUrl,
+        animation_url_mimetype: this.animation_url_mimetype,
+        properties: {
+          collection: this.passedCollection,
+          royalty: this.royalty,
+          attributes: {
+            height: 3,
+            length: 2
+          }
+        }
+      }
+    } else {
+      metadata = {
+        name: this.name,
+        description: this.description,
+        image: this.fileUrl,
+        image_mimetype: this.image_mimetype,
+        external_url: this.externalLink,
+        properties: {
+          collection: this.passedCollection,
+          royalty: this.royalty,
+          attributes: {
+            height: 3,
+            length: 2
+          }
+        }
+      }
+    }
+
+    const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
+    let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
+    console.log('ipfsUrl', ipfsUrl);
+    console.log(assetUrl)
+
+    const hash2 = sha256.sha256.hmac.update('arc0003/amj', JSON.stringify(metadata));
+    const hash = new Uint8Array(hash2.digest());
+    console.log('hash', hash)
+
+    const params = {
+      name: this.name,
+      unitName: this.unitName,
+      supply: this.supply,
+      assetURL: assetUrl,
+      hash,
+      image: this.coverUrl,
+      decimals: this.decimals
+    }
+    console.log('params', params);
+    const assetId = await this._walletsConnectService.createAsset(params);
+    console.log('assetId', assetId);
+
+    if (assetId) {
+      const params = {
+        assetId: assetId,
+        name: this.name,
+        unitName: this.unitName,
+        creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+        assetURL: ipfsUrl,
+        description: this.description,
+        supply: this.supply,
+        clawbackAddress: "",
+        managerAddress: "",
+        freezeAddress: "",
+        reserveAddress: "",
+        metadata: Buffer.from(hash).toString('hex'),
+        file: this.fileUrl,
+        cover: this.coverUrl,
+        royalties: this.royalty,
+        externalLink: this.externalLink,
+        collectionId: this.passedCollection.collectionId,
+        properties: {},
+        createOffer: true
+      }
+
+      console.log('params', params);
+      this._userService.createAsset(params).subscribe(
+        res => {
+          this.spinner.hide();
+          alert('Successfully minted')
+        },
+        err => {
+          this.spinner.hide();
+          console.log(err);
+          alert('Failed, please retry later');
+        }
+      )
+    } else {
+      this.spinner.hide();
+      alert('Failed to mint asset on network');
+    }
   }
 
   onBack() {
