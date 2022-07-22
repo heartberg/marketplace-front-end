@@ -67,12 +67,12 @@
                 <ng-container *ngIf="first">
                   <div class="row">
                     <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff" (blur)="onBlurMethod(1.1)">
                     </div>
                     <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf" (blur)="onBlurMethod(1.2)">
                     </div>
-                    <div class="plus-icon" (click)="addSection(1)">
+                    <div class="plus-icon" (click)="addSection(1)" *ngIf="!second">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
                     <div class="plus-icon" *ngIf="pushedItems.length > 1"
@@ -84,15 +84,15 @@
                 <ng-container  *ngIf="second">
                   <div class="row">
                     <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum"  formControlName="ff2">
+                      <input type="text" placeholder="e.g height" class="input-costum"  formControlName="ff2" (blur)="onBlurMethod(2.1)">
                     </div>
                     <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum"  formControlName="sf2">
+                      <input type="text" placeholder="e.g 4m" class="input-costum"  formControlName="sf2" (blur)="onBlurMethod(2.2)">
                     </div>
-                    <div class="plus-icon" (click)="addSection(2)">
+                    <div class="plus-icon" (click)="addSection(2)" *ngIf="!third">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="second"
+                    <div class="plus-icon" *ngIf="!third"
                          (click)="minus(2)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -107,10 +107,10 @@
                       <div class="col-md-5">
                         <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf3">
                       </div>
-                      <div class="plus-icon" (click)="addSection(3)">
+                      <div class="plus-icon" (click)="addSection(3)" *ngIf="!fourth">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                       </div>
-                      <div class="plus-icon" *ngIf="third"
+                      <div class="plus-icon" *ngIf="!fourth"
                            (click)="minus(3)">
                         <i class="fa fa-minus" aria-hidden="true"></i>
                       </div>
@@ -125,10 +125,10 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf4">
                     </div>
-                    <div class="plus-icon" (click)="addSection(4)">
+                    <div class="plus-icon" (click)="addSection(4)" *ngIf="!fiveth">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="fourth"
+                    <div class="plus-icon" *ngIf="!fiveth"
                          (click)="minus(4)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -142,10 +142,10 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf5">
                     </div>
-                    <div class="plus-icon" (click)="addSection(5)">
+                    <div class="plus-icon" (click)="addSection(5)" *ngIf="!sixth">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="fiveth"
+                    <div class="plus-icon" *ngIf="!sixth"
                          (click)="minus(5)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -159,10 +159,10 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf6">
                     </div>
-                    <div class="plus-icon" (click)="addSection(6)">
+                    <div class="plus-icon" (click)="addSection(6)" *ngIf="!seventh">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="sixth"
+                    <div class="plus-icon" *ngIf="!seventh"
                          (click)="minus(6)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -176,10 +176,10 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf7">
                     </div>
-                    <div class="plus-icon" (click)="addSection(7)">
+                    <div class="plus-icon" (click)="addSection(7)" *ngIf="!eighth">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    <div class="plus-icon" *ngIf="seventh"
+                    <div class="plus-icon" *ngIf="!eighth"
                          (click)="minus(7)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
@@ -193,11 +193,45 @@
                     <div class="col-md-5">
                       <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
                     </div>
-                    <div class="plus-icon" (click)="addSection(8)">
+                    <div class="plus-icon" (click)="addSection(8)" *ngIf="eighth">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </div>
                     <div class="plus-icon" *ngIf="eighth"
                          (click)="minus(8)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="nineth">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(9)" *ngIf="nineth">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="nineth"
+                         (click)="minus(9)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="tenth">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(10)" *ngIf="tenth">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="tenth"
+                         (click)="minus(10)">
                       <i class="fa fa-minus" aria-hidden="true"></i>
                     </div>
                   </div>
