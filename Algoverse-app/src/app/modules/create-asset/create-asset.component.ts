@@ -353,14 +353,12 @@ export class CreateAssetComponent implements OnInit {
 
     const filtered = this.assetMappingdata.filter((el: any) => {
       if (el.first === null && el.second !== null) {
-        this.alert = true;
+        alert('Fill Both Fields');
         setTimeout(() => {
-          this.alert = false;
         } , 1500)
       } else if (el.first !== null && el.second === null) {
-        this.alert = true;
+        alert('Fill Both Fields');
         setTimeout(() => {
-          this.alert = false;
         } , 1500)
       }
       return el.first != null && el.second != null;
