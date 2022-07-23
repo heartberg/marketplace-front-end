@@ -1339,7 +1339,7 @@ export class WalletsConnectService {
         let accounts = [auctionIndex];
         const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "LB_ADDR")
         console.log("leadBidder", encodeAddress(leadBidder));
-        if (leadBidder && leadBidder != 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') {
+        if (leadBidder && leadBidder != 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ') {
           accounts.push(leadBidder);
           suggestedParams.fee = 4000;
         }
@@ -1347,6 +1347,7 @@ export class WalletsConnectService {
         const teamWallet = await getAppGlobalState(environment.AUCTION_APP_ID, "TW_ADDR");
         console.log("teamWallet", teamWallet);
         accounts.push(teamWallet);
+        console.log("accounts", accounts);
 
         let txns = [];
         const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
