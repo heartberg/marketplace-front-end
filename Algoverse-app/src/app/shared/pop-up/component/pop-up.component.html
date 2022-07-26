@@ -3,27 +3,62 @@
     <button class="btn-default btn-default close" (click)="closePopUp(false)">
       <i class="fa fa-close"></i>
     </button>
-    <div class="top-side">
-      <div class="title">
-        <h3>Connect your Wallet</h3>
+    <ng-container *ngIf="!switcher && !selected">
+      <div class="top-side">
+        <div class="title">
+          <h3>Connect your Wallet</h3>
+        </div>
+        <div class="pre-title">
+          <span>Choose your preferred method to connect to the Algoverse Marketplace</span>
+        </div>
       </div>
-      <div class="pre-title">
-        <span>Choose your preferred method to connect to the Algoverse Marketplace</span>
+      <div class="wallet-side">
+        <div class="wallet-section" (click)="setelectWalletConnect('WalletConnect')">
+          <img src="assets/img/walletconnect.png" alt="">
+          <span>WalletConnect</span>
+        </div>
+        <div class="wallet-section" (click)="setelectWalletConnect('MyAlgoWallet')">
+          <img src="assets/img/myalgo.png" alt="">
+          <span>MyAlgoWallet</span>
+        </div>
+        <div class="wallet-section" (click)="setelectWalletConnect('AlgoSigner')">
+          <img aria-hidden="true" src="https://lh3.googleusercontent.com/q6YDjVcO1MQEvfJpNC59-d7RsqbD8zaDjMaMCqOVYMXFyjuuQIhAsSuG4LrciSBgik0KuJwfGZGWIvEjRFRHaH4h=w128-h128-e365-rj-sc0x00ffffff" class="e-f-s">
+          <span>AlgoSigner</span>
+        </div>
       </div>
-    </div>
-    <div class="wallet-side">
-      <div class="wallet-section" (click)="setelectWalletConnect('WalletConnect')">
-        <img src="https://walletconnect.org/walletconnect-logo.svg" alt="">
-        <span>WalletConnect</span>
+    </ng-container>
+    <ng-container *ngIf="switcher">
+      <h3 style="text-align: center; margin-bottom: 30px; color: #81007F">Switch Your Wallet</h3>
+      <div class="context-section">
+        <!--          <h2 *ngFor="let acc of wallet(); let i = index" [class.color-violet]="getActive(acc)" (click)="switchAcc(i)"> {{returnAddress(acc)}}</h2>-->
+        <app-drop-down-selector
+          [isNotAccordion]="false"
+          [dropDownValues]="wallet()"
+          (switcherEmit)="getValueFromDropDown($event)"
+          [widthPX]="'330px'"
+          [isSwitcher]="true"
+        >
+        </app-drop-down-selector>
       </div>
-      <div class="wallet-section" (click)="setelectWalletConnect('MyAlgoWallet')">
-        <img src="https://wallet.myalgo.com/images/MyAlgoBlue.svg" alt="">
-        <span>MyAlgoWallet</span>
+    </ng-container>
+    <ng-container *ngIf="selected">
+      <h3 style="text-align: center; margin-bottom: 30px; color: #81007F">Place Offer</h3>
+      <div class="d-flex align-baseline">
+        <input type="text" class="input-costum" (blur)="blurOfferEvent($event)">
+        <span class="color-violet" style="line-height: 57px;"> Algo</span>
       </div>
-      <div class="wallet-section" (click)="setelectWalletConnect('AlgoSigner')">
-        <img aria-hidden="true" src="https://lh3.googleusercontent.com/q6YDjVcO1MQEvfJpNC59-d7RsqbD8zaDjMaMCqOVYMXFyjuuQIhAsSuG4LrciSBgik0KuJwfGZGWIvEjRFRHaH4h=w128-h128-e365-rj-sc0x00ffffff" class="e-f-s">
-        <span>AlgoSigner</span>
+      <div class="d-flex align-baseline">
+        <input type="text" class="input-costum" (blur)="blurAmount($event)">
+        <span class="color-violet" style="line-height: 57px;"> Pieces</span>
       </div>
-    </div>
+      <div class="btns d-flex justify-content-between">
+        <button class="btn-primary-costum" (click)="cancel()">
+          Cancel
+        </button>
+        <button class="btn-secondary-costum" (click)="placeBid()">
+          Bid
+        </button>
+      </div>
+    </ng-container>
   </div>
 </div>

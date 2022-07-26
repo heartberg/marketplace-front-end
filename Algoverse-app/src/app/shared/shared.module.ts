@@ -10,6 +10,8 @@ import { SwapCardComponent } from './swap-card/swap-card.component';
 import { TimedAuctionCardComponent } from './timed-auction-card/timed-auction-card.component';
 import { SkeletonImgComponent } from './skeleton-preloader/skeleton-img/skeleton-img.component';
 import { SkeletonCardComponent } from './skeleton-preloader/skeleton-card/skeleton-card.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { SkeletonCardComponent } from './skeleton-preloader/skeleton-card/skelet
   imports: [
     BrowserModule,
     RouterModule,
+    NgxSpinnerModule,
+    NgxSliderModule
   ],
   exports: [
     PopUpComponent,
@@ -35,6 +39,8 @@ import { SkeletonCardComponent } from './skeleton-preloader/skeleton-card/skelet
     TimedAuctionCardComponent,
     SkeletonImgComponent,
     SkeletonCardComponent,
+    NgxSpinnerModule,
+    NgxSliderModule
   ],
   providers: [WalletsConnectService],
 })

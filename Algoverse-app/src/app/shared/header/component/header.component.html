@@ -37,16 +37,16 @@
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace/all-types">Marketplace</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/artists">Artists</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="artists/space-shuttle">SpaceShuttle</li>
-            <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/token">Token</li>
-            <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> Algolution </li>
-            <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}" class="last-nav-list">Blog</li>
+            <!-- <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/token">Token</li> -->
+            <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> EVO </li>
           </ng-container>
           <ng-container *ngIf="changeRespoNavAndProfileIcons">
-            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/profile">Profile</li>
-            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}">Items</li>
+            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/profile/{{wallet}}">Profile</li>
+            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/items">My Offers</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}"  routerLink="/create-offer">Create Offer</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">Collections</li>
             <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li>
+            <li (click)="switcher()">Switch Acc</li>
             <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}">Log Out</li>
           </ng-container>
         </ul>
@@ -57,7 +57,7 @@
         <div class="create-section">
           <button class="btn-default btn-secondary-costum letter-spacing-restyle"
                   [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened}"
-                  routerLink="/create-offer"
+                  routerLink="/create-asset"
           >
               Create
           </button>
@@ -105,12 +105,13 @@
             </ng-container>
             <div class="dropDown" *ngIf="isProfileOpened">
               <ul>
-                <li routerLink="/profile">Profile</li>
-                <li>Items</li>
+                <li routerLink="/profile/{{wallet}}">Profile</li>
+                <li routerLink="/items">My Offers</li>
                 <li routerLink="/create-offer">Create Offer</li>
                 <li routerLink="/collection">Collections</li>
                 <li routerLink="/notification-center">Notifications</li>
-                <li>Log Out</li>
+                <li (click)="switcher()">Switch Acc</li>
+                <li (click)="logOut()">Log Out</li>
               </ul>
             </div>
           </div>
@@ -150,3 +151,4 @@
   </div>
 </div>
 <app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" (isConnectedToWallet)="walletConnectionSucceed($event)"></app-pop-up>
+<app-pop-up *ngIf="isPopUpOpenedSecond" (isClosed)="closePopUp($event)" [switcher]="true" (isSwitched)="switched($event)"></app-pop-up>

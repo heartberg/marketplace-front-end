@@ -1,37 +1,30 @@
 <div class="wrapper-card">
-  <div class="img">
-    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+  <div class="img" *ngIf="!isCollection">
+    <img src="{{mItem.file}}" alt="">
+  </div>
+  <div class="img" *ngIf="isCollection">
+    <img src="{{mItem.featuredImage}}" alt="">
   </div>
   <div class="card-info" [class.flex-column]="isCollection">
     <div class="card-info-left"  *ngIf="!isCollection">
       <div class="section">
         <h4>Name: </h4>
-        <span class="unset-dm-style">ETH</span>
+        <span class="unset-dm-style">{{mItem.name}}</span>
       </div>
-      <div class="section">
+      <div class="section" *ngIf="mItem.creator">
         <h4>Creator </h4>
-        <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt="">
-      </div>
-      <div class="section">
-        <h4>Collection </h4>
-        <span class="unset-dm-style">Newest</span>
-      </div>
-      <div class="section">
-        <h4>Price </h4>
-        <span class="unset-dm-style">100$</span>
-      </div>
-      <div class="section">
-        <h4>Current Bid </h4>
-        <span class="unset-dm-style">50$</span>
+        <img src="{{mItem.creator.profileImage}}" alt="">
+        <span class="unset-dm-style">{{mItem.creator.name}}</span>
+        <img *ngIf="mItem.creator.isVerified" style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt="">
       </div>
     </div>
     <div class="name" *ngIf="isCollection">
-      <h4>Collection Name</h4>
+      <h4>{{mItem.name}}</h4>
     </div>
     <div class="card-info-right" [class.my-page]="isCollection">
       <div class="section">
         <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i>
-        <span>30</span>
+        <span>{{mItem.stars}}</span>
       </div>
     </div>
   </div>

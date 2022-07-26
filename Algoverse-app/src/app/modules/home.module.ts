@@ -17,6 +17,7 @@ import {ProfileSettingsComponent} from "./profile/profile-settings/profile-setti
 import {NotificationCentreComponent} from "./profile/notification-centre/notification-centre.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { CreateTradeComponent } from './market-place/create-trade/create-trade.component';
+import { CreateBidComponent } from './market-place/create-bid/create-bid.component';
 import { ProfileEditComponent } from './profile/profile-edit/profile-edit.component';
 import { AssetsDetailBuyComponent } from './market-place/assets-detail-buy/assets-detail-buy.component';
 import {MatTreeModule} from "@angular/material/tree";
@@ -33,6 +34,16 @@ import { AssetDetailSwapComponent } from './swap/asset-detail-swap/asset-detail-
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { CreateAuctionComponent } from './create-auction/create-auction.component';
 import {CarouselModule} from "../carousel/carousel.module";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ItemsComponent } from "./profile/items/items.component";
+import { TradeDetailComponent } from "../trade-detail/trade-detail.component";
+import { TradeGridItemComponent } from "../trade-grid-item/trade-grid-item.component";
+import { BidGridItemComponent } from "../bid-grid-item/bid-grid-item.component";
+import { BidDetailComponent } from "../bid-detail/bid-detail.component";
+import { SwapDetailComponent } from "../swap-detail/swap-detail.component";
+import { SwapGridItemComponent } from "../swap-grid-item/swap-grid-item.component";
+import { AuctionDetailComponent } from "../auction-detail/auction-detail.component";
+import { AuctionGridItemComponent } from "../auction-grid-item/auction-grid-item.component";
 
 @NgModule({
   declarations: [
@@ -47,6 +58,7 @@ import {CarouselModule} from "../carousel/carousel.module";
     ProfileSettingsComponent,
     NotificationCentreComponent,
     CreateTradeComponent,
+    CreateBidComponent,
     ProfileEditComponent,
     AssetsDetailBuyComponent,
     CreateAssetComponent,
@@ -57,7 +69,16 @@ import {CarouselModule} from "../carousel/carousel.module";
     SpaceshuttleComponent,
     CreateSwapComponent,
     AssetDetailSwapComponent,
-    CreateAuctionComponent
+    CreateAuctionComponent,
+    ItemsComponent,
+    TradeDetailComponent,
+    TradeGridItemComponent,
+    BidGridItemComponent,
+    BidDetailComponent,
+    SwapDetailComponent,
+    SwapGridItemComponent,
+    AuctionDetailComponent,
+    AuctionGridItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +93,8 @@ import {CarouselModule} from "../carousel/carousel.module";
     MatTabsModule,
     MatCheckboxModule,
     CarouselModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   exports: [

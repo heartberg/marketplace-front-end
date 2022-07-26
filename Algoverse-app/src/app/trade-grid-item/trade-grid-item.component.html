@@ -1,0 +1,34 @@
+<div class="wrapper-card">
+  <div class="img">
+    <div class="section" *ngIf="mItem.asset.file">
+      <img src="https://ipfs.infura.io/ipfs/{{mItem.asset.file}}" alt="">
+    </div>
+    <div class="section" *ngIf="!mItem.asset.file">
+      <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
+    </div>
+  </div>
+  <div class="card-info w-100" [class.flex-column]="isCollection">
+    <div class="card-info-left w-100"  *ngIf="!isCollection">
+      <div class="section">
+        <h4>Name: {{mItem.asset.name}}</h4>
+        <span class="unset-dm-style">{{mItem.asset.unitName}}</span>
+      </div>
+      <div class="section w-100">
+        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.tradeCreator.name}}</h4>
+      </div>
+      <div class="section">
+        <h4>Status </h4>
+        <span class="unset-dm-style" *ngIf="mItem.isOpen">
+          Open
+        </span>
+        <span class="unset-dm-style" *ngIf="!mItem.isOpen">
+          Cancelled
+        </span>
+      </div>
+      <div class="section">
+        <h4>Price </h4>
+        <span class="unset-dm-style">{{(mItem.price / 1000000).toFixed(3)}}</span>
+      </div>
+    </div>
+  </div>
+</div>

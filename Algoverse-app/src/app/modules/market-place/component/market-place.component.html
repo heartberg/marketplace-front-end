@@ -7,14 +7,15 @@
             Price
           </h3>
         </div>
-        <mat-slider
+        <ngx-slider [(value)]="lowPrice" [(highValue)]="highPrice" [options]="options" (mouseup)="sliderEvent()"></ngx-slider>
+        <!-- <mat-slider
           thumbLabel
           [displayWith]="formatLabel"
           tickInterval="1000"
           step="1000"
           min="0"
           max="100000"
-          aria-label="units"></mat-slider>
+          aria-label="units"></mat-slider> -->
       </div>
       <div class="section">
         <div class="title">
@@ -22,7 +23,7 @@
             Cateogry
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="categoriesDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="categoriesDropDown" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
       </div>
       <div class="section">
         <div class="title">
@@ -30,7 +31,7 @@
             Type
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="typesDropDown" (dropDownValue)="catchValue($event)"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="typesDropDown" (dropDownValue)="selectedType($event)"></app-drop-down-selector>
       </div>
       <div class="section">
         <div class="title">
@@ -38,80 +39,67 @@
             Collections
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="collectionsDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="collectionsDropDown" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
       </div>
-      <div class="section last">
+      <div class="section">
         <div class="title">
           <h3>
             Artists
           </h3>
         </div>
-        <app-drop-down-selector [dropDownValues]="artistsDropDown"></app-drop-down-selector>
+        <app-drop-down-selector [dropDownValues]="artistsDropDown" (dropDownValue)="selectedArtist($event)"></app-drop-down-selector>
+      </div>
+      <div class="section last">
+        <div class="title">
+          <h3>
+            Sort by
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedSort($event)"></app-drop-down-selector>
       </div>
     </div>
     <div class="right-section">
-      <div class="timed-auction-section">
-        <div class="wrapper">
-          <div class="wrapper-border p-b_0">
-            <div class="row m-t_10 ">
-              <div class="col-sm-4">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
-                  </div>
-                  <div class="col-sm-12">
-                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="row">
-                  <div class="col-sm-12 only-one-img">
-                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
-                  </div>
-                  <div class="col-sm-12">
-                    <img src="https://img.rarible.com/prod/image/upload/t_preview/prod-itemImages/0x60f80121c31a0d46b5279700f9df786054aa5ee5:1366863/c64c39f3" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="boxes-section">
-        <div class="boxes-section-sort-by">
-          <app-drop-down-selector [dropDownValues]="boxesSortDropDown" [isNotAccordion]="false"></app-drop-down-selector>
-        </div>
-        <div class="sale-section" *ngIf="isSale || isAll">
-          <h3 class="color-violet">Sale</h3>
+        <div class="sale-section">
+          <h3 class="color-violet title">Trades</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-              <app-card *ngIf="isLoaded"></app-card>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of trades">
+              <div *ngIf="isLoaded" >
+                <app-trade-grid-item [routerLink]="'/trade/' + item['tradeId']" [mItem]="item"></app-trade-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
         </div>
-        <div class="swap-section" *ngIf="isSwap || isAll">
-          <h3 class="color-violet">Swap</h3>
+        <div class="sale-section">
+          <h3 class="color-violet title">Bids</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-              <app-swap-card *ngIf="isLoaded"></app-swap-card>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of bids">
+              <div *ngIf="isLoaded">
+                <app-bid-grid-item [routerLink]="'/bid/' + item['bidId']" [mItem]="item"></app-bid-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>
         </div>
-        <div class="swap-section timed-auction-section" *ngIf="isTimedAuction || isAll">
-          <h3 class="color-violet">Timed Auction</h3>
+        <div class="sale-section">
+          <h3 class="color-violet title">Swaps</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of boxArray">
-              <app-timed-auction-card *ngIf="isLoaded"></app-timed-auction-card>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of swaps">
+              <div *ngIf="isLoaded">
+                <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
+              </div>
+              <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
+            </div>
+          </div>
+        </div>
+        <div class="sale-section timed-auction-section">
+          <h3 class="color-violet title">Timed Auctions</h3>
+          <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of auctions">
+              <div *ngIf="isLoaded">
+                <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
+              </div>
               <app-skeleton-card *ngIf="!isLoaded"></app-skeleton-card>
             </div>
           </div>

@@ -1,0 +1,42 @@
+<div class="main">
+  <div class="wrapper-border">
+    <div class="w-100">
+      <div class="collection-header position-absolute">
+        <div class="title">
+          <h3>My Offers</h3>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="dropdownborder">
+            <div class="dropdown">
+              <div class="AssetsList">
+                <app-drop-down-selector [dropDownValues]="types" (dropDownValue)="onSelectedType($event)"></app-drop-down-selector>
+              </div>
+            </div>
+          </div>
+          <button class="btn-secondary-costum" style="height: 40px;" routerLink="/create-offer" *ngIf="returnState()">
+            Create Offer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="boxes-section">
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 p-2" *ngFor="let item of arr;">
+          <div *ngIf="item['tradeId']">
+            <app-trade-grid-item [routerLink]="'/asset-detail/' + item['assetId']" [mItem]="item"></app-trade-grid-item>
+          </div>
+          <div *ngIf="item['bidId']">
+            <app-bid-grid-item [routerLink]="'/asset-detail/' + item['assetId']" [mItem]="item"></app-bid-grid-item>
+          </div>
+          <div *ngIf="item['swapId']">
+            <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
+          </div>
+          <div *ngIf="item['auctionId']">
+            <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

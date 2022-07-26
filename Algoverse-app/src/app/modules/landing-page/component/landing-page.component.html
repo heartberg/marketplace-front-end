@@ -1,23 +1,20 @@
 <div class="main MAIN">
   <div class="first-section">
     <div class="wrapper first-wrapper wrapper-border">
-     <span class="aboout">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid asperiores aspernatur beatae debitis delectus ea itaque labore laborum nemo optio perferendis, placeat quaerat quos recusandae sunt temporibus veritatis voluptatibus.
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem beatae dolor error eum ex labore, magni molestiae, natus nisi optio perspiciatis
-     </span>
       <div class="buttons">
-        <button class="btn-primary-costum">
+        <button class="btn-primary-costum" routerLink="../marketplace/all-types">
           Discover
         </button>
-        <button class="btn-secondary-costum">
+        <button class="btn-secondary-costum" routerLink="../create-asset">
           Create
         </button>
       </div>
     </div>
-    <div class="wrapper second-wrapper wrapper-border relative">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="" *ngIf="isLoaded">
+    <div class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" routerLink="/profile/{{featuredArtists[0].wallet}}">
+      <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded"
+      style="width: 50%; height: auto;">
       <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
-      <span style="margin-top: 10px;">John Zat Burg</span>
+      <span style="margin-top: 10px;">{{featuredArtists[0].name}}</span>
     </div>
   </div>
   <div class="second-section wrapper-border relative">
@@ -27,13 +24,15 @@
       <span style="margin-top: 10px;">John Zat Burg</span>
     </div>
     <div class="wrapper second-wrap unset-border">
-      <h3>Algolution</h3>
+      <h3>EVO</h3>
       <span class="algolution-preTitle">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid corporis fuga iure iusto minima molestias omnis quo quos recusandae ut! Accusantium beatae blanditiis corporis nulla odio sint suscipit ut voluptas.
+        Evolutionary Virtual Organisms <br>
+        EVO is a handcrafted NFT-Art gamified evolution simulation with real-world impact. <br>
+        The first series contains X unique NFTs. Everyone™ uses proceeds from sales to help endangered animals and vulnerable ecosystems on this planet.
       </span>
       <div class="get-started">
         <button class="btn-primary-costum">
-          Get Started
+          Soon...
         </button>
       </div>
     </div>
@@ -43,25 +42,13 @@
       <h3>Featured Artists</h3>
     </div>
     <div class="boxes d-unset">
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
-      </div>
-      <div class="box relative">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-        <span>Vincet Van Gogh</span>
+      <div class="scrolls">
+        <div class="box" *ngFor="let item of featuredArtists">
+          <div class="mitem">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
+            <span>Vincet Van Gogh</span>
+          </div>
+        </div>
       </div>
       <div class="respo-show">
         <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>
@@ -72,53 +59,28 @@
   <div class="pre-last-section third-section second-section wrapper-border">
     <div class="title">
       <h3 class="title_hot">Hot</h3>
-      <app-drop-down-selector [dropDownValues]="hotDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+      <app-drop-down-selector [dropDownValues]="hotDropDown" [isNotAccordion]="false" (dropDownValue)="selectedType($event)"></app-drop-down-selector>
       <h3 class="title_in">In</h3>
-      <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false"></app-drop-down-selector>
+      <app-drop-down-selector [dropDownValues]="hotInDropDown" [isNotAccordion]="false" (dropDownValue)="selectedLastDuration($event)"></app-drop-down-selector>
     </div>
-    <div class="boxes">
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
+    <div class="scrolls">
+      <div class="box" *ngFor="let item of hotItems">
+        <div class="mitem" *ngIf="item['isCollection']">
+          <img src="{{item['icon']}}" alt="" routerLink="../collection/{{item['collectionId']}}">
+          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        </div>
+        <div class="mitem" *ngIf="item['isAsset']">
+          <img src="https://ipfs.infura.io/ipfs/{{item['file']}}" alt="" routerLink="../asset-details/{{item['assetId']}}">
+          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        </div>
+        <div class="mitem" *ngIf="item['isUser']">
+          <img src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt=""
+          routerLink="../profile/{{item['wallet']}}">
+          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        </div>
       </div>
     </div>
   </div>
 <!--  drop-down-selector-->
-  <div class="last-section third-section second-section wrapper-border">
-    <div class="title">
-      <h3>Benefits for Artists & Collectors</h3>
-    </div>
-    <div class="boxes d-unset">
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="box relative">
-        <span>Vincet Van Gogh</span>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-        <app-skeleton-img *ngIf="!isLoaded" [isBoxes]="true"></app-skeleton-img>
-      </div>
-      <div class="respo-show">
-        <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>
-      </div>
-    </div>
-  </div>
 </div>
 

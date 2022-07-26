@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import { UserService } from 'src/app/services/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MatSliderChange } from '@angular/material/slider';
+import { Options, LabelType } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-market-place',
@@ -7,12 +11,19 @@ import {Router} from "@angular/router";
   styleUrls: ['./market-place.component.scss']
 })
 export class MarketPlaceComponent implements OnInit {
-  public categoriesDropDown: string[] = ['All NFTs', 'Art', 'Music', 'Packs', 'URLs', 'Real Estate'];
-  public typesDropDown: string[] = ['All Types', 'Sale', 'Auction', 'Swap'];
-  public collectionsDropDown: string[] = ['All Collections', 'Collection 1', 'Collection 2', 'Collection 3'];
-  public artistsDropDown: string[] = ['All Artists', 'Artists 1', 'Artists 2',];
-  public boxesSortDropDown: string[] = ['Sort by', 'Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked']
-  public boxArray: number[] = [1,1,1,2,2,3,4,4,4];
+  public typesDropDown: string[] = ['All Types', 'Trade', 'Bid', 'Swap', 'Auction'];
+  public categoriesDropDown: string[] = ['All NFTs', 'Collectible items', 'Artwork', 'Event tickets', 'Music and media', 'Gaming', 'Big Sports Moments', 'Virtual Fashion', 'Real-world assets', 'Memes', 'Domain names'];
+  public collectionsDropDown: string[] = ['All Collections'];
+  public artistsDropDown: string[] = ['All Artists'];
+  public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high', 'Most viewed', 'Most liked'];
+
+  public trades: any[] = [];
+  public bids: any[] = [];
+  public swaps: any[] = [];
+  public auctions: any[] = [];
+  public collections: any[] = [];
+  public artists: any[] = [];
+
   //drop down value
   public dropDownValue: string = '';
   public isSwap: boolean = false;
@@ -21,6 +32,28 @@ export class MarketPlaceComponent implements OnInit {
   public isTimedAuction: boolean = false;
 
   public isLoaded: boolean = false;
+  public type: string = 'all';
+  public category: string = '';
+  public collection: string = '';
+  public artist: string = '';
+  public sort: string = 'Newest';
+  public lowPrice: number = 0;
+  public highPrice: number = 100000000;
+
+  public options: Options = {
+    floor: 0,
+    ceil: 100000000,
+    // translate: (value: number, label: LabelType): string => {
+    //   switch (label) {
+    //     case LabelType.Low:
+    //       return "<b>Min price:</b> $" + value;
+    //     case LabelType.High:
+    //       return "<b>Max price:</b> $" + value;
+    //     default:
+    //       return "$" + value;
+    //   }
+    // }
+  };
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -30,41 +63,132 @@ export class MarketPlaceComponent implements OnInit {
     return value;
   }
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private _userService: UserService,
+    private spinner: NgxSpinnerService
+  ) {
+  }
 
   ngOnInit(): void {
-    setTimeout( () => {
-      this.isLoaded = true;
-    },1000)
+    this.spinner.show();
+    this._userService.loadTrendingItems().subscribe(
+      res => {
+        this.isLoaded = true;
+        console.log(res);
+        this.spinner.hide();
+
+        this.trades = res.trades;
+        this.bids = res.bids;
+        this.swaps = res.swaps;
+        this.auctions = res.auctions;
+
+        this.collections = res.collections;
+        for (let item of res.collections) {
+          this.collectionsDropDown.push(item.name);
+        }
+
+        this.artists = res.artists;
+        for (let item of res.artists) {
+          this.artistsDropDown.push(item.name);
+        }
+      },
+      err => {
+        this.spinner.hide();
+        console.log(err);
+      }
+    );
   }
 
-  catchValue(event: string) {
-   this.dropDownValue = event;
+  onInputChange(event: MatSliderChange) {
+    console.log('event.value', event.value);
+  }
 
-    if(this.dropDownValue == 'Sale') {
-      this.isSale = true;
-      this.isSwap = false;
-      this.isTimedAuction = false;
-      this.isAll = false;
-      this.router.navigate(['marketplace/sale'])
-
-    } else if (this.dropDownValue == 'Auction') {
-      this.isSale = false;
-      this.isSwap = false;
-      this.isTimedAuction = true;
-      this.isAll = false;
-      this.router.navigate(['marketplace/auction'])
-
-    } else if (this.dropDownValue == 'Swap') {
-      this.isSale = false;
-      this.isTimedAuction = false;
-      this.isSwap = true;
-      this.isAll = false;
-      this.router.navigate(['marketplace/swap'])
-
-    } else if (this.dropDownValue == 'All Types') {
-      this.isAll = true;
-      this.router.navigate(['marketplace/all-types'])
+  selectedCategory(category: string) {
+    if (category == 'All NFTs') {
+      this.category = '';
+    } else {
+      this.category = category;
     }
+
+    this.searchItems();
   }
+
+  selectedType(type: string) {
+    if (type == "All Types") {
+      this.type = "all";
+    }
+    else if (type == "Trade") {
+      this.type = "trade";
+    }
+    else if (type == "Bid") {
+      this.type = "bid";
+    }
+    else if (type == "Swap") {
+      this.type = "swap";
+    }
+    else if (type == "Auction") {
+      this.type = "auction";
+    }
+
+    this.searchItems();
+  }
+
+  selectedCollection(collectionName: string) {
+    if (collectionName == 'All Collections') {
+      this.category = '';
+
+    } else {
+      for (let item of this.collections) {
+        if (item.name == collectionName) {
+          this.category = item.collectionId;
+        }
+      }
+    }
+
+    this.searchItems();
+  }
+
+  selectedArtist(artistName: string) {
+    if (artistName == 'All Artists') {
+      this.artist = '';
+    } else {
+      this.artist = artistName;
+    }
+
+    this.searchItems();
+  }
+
+  selectedSort(sortOption: string) {
+    this.sort = sortOption;
+
+    this.searchItems();
+  }
+
+  sliderEvent() {
+    console.log('low', this.lowPrice);
+    console.log('high', this.highPrice);
+
+    this.searchItems();
+  }
+
+  async searchItems() {
+    console.log('search')
+    this.spinner.show();
+    this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice, this.highPrice, this.sort).subscribe(
+      res => {
+        this.spinner.hide();
+
+        this.trades = res.trades;
+        this.bids = res.bids;
+        this.swaps = res.swaps;
+        this.auctions = res.auctions;
+      },
+      err => {
+        this.spinner.hide();
+        console.log('err', err);
+      }
+    );
+  }
+
 }

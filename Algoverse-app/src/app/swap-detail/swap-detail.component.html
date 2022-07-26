@@ -1,0 +1,114 @@
+<div class="wrapper wrapper-border">
+  <div class="backArrow" (click)="actionBack()">
+    <img src="https://www.pngitem.com/pimgs/m/467-4678631_arrow-back-icon-png-transparent-png.png" alt="">
+  </div>
+  <div class="whole">
+    <div class="row w-100">
+      <div class="col-md-12">
+        <div class="inside">
+          <div class="wrapper-border">
+            <div class="d-flex justify-between" style="justify-content: space-between;">
+              <h4 class="color-violet">
+                  Offer
+              </h4>
+              <h4 class="color-violet">
+                  Looking for
+              </h4>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="img card-info">
+                  <ng-container>
+                    <div class="section">
+                      <img src="https://ipfs.infura.io/ipfs/{{mSwap?.offeringAsset?.file}}" alt="">
+                    </div>
+                    <div class="card-info-left">
+                      <div class="section">
+                        <h4>Name: </h4>
+                        <span class="unset-dm-style">{{mSwap?.offeringAsset?.name}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset ID: </h4>
+                        <span class="unset-dm-style">{{mSwap?.offeringAsset?.assetId}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Asset Unit:</h4>
+                        <span class="unset-dm-style">{{mSwap?.offeringAsset?.unitName}}</span>
+                      </div>
+                      <div class="section" *ngIf="!isMine" style="align-items: center; cursor: pointer" routerLink="../../profile/{{23833}}">
+                        <h4 style="overflow-wrap: break-word;">Creator: </h4>
+                        <img src="{{mSwap?.offeringAsset?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <span>{{mSwap?.offeringAsset?.name}}</span>
+                        <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
+                             *ngIf="mSwap?.offeringAsset?.verified">
+                      </div>
+                      <div class="section">
+                        <h4>Total Supply:</h4>
+                        <span class="unset-dm-style">{{ 'TODO '}}</span>
+                      </div>
+                      <div class="section">
+                        <h4>Amount:</h4>
+                        <span class="unset-dm-style">{{ mSwap?.offeringAmount}}</span>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+            </div>
+              <div class="col-md-6" *ngIf="mSwap">
+                <ng-container>
+                  <div class="wrapper">
+                    <div class="img">
+                      <div class="section">
+                        <img src="https://ipfs.infura.io/ipfs/{{mSwap?.acceptingAsset?.file}}" alt="">
+                      </div>
+                    </div>
+                    <div class="card-info mt-3">
+                      <div class="card-info-left" style="display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;">
+                        <div class="section">
+                          <h4>Name: </h4>
+                          <span>{{mSwap?.acceptingAsset?.name}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Asset ID:</h4>
+                          <span> {{mSwap?.acceptingAsset.assetId}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Asset Unit: </h4>
+                          <span class="unset-dm-style">{{mSwap?.acceptingAsset?.unitName}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Total Supply:</h4>
+                          <span> {{'TODO'}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Creator:</h4>
+                          <span> {{mSwap?.acceptingAsset?.creator}}</span>
+                        </div>
+                        <div class="section">
+                          <h4>Amount:</h4>
+                          <span class="unset-dm-style">{{  mSwap?.acceptingAmount}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+          </div>
+          <div class="buttons">
+            <button class="btn-secondary-costum aligner" (click)="actionSwap()" style="width: 160px;">
+              <ng-container *ngIf="isMine">
+                Cancel Swap
+              </ng-container>  
+              <ng-container *ngIf="!isMine">
+                Swap
+              </ng-container>  
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
