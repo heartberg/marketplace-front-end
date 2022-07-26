@@ -47,7 +47,7 @@
               <div class="collection-section-img">
                 <div class="row" *ngIf="userCollections">
                   <div class="col-4" *ngFor="let collection of userCollections">
-                    <div routerLink="../collection-detail/{{collection.collectionId}}" style="cursor: pointer;">
+                    <div routerLink="/collection-detail/{{collection.collectionId}}" style="cursor: pointer;">
                       <img src="{{collection.icon}}" alt="">
                       <span class="color-violet">{{collection.name}}</span>
                     </div>
