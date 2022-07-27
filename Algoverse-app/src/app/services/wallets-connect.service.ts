@@ -1524,7 +1524,7 @@ export class WalletsConnectService {
     const walletData = JSON.parse(storageItem);
 
     if (walletData && walletData.accounts) {
-      this.myAlgoAddress = walletData.accounts[0];
+      this.myAlgoAddress = walletData.accounts;
     }
   }
 
@@ -1537,8 +1537,8 @@ export class WalletsConnectService {
     const accounts: string[] = await this.peraConnector.connect();
 
     if (accounts.length) {
-      this.myAlgoAddress = accounts[0];
-      this.createOrLoadProfile(this.myAlgoAddress);
+      this.myAlgoAddress = accounts;
+      this.createOrLoadProfile(this.myAlgoAddress[0]);
     }
   }
 }
