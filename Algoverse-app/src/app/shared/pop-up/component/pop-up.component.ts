@@ -15,7 +15,7 @@ export class PopUpComponent implements OnInit {
   @Output() isSwitched = new EventEmitter<boolean>();
   @Input() selected = false;
   @Input() asset: any;
-  
+
   walletsForSwitching: any = '';
   enteredOffer: any;
   enteredAmount: any;
@@ -33,25 +33,23 @@ export class PopUpComponent implements OnInit {
     this.isClosed.emit(false);
   }
 
-  async setelectWalletConnect(value: string) {
-    if (value === 'MyAlgoWallet') {
-      await this._walletsConnectService.connect('my-algo-connect');
-      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
-        this.isConnectedToWallet.emit(false);
-        console.log('emited')
-        console.log('Connected to MyAlgoWallet')
+  async selectedWalletConnect(value: string) {
+    switch (value) {
+      case 'MyAlgoWallet': {
+        await this._walletsConnectService.connect('my-algo-connect');
+        if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
+          this.isConnectedToWallet.emit(true);
+          console.log('Connected to MyAlgoWallet');
+        }
+        break;
       }
-    } else if (value == 'WalletConnect') {
-      await this._walletsConnectService.connect('wallet-connect');
-      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
-        this.isConnectedToWallet.emit(false);
-        console.log('Connected to WalletConnect')
-      }
-    } else if (value == 'AlgoSigner') {
-      await this._walletsConnectService.connect('algo-signer');
-      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
-        this.isConnectedToWallet.emit(false);
-        console.log('Connected to AlgoSigner')
+      case 'PeraWallet': {
+        await this._walletsConnectService.connectPera();
+        if (this._walletsConnectService.myAlgoAddress) {
+          this.isConnectedToWallet.emit(true);
+          console.log('Connected to Pera Wallet')
+        }
+        break;
       }
     }
   }
@@ -64,7 +62,7 @@ export class PopUpComponent implements OnInit {
   switchAcc(i: number) {
     localStorage.removeItem('wallet');
     localStorage.setItem('walletIndex', JSON.stringify(i));
-    this.setelectWalletConnect('MyAlgoWallet');
+    this.selectedWalletConnect('MyAlgoWallet');
     this.isSwitched.emit(false)
   }
 

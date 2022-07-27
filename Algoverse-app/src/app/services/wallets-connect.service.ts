@@ -6,6 +6,7 @@ import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, g
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
 import {Router} from "@angular/router";
+import { PeraWalletConnect } from "@perawallet/connect";
 
 
 const client = getAlgodClient()
@@ -16,6 +17,7 @@ export class WalletsConnectService {
   public sessionWallet: SessionWallet | undefined;
   public myAlgoAddress: any | undefined;
   public myAlgoName: any | undefined;
+  public peraConnector: PeraWalletConnect = new PeraWalletConnect();
 
   constructor(private userServce: UserService, private router: Router) {
     if (localStorage.getItem('wallet')) {
@@ -23,6 +25,9 @@ export class WalletsConnectService {
       if (this.sessionWallet === undefined || !this.sessionWallet) {
         this.connectOnDefault('my-algo-connect').then(response => response);
       }
+    }
+    if (localStorage.getItem('PeraWallet.Wallet')) {
+      this.connectPera().then(response => response);
     }
   }
 
@@ -63,28 +68,7 @@ export class WalletsConnectService {
     console.log(this.sessionWallet, 'esaaa');
 
     if (this.myAlgoAddress.length > 0) {
-      this.userServce.loadProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
-        (result) => {
-          console.log('profile', result);
-          localStorage.setItem('profile', JSON.stringify(result));
-          this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
-            this.router.navigate(['home']);
-          });
-        },
-        (error) => {
-          console.log('error', error)
-          if (error.status == 404) {
-            this.userServce.createProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
-              (result) => console.log('profile', result),
-              (error) => console.log('error', error),
-            );
-          }
-        }
-      );
-      setTimeout(() => {
-      }, 1000);
-
-      this.userServce.syncUserAssets(this.sessionWallet!.getDefaultAccount());
+      this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
     }
   }
 
@@ -1510,4 +1494,51 @@ export class WalletsConnectService {
     return false;
   }
 
+  public createOrLoadProfile(account: string): void {
+    this.userServce.loadProfile(account).subscribe(
+      (result) => {
+        console.log('profile', result);
+        localStorage.setItem('profile', JSON.stringify(result));
+        this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
+          this.router.navigate(['home']);
+        });
+      },
+      (error) => {
+        console.log('error', error)
+        if (error.status == 404) {
+          this.userServce.createProfile(account).subscribe(
+            (result) => console.log('profile', result),
+            (error) => console.log('error', error),
+          );
+        }
+      }
+    );
+    setTimeout(() => {
+    }, 1000);
+
+    this.userServce.syncUserAssets(account);
+  }
+
+  public getLocalAccountAddress(): void {
+    const storageItem: string = localStorage.getItem('PeraWallet.Wallet') as string;
+    const walletData = JSON.parse(storageItem);
+
+    if (walletData && walletData.accounts) {
+      this.myAlgoAddress = walletData.accounts[0];
+    }
+  }
+
+  public async connectPera(): Promise<void> {
+    this.getLocalAccountAddress();
+    if (this.myAlgoAddress) {
+      await this.peraConnector.reconnectSession();
+      return;
+    }
+    const accounts: string[] = await this.peraConnector.connect();
+
+    if (accounts.length) {
+      this.myAlgoAddress = accounts[0];
+      this.createOrLoadProfile(this.myAlgoAddress);
+    }
+  }
 }
