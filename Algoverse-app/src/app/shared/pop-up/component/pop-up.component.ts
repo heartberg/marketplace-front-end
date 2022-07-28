@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
-import { UserService } from 'src/app/services/user.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import {UserService} from 'src/app/services/user.service';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {AllowedWalletsEnum} from "../../../models";
 
 @Component({
   selector: 'app-pop-up',
@@ -15,10 +16,11 @@ export class PopUpComponent implements OnInit {
   @Output() isSwitched = new EventEmitter<boolean>();
   @Input() selected = false;
   @Input() asset: any;
-  
+
   walletsForSwitching: any = '';
   enteredOffer: any;
   enteredAmount: any;
+  public allowedWallets: typeof AllowedWalletsEnum = AllowedWalletsEnum;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -33,25 +35,23 @@ export class PopUpComponent implements OnInit {
     this.isClosed.emit(false);
   }
 
-  async setelectWalletConnect(value: string) {
-    if (value === 'MyAlgoWallet') {
-      await this._walletsConnectService.connect('my-algo-connect');
-      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
-        this.isConnectedToWallet.emit(false);
-        console.log('emited')
-        console.log('Connected to MyAlgoWallet')
+  async selectedWalletConnect(choice: AllowedWalletsEnum) {
+    switch (choice) {
+      case AllowedWalletsEnum.MY_ALGO_CONNECT: {
+        await this._walletsConnectService.connect('my-algo-connect');
+        if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
+          this.isConnectedToWallet.emit(true);
+          console.log('Connected to MyAlgoWallet');
+        }
+        break;
       }
-    } else if (value == 'WalletConnect') {
-      await this._walletsConnectService.connect('wallet-connect');
-      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
-        this.isConnectedToWallet.emit(false);
-        console.log('Connected to WalletConnect')
-      }
-    } else if (value == 'AlgoSigner') {
-      await this._walletsConnectService.connect('algo-signer');
-      if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
-        this.isConnectedToWallet.emit(false);
-        console.log('Connected to AlgoSigner')
+      case AllowedWalletsEnum.WALLET_CONNECT: {
+        await this._walletsConnectService.connect('wallet-connect');
+        if (this._walletsConnectService.myAlgoAddress) {
+          this.isConnectedToWallet.emit(true);
+          console.log('Connected to Pera Wallet')
+        }
+        break;
       }
     }
   }
@@ -64,7 +64,7 @@ export class PopUpComponent implements OnInit {
   switchAcc(i: number) {
     localStorage.removeItem('wallet');
     localStorage.setItem('walletIndex', JSON.stringify(i));
-    this.setelectWalletConnect('MyAlgoWallet');
+    this.selectedWalletConnect(AllowedWalletsEnum.WALLET_CONNECT);
     this.isSwitched.emit(false)
   }
 

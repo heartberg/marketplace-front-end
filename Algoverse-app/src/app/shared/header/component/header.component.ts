@@ -36,14 +36,14 @@ export class HeaderComponent implements OnInit {
       console.log("hit1")
       this.isLoggedIn = true;
     }
-    if (localStorage.getItem('wallet')) {
+    if (localStorage.getItem('wallet') || localStorage.getItem('PeraWallet.Wallet')) {
       console.log("hit2")
       this.walletConnectionPassed = true;
     }
   }
 
   openAvatar() {
-    this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount()
+    this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount();
     if (this.isProfileOpened) {
       localStorage.setItem('opened', JSON.stringify(true))
     } else {

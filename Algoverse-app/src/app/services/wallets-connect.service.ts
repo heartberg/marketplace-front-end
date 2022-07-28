@@ -63,28 +63,7 @@ export class WalletsConnectService {
     console.log(this.sessionWallet, 'esaaa');
 
     if (this.myAlgoAddress.length > 0) {
-      this.userServce.loadProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
-        (result) => {
-          console.log('profile', result);
-          localStorage.setItem('profile', JSON.stringify(result));
-          this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
-            this.router.navigate(['home']);
-          });
-        },
-        (error) => {
-          console.log('error', error)
-          if (error.status == 404) {
-            this.userServce.createProfile(this.sessionWallet!.getDefaultAccount()).subscribe(
-              (result) => console.log('profile', result),
-              (error) => console.log('error', error),
-            );
-          }
-        }
-      );
-      setTimeout(() => {
-      }, 1000);
-
-      this.userServce.syncUserAssets(this.sessionWallet!.getDefaultAccount());
+      this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
     }
   }
 
@@ -1510,4 +1489,28 @@ export class WalletsConnectService {
     return false;
   }
 
+  public createOrLoadProfile(account: string): void {
+    this.userServce.loadProfile(account).subscribe(
+      (result) => {
+        console.log('profile', result);
+        localStorage.setItem('profile', JSON.stringify(result));
+        this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
+          this.router.navigate(['home']);
+        });
+      },
+      (error) => {
+        console.log('error', error)
+        if (error.status == 404) {
+          this.userServce.createProfile(account).subscribe(
+            (result) => console.log('profile', result),
+            (error) => console.log('error', error),
+          );
+        }
+      }
+    );
+    setTimeout(() => {
+    }, 1000);
+
+    this.userServce.syncUserAssets(account);
+  }
 }
