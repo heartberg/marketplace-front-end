@@ -42,16 +42,8 @@
       <h3>Featured Artists</h3>
     </div>
     <div class="boxes d-unset">
-      <div class="scrolls">
-        <div class="box" *ngFor="let item of featuredArtists">
-          <div class="mitem">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" alt="">
-            <span>Vincet Van Gogh</span>
-          </div>
-        </div>
-      </div>
-      <div class="respo-show">
-        <app-carousel [sliderImgs]="['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU']"></app-carousel>
+      <div class="featured-artists">
+        <app-scroll [scrollItems]="featuredArtists" (openArtistProfile)="openArtistProfile($event)"></app-scroll>
       </div>
     </div>
   </div>

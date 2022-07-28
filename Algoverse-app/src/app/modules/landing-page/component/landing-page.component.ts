@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-landing-page',
@@ -24,7 +25,8 @@ export class LandingPageComponent implements OnInit {
 
   constructor(
     private _userService: UserService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,10 @@ export class LandingPageComponent implements OnInit {
           this.spinner.hide();
         }
         this.featuredArtists = result;
+        this.featuredArtists.push(...result);
+        this.featuredArtists.push(...result);
+        this.featuredArtists.push(...result);
+        this.featuredArtists.push(...result);
       },
       err => {
         console.log(err);
@@ -219,4 +225,7 @@ export class LandingPageComponent implements OnInit {
   }
 
 
+  public openArtistProfile(wallet: string): void {
+    this.router.navigate([`/profile/${wallet}`]);
+  }
 }

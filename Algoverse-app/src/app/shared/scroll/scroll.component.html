@@ -1,0 +1,10 @@
+<swiper
+  [config]="config"
+>
+  <ng-template swiperSlide *ngFor="let scrollItem of scrollItems">
+    <div class="scroll-item" (click)="openArtistProfile.emit(scrollItem.wallet)">
+        <img [src]="scrollItem.profileImage ? scrollItem.profileImage : defaultImageSource" alt="artist-image">
+        <span class="artist-name">{{(scrollItem.name.length > 15) ? (scrollItem.name | slice:0:15) + '...' : (scrollItem.name)}}</span>
+    </div>
+  </ng-template>
+</swiper>
