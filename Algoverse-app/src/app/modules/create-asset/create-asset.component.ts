@@ -363,148 +363,148 @@ export class CreateAssetComponent implements OnInit {
       }
       return el.first != null && el.second != null;
     });
-    // if (!this.alert) {
+    //if (!this.alert) {
       this.assetMappingdata = [...filtered]
       console.log(this.assetMappingdata);
-    // }
+    //}
 
-    // if (!this.passedCollection) {
-    //   alert('Please select a collection');
-    //   return;
-    // }
-    // if (!this.name) {
-    //   alert('Please input name');
-    //   return;
-    // }
-    // if (!this.unitName) {
-    //   alert('Please input unit name');
-    //   return;
-    // }
-    // if (!this.description) {
-    //   alert('Please input description');
-    //   return;
-    // }
-    // if (!this.royalty) {
-    //   alert('Please input royalty');
-    //   return;
-    // }
-    // if (!this.externalLink) {
-    //   alert('Please input url');
-    //   return;
-    // }
-    // if (!this.supply) {
-    //   alert('Please input supply');
-    //   return;
-    // }
-    // if (!this.fileUrl) {
-    //   alert('Please add file');
-    //   return;
-    // }
-    // if (!this.coverUrl && (this.isMusicUpload || this.isVideoUpload)) {
-    //   alert('Please add cover image');
-    //   return;
-    // }
-    //
-    // this.spinner.show();
-    // delete this.passedCollection.creator;
-    // let metadata;
-    // if(this.isMusicUpload || this.isVideoUpload) {
-    //   metadata = {
-    //     name: this.name,
-    //     description: this.description,
-    //     image: this.coverUrl,
-    //     image_mimetype: this.image_mimetype,
-    //     external_url: this.externalLink,
-    //     animation_url: this.fileUrl,
-    //     animation_url_mimetype: this.animation_url_mimetype,
-    //     properties: {
-    //       collection: this.passedCollection,
-    //       royalty: this.royalty,
-    //       attributes: {
-    //         height: 3,
-    //         length: 2
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   metadata = {
-    //     name: this.name,
-    //     description: this.description,
-    //     image: this.fileUrl,
-    //     image_mimetype: this.image_mimetype,
-    //     external_url: this.externalLink,
-    //     properties: {
-    //       collection: this.passedCollection,
-    //       royalty: this.royalty,
-    //       attributes: {
-    //         height: 3,
-    //         length: 2
-    //       }
-    //     }
-    //   }
-    // }
-    //
-    // const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
-    // let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
-    // console.log('ipfsUrl', ipfsUrl);
-    // console.log(assetUrl)
-    //
-    // const hash2 = sha256.sha256.hmac.update('arc0003/amj', JSON.stringify(metadata));
-    // const hash = new Uint8Array(hash2.digest());
-    // console.log('hash', hash)
-    //
-    // const params = {
-    //   name: this.name,
-    //   unitName: this.unitName,
-    //   supply: this.supply,
-    //   assetURL: assetUrl,
-    //   hash,
-    //   image: this.coverUrl,
-    //   decimals: this.decimals
-    // }
-    // console.log('params', params);
-    // const assetId = await this._walletsConnectService.createAsset(params);
-    // console.log('assetId', assetId);
-    //
-    // if (assetId) {
-    //   const params = {
-    //     assetId: assetId,
-    //     name: this.name,
-    //     unitName: this.unitName,
-    //     creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
-    //     assetURL: ipfsUrl,
-    //     description: this.description,
-    //     supply: this.supply,
-    //     clawbackAddress: "",
-    //     managerAddress: "",
-    //     freezeAddress: "",
-    //     reserveAddress: "",
-    //     metadata: Buffer.from(hash).toString('hex'),
-    //     file: this.fileUrl,
-    //     cover: this.coverUrl,
-    //     royalties: this.royalty,
-    //     externalLink: this.externalLink,
-    //     collectionId: this.passedCollection.collectionId,
-    //     properties: {},
-    //     createOffer: true
-    //   }
-    //
-    //   console.log('params', params);
-    //   this._userService.createAsset(params).subscribe(
-    //     res => {
-    //       this.spinner.hide();
-    //       alert('Successfully minted')
-    //     },
-    //     err => {
-    //       this.spinner.hide();
-    //       console.log(err);
-    //       alert('Failed, please retry later');
-    //     }
-    //   )
-    // } else {
-    //   this.spinner.hide();
-    //   alert('Failed to mint asset on network');
-    // }
+    if (!this.passedCollection) {
+      alert('Please select a collection');
+      return;
+    }
+    if (!this.name) {
+      alert('Please input name');
+      return;
+    }
+    if (!this.unitName) {
+      alert('Please input unit name');
+      return;
+    }
+    if (!this.description) {
+      alert('Please input description');
+      return;
+    }
+    if (!this.royalty) {
+      alert('Please input royalty');
+      return;
+    }
+    if (!this.externalLink) {
+      alert('Please input url');
+      return;
+    }
+    if (!this.supply) {
+      alert('Please input supply');
+      return;
+    }
+    if (!this.fileUrl) {
+      alert('Please add file');
+      return;
+    }
+    if (!this.coverUrl && (this.isMusicUpload || this.isVideoUpload)) {
+      alert('Please add cover image');
+      return;
+    }
+    
+    this.spinner.show();
+    delete this.passedCollection.creator;
+    let metadata;
+    if(this.isMusicUpload || this.isVideoUpload) {
+      metadata = {
+        name: this.name,
+        description: this.description,
+        image: this.coverUrl,
+        image_mimetype: this.image_mimetype,
+        external_url: this.externalLink,
+        animation_url: this.fileUrl,
+        animation_url_mimetype: this.animation_url_mimetype,
+        properties: {
+          collection: this.passedCollection,
+          royalty: this.royalty,
+          attributes: {
+            height: 3,
+            length: 2
+          }
+        }
+      }
+    } else {
+      metadata = {
+        name: this.name,
+        description: this.description,
+        image: this.fileUrl,
+        image_mimetype: this.image_mimetype,
+        external_url: this.externalLink,
+        properties: {
+          collection: this.passedCollection,
+          royalty: this.royalty,
+          attributes: {
+            height: 3,
+            length: 2
+          }
+        }
+      }
+    }
+    
+    const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
+    let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
+    console.log('ipfsUrl', ipfsUrl);
+    console.log(assetUrl)
+    
+    const hash2 = sha256.sha256.hmac.update('arc0003/amj', JSON.stringify(metadata));
+    const hash = new Uint8Array(hash2.digest());
+    console.log('hash', hash)
+    
+    const params = {
+      name: this.name,
+      unitName: this.unitName,
+      supply: this.supply,
+      assetURL: assetUrl,
+      hash,
+      image: this.coverUrl,
+      decimals: this.decimals
+    }
+    console.log('params', params);
+    const assetId = await this._walletsConnectService.createAsset(params);
+    console.log('assetId', assetId);
+    
+    if (assetId) {
+      const params = {
+        assetId: assetId,
+        name: this.name,
+        unitName: this.unitName,
+        creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+        assetURL: ipfsUrl,
+        description: this.description,
+        supply: this.supply,
+        clawbackAddress: "",
+        managerAddress: "",
+        freezeAddress: "",
+        reserveAddress: "",
+        metadata: Buffer.from(hash).toString('hex'),
+        file: this.fileUrl,
+        cover: this.coverUrl,
+        royalties: this.royalty,
+        externalLink: this.externalLink,
+        collectionId: this.passedCollection.collectionId,
+        properties: {},
+        createOffer: true
+      }
+    
+      console.log('params', params);
+      this._userService.createAsset(params).subscribe(
+        res => {
+          this.spinner.hide();
+          alert('Successfully minted')
+        },
+        err => {
+          this.spinner.hide();
+          console.log(err);
+          alert('Failed, please retry later');
+        }
+      )
+    } else {
+      this.spinner.hide();
+      alert('Failed to mint asset on network');
+    }
   }
 
   onBack() {
