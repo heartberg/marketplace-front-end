@@ -13,11 +13,11 @@
         </div>
       </div>
       <div class="wallet-side">
-        <div class="wallet-section" (click)="selectedWalletConnect('MyAlgoWallet')">
+        <div class="wallet-section" (click)="selectedWalletConnect(allowedWallets.MY_ALGO_CONNECT)">
           <img src="assets/img/myalgo.png" alt="">
           <span>MyAlgoWallet</span>
         </div>
-        <div class="wallet-section" (click)="selectedWalletConnect('PeraWallet')">
+        <div class="wallet-section" (click)="selectedWalletConnect(allowedWallets.WALLET_CONNECT)">
           <img aria-hidden="true" src="https://perawallet.s3.amazonaws.com/images/logo-colored.svg">
           <span>Pera Wallet</span>
         </div>

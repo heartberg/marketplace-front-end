@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if ((this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) || this._walletsConnectService.peraConnector.connector?.connected) {
+    if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
       console.log("hit1")
       this.isLoggedIn = true;
     }
@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openAvatar() {
-    this.wallet = this._walletsConnectService.sessionWallet ? this._walletsConnectService.sessionWallet.getDefaultAccount() : this._walletsConnectService.myAlgoAddress;
+    this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount();
     if (this.isProfileOpened) {
       localStorage.setItem('opened', JSON.stringify(true))
     } else {

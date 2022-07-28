@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
-import { UserService } from 'src/app/services/user.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import {UserService} from 'src/app/services/user.service';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {AllowedWalletsEnum} from "../../../models";
 
 @Component({
   selector: 'app-pop-up',
@@ -19,6 +20,7 @@ export class PopUpComponent implements OnInit {
   walletsForSwitching: any = '';
   enteredOffer: any;
   enteredAmount: any;
+  public allowedWallets: typeof AllowedWalletsEnum = AllowedWalletsEnum;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -33,9 +35,9 @@ export class PopUpComponent implements OnInit {
     this.isClosed.emit(false);
   }
 
-  async selectedWalletConnect(value: string) {
-    switch (value) {
-      case 'MyAlgoWallet': {
+  async selectedWalletConnect(choice: AllowedWalletsEnum) {
+    switch (choice) {
+      case AllowedWalletsEnum.MY_ALGO_CONNECT: {
         await this._walletsConnectService.connect('my-algo-connect');
         if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
           this.isConnectedToWallet.emit(true);
@@ -43,8 +45,8 @@ export class PopUpComponent implements OnInit {
         }
         break;
       }
-      case 'PeraWallet': {
-        await this._walletsConnectService.connectPera();
+      case AllowedWalletsEnum.WALLET_CONNECT: {
+        await this._walletsConnectService.connect('wallet-connect');
         if (this._walletsConnectService.myAlgoAddress) {
           this.isConnectedToWallet.emit(true);
           console.log('Connected to Pera Wallet')
@@ -62,7 +64,7 @@ export class PopUpComponent implements OnInit {
   switchAcc(i: number) {
     localStorage.removeItem('wallet');
     localStorage.setItem('walletIndex', JSON.stringify(i));
-    this.selectedWalletConnect('MyAlgoWallet');
+    this.selectedWalletConnect(AllowedWalletsEnum.WALLET_CONNECT);
     this.isSwitched.emit(false)
   }
 
