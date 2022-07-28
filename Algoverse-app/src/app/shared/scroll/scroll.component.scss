@@ -1,0 +1,14 @@
+.scroll-item {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  img {
+    max-width: 100%;
+    height: 300px;
+  }
+}
+
+.artist-name {
+  margin: 0 auto;
+}
