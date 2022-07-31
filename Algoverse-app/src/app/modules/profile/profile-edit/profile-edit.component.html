@@ -15,21 +15,27 @@
       <div class="wrapper-border">
         <form action="" [formGroup]="myForm">
           <div class="section wrapper-border upload-section">
-            <h4>Profile image</h4>
-            <button class="btn-primary-costum upload
-">
-              Upload Image
-              <input
-                accept=".png, .jpg, .jpeg"
-                (change)="onProfileImageUpload($event)"
-                type="file"
-                id="myFile"
-                name="filename"
-                formControlName="profileImage"
-              />
-            </button>
+              <img *ngIf="profileIconUrl" src="{{profileIconUrl}}" alt="" style="max-width: 50%; max-height: 50%; display: block;">
+              <img *ngIf="!profileIconUrl" src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-pn g-download.png" alt="" style="max-width: 50%; max-height: 50%; display: block;">
+            <div class="row">
+              <h4>Profile image</h4>
+              <button class="btn-primary-costum upload">
+                Upload Image
+                <input
+                  accept=".png, .jpg, .jpeg"
+                  (change)="onProfileImageUpload($event)"
+                  type="file"
+                  id="myFile"
+                  name="filename"
+                  formControlName="profileImage"
+                />
+              </button>
+            </div>
           </div>
           <div class="section wrapper-border upload-section">
+            <img *ngIf="profileBannerUrl" src="{{profileBannerUrl}}" alt="" style="max-width: 50%; max-height: 50%; display: block;">
+            <img *ngIf="!profileBannerUrl" src="https://img.freepik.com/free-vector/space-banner-with-purple-planet-landscape_107791-6230.jpg?w=2000&t=st=1658221048~exp=1658221648~hmac=c65eb9aee01fdb8c97e698f7c4d794de0780c30ecec37acaba246e8cd15c321f" alt=""
+            style="max-width: 50%; max-height: 50%; display: block;">
             <h4>Banner</h4>
               <button
                 class="btn-primary-costum upload"
@@ -48,6 +54,9 @@
             </button>
           </div>
           <div class="section wrapper-border upload-section">
+            <img *ngIf="profileFeaturedUrl" src="{{profileFeaturedUrl}}" alt="" style="max-width: 50%; max-height: 50%; display: block;">
+            <img *ngIf="!profileFeaturedUrl" src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png" alt=""
+            style="max-width: 50%; max-height: 50%; display: block;">
             <h4>Featured Image</h4>
             <button class="btn-primary-costum upload">
               Upload Image

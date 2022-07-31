@@ -3,6 +3,7 @@ import {UserService} from "../../../services/user.service";
 import {FormBuilder, FormGroup,} from "@angular/forms";
 import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
 import { Location } from '@angular/common';
+import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 
 @Component({
   selector: 'app-profile-edit',
@@ -15,13 +16,16 @@ export class ProfileEditComponent implements OnInit {
   profileIconUrl: string | undefined;
   profileBannerUrl: string | undefined;
   profileFeaturedUrl: string | undefined;
+  userProfile: any;
 
 
   constructor(
     private userServie: UserService, 
     private fb: FormBuilder,
     private ipfs: IpfsDaemonService,
-    private _location: Location
+    private _location: Location,
+    private userService: UserService,
+    private connectService: WalletsConnectService,
     ) { }
 
   ngOnInit(): void {
@@ -37,12 +41,35 @@ export class ProfileEditComponent implements OnInit {
       instagram: [''],
       website: ['']
     })
+
+    let wallet = this.connectService.sessionWallet
+    let addr = wallet?.getDefaultAccount()
+    if(addr) {
+      this.userService.loadProfile(addr).subscribe(
+        (res: any) => {
+          this.userProfile = res
+          console.log(this.userProfile)
+
+          this.profileBannerUrl = this.userProfile.bannerImage
+          this.profileIconUrl = this.userProfile.profileImage
+          this.profileFeaturedUrl = this.userProfile.featuredImage
+
+          this.myForm.get("name")?.setValue(this.userProfile.name)
+          this.myForm.get("bio")?.setValue(this.userProfile.bio)
+          this.myForm.get("customURL")?.setValue(this.userProfile.customURL)
+          this.myForm.get("twitter")?.setValue(this.userProfile.twitter)
+          this.myForm.get("telegram")?.setValue(this.userProfile.telegram)
+          this.myForm.get("instagram")?.setValue(this.userProfile.instagram)
+          this.myForm.get("website")?.setValue(this.userProfile.website)
+        }
+      )
+    }
   }
 
   saveForm() {
     // @ts-ignore
     const wallet = localStorage.getItem('wallet');
-    const verified = false;
+    const verified = this.userProfile.verified;
     const obj = {
       wallet: wallet,
       verified: verified,

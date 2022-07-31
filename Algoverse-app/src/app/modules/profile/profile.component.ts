@@ -70,7 +70,6 @@ export class ProfileComponent implements OnInit, OnDestroy{
               this._stateService.collections = res;
             }
           )
-          this.userService
         }
       )
 
