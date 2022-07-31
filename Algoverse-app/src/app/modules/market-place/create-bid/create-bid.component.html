@@ -13,16 +13,6 @@
           <div class="price wrapper-border">
             <div class="row d-flex align-items-center" style="width: 100%">
               <div class="col-md-5">
-                <h4 class="priceheader">Algo</h4>
-              </div>
-              <div class="col-md-7">
-                <input type="text" placeholder="Enter algo amount to offer" class="input-costum" (blur)="blurAlgoEvent($event)">
-              </div>
-            </div>
-          </div>
-          <div class="price wrapper-border">
-            <div class="row d-flex align-items-center" style="width: 100%">
-              <div class="col-md-5">
                 <h4 class="priceheader">Asset</h4>
               </div>
               <div class="col-md-7">
@@ -31,10 +21,20 @@
                 <h4>Name: {{mSelectedAsset?mSelectedAsset.params? mSelectedAsset.params.name : '' : ''}}</h4>
             </div>
           </div>
+          <div class="price wrapper-border">
+            <div class="row d-flex align-items-center" style="width: 100%">
+              <div class="col-md-5">
+                <h4 class="priceheader">Algo</h4>
+              </div>
+              <div class="col-md-7">
+                <input type="text" placeholder="Enter algo amount to offer" class="input-costum" (blur)="blurAlgoEvent($event)">
+              </div>
+            </div>
+          </div>
           <div class="createoffer wrapper-border">
             <div class="row d-flex align-items-center" style="width: 100%">
               <div class="col-md-5">
-                <h4 class="amountheader">Amount</h4>
+                <h4 class="amountheader">Amount (<= {{maxSupply}}, Decimals: {{selectedAssetDecimals}})</h4>
               </div>
               <div class="col-md-7">
                 <input type="text" placeholder="Enter asset amount to accept" class="input-costum" (blur)="blurAmountEvent($event)">
@@ -43,14 +43,6 @@
           </div>
           <div class="royalties wrapper-border">
             <div class="royal height-_10">
-              <div class="row d-flex align-items-center" style="width: 100%">
-                <div class="col-md-5">
-                  <h4>Royalties</h4>
-                </div>
-                <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" name="royalty" disabled value="{{this.metadataProperties?.royalty ? this.metadataProperties.royalty : '-'}}">
-                </div>
-              </div>
             </div>
           </div>
           <div class="buttons">

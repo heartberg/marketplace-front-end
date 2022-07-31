@@ -28,8 +28,6 @@ export class AuctionDetailComponent implements OnInit {
   public startTime = "";
   public endTime = "";
 
-  public royalty: string = "0";
-
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
@@ -86,11 +84,6 @@ export class AuctionDetailComponent implements OnInit {
       return asset.index == assetID
     });
     return result;
-  }
-
-  blurRoyaltyEvent(event: any){
-    this.royalty = event.target.value;
-    console.log(this.royalty);
   }
 
   blurPriceEvent(event: any) {

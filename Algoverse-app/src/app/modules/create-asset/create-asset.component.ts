@@ -27,7 +27,6 @@ export class CreateAssetComponent implements OnInit {
   public name: string = "";
   public unitName: string = "";
   public description: string = "";
-  public royalty: string = "0";
   public externalLink: string = "";
   public supply: string = "0";
   public fileUrl: string = "";
@@ -50,7 +49,7 @@ export class CreateAssetComponent implements OnInit {
   nineth: boolean = false;
   tenth: boolean = false;
   assetMappingdata: any = []
-  alert: boolean = false;
+  attributesOk: boolean = false;
   // ff first form // sf second form
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
@@ -288,11 +287,6 @@ export class CreateAssetComponent implements OnInit {
     console.log(this.description);
   }
 
-  blurRoyaltyEvent(event: any) {
-    this.royalty = event.target.value;
-    console.log(this.royalty);
-  }
-
   blurExternalLinkEvent(event: any) {
     this.externalLink = event.target.value;
     console.log(this.externalLink);
@@ -352,26 +346,42 @@ export class CreateAssetComponent implements OnInit {
       )
 
     const filtered = this.assetMappingdata.filter((el: any) => {
-      if (el.first === null && el.second !== null) {
+      if ((el.first === null || el.first === "") && (el.second !== null && el.second !== "")) {
         alert('Fill Both Fields');
-        setTimeout(() => {
-        } , 1500)
-      } else if (el.first !== null && el.second === null) {
+        this.attributesOk = false;
+      } else if ((el.first !== null && el.first !== "") && (el.second === null || el.second === "")) {
         alert('Fill Both Fields');
-        setTimeout(() => {
-        } , 1500)
+        this.attributesOk = false;
+      } else {
+        this.attributesOk = this.attributesOk && true;
       }
-      return el.first != null && el.second != null;
+      return el.first != null && el.first != "" && el.second != null && el.second != "";
     });
-    //if (!this.alert) {
+    if(this.assetMappingdata.length == 0) {
+      this.attributesOk = true;
+    }
+    
+    let attributes: any = {}
+    
+    if (this.attributesOk && this.assetMappingdata.length > 0) {
       this.assetMappingdata = [...filtered]
-      console.log(this.assetMappingdata);
-    //}
-
-    if (!this.passedCollection) {
-      alert('Please select a collection');
+      if(this.assetMappingdata.length > 0) {
+        this.assetMappingdata.forEach((el:any) => {
+          attributes[el.first] = el.second
+        });
+      }
+    } else {
+      this.attributesOk = true;
       return;
     }
+    console.log(attributes)
+    console.log(attributes.length)
+
+    // if (!this.passedCollection) {
+    //   alert('Please select a collection');
+    //   return;
+    // }
+
     if (!this.name) {
       alert('Please input name');
       return;
@@ -382,10 +392,6 @@ export class CreateAssetComponent implements OnInit {
     }
     if (!this.description) {
       alert('Please input description');
-      return;
-    }
-    if (!this.royalty) {
-      alert('Please input royalty');
       return;
     }
     if (!this.externalLink) {
@@ -406,7 +412,32 @@ export class CreateAssetComponent implements OnInit {
     }
     
     this.spinner.show();
-    delete this.passedCollection.creator;
+    let properties: any;
+    let collectionId = null
+    if(this.passedCollection) {
+      collectionId = this.passedCollection.collectionId
+      if(Object.keys(attributes).length > 0) {
+        delete this.passedCollection.creator;
+        
+        properties = {
+          collection: this.passedCollection,
+          attributes: attributes
+        }
+      } else {
+        properties = {
+          collection: this.passedCollection
+        }
+      }
+    } else {
+      if(Object.keys(attributes).length > 0) {
+        properties = {
+          attributes: attributes
+        }
+      } else {
+        properties = {}
+      }
+    }
+    
     let metadata;
     if(this.isMusicUpload || this.isVideoUpload) {
       metadata = {
@@ -417,14 +448,7 @@ export class CreateAssetComponent implements OnInit {
         external_url: this.externalLink,
         animation_url: this.fileUrl,
         animation_url_mimetype: this.animation_url_mimetype,
-        properties: {
-          collection: this.passedCollection,
-          royalty: this.royalty,
-          attributes: {
-            height: 3,
-            length: 2
-          }
-        }
+        properties: properties
       }
     } else {
       metadata = {
@@ -433,16 +457,13 @@ export class CreateAssetComponent implements OnInit {
         image: this.fileUrl,
         image_mimetype: this.image_mimetype,
         external_url: this.externalLink,
-        properties: {
-          collection: this.passedCollection,
-          royalty: this.royalty,
-          attributes: {
-            height: 3,
-            length: 2
-          }
-        }
+        properties: properties
       }
     }
+    if(Object.keys(metadata.properties).length == 0) {
+      delete metadata.properties
+    }
+    console.log(metadata)
     
     const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
     let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
@@ -465,7 +486,7 @@ export class CreateAssetComponent implements OnInit {
     console.log('params', params);
     const assetId = await this._walletsConnectService.createAsset(params);
     console.log('assetId', assetId);
-    
+
     if (assetId) {
       const params = {
         assetId: assetId,
@@ -482,10 +503,9 @@ export class CreateAssetComponent implements OnInit {
         metadata: Buffer.from(hash).toString('hex'),
         file: this.fileUrl,
         cover: this.coverUrl,
-        royalties: this.royalty,
         externalLink: this.externalLink,
-        collectionId: this.passedCollection.collectionId,
-        properties: {},
+        collectionId: collectionId,
+        properties: attributes,
         createOffer: true
       }
     

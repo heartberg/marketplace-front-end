@@ -19,7 +19,6 @@ export class SwapDetailComponent implements OnInit {
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
 
-  public royalty: string = "0";
   public amount: string = "0";
   public price: string = "0";
 
@@ -60,11 +59,6 @@ export class SwapDetailComponent implements OnInit {
     this.maxSupply = asset.supply;
 
     this.metaDataProperties = asset.properties;
-  }
-
-  blurRoyaltyEvent(event: any){
-    this.royalty = event.target.value;
-    console.log(this.royalty);
   }
 
   blurAmountEvent(event: any){
