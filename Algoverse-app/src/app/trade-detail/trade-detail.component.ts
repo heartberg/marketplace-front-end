@@ -204,4 +204,12 @@ export class TradeDetailComponent implements OnInit {
     }
   }
 
+  scaleAmount(amount: number) {
+    return amount / Math.pow(10, this.decimals)
+  }
+
+  scaleAlgo(algo: number) {
+    return algo / Math.pow(10, 6)
+  }
+
 }
