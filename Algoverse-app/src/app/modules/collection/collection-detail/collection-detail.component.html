@@ -17,7 +17,7 @@
                 <img src="{{mCollection.creator.profileImage}}" alt="">
               </div>
               <div class="section-bottom">
-                <h4>Creator</h4>
+                <h4>{{mCollection.creator.name.length > 15? mCollection.creator.name.substring(0,15).concat('...') : mCollection.creator.name}}</h4>
               </div>
             </div>
             <div class="website-section d-flex">
