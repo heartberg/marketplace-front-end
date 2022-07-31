@@ -20,7 +20,12 @@ export class SwapDetailComponent implements OnInit {
   public metaDataProperties: any = {};
 
   public amount: string = "0";
+  public offeringAssetDecimals: number = 0;
+  public acceptingAmount: string = "0";
+  public acceptingAssetDecimals: number = 0;
   public price: string = "0";
+  acceptingAssetSupply: number = 0;
+  offeringAssetSupply: number = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -50,9 +55,18 @@ export class SwapDetailComponent implements OnInit {
     )
   }
 
-  showAssetDetails(asset: any) {
+  async showAssetDetails(asset: any) {
     this.isMine = this.mSwap.offererWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.isOpen = this.mSwap.isOpen;
+
+    let acceptingAssetInfo = await this._walletsConnectService.getAsset(this.mSwap.acceptingAsset.assetId);
+    this.acceptingAssetDecimals = acceptingAssetInfo['params']['decimals']
+    let offeringAssetInfo = await this._walletsConnectService.getAsset(this.mSwap.offeringAsset.assetId);
+    this.offeringAssetDecimals = offeringAssetInfo['params']['decimals']
+    this.offeringAssetSupply = offeringAssetInfo['params']['total'] / Math.pow(10, this.offeringAssetDecimals)
+    this.acceptingAssetSupply = acceptingAssetInfo['params']['total'] / Math.pow(10, this.acceptingAssetDecimals)
+    this.amount = (this.mSwap.offeringAmount / Math.pow(10, this.offeringAssetDecimals)).toFixed(this.offeringAssetDecimals)
+    this.acceptingAmount = (this.mSwap.acceptingAmount / Math.pow(10, this.acceptingAssetDecimals)).toFixed(this.acceptingAssetDecimals)
 
     console.log('masset', asset);
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;

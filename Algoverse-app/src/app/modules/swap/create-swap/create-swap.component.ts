@@ -82,13 +82,12 @@ export class CreateSwapComponent implements OnInit {
     this.offeringAssetDecimals = this.offeringAssetParams['params']['decimals']
 
     this.spinner.show();
-    this.setMaxSupply(this.offeringAssetId);
 
     const asset = this.getAsset(assetID);
     this.offeringAsset = asset;
     console.log(asset);
 
-    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), +assetID);
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), +assetID) / Math.pow(10, this.offeringAssetDecimals);
 
     if (asset.params.url) {
       await this.getMetadataOffer(asset.params.url)
@@ -222,12 +221,21 @@ export class CreateSwapComponent implements OnInit {
       alert('Select valid acceting asset');
       return;
     }
-    if (+this.amount > this.maxSupply) {
+    if (!+this.amount) {
       alert('Invalid offering amount');
       return;
     }
-    if (!+this.amount) {
+    if (+this.amount > (this.maxSupply * Math.pow(10, this.offeringAssetDecimals))) {
+      console.log(+this.amount, this.maxSupply)
+      alert('Offering amount to high');
+      return;
+    }
+    if (!+this.acceptAmount) {
       alert('Invalid accepting amount');
+      return;
+    }
+    if(+this.acceptAmount > (this.acceptingAssetSupply * Math.pow(10, this.acceptingAssetDecimals))) {
+      alert('Accept amount to high');
       return;
     }
 

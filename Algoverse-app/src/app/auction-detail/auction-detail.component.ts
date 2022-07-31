@@ -27,6 +27,8 @@ export class AuctionDetailComponent implements OnInit {
   public bidAmount = 0;
   public startTime = "";
   public endTime = "";
+  public decimals = 0;
+  public totalSupply = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -56,12 +58,16 @@ export class AuctionDetailComponent implements OnInit {
 
   }
 
-  showAuctionDetail() {
+  async showAuctionDetail() {
     this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.isOpen = this.mAuction.isOpen;
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.index;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
+
+    let assetInfo = await this._walletsConnectService.getAsset(this.mAuction.asset.assetId)
+    this.decimals = assetInfo['params']['decimals']
+    this.totalSupply = assetInfo['params']['total'] / Math.pow(10, this.decimals)
 
     if (this.selectedAsset.assetURL) {
       this._userService.loadMetaData(this.selectedAsset.assetUrl).subscribe(

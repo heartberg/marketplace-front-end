@@ -29,6 +29,7 @@ export class TradeDetailComponent implements OnInit {
 
   public amount: string = "0";
   public price: string = "0";
+  public decimals: number = 0;
 
   public index: number = -1;
   public indexSecond: number = -1;
@@ -37,6 +38,7 @@ export class TradeDetailComponent implements OnInit {
   isAuction: boolean = false;
   isSwap: boolean = false;
   isNormal: boolean = true;
+  
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -58,20 +60,22 @@ export class TradeDetailComponent implements OnInit {
     }
 
     this._assetService.getAssetDetail(itemIdFromRoute).subscribe(
-      res => {
+      async res => {
         console.log('res', res);
         this.mItem = res;
-        this.showAssetDetails(this.mItem);
+        await this.showAssetDetails(this.mItem);
       },
       error => console.log(error)
     )
   }
 
-  showAssetDetails(asset: any) {
+  async showAssetDetails(asset: any) {
+    let assetInfo = await this._walletsConnectService.getAsset(asset.assetId)
     this.assetName = asset.name;
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     console.log('selectedAssetDescription', this.selectedAssetDescription)
-    this.maxSupply = asset.supply;
+    this.decimals = assetInfo['params']['decimals'];
+    this.maxSupply = +asset.supply / Math.pow(10, this.decimals);
     this.amount = this.mItem.amount;
     this.metaDataProperties = asset.properties;
     this.creatorName = this.mItem.creator.name;
