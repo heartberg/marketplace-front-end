@@ -21,11 +21,12 @@ export class CreateBidComponent implements OnInit {
   private selectedAssetID = 0;
   public mSelectedAsset: any = null;
   public selectedAssetDescription = "";
+  public selectedAssetDecimals = 0;
+  public maxSupply = 0;
 
   public metadata: any = {};
   public metadataProperties: any = {};
 
-  public royalty: string = "0";
   public amount: string = "0";
   public price: string = "0";
 
@@ -64,6 +65,8 @@ export class CreateBidComponent implements OnInit {
     }
     console.log(asset);
     this.mSelectedAsset = asset;
+    this.selectedAssetDecimals = asset['params']['decimals']
+    this.maxSupply = asset['params']['total'] / Math.pow(10, this.selectedAssetDecimals)
 
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
     this.mSelectedAsset = asset;
@@ -108,11 +111,6 @@ export class CreateBidComponent implements OnInit {
     this.metadataAttributes = attributes;
   }
 
-  blurRoyaltyEvent(event: any){
-    this.royalty = event.target.value;
-    console.log(this.royalty);
-  }
-
   blurAmountEvent(event: any){
     this.amount = (parseFloat(event.target.value) * Math.pow(10, this.mSelectedAsset.params.decimals)).toFixed(0);
     console.log(this.amount);
@@ -130,10 +128,6 @@ export class CreateBidComponent implements OnInit {
     }
     if (!this.amount) {
       alert('Please input amount');
-      return;
-    }
-    if (!this.royalty) {
-      alert('Please input royalty');
       return;
     }
     if (+this.price < 1000) {
@@ -238,7 +232,6 @@ export class CreateBidComponent implements OnInit {
               banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
               featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
               description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
-              royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: 0) : 0,
               customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
               category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
               website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
@@ -248,7 +241,6 @@ export class CreateBidComponent implements OnInit {
             properties: assetProperties,
             file: this.metadata.file? this.metadata.file : '',
             cover: this.metadata.cover? this.metadata.cover : '',
-            royalties: this.metadata.royalty ? this.metadata.royalty : 0
           },
           indexAddress,
           price: this.price,

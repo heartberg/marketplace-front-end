@@ -21,7 +21,6 @@ export class BidDetailComponent implements OnInit {
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
 
-  public royalty: string = "0";
   public amount: string = "0";
   public price: string = "0";
 
@@ -67,11 +66,6 @@ export class BidDetailComponent implements OnInit {
     this.metaDataProperties = asset.properties;
     this.creatorName = this.mBid.biddingUser.name;
     this.assetUnit = asset.unitName;
-  }
-
-  blurRoyaltyEvent(event: any){
-    this.royalty = event.target.value;
-    console.log(this.royalty);
   }
 
   blurAmountEvent(event: any){

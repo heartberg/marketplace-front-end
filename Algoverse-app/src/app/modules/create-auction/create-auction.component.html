@@ -39,18 +39,6 @@
               </div>
             </div>
           </div>
-          <div class="royalties wrapper-border">
-            <div class="royal height-_10">
-              <div class="row d-flex align-items-center" style="width: 100%">
-                <div class="col-md-5">
-                  <h4>Royalties</h4>
-                </div>
-                <div class="col-md-7 restyle-col">
-                  <input type="text" class="input-costum" name="royalty" disabled value="{{this.metadataProperties?.royalty ? this.metadataProperties.royalty : '-'}}">
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="collectionborder wrapper-border">
             <div class="collections">
               <div class="row" style="width: 100%">
@@ -77,7 +65,7 @@
             </div>
           </div>
           <div class="createoffer wrapper-border">
-            <h4 class="amountheader">Amount (< {{maxSupply}})</h4>
+            <h4 class="amountheader">Amount (<= {{maxSupply}}, Decimals: {{selectedAssetDecimals}})</h4>
             <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAssetAmountEvent($event)">
           </div>
           <div class="price wrapper-border">

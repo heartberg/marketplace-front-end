@@ -20,12 +20,13 @@ export class CreateTradeComponent implements OnInit {
   public assetIDs: string[] = [];
   public maxSupply = 0;
   public selectedAssetDescription = "";
+  public selectedAssetDecimals = 0;
   public chosenAsset: any;
+  public chosenAssetParams: any;
 
   public metadata: any = {};
   public metadataProperties: any = {};
 
-  public royalty: string = "0";
   public amount: string = "0";
   public price: string = "0";
   public metadataAttributes: any = {};
@@ -67,15 +68,16 @@ export class CreateTradeComponent implements OnInit {
     console.log('accountInfo 0 0 0 ', accountInfo);
 
     const firstAsset = this.assets[0];
-    this.setMaxSupply(firstAsset.index);
     this.selectedAsset(firstAsset.index);
+
     this.spinner.hide()
   }
 
   async selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
-    this.setMaxSupply(+assetID);
-
+    
+    this.chosenAssetParams = await this._walletsConnectService.getAsset(+assetID)
+    this.selectedAssetDecimals = this.chosenAssetParams['params']['decimals']
     this.chosenAsset = this.getAsset(assetID);
     console.log('asset', this.chosenAsset);
 
@@ -87,6 +89,7 @@ export class CreateTradeComponent implements OnInit {
     this.selectedAssetDescription = this.metadata.description ? this.metadata.description : "";
 
     this.selectedAssetName = this.chosenAsset.params.name
+    this.setMaxSupply(+assetID);
   }
 
   async getMetadata(ipfsUrl: string) {
@@ -120,7 +123,7 @@ export class CreateTradeComponent implements OnInit {
   }
 
   async setMaxSupply(assetID: number) {
-    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID)
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID) / Math.pow(10, this.selectedAssetDecimals)
   }
 
   getAsset(assetID: string) {
@@ -128,11 +131,6 @@ export class CreateTradeComponent implements OnInit {
       return asset.index == assetID
     });
     return result;
-  }
-
-  blurRoyaltyEvent(event: any) {
-    this.royalty = event.target.value;
-    console.log(this.royalty);
   }
 
   blurAmountEvent(event: any) {
@@ -160,10 +158,6 @@ export class CreateTradeComponent implements OnInit {
     }
     if (+this.amount > this.maxSupply) {
       alert('Please input amount smaller then max supply');
-      return;
-    }
-    if (!this.royalty) {
-      alert('Please input royalty');
       return;
     }
     const asset = this.getAsset('' + this.selectedAssetID);
@@ -263,7 +257,6 @@ export class CreateTradeComponent implements OnInit {
             banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
             featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
             description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
-            royalties: this.metadata.collection ? (this.metadata.collection.royalties ? this.metadata.collection.royalties: 0) : 0,
             customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
             category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
             website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
@@ -273,7 +266,6 @@ export class CreateTradeComponent implements OnInit {
           properties: assetProperties,
           file: this.metadata.file? this.metadata.file : '',
           cover: this.metadata.cover? this.metadata.cover : '',
-          royalties: this.metadata.royalty ? this.metadata.royalty : 0
         },
         indexAddress,
         price: this.price,

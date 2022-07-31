@@ -28,7 +28,6 @@ export class CreateSwapComponent implements OnInit {
   public acceptingMetadata: any = {};
   public acceptingMetadataProperties: any = {};
 
-  public royalty: string = "0";
   public amount: string = "0";
   public acceptingAssetId = 0;
   public acceptingAsset: any = null;
@@ -36,6 +35,10 @@ export class CreateSwapComponent implements OnInit {
   public collectionName: string = "";
   acceptingMetadataAttributes: any;
   offeringMetadataAttributes: any;
+  offeringAssetParams: any;
+  public offeringAssetDecimals = 0;
+  public acceptingAssetDecimals = 0;
+  public acceptingAssetSupply = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -70,12 +73,13 @@ export class CreateSwapComponent implements OnInit {
     this.assetIDs = asset_ids;
 
     const firstAsset = this.assets[0];
-    this.setMaxSupply(firstAsset.index);
     this.onSelectedAsset(firstAsset.index);
   }
 
   async onSelectedAsset(assetID: string) {
     this.offeringAssetId = +assetID;
+    this.offeringAssetParams = await this._walletsConnectService.getAsset(+assetID);
+    this.offeringAssetDecimals = this.offeringAssetParams['params']['decimals']
 
     this.spinner.show();
     this.setMaxSupply(this.offeringAssetId);
@@ -99,7 +103,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   async setMaxSupply(assetID: number) {
-    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID)
+    this.maxSupply = await getBalance(this._walletsConnectService.sessionWallet!.getDefaultAccount(), assetID) / Math.pow(10, this.offeringAssetDecimals)
   }
 
   getAsset(assetID: string) {
@@ -107,11 +111,6 @@ export class CreateSwapComponent implements OnInit {
       return asset.index == assetID
     });
     return result;
-  }
-
-  blurRoyaltyEvent(event: any) {
-    this.royalty = event.target.value;
-    console.log(this.royalty);
   }
 
   blurAmountOfferEvent(event: any) {
@@ -130,6 +129,9 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
     this.acceptingAsset = asset;
+    console.log("accepting", this.acceptingAsset)
+    this.acceptingAssetDecimals = this.acceptingAsset['params']['decimals']
+    this.acceptingAssetSupply = this.acceptingAsset['params']['total'] / Math.pow(10, this.acceptingAssetDecimals)
 
     if (asset.params.url) {
       await this.getMetadataAccepting(asset.params.url)
@@ -330,7 +332,6 @@ export class CreateSwapComponent implements OnInit {
             banner: this.offerringMetadata.collection ? (this.offerringMetadata.collection.banner ? this.offerringMetadata.collection.banner : '') : '',
             featuredImage: this.offerringMetadata.collection ? (this.offerringMetadata.collection.featuredImage ? this.offerringMetadata.collection.featuredImage : '') : '',
             description: this.offerringMetadata.collection ? (this.offerringMetadata.collection.description ? this.offerringMetadata.collection.description : '') : '',
-            royalties: this.offerringMetadata.collection ? (this.offerringMetadata.collection.royalties ? this.offerringMetadata.collection.royalties : 0) : 0,
             customURL: this.offerringMetadata.collection ? (this.offerringMetadata.collection.customURL ? this.offerringMetadata.collection.customURL : '') : '',
             category: this.offerringMetadata.collection ? (this.offerringMetadata.collection.category ? this.offerringMetadata.collection.category : '') : '',
             website: this.offerringMetadata.collection ? (this.offerringMetadata.collection.web ? this.offerringMetadata.collection.web : '') : '',
@@ -340,7 +341,6 @@ export class CreateSwapComponent implements OnInit {
           properties: offerringAssetProperties,
           file: this.offerringMetadata.file ? this.offerringMetadata.file : '',
           cover: this.offerringMetadata.cover ? this.offerringMetadata.cover : '',
-          royalties: this.offerringMetadata.royalty ? this.offerringMetadata.royalty : 0
         },
 
         acceptingAssetId: this.acceptingAssetId,
@@ -367,7 +367,6 @@ export class CreateSwapComponent implements OnInit {
             banner: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.banner ? this.acceptingMetadata.collection.banner : '') : '',
             featuredImage: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.featuredImage ? this.acceptingMetadata.collection.featuredImage : '') : '',
             description: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.description ? this.acceptingMetadata.collection.description : '') : '',
-            royalties: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.royalties ? this.acceptingMetadata.collection.royalties : 0) : 0,
             customURL: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.customURL ? this.acceptingMetadata.collection.customURL : '') : '',
             category: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.category ? this.acceptingMetadata.collection.category : '') : '',
             website: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.web ? this.acceptingMetadata.collection.web : '') : '',
@@ -377,7 +376,6 @@ export class CreateSwapComponent implements OnInit {
           properties: acceptingAssetProperties,
           file: this.acceptingMetadata.file ? this.acceptingMetadata.file : '',
           cover: this.acceptingMetadata.cover ? this.acceptingMetadata.cover : '',
-          royalties: this.acceptingMetadata.royalty ? this.acceptingMetadata.royalty : 0
         },
         acceptingAmount: this.acceptAmount,
         collectionInterestedIn: this.collectionName

@@ -27,7 +27,6 @@ export class TradeDetailComponent implements OnInit {
   public selectedAssetDescription = "";
   public metaDataProperties: any = {};
 
-  public royalty: string = "0";
   public amount: string = "0";
   public price: string = "0";
 

@@ -16,7 +16,6 @@ export class CreateCollectionComponent implements OnInit {
   public categoryList = ['Collectible items', 'Artwork', 'Event tickets', 'Music and media', 'Gaming', 'Big Sports Moments', 'Virtual Fashion', 'Real-world assets', 'Memes', 'Domain names'];
   public name: string = "";
   public description: string = "";
-  public royalty: string = "0";
   public externalLink: string = "";
   public website: string = "0";
   public category: string = "Collectible items";
@@ -44,17 +43,12 @@ export class CreateCollectionComponent implements OnInit {
 
   blurNameEvent(event: any) {
     this.name = event.target.value;
-    console.log(this.royalty);
+    console.log(this.name);
   }
 
   blurDescriptionEvent(event: any) {
     this.description = event.target.value;
     console.log(this.description);
-  }
-
-  blurRoyaltyEvent(event: any) {
-    this.royalty = event.target.value;
-    console.log(this.royalty);
   }
 
   blurExternalLinkEvent(event: any) {
@@ -111,10 +105,6 @@ export class CreateCollectionComponent implements OnInit {
       alert('Please add featured image');
       return;
     }
-    if (!this.royalty) {
-      alert('Please input royalty');
-      return;
-    }
     if (!this.externalLink) {
       alert('Please input url');
       return;
@@ -134,7 +124,6 @@ export class CreateCollectionComponent implements OnInit {
       banner: this.bannerUrl,
       featuredImage: this.imageUrl,
       description: this.description,
-      royalty: this.royalty,
       customURL: this.externalLink,
       category: this.category,
       website: this.website,
