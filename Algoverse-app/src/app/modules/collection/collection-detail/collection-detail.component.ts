@@ -13,8 +13,9 @@ export class CollectionDetailComponent implements OnInit {
 
   public mCollection: any = {};
   public mAssets: any = [];
-  public isStarred: boolean = true;
+  public isStarred: boolean = false;
   public collectionStar: any;
+  public collectionId: string = "";
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -31,7 +32,12 @@ export class CollectionDetailComponent implements OnInit {
       this.router.navigateByUrl('collection');
       return;
     }
+    this.loadCollectionDetails(collectionIdFromRoute)
 
+  }
+
+  loadCollectionDetails(collectionIdFromRoute: string) {
+    this.collectionId = collectionIdFromRoute
     this._userService.loadCollectionItem(collectionIdFromRoute).subscribe(
       res => {
         console.log('res', res);
@@ -46,11 +52,14 @@ export class CollectionDetailComponent implements OnInit {
               if(value){
                 this.collectionStar = value;
                 this.isStarred = true;
+                console.log("starred already", this.collectionStar)
               } else {
+                console.log("no value")
                 this.isStarred = false;
                 this.collectionStar = undefined;
               }
             }, error => {
+              console.log("not starred")
               this.isStarred = false;
               this.collectionStar = undefined;
             }
@@ -73,14 +82,15 @@ export class CollectionDetailComponent implements OnInit {
     let wallet = this._walletsConnectService.sessionWallet
     if(wallet) {
       const params = {
-        collectionId: this.mCollection.collectionId,
-        wallet: wallet.getDefaultAccount()
+        starredCollectionId: this.mCollection.collectionId,
+        starringWallet: wallet.getDefaultAccount()
       }
       this._userService.addCollectionStar(params).subscribe(
         (value: any) => {
           console.log(value)
           this.isStarred = true;
           console.log("added star")
+          this.loadCollectionDetails(this.collectionId)
         }
       )
     } else {
@@ -92,16 +102,14 @@ export class CollectionDetailComponent implements OnInit {
   removeStar() {
     let wallet = this._walletsConnectService.sessionWallet
     if(wallet) {
-      const params = {
-        collectionId: this.mCollection.collectionId,
-        wallet: wallet.getDefaultAccount(),
-        collectionStarId: this.collectionStar.collectionStarId
-      }
-      this._userService.removeCollectionStar(params).subscribe(
+      console.log(this.collectionStar)
+      this._userService.removeCollectionStar(this.collectionStar).subscribe(
         (value: any) => {
           console.log(value)
           this.isStarred = false;
+          this.collectionStar = undefined;
           console.log("removed star")
+          this.loadCollectionDetails(this.collectionId)
         }
       )
     } else {
