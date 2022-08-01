@@ -347,7 +347,7 @@ export class CreateSwapComponent implements OnInit {
           },
 
           properties: offerringAssetProperties,
-          file: this.offerringMetadata.file ? this.offerringMetadata.file : '',
+          file: this.offerringMetadata.image? this.offerringMetadata.image : (this.offerringMetadata.file ? this.offerringMetadata.file : (this.offerringMetadata.cover? this.offerringMetadata.cover : '')),
           cover: this.offerringMetadata.cover ? this.offerringMetadata.cover : '',
         },
 
@@ -382,7 +382,7 @@ export class CreateSwapComponent implements OnInit {
           },
 
           properties: acceptingAssetProperties,
-          file: this.acceptingMetadata.file ? this.acceptingMetadata.file : '',
+          file: this.acceptingMetadata.image? this.acceptingMetadata.image : (this.acceptingMetadata.file ? this.acceptingMetadata.file : (this.acceptingMetadata.cover? this.acceptingMetadata.cover : '')),
           cover: this.acceptingMetadata.cover ? this.acceptingMetadata.cover : '',
         },
         acceptingAmount: this.acceptAmount,

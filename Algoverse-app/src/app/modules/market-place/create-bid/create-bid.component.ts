@@ -239,7 +239,7 @@ export class CreateBidComponent implements OnInit {
             },
 
             properties: assetProperties,
-            file: this.metadata.file? this.metadata.file : '',
+            file: this.metadata.image? this.metadata.image : (this.metadata.file ? this.metadata.file : (this.metadata.cover? this.metadata.cover : '')),
             cover: this.metadata.cover? this.metadata.cover : '',
           },
           indexAddress,

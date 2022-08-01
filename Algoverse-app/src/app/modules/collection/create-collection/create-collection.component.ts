@@ -105,10 +105,6 @@ export class CreateCollectionComponent implements OnInit {
       alert('Please add featured image');
       return;
     }
-    if (!this.externalLink) {
-      alert('Please input url');
-      return;
-    }
     if (!this.category) {
       alert('Please select category');
       return;
