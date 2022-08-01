@@ -56,6 +56,23 @@ export class AuctionDetailComponent implements OnInit {
         console.log('res', res);
         this.mAuction = res;
         this.showAuctionDetail();
+        let wallet = this._walletsConnectService.sessionWallet
+        if(wallet) {
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.selectedAssetID).subscribe(
+            (res: any) => {
+              if(res) {
+                this.assetStar = res;
+                this.isStarred = true;
+              } else {
+                this.assetStar = undefined;
+                this.isStarred = false;
+              }
+            }, error => {
+              this.isStarred = false;
+              this.assetStar = undefined;
+            }
+          )
+        }
       },
       error => console.log(error)
     )

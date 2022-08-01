@@ -63,6 +63,24 @@ export class TradeDetailComponent implements OnInit {
         console.log('res', res);
         this.mItem = res;
         await this.showAssetDetails(this.mItem);
+        let wallet = this._walletsConnectService.sessionWallet
+        if(wallet) {
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
+            (res: any) => {
+              if(res) {
+                this.assetStar = res;
+                this.isStarred = true;
+              } else {
+                this.assetStar = undefined;
+                this.isStarred = false;
+              }
+            }, error => {
+              this.isStarred = false;
+              this.assetStar = undefined;
+            }
+          )
+        }
+        
       },
       error => console.log(error)
     )
