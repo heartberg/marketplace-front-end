@@ -14,9 +14,8 @@
             <h4>Assets</h4>
             <div class="dropdown">
               <div class="AssetsList">
-                <app-drop-down-selector [dropDownValues]="assetIDs" (dropDownValue)="onSelectedAsset($event)"></app-drop-down-selector>
+                <app-drop-down-selector *ngIf="assetsName.length" [dropDownValuesWithLabels]="assetsName" (dropDownValue)="onSelectedAsset($event)"></app-drop-down-selector>
               </div>
-                <h4>Name: {{selectedAsset? selectedAsset.params? selectedAsset.params.name : '' : ''}}</h4>
             </div>
           </div>
           <div class="metaheader">

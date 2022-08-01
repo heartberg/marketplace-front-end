@@ -9,6 +9,7 @@ import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 })
 export class DropDownSelectorComponent implements OnInit {
   @Input() public dropDownValues: string[] = [];
+  @Input() public dropDownValuesWithLabels: any[] = [];
   @Input() public defaultValue: string = "";
 
   @Input() public isNotAccordion: boolean = true;
@@ -29,11 +30,13 @@ export class DropDownSelectorComponent implements OnInit {
   public isDropDownOpened = false;
   public isDropDownOpenedCounter = 1;
   public showDropDownSelected: string = '';
+  public selectedLabelValue: any = '';
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.showDropDownSelected = this.defaultValue?this.defaultValue:(this.dropDownValues.length>0?this.dropDownValues[0]:'')
+    this.showDropDownSelected = this.defaultValue ? this.defaultValue : (this.dropDownValues.length > 0 ? this.dropDownValues[0] : '')
+    this.selectedLabelValue = this.defaultValue ? this.defaultValue : (this.dropDownValuesWithLabels.length > 0 ? this.dropDownValuesWithLabels[0] : '')
   }
 
   openDropDown() {
@@ -48,7 +51,11 @@ export class DropDownSelectorComponent implements OnInit {
   selectValue(value: any, i: any) {
     this.switcherEmit.emit({value, i})
     this.isDropDownOpenedCounter +=1;
-    this.showDropDownSelected = value
+    if (this.dropDownValuesWithLabels.length) {
+      this.selectedLabelValue = this.dropDownValuesWithLabels.find(item => item.id === value);
+    } else {
+      this.showDropDownSelected = value;
+    }
     this.isDropDownOpened = false;
     this.dropDownValue.emit(value);
   }

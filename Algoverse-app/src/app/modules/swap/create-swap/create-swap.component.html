@@ -14,10 +14,9 @@
             <h4>Asset</h4>
             <div class="dropdown">
               <div class="AssetsList">
-                <app-drop-down-selector [dropDownValues]="assetIDs" (dropDownValue)="onSelectedAsset($event)"></app-drop-down-selector>
+                <app-drop-down-selector *ngIf="assetsName.length" [dropDownValuesWithLabels]="assetsName" (dropDownValue)="onSelectedAsset($event)"></app-drop-down-selector>
               </div>
             </div>
-            <h4>Name: {{offeringAsset?offeringAsset.params? offeringAsset.params.name : '' : ''}}</h4>
           </div>
           <div class="createoffer wrapper-border">
             <h4 class="amountheader">Amount (<= {{maxSupply}}, Decimals: {{offeringAssetDecimals}})</h4>
