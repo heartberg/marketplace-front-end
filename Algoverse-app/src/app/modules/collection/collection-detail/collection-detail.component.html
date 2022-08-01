@@ -42,8 +42,8 @@
             <div class="d-flex right-section-info">
               <div class="section d-flex">
                 <!-- <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i> -->
-                <img *ngIf="!isStarred" src="assets/img/unfilled_star.png" alt="" (click)="addStar()">
-                <img *ngIf="isStarred" src="assets/img/filled_star.png" alt="" (click)="removeStar()">
+                <img class="collection-star" *ngIf="!isStarred" src="assets/img/unfilled_star.png" alt="" (click)="addStar()">
+                <img class="collection-star" *ngIf="isStarred" src="assets/img/filled_star.png" alt="" (click)="removeStar()">
                 <span>{{mCollection.stars}}</span>
               </div>
               <div class="section d-flex">

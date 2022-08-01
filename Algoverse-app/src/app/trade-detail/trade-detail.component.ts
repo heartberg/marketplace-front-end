@@ -37,7 +37,7 @@ export class TradeDetailComponent implements OnInit {
   isPopUpOpened: boolean = false;
 
   isStarred: boolean = false;
-  
+
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -80,7 +80,7 @@ export class TradeDetailComponent implements OnInit {
             }
           )
         }
-        
+
       },
       error => console.log(error)
     )
@@ -147,7 +147,7 @@ export class TradeDetailComponent implements OnInit {
       )
     }
   }
- 
+
   async acceptTrade() {
     if (!this._walletsConnectService.sessionWallet) {
       alert('Connect your wallet!');
@@ -229,8 +229,11 @@ export class TradeDetailComponent implements OnInit {
     return algo / Math.pow(10, 6)
   }
 
-  addStar() {
-    let wallet = this._walletsConnectService.sessionWallet
+  addOrRemoveStar(): void {
+    let wallet = this._walletsConnectService.sessionWallet;
+    if (this.isStarred) {
+      return this.removeStar();
+    }
     if(wallet) {
       const params = {
         assetId: this.mItem.assetId,
@@ -240,7 +243,7 @@ export class TradeDetailComponent implements OnInit {
         (value: any) => {
           console.log(value)
           this.isStarred = true;
-          console.log("added star")
+          this.mItem.stars++;
         }
       )
     } else {
@@ -256,6 +259,7 @@ export class TradeDetailComponent implements OnInit {
         (value: any) => {
           console.log(value)
           this.isStarred = false;
+          this.mItem.stars--;
           console.log("removed star")
         }
       )

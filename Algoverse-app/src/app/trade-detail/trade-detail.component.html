@@ -43,6 +43,10 @@
                         <img src="{{mItem?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
                         <span>{{mItem?.collection?.name}}</span>
                       </div>
+                      <div class="section asset-star-container" (click)="addOrRemoveStar()">
+                        <img class="asset-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                        <span>{{mItem?.stars}}</span>
+                      </div>
                     </div>
                   </ng-container>
                 </div>
