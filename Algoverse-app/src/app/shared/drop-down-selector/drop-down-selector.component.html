@@ -8,21 +8,48 @@
     <ng-container *ngIf="!treeDots && !tree">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAPFBMVEX///8AAADw8PAoKCj09PTv7+8lJSWTk5OQkJArKyuMjIyZmZmSkpKWlpYhISGcnJyFhYXGxsY6OjpISEiJJhDdAAACyUlEQVR4nO3XbXebMAyG4TpNStY3su3//9eFOrQBS4pDzGxx7utrWx+eSkbi6QkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGCZ345OXaQL/Qqn9uG4wqmLdCGsELE/n9pIxGMYvBU+tf869bXwqYvEgKWr2F9ObSBiF8IKEfvvU6s36k/Ako3aX51aOeIxhBUi9pNTqzbqewgrROxnp1asYhfmPgqc+pacWi3ivIKD7uFTP4RTK0U8Co/yeBXTCla7i2mLlogoB6xSRamZHo+oBSzR/vc6/FIf5n3xofq/7flQ8Nkz7V+KV1Gv4Oe+6LNn2ulVXBZRD/hSoYKD3bP6SEsaVW/RWgHPjVryLhp3sEqLRnu9ive++4wK7lZ59kyHUhFbbNHIaNR7hrS2PpxbtGoFB0aj5keUNtxLBSvewZHxRs2NqFewdotGO3305y3MegU/mwho3sWciPI3yqDmmJgyFrjbjWpUsJmA5tC4FdF4yTTSopHxurEb9dVJwMV30cMdHBlzUY9otGj1QZ863D809Aq21qKR0agn8Q/0O1h/VZMZQ0OqolHB5u7gyPjqTyN6a9HIWODmjaq3aCurmiz7Lp7U32tvTEwZd/E6olHBxgOaC9xPRD+bjMRY4MaIeou2OOhTxnYTIxoVbL5FoxtVNAK6qODAWOBObsfElDE0/qg/aX1MTBlDQ62gq4DmAifzMCamjNfNNgKadzHl6w6OjLmYVNDNmJgyFjj/LRplNmqrX/Q5shrVy6omy3ij+m3RyPjqjzytarIbd9HnmJgyFzhvq5rMuIve7+BIjbiVgOpd3MIdHIlz0euqJhMWuO20aJQ0qudVTTZrVN+rmmzy1b+1Fo2uFjj/q5rs+y5uaUxMXRa4baxqsq+hsc07ODovcNsa9Kn9340HBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/8k/r0QS+70JmxMAAAAASUVORK5CYII=" alt="">
       <ng-container *ngIf="!isSwitcher">
-        <ng-container *ngFor="let button of dropDownValues; let i = index">
-          <button class="btn-default" *ngIf="i === 0">
-            <ng-container *ngIf="showDropDownSelected === ''">
-              {{button}}
-            </ng-container>
-            <ng-container *ngIf="showDropDownSelected !== ''">
-              {{showDropDownSelected}}
-            </ng-container>
-          </button>
+        <ng-container *ngIf="!dropDownValuesWithLabels.length">
+          <ng-container *ngFor="let button of dropDownValues; let i = index">
+            <button class="btn-default" *ngIf="i === 0">
+              <ng-container *ngIf="showDropDownSelected === ''">
+                {{button}}
+              </ng-container>
+              <ng-container *ngIf="showDropDownSelected !== ''">
+                {{showDropDownSelected}}
+              </ng-container>
+            </button>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="dropDownValuesWithLabels.length">
+          <ng-container *ngFor="let button of dropDownValuesWithLabels; let i = index">
+            <button class="btn-default btn-drop-down-labels" *ngIf="i === 0">
+              <div class="drop-down-value" *ngIf="selectedLabelValue === ''">
+                <p>{{button.name}}</p>
+                <p>ID: {{button.id}}</p>
+              </div>
+              <div class="drop-down-value" *ngIf="selectedLabelValue !== ''">
+                <p>{{selectedLabelValue.name}}</p>
+                <p>ID: {{selectedLabelValue.id}}</p>
+              </div>
+            </button>
+          </ng-container>
         </ng-container>
       </ng-container>
-      <ng-container *ngFor="let button of dropDownValues; let i = index">
-        <ng-container *ngIf="i === 0">
-          <ng-container *ngIf="isSwitcher">
-            <span style="font-weight: bolder">{{ returnAddress(button) }}</span>
+      <ng-container *ngIf="!dropDownValuesWithLabels.length">
+        <ng-container *ngFor="let button of dropDownValues; let i = index">
+          <ng-container *ngIf="i === 0">
+            <ng-container *ngIf="isSwitcher">
+              <span style="font-weight: bolder">{{ returnAddress(button)}}</span>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="dropDownValuesWithLabels.length">
+        <ng-container *ngFor="let button of dropDownValuesWithLabels; let i = index">
+          <ng-container *ngIf="i === 0">
+            <ng-container *ngIf="isSwitcher">
+              <span style="font-weight: bolder">{{ returnAddress(button)}}</span>
+            </ng-container>
           </ng-container>
         </ng-container>
       </ng-container>
@@ -81,28 +108,59 @@
     <!--    added-->
   </div>
   <div class="dropDown" *ngIf="isDropDownOpened" [class.marketplace-w_position-unset]="isNotAccordion" [class.left-0]="treeDots" [class.isTree]="tree && !isProfileSection">
-    <div class="section" *ngFor="let button of dropDownValues; let last = last; let i = index" (click)="selectValue(button, i+ 1)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection"
-    [class.hidden]="isSwitcher">
-      <button class="btn-default" [class.color-violet]="tree" *ngIf="!isProfileSection">{{button}}</button>
-      <ng-container *ngIf="isProfileSection">
-        <div class="dropDownWrapper">
-          <div class="section" [class.profileunHover]="isProfileSection">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="img">
-                  <img [src]="profileSectionImg" alt="">
+    <ng-container *ngIf="!dropDownValuesWithLabels.length">
+      <div class="section" *ngFor="let button of dropDownValues; let last = last; let i = index" (click)="selectValue(button, i+ 1)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection"
+           [class.hidden]="isSwitcher">
+        <button class="btn-default" [class.color-violet]="tree" *ngIf="!isProfileSection">{{button}}</button>
+        <ng-container *ngIf="isProfileSection">
+          <div class="dropDownWrapper">
+            <div class="section" [class.profileunHover]="isProfileSection">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="img">
+                    <img [src]="profileSectionImg" alt="">
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info">
-                  <p>{{profileSectionInfo}}</p>
+                <div class="col-md-6">
+                  <div class="info">
+                    <p>{{profileSectionInfo}}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </ng-container>
-    </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="dropDownValuesWithLabels.length">
+      <div class="section" *ngFor="let button of dropDownValuesWithLabels; let last = last; let i = index" (click)="selectValue(button.id, i + 1)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection"
+           [class.hidden]="isSwitcher">
+        <button class="btn-default btn-drop-down-labels" [class.color-violet]="tree" *ngIf="!isProfileSection">
+          <div class="drop-down-value">
+            <p>{{button.name}}</p>
+            <p>ID: {{button.id}}</p>
+          </div>
+        </button>
+        <ng-container *ngIf="isProfileSection">
+          <div class="dropDownWrapper">
+            <div class="section" [class.profileunHover]="isProfileSection">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="img">
+                    <img [src]="profileSectionImg" alt="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info">
+                    <p>{{profileSectionInfo}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
   </div>
 <!--  <select name="" id="">-->
 <!--    <option value="" *ngFor="let button of dropDownValues">-->

@@ -39,6 +39,7 @@ export class CreateSwapComponent implements OnInit {
   public offeringAssetDecimals = 0;
   public acceptingAssetDecimals = 0;
   public acceptingAssetSupply = 0;
+  public assetsName: any[] = [];
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -71,6 +72,7 @@ export class CreateSwapComponent implements OnInit {
       asset_ids.push(asset.index);
     }
     this.assetIDs = asset_ids;
+    this.extractAssetsName();
 
     const firstAsset = this.assets[0];
     this.onSelectedAsset(firstAsset.index);
@@ -432,6 +434,17 @@ export class CreateSwapComponent implements OnInit {
 
   public actionBack() {
     this.router.navigateByUrl('/create-offer')
+  }
+
+  private extractAssetsName() {
+    if (this.assets.length) {
+      this.assetsName = this.assets.map(asset => {
+        return {
+          id: asset.index.toString(),
+          name: asset.params.name
+        }
+      });
+    }
   }
 
 

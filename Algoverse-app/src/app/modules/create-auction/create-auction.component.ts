@@ -29,6 +29,7 @@ export class CreateAuctionComponent implements OnInit {
   public minimumIncrement = 0;
   public startTime = "";
   public endTime = "";
+  public assetsName: any[] = [];
 
   metadataAttributes: any;
 
@@ -62,6 +63,7 @@ export class CreateAuctionComponent implements OnInit {
       asset_ids.push(asset.index);
     }
     this.assetIDs = asset_ids;
+    this.extractAssetsName();
     this.spinner.hide()
     const firstAsset = this.assets[0];
 
@@ -70,7 +72,7 @@ export class CreateAuctionComponent implements OnInit {
 
   async onSelectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
-    
+
     this.spinner.show()
     const asset = this.getAsset(assetID);
     this.selectedAsset = asset;
@@ -346,4 +348,14 @@ export class CreateAuctionComponent implements OnInit {
     this.router.navigateByUrl('/create-offer')
   }
 
+  private extractAssetsName() {
+    if (this.assets.length) {
+      this.assetsName = this.assets.map(asset => {
+        return {
+          id: asset.index.toString(),
+          name: asset.params.name
+        }
+      });
+    }
+  }
 }

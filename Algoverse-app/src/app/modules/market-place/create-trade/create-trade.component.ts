@@ -31,6 +31,7 @@ export class CreateTradeComponent implements OnInit {
   public price: string = "0";
   public metadataAttributes: any = {};
   public selectedAssetName: string = "";
+  public assetsName: any[] = [];
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -62,6 +63,7 @@ export class CreateTradeComponent implements OnInit {
       asset_ids.push(asset.index);
     }
     this.assetIDs = asset_ids;
+    this.extractAssetsName();
 
     const algod = getAlgodClient();
     const accountInfo = await algod.accountInformation('5V3RXJ76GKVG7F55LZIVN6DXOQLNRLAMMNQMFLJ57LP2PP5B7Q64A7IX7A').do();
@@ -75,7 +77,7 @@ export class CreateTradeComponent implements OnInit {
 
   async selectedAsset(assetID: string) {
     this.selectedAssetID = +assetID;
-    
+
     this.chosenAssetParams = await this._walletsConnectService.getAsset(+assetID)
     this.selectedAssetDecimals = this.chosenAssetParams['params']['decimals']
     this.chosenAsset = this.getAsset(assetID);
@@ -318,4 +320,14 @@ export class CreateTradeComponent implements OnInit {
     this.router.navigateByUrl('/create-offer')
   }
 
+  private extractAssetsName() {
+    if (this.assets.length) {
+      this.assetsName = this.assets.map(asset => {
+        return {
+          id: asset.index.toString(),
+          name: asset.params.name
+        }
+      });
+    }
+  }
 }
