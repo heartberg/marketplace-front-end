@@ -82,8 +82,8 @@ export class CollectionDetailComponent implements OnInit {
     let wallet = this._walletsConnectService.sessionWallet
     if(wallet) {
       const params = {
-        starredCollectionId: this.mCollection.collectionId,
-        starringWallet: wallet.getDefaultAccount()
+        collectionId: this.mCollection.collectionId,
+        wallet: wallet.getDefaultAccount()
       }
       this._userService.addCollectionStar(params).subscribe(
         (value: any) => {
