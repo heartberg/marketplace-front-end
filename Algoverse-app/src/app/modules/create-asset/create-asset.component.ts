@@ -308,7 +308,7 @@ export class CreateAssetComponent implements OnInit {
     console.log('e type: ', e.target.files[0].type)
     this.fileUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('fileUrl', this.fileUrl);
-    if(e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3") {
+    if(e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3" || e.target.files[0].type.toString() == "audio/wav") {
       this.isMusicUpload = true;
       this.isVideoUpload = false;
       this.animation_url_mimetype = e.target.files[0].type.toString();
