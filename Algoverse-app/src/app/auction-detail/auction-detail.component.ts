@@ -12,6 +12,8 @@ import {Location} from '@angular/common';
 export class AuctionDetailComponent implements OnInit {
 
   public mAuction: any = {};
+  public assetStar: any;
+
   public isMine = false;
   public isOpen = true;
   private assets: any[] = [];
@@ -29,6 +31,8 @@ export class AuctionDetailComponent implements OnInit {
   public endTime = "";
   public decimals = 0;
   public totalSupply = 0;
+
+  public isStarred: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -184,6 +188,46 @@ export class AuctionDetailComponent implements OnInit {
 
   public actionBack() {
     this._location.back()
+  }
+
+  addStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      const params = {
+        assetId: this.selectedAssetID,
+        wallet: wallet.getDefaultAccount()
+      }
+      this._userService.addAssetStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = true;
+          console.log("added star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
+
+  }
+
+  removeStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      const params = {
+        assetId: this.selectedAssetID,
+        wallet: wallet.getDefaultAccount(),
+        assetStarId: this.assetStar.assetStarId
+      }
+      this._userService.removeAssetStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = false;
+          console.log("removed star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
   }
 
 }

@@ -18,6 +18,7 @@ import { removeUndefinedProperties } from 'algosdk/dist/types/src/utils/utils';
 export class TradeDetailComponent implements OnInit {
 
   public mItem: any = null;
+  public assetStar: any;
 
   public isOpen = false;
   public assetName: string = ""
@@ -35,9 +36,7 @@ export class TradeDetailComponent implements OnInit {
   public indexSecond: number = -1;
   isPopUpOpened: boolean = false;
 
-  isAuction: boolean = false;
-  isSwap: boolean = false;
-  isNormal: boolean = true;
+  isStarred: boolean = false;
   
 
   constructor(
@@ -210,6 +209,46 @@ export class TradeDetailComponent implements OnInit {
 
   scaleAlgo(algo: number) {
     return algo / Math.pow(10, 6)
+  }
+
+  addStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      const params = {
+        assetId: this.mItem.assetId,
+        wallet: wallet.getDefaultAccount()
+      }
+      this._userService.addAssetStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = true;
+          console.log("added star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
+
+  }
+
+  removeStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      const params = {
+        assetId: this.mItem.assetId,
+        wallet: wallet.getDefaultAccount(),
+        assetStarId: this.assetStar.assetStarId
+      }
+      this._userService.removeAssetStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = false;
+          console.log("removed star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
   }
 
 }
