@@ -495,7 +495,7 @@ export class CreateAssetComponent implements OnInit {
         creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         assetURL: ipfsUrl,
         description: this.description,
-        supply: this.supply,
+        supply: +this.supply * Math.pow(10, +this.decimals),
         clawbackAddress: "",
         managerAddress: "",
         freezeAddress: "",
