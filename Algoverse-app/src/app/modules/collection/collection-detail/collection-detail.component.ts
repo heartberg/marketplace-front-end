@@ -13,6 +13,8 @@ export class CollectionDetailComponent implements OnInit {
 
   public mCollection: any = {};
   public mAssets: any = [];
+  public isStarred: boolean = true;
+  public collectionStar: any;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -37,6 +39,27 @@ export class CollectionDetailComponent implements OnInit {
         this.mAssets = this.mCollection.assets;
         this._stateService.passingData = this.mCollection;
         this.showCollectionDetails();
+
+        if(this._walletsConnectService.sessionWallet) {
+          this._userService.getCollectionStar(this._walletsConnectService.sessionWallet.getDefaultAccount(), this.mCollection.collectionId).subscribe(
+            (value:any) => {
+              if(value){
+                this.collectionStar = value;
+                this.isStarred = true;
+              } else {
+                this.isStarred = false;
+                this.collectionStar = undefined;
+              }
+            }, error => {
+              this.isStarred = false;
+              this.collectionStar = undefined;
+            }
+          )
+        } else {
+          this.isStarred = false;
+          this.collectionStar = undefined;
+        }
+
       },
       error => console.log(error)
     )
@@ -44,6 +67,46 @@ export class CollectionDetailComponent implements OnInit {
 
   showCollectionDetails() {
 
+  }
+
+  addStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      const params = {
+        collectionId: this.mCollection.collectionId,
+        wallet: wallet.getDefaultAccount()
+      }
+      this._userService.addCollectionStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = true;
+          console.log("added star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
+
+  }
+
+  removeStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      const params = {
+        collectionId: this.mCollection.collectionId,
+        wallet: wallet.getDefaultAccount(),
+        collectionStarId: this.collectionStar.collectionStarId
+      }
+      this._userService.removeCollectionStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = false;
+          console.log("removed star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
   }
 
 
