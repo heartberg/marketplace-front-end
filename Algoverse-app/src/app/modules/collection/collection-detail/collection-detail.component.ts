@@ -103,7 +103,7 @@ export class CollectionDetailComponent implements OnInit {
     let wallet = this._walletsConnectService.sessionWallet
     if(wallet) {
       console.log(this.collectionStar)
-      this._userService.removeCollectionStar(this.collectionStar).subscribe(
+      this._userService.removeCollectionStar(this.collectionStar.collectionStarId).subscribe(
         (value: any) => {
           console.log(value)
           this.isStarred = false;

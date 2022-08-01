@@ -252,12 +252,7 @@ export class TradeDetailComponent implements OnInit {
   removeStar() {
     let wallet = this._walletsConnectService.sessionWallet
     if(wallet) {
-      const params = {
-        assetId: this.mItem.assetId,
-        wallet: wallet.getDefaultAccount(),
-        assetStarId: this.assetStar.assetStarId
-      }
-      this._userService.removeAssetStar(params).subscribe(
+      this._userService.removeAssetStar(this.assetStar.assetStarId).subscribe(
         (value: any) => {
           console.log(value)
           this.isStarred = false;

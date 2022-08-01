@@ -277,9 +277,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  removeCollectionStar(star: any): Observable<any> {
-    const url = `${this.baseUrl}collection/star/remove`;
-    return this._http.delete(url, star);
+  removeCollectionStar(starId: string): Observable<any> {
+    const url = `${this.baseUrl}collection/star/remove/${starId}`;
+    return this._http.delete(url);
   }
 
   getAssetStar(wallet: string, assetId: number): Observable<any> {
@@ -292,9 +292,9 @@ export class UserService {
     return this._http.post(url, params);
   }
 
-  removeAssetStar(params: any): Observable<any> {
-    const url = `${this.baseUrl}asset/star/remove`;
-    return this._http.delete(url, params);
+  removeAssetStar(starId: string): Observable<any> {
+    const url = `${this.baseUrl}asset/star/remove/${starId}`;
+    return this._http.delete(url);
   }
 
 }
