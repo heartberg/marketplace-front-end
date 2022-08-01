@@ -293,100 +293,14 @@ export class CreateSwapComponent implements OnInit {
     }
     const txID = await this._walletsConnectService.createSwap(params1);
 
-    const asset = this.offeringAsset;
     if (txID) {
-      const offerringCollectionId = this.offerringMetadata.collectionId ? this.offerringMetadata.collectionId : getUUID();
-      let offerringAssetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.offeringMetadataAttributes)) {
-        offerringAssetProperties.push({
-          name: key,
-          value: value
-        })
-      }
-
-      const acceptingCollectionId = this.acceptingMetadata.collectionId ? this.acceptingMetadata.collectionId : getUUID();
-      let acceptingAssetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.acceptingMetadataAttributes)) {
-        acceptingAssetProperties.push({
-          name: key,
-          value: value + ''
-        })
-      }
-
       const params2 = {
         swapId: txID,
         indexAddress,
         offerAddress: this._walletsConnectService.myAlgoAddress[0],
         offeringAssetId: this.offeringAssetId,
         offeringAmount: this.amount,
-        offeringAsset: {
-          assetId: this.offeringAssetId,
-          name: asset.params.name,
-          unitName: asset.params['unit-name'],
-          supply: asset.params.total,
-          assetURL: asset.params.url ? asset.params.url : '',
-          creatorWallet: asset.params.creator,
-          freezeAddress: asset.params.freeze ? asset.params.freeze : '',
-          managerAddress: asset.params.manager ? asset.params.manager : '',
-          clawbackAddress: asset.params.clawback ? asset.params.clawback : '',
-          reserveAddress: asset.params.reserve ? asset.params.reserve : '',
-          metadata: asset.params['metadata-hash'] ? asset.params['metadata-hash'] : '',
-          externalLink: this.offerringMetadata.external_link ? this.offerringMetadata.external_link : '',
-          description: this.offerringMetadata.description ? this.offerringMetadata.description : '',
-
-          assetCollectionID: offerringCollectionId,
-          assetCollection: {
-            assetCollectionID: offerringCollectionId,
-            name: this.offerringMetadata.collection ? (this.offerringMetadata.collection.name ? this.offerringMetadata.collection.name : '') : '',
-            icon: this.offerringMetadata.collection ? (this.offerringMetadata.collection.icon ? this.offerringMetadata.collection.icon : '') : '',
-            banner: this.offerringMetadata.collection ? (this.offerringMetadata.collection.banner ? this.offerringMetadata.collection.banner : '') : '',
-            featuredImage: this.offerringMetadata.collection ? (this.offerringMetadata.collection.featuredImage ? this.offerringMetadata.collection.featuredImage : '') : '',
-            description: this.offerringMetadata.collection ? (this.offerringMetadata.collection.description ? this.offerringMetadata.collection.description : '') : '',
-            customURL: this.offerringMetadata.collection ? (this.offerringMetadata.collection.customURL ? this.offerringMetadata.collection.customURL : '') : '',
-            category: this.offerringMetadata.collection ? (this.offerringMetadata.collection.category ? this.offerringMetadata.collection.category : '') : '',
-            website: this.offerringMetadata.collection ? (this.offerringMetadata.collection.web ? this.offerringMetadata.collection.web : '') : '',
-            creatorWallet: this.offerringMetadata.collection ? (this.offerringMetadata.collection.creatorWallet ? this.offerringMetadata.collection.creatorWallet : asset.params.creator) : asset.params.creator
-          },
-
-          properties: offerringAssetProperties,
-          file: this.offerringMetadata.image? this.offerringMetadata.image : (this.offerringMetadata.file ? this.offerringMetadata.file : (this.offerringMetadata.cover? this.offerringMetadata.cover : '')),
-          cover: this.offerringMetadata.cover ? this.offerringMetadata.cover : '',
-        },
-
         acceptingAssetId: this.acceptingAssetId,
-        acceptingAsset: {
-          assetId: this.acceptingAssetId,
-          name: this.acceptingAsset.params.name,
-          unitName: this.acceptingAsset.params['unit-name'],
-          supply: this.acceptingAsset.params.total,
-          assetURL: this.acceptingAsset.params.url ? this.acceptingAsset.params.url : '',
-          creatorWallet: this.acceptingAsset.params.creator,
-          freezeAddress: this.acceptingAsset.params.freeze ? this.acceptingAsset.params.freeze : '',
-          managerAddress: this.acceptingAsset.params.manager ? this.acceptingAsset.params.manager : '',
-          clawbackAddress: this.acceptingAsset.params.clawback ? this.acceptingAsset.params.clawback : '',
-          reserveAddress: this.acceptingAsset.params.reserve ? this.acceptingAsset.params.reserve : '',
-          metadata: this.acceptingAsset.params['metadata-hash'] ? this.acceptingAsset.params['metadata-hash'] : '',
-          externalLink: this.acceptingMetadata.external_link ? this.acceptingMetadata.external_link : '',
-          description: this.acceptingMetadata.description ? this.acceptingMetadata.description : '',
-
-          assetCollectionID: acceptingCollectionId,
-          assetCollection: {
-            assetCollectionID: acceptingCollectionId,
-            name: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.name ? this.acceptingMetadata.collection.name : '') : '',
-            icon: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.icon ? this.acceptingMetadata.collection.icon : '') : '',
-            banner: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.banner ? this.acceptingMetadata.collection.banner : '') : '',
-            featuredImage: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.featuredImage ? this.acceptingMetadata.collection.featuredImage : '') : '',
-            description: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.description ? this.acceptingMetadata.collection.description : '') : '',
-            customURL: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.customURL ? this.acceptingMetadata.collection.customURL : '') : '',
-            category: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.category ? this.acceptingMetadata.collection.category : '') : '',
-            website: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.web ? this.acceptingMetadata.collection.web : '') : '',
-            creatorWallet: this.acceptingMetadata.collection ? (this.acceptingMetadata.collection.creatorWallet ? this.acceptingMetadata.collection.creatorWallet : asset.params.creator) : asset.params.creator
-          },
-
-          properties: acceptingAssetProperties,
-          file: this.acceptingMetadata.image? this.acceptingMetadata.image : (this.acceptingMetadata.file ? this.acceptingMetadata.file : (this.acceptingMetadata.cover? this.acceptingMetadata.cover : '')),
-          cover: this.acceptingMetadata.cover ? this.acceptingMetadata.cover : '',
-        },
         acceptingAmount: this.acceptAmount,
         collectionInterestedIn: this.collectionName
       }

@@ -246,55 +246,10 @@ export class CreateAuctionComponent implements OnInit {
     console.log('txID', txID);
 
     if (txID) {
-      const asset = this.selectedAsset.params;
-      console.log(asset);
-      const collectionId = this.metadata.collectionId ? this.metadata.collectionId : getUUID();
-
-      let assetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.metadataAttributes)) {
-        assetProperties.push({
-          name: key,
-          value: value + ''
-        })
-      }
-
       const params = {
         auctionId: txID,
         indexAddress,
         assetId: this.selectedAsset.index,
-        asset: {
-          assetId: this.selectedAsset.index,
-          name: asset.name,
-          unitName: asset['unit-name'],
-          supply: asset.total,
-          assetURL: "string",
-          creatorWallet: asset.creator,
-          freezeAddress: asset.freeze ? asset.freeze : '',
-          managerAddress: asset.manager ? asset.manager : '',
-          clawbackAddress: asset.clawback ? asset.clawback : '',
-          reserveAddress: asset.reserve ? asset.reserve : '',
-          metadata: asset['metadata-hash'] ? asset['metadata-hash'] : '',
-          externalLink: this.metadata.external_link ? this.metadata.external_link : '',
-          description: this.metadata.description ? this.metadata.description : '',
-
-          assetCollectionID: collectionId,
-          assetCollection: {
-            assetCollectionID: collectionId,
-            name: this.metadata.collection ? (this.metadata.collection.name ? this.metadata.collection.name : '') : '',
-            icon: this.metadata.collection ? (this.metadata.collection.icon ? this.metadata.collection.icon : '') : '',
-            banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner : '') : '',
-            featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage : '') : '',
-            description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description : '') : '',
-            customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL : '') : '',
-            category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category : '') : '',
-            website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web : '') : '',
-            creatorWallet: this.metadata.collection ? (this.metadata.collection.creatorWallet ? this.metadata.collection.creatorWallet : asset.creator) : asset.creator
-          },
-
-          properties: assetProperties,
-          file: this.metadata.image? this.metadata.image : (this.metadata.file ? this.metadata.file : (this.metadata.cover? this.metadata.cover : '')),
-          cover: this.metadata.cover ? this.metadata.cover : '',
-        },
         amount: this.assetAmount,
         creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
         startTime: this.startTime,

@@ -221,54 +221,9 @@ export class CreateTradeComponent implements OnInit {
     const txID = await this._walletsConnectService.createTrade(params1);
 
     if (txID) {
-      const asset = this.getAsset('' + this.selectedAssetID);
-      const collectionId = this.metadata.collectionId? this.metadata.collectionId: getUUID();
-
-      let assetProperties: { name: any; value: any; }[] = [];
-      for (const [key, value] of Object.entries(this.metadataAttributes)) {
-        assetProperties.push({
-          name: key,
-          value: value + ''
-        })
-      }
-
       const params2 = {
         tradeId: txID,
         assetId: this.selectedAssetID,
-        asset: {
-          assetId: this.selectedAssetID,
-          name: asset.params.name,
-          unitName: asset.params['unit-name'],
-          supply: asset.params.total,
-          assetURL: asset.params.url ? asset.params.url : '',
-          creatorWallet: asset.params.creator,
-          freezeAddress: asset.params.freeze ? asset.params.freeze : '',
-          managerAddress: asset.params.manager ? asset.params.manager : '',
-          clawbackAddress: asset.params.clawback ? asset.params.clawback : '',
-          reserveAddress: asset.params.reserve ? asset.params.reserve : '',
-          metadata: asset.params['metadata-hash'] ? asset.params['metadata-hash'] : '',
-
-          externalLink: this.metadata.external_link ? this.metadata.external_link : '',
-          description: this.metadata.description ? this.metadata.description : '',
-
-          assetCollectionID: collectionId,
-          assetCollection: {
-            assetCollectionID: collectionId,
-            name: this.metadata.collection ? (this.metadata.collection.name ? this.metadata.collection.name: '') : '',
-            icon: this.metadata.collection ? (this.metadata.collection.icon ? this.metadata.collection.icon: '') : '',
-            banner: this.metadata.collection ? (this.metadata.collection.banner ? this.metadata.collection.banner: '') : '',
-            featuredImage: this.metadata.collection ? (this.metadata.collection.featuredImage ? this.metadata.collection.featuredImage: '') : '',
-            description: this.metadata.collection ? (this.metadata.collection.description ? this.metadata.collection.description: '') : '',
-            customURL: this.metadata.collection ? (this.metadata.collection.customURL ? this.metadata.collection.customURL: '') : '',
-            category: this.metadata.collection ? (this.metadata.collection.category ? this.metadata.collection.category: '') : '',
-            website: this.metadata.collection ? (this.metadata.collection.web ? this.metadata.collection.web: '') : '',
-            creatorWallet: this.metadata.collection ? (this.metadata.collection.creatorWallet ? this.metadata.collection.creatorWallet: asset.params.creator) : asset.params.creator
-          },
-
-          properties: assetProperties,
-          file: this.metadata.image? this.metadata.image : (this.metadata.file ? this.metadata.file : (this.metadata.cover? this.metadata.cover : '')),
-          cover: this.metadata.cover? this.metadata.cover : '',
-        },
         indexAddress,
         price: this.price,
         creatorWallet: this._walletsConnectService.myAlgoAddress[0],
