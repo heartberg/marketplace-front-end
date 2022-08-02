@@ -18,6 +18,7 @@ import { removeUndefinedProperties } from 'algosdk/dist/types/src/utils/utils';
 export class TradeDetailComponent implements OnInit {
 
   public mItem: any = null;
+  public assetStar: any;
 
   public isOpen = false;
   public assetName: string = ""
@@ -35,10 +36,8 @@ export class TradeDetailComponent implements OnInit {
   public indexSecond: number = -1;
   isPopUpOpened: boolean = false;
 
-  isAuction: boolean = false;
-  isSwap: boolean = false;
-  isNormal: boolean = true;
-  
+  isStarred: boolean = false;
+
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -64,6 +63,24 @@ export class TradeDetailComponent implements OnInit {
         console.log('res', res);
         this.mItem = res;
         await this.showAssetDetails(this.mItem);
+        let wallet = this._walletsConnectService.sessionWallet
+        if(wallet) {
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
+            (res: any) => {
+              if(res) {
+                this.assetStar = res;
+                this.isStarred = true;
+              } else {
+                this.assetStar = undefined;
+                this.isStarred = false;
+              }
+            }, error => {
+              this.isStarred = false;
+              this.assetStar = undefined;
+            }
+          )
+        }
+
       },
       error => console.log(error)
     )
@@ -130,7 +147,7 @@ export class TradeDetailComponent implements OnInit {
       )
     }
   }
- 
+
   async acceptTrade() {
     if (!this._walletsConnectService.sessionWallet) {
       alert('Connect your wallet!');
@@ -210,6 +227,45 @@ export class TradeDetailComponent implements OnInit {
 
   scaleAlgo(algo: number) {
     return algo / Math.pow(10, 6)
+  }
+
+  addOrRemoveStar(): void {
+    let wallet = this._walletsConnectService.sessionWallet;
+    if (this.isStarred) {
+      return this.removeStar();
+    }
+    if(wallet) {
+      const params = {
+        assetId: this.mItem.assetId,
+        wallet: wallet.getDefaultAccount()
+      }
+      this._userService.addAssetStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = true;
+          this.mItem.stars++;
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
+
+  }
+
+  removeStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      this._userService.removeAssetStar(this.assetStar.assetStarId).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = false;
+          this.mItem.stars--;
+          console.log("removed star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
   }
 
 }

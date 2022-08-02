@@ -274,3 +274,15 @@ input[type=date] {
   display: flex;
   flex-direction: column;
 }
+.asset-star {
+  width: 30px !important;
+  height: 30px !important;
+}
+.asset-star-container {
+  display: flex !important;
+  align-items: center !important;
+
+  img {
+    margin-right: 8px !important;
+  }
+}

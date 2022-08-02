@@ -7,7 +7,9 @@
   }
   .img {
     img {
-      width: 100%;
+      display: block;
+      margin: 0 auto;
+      width: 250px;
       height: 250px;
     }
   }
@@ -67,4 +69,10 @@
       text-align: center;
     }
   }
+}
+
+.creator-image {
+  width: 80px;
+  height: 80px;
+  margin-right: 8px;
 }
