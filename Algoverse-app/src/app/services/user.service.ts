@@ -267,4 +267,34 @@ export class UserService {
     return this._http.get<any>(url)
   }
 
+  getCollectionStar(wallet: string, collectionId: string): Observable<any> {
+    const url = `${this.baseUrl}collection/star/get?wallet=${wallet}&collectionId=${collectionId}`;
+    return this._http.get<any>(url)
+  }
+
+  addCollectionStar(params: any): Observable<any> {
+    const url = `${this.baseUrl}collection/star/add`;
+    return this._http.post(url, params);
+  }
+
+  removeCollectionStar(starId: string): Observable<any> {
+    const url = `${this.baseUrl}collection/star/remove/${starId}`;
+    return this._http.delete(url);
+  }
+
+  getAssetStar(wallet: string, assetId: number): Observable<any> {
+    const url = `${this.baseUrl}asset/star/get?wallet=${wallet}&assetId=${assetId}`;
+    return this._http.get<any>(url)
+  }
+
+  addAssetStar(params: any): Observable<any> {
+    const url = `${this.baseUrl}asset/star/add`;
+    return this._http.post(url, params);
+  }
+
+  removeAssetStar(starId: string): Observable<any> {
+    const url = `${this.baseUrl}asset/star/remove/${starId}`;
+    return this._http.delete(url);
+  }
+
 }

@@ -43,6 +43,10 @@
                         <img src="{{mAuction?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
                         <span>{{mAuction?.collection?.name}}</span>
                       </div>
+                      <div class="section auction-star-container" (click)="addOrRemoveStar()">
+                        <img class="auction-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                        <span>{{mAuction?.asset?.stars}}</span>
+                      </div>
                     </div>
                   </ng-container>
                 </div>
@@ -60,11 +64,11 @@
                     </div>
                     <div class="section">
                       <h4>Reserve Price:</h4>
-                      <span class="unset-dm-style">{{ mAuction?.reserve }}</span>
+                      <span class="unset-dm-style">{{ price }} Algo</span>
                     </div>
                     <div class="section">
                       <h4>Minimum Bid:</h4>
-                      <span class="unset-dm-style">{{ mAuction?.minimumBid }}</span>
+                      <span class="unset-dm-style">{{ minimumIncrement }} Algo</span>
                     </div>
                   </div>
                   <div class="auction" style="margin-top: 100px;">
@@ -91,10 +95,10 @@
 <!--              </ng-template>-->
               <ng-container *ngIf="isMine">
                 Cancel
-              </ng-container>                
+              </ng-container>
               <ng-container *ngIf="!isMine">
                 Bid
-              </ng-container>        
+              </ng-container>
             </button>
           </div>
         </div>

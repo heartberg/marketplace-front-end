@@ -12,6 +12,8 @@ import {Location} from '@angular/common';
 export class AuctionDetailComponent implements OnInit {
 
   public mAuction: any = {};
+  public assetStar: any;
+
   public isMine = false;
   public isOpen = true;
   private assets: any[] = [];
@@ -30,6 +32,8 @@ export class AuctionDetailComponent implements OnInit {
   public decimals = 0;
   public totalSupply = 0;
 
+  public isStarred: boolean = false;
+
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
@@ -46,29 +50,21 @@ export class AuctionDetailComponent implements OnInit {
       this.router.navigateByUrl('items');
       return;
     }
-
-    this._userService.loadAuctionItem(auctionIdFromRoute).subscribe(
-      res => {
-        console.log('res', res);
-        this.mAuction = res;
-        this.showAuctionDetail();
-      },
-      error => console.log(error)
-    )
-
+    this.loadAuctionDetails(auctionIdFromRoute);
   }
 
   async showAuctionDetail() {
     this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.isOpen = this.mAuction.isOpen;
     this.selectedAsset = this.mAuction.asset;
-    this.selectedAssetID = this.selectedAsset.index;
+    this.selectedAssetID = this.selectedAsset.assetId;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
-
+    
     let assetInfo = await this._walletsConnectService.getAsset(this.mAuction.asset.assetId)
     this.decimals = assetInfo['params']['decimals']
     this.totalSupply = assetInfo['params']['total'] / Math.pow(10, this.decimals)
-
+    this.price = this.mAuction.reserve / Math.pow(10, 6)
+    this.minimumIncrement = this.mAuction.minimumBid / Math.pow(10, 6)
     if (this.selectedAsset.assetURL) {
       this._userService.loadMetaData(this.selectedAsset.assetUrl).subscribe(
         (result) => {
@@ -186,4 +182,72 @@ export class AuctionDetailComponent implements OnInit {
     this._location.back()
   }
 
+  addOrRemoveStar(): void {
+    let wallet = this._walletsConnectService.sessionWallet;
+    if (this.isStarred) {
+      return this.removeStar();
+    }
+    if(wallet) {
+      const params = {
+        assetId: this.selectedAssetID,
+        wallet: wallet.getDefaultAccount()
+      }
+      this._userService.addAssetStar(params).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = true;
+          console.log("added star")
+          this.loadAuctionDetails(this.mAuction.auctionId)
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
+
+  }
+
+  removeStar() {
+    let wallet = this._walletsConnectService.sessionWallet
+    if(wallet) {
+      this._userService.removeAssetStar(this.assetStar.assetStarId).subscribe(
+        (value: any) => {
+          console.log(value)
+          this.isStarred = false;
+          this.mAuction.asset.stars--;
+          this.loadAuctionDetails(this.mAuction.auctionId)
+          console.log("removed star")
+        }
+      )
+    } else {
+      alert("connect wallet")
+    }
+  }
+
+  private loadAuctionDetails(auctionIdFromRoute: string) {
+    this._userService.loadAuctionItem(auctionIdFromRoute).subscribe(
+      res => {
+        console.log('res', res);
+        this.mAuction = res;
+        this.showAuctionDetail();
+        let wallet = this._walletsConnectService.sessionWallet
+        if(wallet) {
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.selectedAssetID).subscribe(
+            (res: any) => {
+              if(res) {
+                this.assetStar = res;
+                this.isStarred = true;
+              } else {
+                this.assetStar = undefined;
+                this.isStarred = false;
+              }
+            }, error => {
+              this.isStarred = false;
+              this.assetStar = undefined;
+            }
+          )
+        }
+      },
+      error => console.log(error)
+    )
+  }
 }
