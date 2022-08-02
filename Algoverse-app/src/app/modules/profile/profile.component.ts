@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
     private _stateService: StateService,
     private route: ActivatedRoute,
     private router: Router
-  ) { 
+  ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
