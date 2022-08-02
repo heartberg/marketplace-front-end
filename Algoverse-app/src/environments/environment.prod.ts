@@ -1,16 +1,13 @@
 export const environment = {
   production: true,
   baseUrl: 'https://algoverse.azurewebsites.net/',
-  // baseUrl: 'http://localhost:5000/',
+  ipfs_base: "https://ipfs.infura.io/ipfs/",
 
   ALGOD_URL:"https://testnet-algorand.api.purestake.io/ps2",
   ALGOD_TOKEN:"Z4lUOOfIOm8thZUeUK9n349ImUCpiCC190RtGnm6",
   ALGOD_INDEXER_ADDRESS:"https://testnet-algorand.api.purestake.io/idx2",
 
-  // ALGOD_URL:"http://localhost",
-  // ALGOD_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  // ALGOD_INDEXER_ADDRESS:"http://localhost",
-
+  FEE_APP_ID: 101663109,
   STORE_APP_ID: 101663840,
   TRADE_APP_ID: 101664818,
   BID_APP_ID: 101664718,
