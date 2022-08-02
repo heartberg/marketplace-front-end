@@ -59,11 +59,12 @@ export class AuctionDetailComponent implements OnInit {
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.assetId;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
-
+    
     let assetInfo = await this._walletsConnectService.getAsset(this.mAuction.asset.assetId)
     this.decimals = assetInfo['params']['decimals']
     this.totalSupply = assetInfo['params']['total'] / Math.pow(10, this.decimals)
-
+    this.price = this.mAuction.reserve / Math.pow(10, 6)
+    this.minimumIncrement = this.mAuction.minimumBid / Math.pow(10, 6)
     if (this.selectedAsset.assetURL) {
       this._userService.loadMetaData(this.selectedAsset.assetUrl).subscribe(
         (result) => {

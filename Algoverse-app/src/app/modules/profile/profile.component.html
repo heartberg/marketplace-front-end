@@ -2,7 +2,7 @@
   <div class="main">
     <div class="wrapper">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-3">
           <div class="wrapper-border" style="height: 100%">
             <div class="avatar-section d-flex flex-column align-items-center">
               <div *ngIf="isOwnProfile" class="setting-section" routerLink="../../edit-profile">
@@ -84,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-9">
           <div class="right-section">
             <div class="wrapper-border">
               <div class="cover">
@@ -145,8 +145,10 @@
                     </div>
                   </mat-tab>
                   <mat-tab label="Starred">
-                    <div class="col-4" *ngFor="let item of starred; let i = index; last as last">
-                      <app-card [mItem]="item" routerLink="/asset-detail/{{item.assetId}}"></app-card>
+                    <div class="row">
+                      <div class="col-4" *ngFor="let item of starred; let i = index; last as last">
+                        <app-card [mItem]="item" routerLink="/asset-detail/{{item.assetId}}"></app-card>
+                      </div>
                     </div>
                   </mat-tab>
                 </mat-tab-group>
