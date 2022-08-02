@@ -1,4 +1,9 @@
 .main {
+  .relative {
+    position: relative !important;
+    overflow: hidden;
+  }
+
   img {
     border-radius: 12px !important;
   }
@@ -23,8 +28,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-
-
 
       &.first-wrapper {
         margin-right: 8px;
@@ -81,6 +84,35 @@
     display: flex;
     flex-direction: column;
     //padding: 30px 20px;
+
+    .scrolls {
+      overflow-x: scroll;
+      overflow-y: hidden;
+      width: 100%;
+      height: 160px;
+      white-space: nowrap;
+
+      .box {
+        margin: 5px 10px 5px 10px;
+        height: 140px;
+        cursor: pointer;
+        display:inline-block;
+        *display:inline;/* For IE7*/
+        *zoom:1;/* For IE7*/
+
+        .mitem {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+
+          img {
+            height: 100px;
+          }
+        }
+      }
+
+    }
 
     .boxes {
       display: flex;
@@ -177,7 +209,7 @@
     .first-section {
 
       .wrapper {
-        margin: 0px !important;
+          margin: 0px !important;
       }
       .first-wrapper {
         margin-top: 16px !important;
@@ -239,43 +271,23 @@
     }
   }
 }
-.last-sectionZ {
-  h3 {
-    text-align: center;
-  }
-  span {
-    margin-right: 10px;
-  }
-  margin-top: 20px;
+
+:host ::ng-deep .card{
+    bottom: 20px !important;
+    right: 20px !important;;
+    left: 20px !important;;
+    width: auto !important;;
+    top: 20px !important;;
+    height: auto !important;;
 }
-.box {
-  margin-top: 5px;
-  position: relative;
-  .star-section {
-    position: absolute;
-    bottom: 50px;
-    right: 10px;
-    align-items: baseline;
-    display: flex;
-    i {
-      font-size: 30px;
-    }
-    span {
-      margin-left: 5px;
-    }
+  :host ::ng-deep .isBoxes {
+    bottom: 0px !important;
+    right: 0px !important;
+    left: 0px !important;
+    width: auto !important;
+    top: 0px !important;
   }
-  img {
-    width: 100%;
-    height: 100%;
-  }
-  span {
-    margin-top: 15px;
-    color: #81007F;
-  }
-}
-.sortBy {
-  margin-bottom: 20px;
-}
+
 .respo-show {
   display: none;
 }
@@ -292,14 +304,15 @@
   .boxes .box{
     display: none !important;
   }
-  .no-hide{
-    .box {
-      display: unset !important;
-    }
-  }
-  .dflex {
-    .box {
-      display: flex;
-    }
-  }
+}
+
+.center-cropped {
+  width: 100px;
+  height: 100px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.featured-artists {
+  width: 100%;
 }
