@@ -1,3 +1,14 @@
+::ng-deep {
+  .right-section {
+    .mat-tab-body {
+      overflow: unset !important;
+    }
+    .mat-tab-body-content {
+      overflow: unset !important;
+    }
+  }
+}
+
 .main {
   .wrapper {
     position: relative;
@@ -74,6 +85,7 @@
 
     }
   .right-section {
+    height: 100%;
     .cover {
       height: 190px;
       width: 100%;
@@ -83,6 +95,7 @@
       }
     }
     .tabs-section {
+      min-height: 51.5%;
       margin-top: 20px;
       .row {
         margin-top: 20px !important;

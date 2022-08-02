@@ -92,61 +92,61 @@
                 <img *ngIf="!userProfile?.bannerImage" style="border-radius:12px" src="https://img.freepik.com/free-vector/space-banner-with-purple-planet-landscape_107791-6230.jpg?w=2000&t=st=1658221048~exp=1658221648~hmac=c65eb9aee01fdb8c97e698f7c4d794de0780c30ecec37acaba246e8cd15c321f" alt="">
               </div>
             </div>
-            <div class="wrapper-border tabs-section" style="height:500px">
+            <div class="wrapper-border tabs-section">
               <div class="tabs">
                 <mat-tab-group>
                   <mat-tab label="Owned">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of exampleArr; let i = index; last as last">
                         <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="Created">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of exampleArr; let i = index; last as last">
                         <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="For Sale">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of forSale; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of forSale; let i = index; last as last">
                         <app-trade-grid-item routerLink="../../asset-detail/{{item.assetId}}" [mItem]="item"></app-trade-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="For Auction">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of forAuction; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of forAuction; let i = index; last as last">
                         <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="For Swap">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of forSwap; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of forSwap; let i = index; last as last">
                         <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="Open Bids">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of myBids; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of myBids; let i = index; last as last">
                         <app-bid-grid-item routerLink="../../asset-detail/{{item.assetId}}" [mItem]="item"></app-bid-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="Auction Bids">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of myAuctionBids; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of myAuctionBids; let i = index; last as last">
                         <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="Starred">
                     <div class="row">
-                      <div class="col-4" *ngFor="let item of starred; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of starred; let i = index; last as last">
                         <app-card [mItem]="item" routerLink="/asset-detail/{{item.assetId}}"></app-card>
                       </div>
                     </div>
