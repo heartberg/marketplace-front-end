@@ -50,40 +50,14 @@ export class AuctionDetailComponent implements OnInit {
       this.router.navigateByUrl('items');
       return;
     }
-
-    this._userService.loadAuctionItem(auctionIdFromRoute).subscribe(
-      res => {
-        console.log('res', res);
-        this.mAuction = res;
-        this.showAuctionDetail();
-        let wallet = this._walletsConnectService.sessionWallet
-        if(wallet) {
-          this._userService.getAssetStar(wallet.getDefaultAccount(), this.selectedAssetID).subscribe(
-            (res: any) => {
-              if(res) {
-                this.assetStar = res;
-                this.isStarred = true;
-              } else {
-                this.assetStar = undefined;
-                this.isStarred = false;
-              }
-            }, error => {
-              this.isStarred = false;
-              this.assetStar = undefined;
-            }
-          )
-        }
-      },
-      error => console.log(error)
-    )
-
+    this.loadAuctionDetails(auctionIdFromRoute);
   }
 
   async showAuctionDetail() {
     this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.isOpen = this.mAuction.isOpen;
     this.selectedAsset = this.mAuction.asset;
-    this.selectedAssetID = this.selectedAsset.index;
+    this.selectedAssetID = this.selectedAsset.assetId;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
     
     let assetInfo = await this._walletsConnectService.getAsset(this.mAuction.asset.assetId)
@@ -208,8 +182,11 @@ export class AuctionDetailComponent implements OnInit {
     this._location.back()
   }
 
-  addStar() {
-    let wallet = this._walletsConnectService.sessionWallet
+  addOrRemoveStar(): void {
+    let wallet = this._walletsConnectService.sessionWallet;
+    if (this.isStarred) {
+      return this.removeStar();
+    }
     if(wallet) {
       const params = {
         assetId: this.selectedAssetID,
@@ -220,6 +197,7 @@ export class AuctionDetailComponent implements OnInit {
           console.log(value)
           this.isStarred = true;
           console.log("added star")
+          this.loadAuctionDetails(this.mAuction.auctionId)
         }
       )
     } else {
@@ -235,6 +213,8 @@ export class AuctionDetailComponent implements OnInit {
         (value: any) => {
           console.log(value)
           this.isStarred = false;
+          this.mAuction.asset.stars--;
+          this.loadAuctionDetails(this.mAuction.auctionId)
           console.log("removed star")
         }
       )
@@ -243,4 +223,31 @@ export class AuctionDetailComponent implements OnInit {
     }
   }
 
+  private loadAuctionDetails(auctionIdFromRoute: string) {
+    this._userService.loadAuctionItem(auctionIdFromRoute).subscribe(
+      res => {
+        console.log('res', res);
+        this.mAuction = res;
+        this.showAuctionDetail();
+        let wallet = this._walletsConnectService.sessionWallet
+        if(wallet) {
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.selectedAssetID).subscribe(
+            (res: any) => {
+              if(res) {
+                this.assetStar = res;
+                this.isStarred = true;
+              } else {
+                this.assetStar = undefined;
+                this.isStarred = false;
+              }
+            }, error => {
+              this.isStarred = false;
+              this.assetStar = undefined;
+            }
+          )
+        }
+      },
+      error => console.log(error)
+    )
+  }
 }
