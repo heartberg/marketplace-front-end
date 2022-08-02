@@ -35,6 +35,7 @@ export class CreateAssetComponent implements OnInit {
 
   public isMusicUpload: boolean = false;
   public isVideoUpload: boolean = false;
+  public isImageUpload: boolean = false;
   animation_url_mimetype: any;
   image_mimetype: any;
   FORM: any = 2;
@@ -50,6 +51,7 @@ export class CreateAssetComponent implements OnInit {
   tenth: boolean = false;
   assetMappingdata: any = []
   attributesOk: boolean = false;
+  public fileType: string = "";
   // ff first form // sf second form
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
@@ -306,6 +308,7 @@ export class CreateAssetComponent implements OnInit {
     console.log("fileupload")
     console.log('e', e.target.files[0]);
     console.log('e type: ', e.target.files[0].type)
+    this.fileType = e.target.files[0].type;
     this.fileUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('fileUrl', this.fileUrl);
     if(e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3" || e.target.files[0].type.toString() == "audio/wav") {
@@ -319,6 +322,7 @@ export class CreateAssetComponent implements OnInit {
     } else {
       this.isMusicUpload = false;
       this.isVideoUpload = false;
+      this.isImageUpload = true;
       this.image_mimetype = e.target.files[0].type.toString();
     }
   }
@@ -360,9 +364,9 @@ export class CreateAssetComponent implements OnInit {
     if(this.assetMappingdata.length == 0) {
       this.attributesOk = true;
     }
-    
+
     let attributes: any = {}
-    
+
     if (this.attributesOk && this.assetMappingdata.length > 0) {
       this.assetMappingdata = [...filtered]
       if(this.assetMappingdata.length > 0) {
@@ -410,7 +414,7 @@ export class CreateAssetComponent implements OnInit {
       alert('Please add cover image');
       return;
     }
-    
+
     this.spinner.show();
     let properties: any;
     let collectionId = null
@@ -418,7 +422,7 @@ export class CreateAssetComponent implements OnInit {
       collectionId = this.passedCollection.collectionId
       if(Object.keys(attributes).length > 0) {
         delete this.passedCollection.creator;
-        
+
         properties = {
           collection: this.passedCollection,
           attributes: attributes
@@ -437,7 +441,7 @@ export class CreateAssetComponent implements OnInit {
         properties = {}
       }
     }
-    
+
     let metadata;
     if(this.isMusicUpload || this.isVideoUpload) {
       metadata = {
@@ -464,16 +468,16 @@ export class CreateAssetComponent implements OnInit {
       delete metadata.properties
     }
     console.log(metadata)
-    
+
     const ipfsUrl = await this.ipfsDaemonService.addMetaData(metadata);
     let assetUrl = "ipfs://" + ipfsUrl.split("/")[ipfsUrl.split("/").length -1] + "#arc3"
     console.log('ipfsUrl', ipfsUrl);
     console.log(assetUrl)
-    
+
     const hash2 = sha256.sha256.hmac.update('arc0003/amj', JSON.stringify(metadata));
     const hash = new Uint8Array(hash2.digest());
     console.log('hash', hash)
-    
+
     const params = {
       name: this.name,
       unitName: this.unitName,
@@ -508,7 +512,7 @@ export class CreateAssetComponent implements OnInit {
         properties: attributes,
         createOffer: true
       }
-    
+
       console.log('params', params);
       this._userService.createAsset(params).subscribe(
         res => {
