@@ -136,12 +136,12 @@ export class MarketPlaceComponent implements OnInit {
 
   selectedCollection(collectionName: string) {
     if (collectionName == 'All Collections') {
-      this.category = '';
+      this.collection = '';
 
     } else {
       for (let item of this.collections) {
         if (item.name == collectionName) {
-          this.category = item.collectionId;
+          this.collection = item.collectionId;
         }
       }
     }
@@ -166,15 +166,19 @@ export class MarketPlaceComponent implements OnInit {
   }
 
   sliderEvent() {
-    console.log('low', this.lowPrice);
-    console.log('high', this.highPrice);
-
     this.searchItems();
   }
 
   async searchItems() {
-    console.log('search')
     this.spinner.show();
+    console.log('type', this.type);
+    console.log('category', this.category);
+    console.log('collection', this.collection);
+    console.log('artist', this.artist);
+    console.log('lowPrice', this.lowPrice);
+    console.log('highPrice', this.highPrice);
+    console.log('sort', this.sort);
+    
     this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice, this.highPrice, this.sort).subscribe(
       res => {
         this.spinner.hide();
