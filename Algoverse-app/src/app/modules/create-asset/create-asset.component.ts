@@ -52,6 +52,7 @@ export class CreateAssetComponent implements OnInit {
   assetMappingdata: any = []
   attributesOk: boolean = false;
   public fileType: string = "";
+  public acceptedFileFormats: string = "audio/mpeg, audio/mp3, audio/wav, video/mp4, video/mpeg, image/*";
   // ff first form // sf second form
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
