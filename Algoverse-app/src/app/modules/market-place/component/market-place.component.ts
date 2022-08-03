@@ -38,11 +38,11 @@ export class MarketPlaceComponent implements OnInit {
   public artist: string = '';
   public sort: string = 'Newest';
   public lowPrice: number = 0;
-  public highPrice: number = 100000;
+  public highPrice: number = 10000;
 
   public options: Options = {
     floor: 0,
-    ceil: 100000,
+    ceil: 10000,
     // translate: (value: number, label: LabelType): string => {
     //   switch (label) {
     //     case LabelType.Low:
