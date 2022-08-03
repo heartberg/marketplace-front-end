@@ -8,6 +8,10 @@
           </h3>
         </div>
         <ngx-slider [(value)]="lowPrice" [(highValue)]="highPrice" [options]="options" (mouseup)="sliderEvent()"></ngx-slider>
+        <div class="price-input-section d-flex mt-3">
+          <input onlyNumbers class="mr-1" placeholder="From" [(ngModel)]="lowPrice" (ngModelChange)="sliderEvent()">
+          <input onlyNumbers placeholder="To" [(ngModel)]="highPrice" (ngModelChange)="sliderEvent()">
+        </div>
         <!-- <mat-slider
           thumbLabel
           [displayWith]="formatLabel"
