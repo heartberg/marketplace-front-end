@@ -141,7 +141,7 @@
     </div>
   </div>
 </div>
-<app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [selected]="true"></app-pop-up>
+<app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [decimals]="decimals" [selected]="true"></app-pop-up>
 
 
   <!--              <ng-container *ngIf = "isOpen; then open else close"></ng-container>-->

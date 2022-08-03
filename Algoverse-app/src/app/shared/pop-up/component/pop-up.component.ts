@@ -16,6 +16,7 @@ export class PopUpComponent implements OnInit {
   @Output() isSwitched = new EventEmitter<boolean>();
   @Input() selected = false;
   @Input() asset: any;
+  @Input() decimals: any;
 
   walletsForSwitching: any = '';
   enteredOffer: any;
@@ -84,7 +85,7 @@ export class PopUpComponent implements OnInit {
   }
 
   blurAmount(event: any) {
-    this.enteredAmount = event.target.value;
+    this.enteredAmount = event.target.value * Math.pow(10, this.decimals);
     console.log(this.enteredAmount);
   }
 
@@ -106,7 +107,6 @@ export class PopUpComponent implements OnInit {
           bidId: txID,
           bidderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
           assetId: this.asset.assetId,
-          asset: this.asset,
           indexAddress,
           price: this.enteredOffer,
           amount: this.enteredAmount
