@@ -19,7 +19,7 @@ import {FormBuilder} from "@angular/forms";
 })
 export class CreateAssetComponent implements OnInit {
 
-  public collections: Array<any> = []
+  public collections: Array<any> = ['No Collection']
   public passedCollection: any = {}
   public passedCollectionName: any = {}
   public pushedItems: any[] = [1];
@@ -270,9 +270,14 @@ export class CreateAssetComponent implements OnInit {
   }
 
   selectedCollection(collectionName: string) {
-    this.passedCollection = this._stateService.getCollectionByName(collectionName);
-    delete this.passedCollection.stars
-    delete this.passedCollection.volume
+    if(collectionName != "No Collection") {
+      this.passedCollection = this._stateService.getCollectionByName(collectionName);
+      delete this.passedCollection.stars
+      delete this.passedCollection.volume
+    } else {
+      this.passedCollection = null
+    }
+
   }
 
   blurNameEvent(event: any) {
