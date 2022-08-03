@@ -158,7 +158,7 @@ export class CreateTradeComponent implements OnInit {
       alert('Please input amount');
       return;
     }
-    if (+this.amount > this.maxSupply) {
+    if (+this.amount / Math.pow(10, this.selectedAssetDecimals) > this.maxSupply) {
       alert('Please input amount smaller then max supply');
       return;
     }
