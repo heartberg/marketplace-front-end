@@ -488,6 +488,10 @@ export class CreateAssetComponent implements OnInit {
     console.log('assetId', assetId);
 
     if (assetId) {
+      let fileCID = this.fileUrl
+      if(this.isMusicUpload || this.isVideoUpload) {
+        fileCID = this.coverUrl
+      }
       const params = {
         assetId: assetId,
         name: this.name,
@@ -501,7 +505,7 @@ export class CreateAssetComponent implements OnInit {
         freezeAddress: "",
         reserveAddress: "",
         metadata: Buffer.from(hash).toString('hex'),
-        file: this.fileUrl,
+        file: fileCID,
         cover: this.coverUrl,
         externalLink: this.externalLink,
         collectionId: collectionId,
