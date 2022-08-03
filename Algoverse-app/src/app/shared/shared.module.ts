@@ -14,6 +14,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ScrollComponent } from './scroll/scroll.component';
 import { SwiperModule } from "swiper/angular";
+import { OnlyNumbers } from "./directives/only-number.directive";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { SwiperModule } from "swiper/angular";
     SkeletonImgComponent,
     SkeletonCardComponent,
     ScrollComponent,
+    OnlyNumbers
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,8 @@ import { SwiperModule } from "swiper/angular";
     SkeletonCardComponent,
     NgxSpinnerModule,
     NgxSliderModule,
-    ScrollComponent
+    ScrollComponent,
+    OnlyNumbers
   ],
   providers: [WalletsConnectService],
 })

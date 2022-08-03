@@ -36,6 +36,15 @@ app-drop-down-selector {
         align-items: center;
 
         &.first {
+          .price-input-section {
+            input {
+              box-shadow: 0 0 1px 1px rgb(129 0 127 / 5%);
+              border: 1px solid rgba(129, 0, 127, 0.15);
+              width: 100%;
+              padding: 5px 10px;
+              border-radius: 5px;
+            }
+          }
           height: 150px;
           border-radius: 12px 12px 0px 0px;
         }
