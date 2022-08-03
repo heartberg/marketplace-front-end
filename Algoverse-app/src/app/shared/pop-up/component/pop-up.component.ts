@@ -107,7 +107,6 @@ export class PopUpComponent implements OnInit {
           bidId: txID,
           bidderAddress: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
           assetId: this.asset.assetId,
-          asset: this.asset,
           indexAddress,
           price: this.enteredOffer,
           amount: this.enteredAmount
