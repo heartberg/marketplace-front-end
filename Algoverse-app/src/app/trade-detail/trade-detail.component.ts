@@ -37,6 +37,10 @@ export class TradeDetailComponent implements OnInit {
   isPopUpOpened: boolean = false;
 
   isStarred: boolean = false;
+  public animation_url: string = "";
+  public animation_url_mimetype: string = "";
+  public isMimeTypeVideo: boolean = false;
+  public isMimeTypeAudio: boolean = false;
 
 
   constructor(
@@ -80,7 +84,7 @@ export class TradeDetailComponent implements OnInit {
             }
           )
         }
-
+        this.receiveAssetCover(res.assetURL);
       },
       error => console.log(error)
     )
@@ -267,5 +271,25 @@ export class TradeDetailComponent implements OnInit {
       alert("connect wallet")
     }
   }
+  public receiveAssetCover(assetURL: string): void {
+    this._userService.receiveAssetInformation(assetURL).subscribe((response: any) => {
+      this.animation_url = response.animation_url;
+      this.animation_url_mimetype = response.animation_url_mimetype;
+      this.detectAnimationType();
+    }, error => {
+      console.log(error)
+    });
+  }
 
+  private detectAnimationType() {
+    if (!this.animation_url_mimetype) {
+      return;
+    }
+    if (this.animation_url_mimetype.includes("video")) {
+      this.isMimeTypeVideo = true;
+    }
+    if (this.animation_url_mimetype.includes("audio")) {
+      this.isMimeTypeAudio = true;
+    }
+  }
 }
