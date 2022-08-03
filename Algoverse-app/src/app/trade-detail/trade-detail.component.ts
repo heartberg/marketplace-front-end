@@ -275,8 +275,7 @@ export class TradeDetailComponent implements OnInit {
     this._userService.receiveAssetInformation(assetURL).subscribe((response: any) => {
       this.animation_url = response.animation_url;
       this.animation_url_mimetype = response.animation_url_mimetype;
-      this.detectAnimationType()
-      console.log(this.animation_url, this.animation_url_mimetype)
+      this.detectAnimationType();
     }, error => {
       console.log(error)
     });
@@ -288,7 +287,6 @@ export class TradeDetailComponent implements OnInit {
     }
     if (this.animation_url_mimetype.includes("video")) {
       this.isMimeTypeVideo = true;
-      console.log(this.isMimeTypeVideo, 'MEMEMEMEMEMEMEM');
     }
     if (this.animation_url_mimetype.includes("audio")) {
       this.isMimeTypeAudio = true;
