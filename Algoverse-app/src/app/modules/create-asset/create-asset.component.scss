@@ -212,6 +212,7 @@ input[type=date] {
   .section {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
     button {
       margin-left: 20px;
@@ -282,4 +283,11 @@ form {
   z-index: 9999999999999;
   animation-name: alert;
   animation-duration: 1s;
+}
+
+.uploaded-image {
+  height: 250px;
+  width: 250px;
+  border-radius: 12px;
+  -moz-border-radius: 12px;
 }
