@@ -258,7 +258,6 @@ export class AuctionDetailComponent implements OnInit {
 
   public receiveAssetCover(assetURL: string): void {
     this._userService.receiveAssetInformation(assetURL).subscribe((response: any) => {
-      console.log(this.mAuction, 'MARIAM HERIQ A HARCER TAS!')
       this.animation_url = response.animation_url;
       this.animation_url_mimetype = response.animation_url_mimetype;
       this.detectAnimationType();
