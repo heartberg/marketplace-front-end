@@ -302,4 +302,7 @@ export class UserService {
     return this._http.delete(url);
   }
 
+  public receiveAssetInformation(assetUrl: string): Observable<any> {
+    return this._http.get(assetUrl);
+  }
 }
