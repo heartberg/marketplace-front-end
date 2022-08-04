@@ -105,7 +105,7 @@
                             margin-bottom: 3px;"
                            *ngFor="let item of mAuction.bids; let i = index">
                         <div class="top-info">
-                          <!-- <img src="{{item?.biddingUser?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;"> -->
+                          <img src="{{item?.biddingUserPhoto}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
                           <span>{{ item?.biddingUserName?.length > 15 ?  item?.biddingUserName.substring(0,8).concat('...'): item?.biddingUserName}}</span>
                           <!-- <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
                                *ngIf="item?.biddingUser?.verified"> -->
