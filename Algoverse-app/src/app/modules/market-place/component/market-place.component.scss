@@ -2,6 +2,9 @@
   .drop-down {
     max-height: 212px !important;
     overflow-y: auto !important;
+    .dropDown {
+      position: unset !important;
+    }
   }
 }
 
