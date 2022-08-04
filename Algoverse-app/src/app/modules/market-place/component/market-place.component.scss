@@ -1,3 +1,9 @@
+:host ::ng-deep app-drop-down-selector {
+  .drop-down {
+    max-height: 212px !important;
+    overflow-y: auto !important;
+  }
+}
 
 mat-slider {
   width: 100%;
