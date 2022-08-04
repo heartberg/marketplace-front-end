@@ -179,7 +179,7 @@ export class MarketPlaceComponent implements OnInit {
     console.log('highPrice', this.highPrice);
     console.log('sort', this.sort);
     
-    this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice, this.highPrice, this.sort).subscribe(
+    this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice * Math.pow(10, 6), this.highPrice * Math.pow(10, 6), this.sort).subscribe(
       res => {
         this.spinner.hide();
 
