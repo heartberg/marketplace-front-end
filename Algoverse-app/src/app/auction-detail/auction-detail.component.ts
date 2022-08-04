@@ -33,6 +33,10 @@ export class AuctionDetailComponent implements OnInit {
   public totalSupply = 0;
 
   public isStarred: boolean = false;
+  public animation_url: string = "";
+  public animation_url_mimetype: string = "";
+  public isMimeTypeVideo: boolean = false;
+  public isMimeTypeAudio: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -59,7 +63,7 @@ export class AuctionDetailComponent implements OnInit {
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.assetId;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
-    
+
     let assetInfo = await this._walletsConnectService.getAsset(this.mAuction.asset.assetId)
     this.decimals = assetInfo['params']['decimals']
     this.totalSupply = assetInfo['params']['total'] / Math.pow(10, this.decimals)
@@ -246,8 +250,31 @@ export class AuctionDetailComponent implements OnInit {
             }
           )
         }
+        this.receiveAssetCover(res?.asset.assetURL);
       },
       error => console.log(error)
     )
+  }
+
+  public receiveAssetCover(assetURL: string): void {
+    this._userService.receiveAssetInformation(assetURL).subscribe((response: any) => {
+      this.animation_url = response.animation_url;
+      this.animation_url_mimetype = response.animation_url_mimetype;
+      this.detectAnimationType();
+    }, error => {
+      console.log(error)
+    });
+  }
+
+  private detectAnimationType() {
+    if (!this.animation_url_mimetype) {
+      return;
+    }
+    if (this.animation_url_mimetype.includes("video")) {
+      this.isMimeTypeVideo = true;
+    }
+    if (this.animation_url_mimetype.includes("audio")) {
+      this.isMimeTypeAudio = true;
+    }
   }
 }

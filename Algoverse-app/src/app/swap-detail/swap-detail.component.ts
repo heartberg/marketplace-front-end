@@ -26,6 +26,10 @@ export class SwapDetailComponent implements OnInit {
   public price: string = "0";
   acceptingAssetSupply: number = 0;
   offeringAssetSupply: number = 0;
+  public swapItemsFileData: any = {
+    offering: {},
+    accepting: {}
+  }
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -50,6 +54,8 @@ export class SwapDetailComponent implements OnInit {
         this.mSwap = res;
         const asset = this.mSwap.offeringAsset;
         this.showAssetDetails(asset);
+        this.receiveAssetCover(res.offeringAsset.assetURL, 'offering');
+        this.receiveAssetCover(res.acceptingAsset.assetURL, 'accepting');
       },
       error => console.log(error)
     )
@@ -143,4 +149,25 @@ export class SwapDetailComponent implements OnInit {
     this._location.back()
   }
 
+  public receiveAssetCover(assetURL: string, type: string): void {
+    this._userService.receiveAssetInformation(assetURL).subscribe((response: any) => {
+      this.swapItemsFileData[type].animation_url = response.animation_url;
+      this.swapItemsFileData[type].animation_url_mimetype = response.animation_url_mimetype;
+      this.detectAnimationType(type);
+    }, error => {
+      console.log(error)
+    });
+  }
+
+  private detectAnimationType(type: string) {
+    if (!this.swapItemsFileData[type].animation_url_mimetype) {
+      return;
+    }
+    if (this.swapItemsFileData[type].animation_url_mimetype.includes("video")) {
+      this.swapItemsFileData[type].isMimeTypeVideo = true;
+    }
+    if (this.swapItemsFileData[type].animation_url_mimetype.includes("audio")) {
+      this.swapItemsFileData[type].isMimeTypeAudio = true;
+    }
+  }
 }
