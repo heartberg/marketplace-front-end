@@ -67,7 +67,7 @@
         <div class="sale-section">
           <h3 class="color-violet title">Trades</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of trades">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-2" *ngFor="let item of trades">
               <div *ngIf="isLoaded" >
                 <app-trade-grid-item [routerLink]="'/asset-detail/' + item['assetId']" [mItem]="item"></app-trade-grid-item>
               </div>
@@ -78,7 +78,7 @@
         <div class="sale-section">
           <h3 class="color-violet title">Bids</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of bids">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-2" *ngFor="let item of bids">
               <div *ngIf="isLoaded">
                 <app-bid-grid-item [routerLink]="'/asset-detail/' + item['assetId']" [mItem]="item"></app-bid-grid-item>
               </div>
@@ -89,7 +89,7 @@
         <div class="sale-section">
           <h3 class="color-violet title">Swaps</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of swaps">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-2" *ngFor="let item of swaps">
               <div *ngIf="isLoaded">
                 <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
               </div>
@@ -100,7 +100,7 @@
         <div class="sale-section timed-auction-section">
           <h3 class="color-violet title">Timed Auctions</h3>
           <div class="row">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" *ngFor="let item of auctions">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-2" *ngFor="let item of auctions">
               <div *ngIf="isLoaded">
                 <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
               </div>
