@@ -24,7 +24,8 @@ app-drop-down-selector {
 
     .left-section {
       width: 20%;
-      height: fit-content;
+      max-height: calc(100vh - 145px);
+      overflow-y: scroll;
       position: sticky;
       top: 85px;
 
