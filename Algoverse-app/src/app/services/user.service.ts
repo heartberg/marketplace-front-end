@@ -36,6 +36,16 @@ export class UserService {
     return this._http.post<any>(url, data);
   }
 
+  loadUserOwnedAssets(address: string): Observable<any> {
+    const url = `${this.baseUrl}asset/get/ownedAssetsByWallet?wallet=${address}&page=0`;
+    return this._http.get<any>(url);
+  }
+
+  loadUserCreatedAssets(address: string): Observable<any> {
+    const url = `${this.baseUrl}asset/get/createdAssetsForWallet?wallet=${address}&page=0`;
+    return this._http.get<any>(url);
+  }
+
   createProfile(wallet: String): Observable<any> {
     const url = `${this.baseUrl}user/create`;
     const params = {
@@ -98,7 +108,6 @@ export class UserService {
     const url = `${this.baseUrl}trade/searchByAddress?address=${address}`;
     return this._http.get<any>(url);
   }
-
 
   loadTradeItem(tradeId: string): Observable<any> {
     const url = `${this.baseUrl}trade/${tradeId}`;

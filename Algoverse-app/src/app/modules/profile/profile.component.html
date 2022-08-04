@@ -98,14 +98,14 @@
                 <mat-tab-group>
                   <mat-tab label="Owned">
                     <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of ownedAssets; let i = index; last as last">
                         <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
                       </div>
                     </div>
                   </mat-tab>
                   <mat-tab label="Created">
                     <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of exampleArr; let i = index; last as last">
+                      <div class="col-4 mb-4" *ngFor="let item of createdAssets; let i = index; last as last">
                         <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
                       </div>
                     </div>

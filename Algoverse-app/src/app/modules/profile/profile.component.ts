@@ -74,6 +74,20 @@ export class ProfileComponent implements OnInit, OnDestroy{
         }
       )
 
+      this.userService.loadUserOwnedAssets(addr).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.ownedAssets = res
+        }
+      )
+
+      this.userService.loadUserCreatedAssets(addr).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.createdAssets = res
+        }
+      )
+
       this.userService.loadTrades(addr).subscribe(
         (res: any) => {
           console.log(res)
