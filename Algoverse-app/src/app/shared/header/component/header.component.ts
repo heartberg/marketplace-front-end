@@ -80,11 +80,10 @@ export class HeaderComponent implements OnInit {
   }
 
   changeDarkMode() {
-    console.log(this.isDarkMode, 'IS DARK MODE')
     if (!this.isDarkMode) {
-      this._themeService.setColorTheme('dark')
+      this._themeService.setColorTheme('dark');
     } else {
-      this._themeService.setColorTheme('light')
+      this._themeService.setColorTheme('light');
     }
   }
 
@@ -117,7 +116,6 @@ export class HeaderComponent implements OnInit {
   private receiveTheme(): void {
     this._themeService.$colorTheme.subscribe((theme: string) => {
       theme === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
-      console.log(this.isDarkMode, "LGOGOGOGOGOGOGOGO")
-    })
+    });
   }
 }

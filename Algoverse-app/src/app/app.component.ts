@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   private receiveThemeColor() {
     this._themeService.getColorTheme();
     this._themeService.$colorTheme.subscribe((theme: string) => {
-      this.appTheme = theme
-    })
+      this.appTheme = theme;
+    });
   }
 }
