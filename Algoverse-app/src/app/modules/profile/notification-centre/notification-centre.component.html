@@ -17,8 +17,8 @@
             <button *ngIf="selectedType == 'sell'" class="btn-secondary-costum">Sells</button>
             <button *ngIf="selectedType != 'auction'" class="btn-primary-costum" (click)="selectType('auction')">Auctions</button>
             <button *ngIf="selectedType == 'auction'" class="btn-secondary-costum">Auctions</button>
-            <button *ngIf="selectedType != 'bids'" class="btn-primary-costum" (click)="selectType('bids')">Received Bids</button>
-            <button *ngIf="selectedType == 'bids'" class="btn-secondary-costum">Received Bids</button>
+            <button *ngIf="selectedType != 'bids'" class="btn-primary-costum" (click)="selectType('bids')">Bids</button>
+            <button *ngIf="selectedType == 'bids'" class="btn-secondary-costum">Bids</button>
             <button *ngIf="selectedType != 'req'" class="btn-primary-costum" (click)="selectType('req')">Swap Requests</button>
             <button *ngIf="selectedType == 'req'" class="btn-secondary-costum">Swap Requests</button>
             <button *ngIf="selectedType != 'stars'" class="btn-primary-costum" (click)="selectType('stars')">Starred</button>
@@ -34,21 +34,23 @@
             <h4>Notifications</h4>
           </div>
           <div class="wrapper-border fix-height">
-            <div class="wrapper-notification wrapper-border"
-                 *ngFor="let item of arr; last as last"
-                 [class.no-margin]="last"
-            >
-              <div class="alligner">
-                <div class="inside">
-                  <span>{{getType(item.type)}}</span>
-                </div>
-                <div class="alligner-left">
-                  <span>{{item.text}}</span>
-                </div>
-              </div>
-              <div class="alligner-right">
-                <span>{{item.date}}</span>
-              </div>
+            <div *ngFor="let item of arr; last as last">
+              <div class="wrapper-notification wrapper-border"
+              [class.no-margin]="last"
+              *ngIf="showType(item.type)"
+         >
+           <div class="alligner">
+             <div class="inside">
+               <span>{{getType(item.type)}}</span>
+             </div>
+             <div class="alligner-left">
+               <span>{{item.text}}</span>
+             </div>
+           </div>
+           <div class="alligner-right">
+             <span>{{item.date}}</span>
+           </div>
+            </div>              
             </div>
           </div>
         </div>

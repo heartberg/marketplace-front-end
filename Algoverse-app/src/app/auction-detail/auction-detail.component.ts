@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
 import {Location} from '@angular/common';
+import { makePaymentTxnWithSuggestedParamsFromObject } from 'algosdk';
 
 @Component({
   selector: 'app-auction-detail',
@@ -68,7 +69,12 @@ export class AuctionDetailComponent implements OnInit {
     this.decimals = assetInfo['params']['decimals']
     this.totalSupply = assetInfo['params']['total'] / Math.pow(10, this.decimals)
     this.price = this.mAuction.reserve / Math.pow(10, 6)
-    this.minimumIncrement = this.mAuction.minimumBid / Math.pow(10, 6)
+    if(this.mAuction.bids.length > 0) {
+      this.minimumIncrement = this.mAuction.minimumBid / Math.pow(10, 6) + this.mAuction.bids[0].amount / Math.pow(10, 6)
+    } else {
+      this.minimumIncrement = this.mAuction.reserve / Math.pow(10, 6)
+    }
+    
     if (this.selectedAsset.assetURL) {
       this._userService.loadMetaData(this.selectedAsset.assetUrl).subscribe(
         (result) => {
@@ -118,7 +124,7 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   blurBidAmount(event: any) {
-    this.bidAmount = event.target.value;
+    this.bidAmount = event.target.value * Math.pow(10, 6);
     console.log(this.bidAmount);
   }
 
@@ -176,6 +182,7 @@ export class AuctionDetailComponent implements OnInit {
         (result) => {
           console.log('result', result);
           console.log('Successfully bid')
+          alert("Successful bid")
         },
         (error) => console.log('error', error)
       )
@@ -184,6 +191,10 @@ export class AuctionDetailComponent implements OnInit {
 
   public actionBack() {
     this._location.back()
+  }
+
+  scaleAlgo(amount: number) {
+    return amount / Math.pow(10, 6)
   }
 
   addOrRemoveStar(): void {

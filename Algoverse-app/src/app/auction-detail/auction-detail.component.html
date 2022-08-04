@@ -79,35 +79,53 @@
                       <span class="unset-dm-style">{{ minimumIncrement }} Algo</span>
                     </div>
                   </div>
-                  <div class="auction" style="margin-top: 100px;">
+                  <div class="auction" style="margin-top: 10px;">
                     <div class="d-flex" style="justify-content: flex-start; align-items: center;">
                       <h4 style="margin-right: 12px">Bid Amount</h4>
-                      <input type="text" class="input-costum" placeholder="1000" style="width: 350px;">
+                      <input type="text" class="input-costum" placeholder="100" style="width: 350px;" (blur)="blurBidAmount($event)">
+                    </div>
+                    <div class="buttons">
+                      <button class="btn-secondary-costum aligner" (click)="actionAuction()" style="width: 160px;">
+                        <ng-container *ngIf="isMine">
+                          Cancel
+                        </ng-container>
+                        <ng-container *ngIf="!isMine">
+                          Bid
+                        </ng-container>
+                      </button>
                     </div>
                   </div>
+
+                
+                  <div class="section right" style="margin-top: 10px;">
+                    <h5>Bids:</h5>
+                    <div class="bids img scroll">
+                      <div class="bid section d-flex align-items-center wrapper-card"
+                            style="cursor: default;
+                            margin-bottom: 3px;"
+                           *ngFor="let item of mAuction.bids; let i = index">
+                        <div class="top-info">
+                          <!-- <img src="{{item?.biddingUser?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;"> -->
+                          <span>{{ item?.biddingUserName?.length > 15 ?  item?.biddingUserName.substring(0,8).concat('...'): item?.biddingUserName}}</span>
+                          <!-- <img style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt=""
+                               *ngIf="item?.biddingUser?.verified"> -->
+                        </div>
+                        <div class="show-info d-flex">
+                          <div class="show first">
+                            <span>{{scaleAlgo(item?.amount)}} <span class="color-violet">Algo</span></span>
+                          </div>
+                        </div>
+                      </div>
+                      <!--                        <div class="bid" *ngFor="let item of mItem.biddingUser">-->
+                      <!--                          <h4>profileImage:</h4>-->
+                      <!--                          <span>{{item.name}}</span>-->
+                      <!--                        </div>-->
+                    </div>
+                  </div>
+
+
                 </ng-container>
               </div>
-          </div>
-          <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="actionAuction()" style="width: 160px;">
-<!--              <ng-container *ngIf = "isOpen; then open else close"></ng-container>-->
-<!--              <ng-template #open>-->
-<!--                <ng-container *ngIf = "isMine; then cancel else bid"></ng-container>-->
-<!--                <ng-template #cancel>Cancel offer</ng-template>-->
-<!--                <ng-template #bid>Bid</ng-template>-->
-<!--              </ng-template>-->
-<!--              <ng-template #close>-->
-<!--                <ng-container *ngIf = "isMine; then reopen else nothing"></ng-container>-->
-<!--                <ng-template #reopen>Reopen</ng-template>-->
-<!--                <ng-template #nothing>Test</ng-template>-->
-<!--              </ng-template>-->
-              <ng-container *ngIf="isMine">
-                Cancel
-              </ng-container>
-              <ng-container *ngIf="!isMine">
-                Bid
-              </ng-container>
-            </button>
           </div>
         </div>
       </div>
