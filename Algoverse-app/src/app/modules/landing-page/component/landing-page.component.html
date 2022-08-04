@@ -10,7 +10,7 @@
         </button>
       </div>
     </div>
-    <div class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" routerLink="/profile/{{featuredArtists[0].wallet}}">
+    <div *ngIf="featuredArtists.length" class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" routerLink="/profile/{{featuredArtists[0].wallet}}">
       <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded"
       style="width: 50%; height: auto;">
       <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>

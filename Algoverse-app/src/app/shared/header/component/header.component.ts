@@ -1,8 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
   public isProfileOpened = false;
   public isPopUpOpened = false;
   public isMenuRespoOpened = false;
-  public isDarkModeChanged = false;
+  public isDarkMode = false;
   public walletConnectionPassed = false;
   public isProfileOpenedOnRespo = false;
   public changeRespoNavAndProfileIcons = false;
@@ -25,11 +26,11 @@ export class HeaderComponent implements OnInit {
   public isLoggedIn: boolean = false;
 
   public isPopUpOpenedSecond: boolean = false;
-  @Output() themeWasChanged = new EventEmitter<boolean>();
 
   constructor(
     private router: Router,
     private _walletsConnectService: WalletsConnectService,
+    private readonly _themeService: ThemeService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit {
       console.log("hit2")
       this.walletConnectionPassed = true;
     }
+    this.receiveTheme();
   }
 
   async openAvatar() {
@@ -88,11 +90,10 @@ export class HeaderComponent implements OnInit {
   }
 
   changeDarkMode() {
-    this.isDarkModeChanged = !this.isDarkModeChanged
-    if (this.isDarkModeChanged) {
-      this.themeWasChanged.emit(true);
+    if (!this.isDarkMode) {
+      this._themeService.setColorTheme('dark');
     } else {
-      this.themeWasChanged.emit(false);
+      this._themeService.setColorTheme('light');
     }
   }
 
@@ -120,5 +121,11 @@ export class HeaderComponent implements OnInit {
 
   switched(event: any) {
     this.isPopUpOpenedSecond = event;
+  }
+
+  private receiveTheme(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
+    });
   }
 }
