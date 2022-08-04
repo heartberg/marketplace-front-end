@@ -117,6 +117,12 @@ export class WalletsConnectService {
     }
   }
 
+  async getBalance(): Promise<number> {
+    const client = getAlgodClient()
+    let accInfo = await client.accountInformation(this.sessionWallet!.getDefaultAccount()).do()
+    return accInfo['amount'] / Math.pow(10, 6)
+  }
+
   async getAsset(assetID: number): Promise<any> {
     try {
       const client = getAlgodClient();

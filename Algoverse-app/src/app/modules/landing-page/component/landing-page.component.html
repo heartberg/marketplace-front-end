@@ -58,7 +58,7 @@
     <div class="scrolls">
       <div class="box" *ngFor="let item of hotItems">
         <div class="mitem" *ngIf="item['isCollection']">
-          <img src="{{item['icon']}}" alt="" routerLink="../collection/{{item['collectionId']}}">
+          <img src="{{item['icon']}}" alt="" routerLink="../collection-detail/{{item['collectionId']}}">
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
         <div class="mitem" *ngIf="item['isAsset']">

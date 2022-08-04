@@ -14,20 +14,11 @@
         <span class="unset-dm-style">{{mItem.asset.unitName}}</span>
       </div>
       <div class="section w-100">
-        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.creator.name.substring(0, 28)}}</h4>
+        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem?.creator?.name.length > 15 ?  mItem?.creator?.name.substring(0,8).concat('...'): mItem?.creator?.name}}</h4>
       </div>
       <div class="section">
-        <h4>Status </h4>
-        <span class="unset-dm-style" *ngIf="mItem.isOpen">
-          Open
-        </span>
-        <span class="unset-dm-style" *ngIf="!mItem.isOpen">
-          Closed
-        </span>
-      </div>
-      <div class="section">
-        <h4>Price </h4>
-        <span class="unset-dm-style">{{mItem.price}}</span>
+        <h4>Highest Bid </h4>
+        <span class="unset-dm-style">{{mItem?.bids.length > 0? scaleAlgo(mItem.bids[0].amount) : 0}}</span>
       </div>
       <div class="section">
         <h4>Closing Time</h4>

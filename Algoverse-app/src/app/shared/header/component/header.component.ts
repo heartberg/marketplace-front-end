@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   public changeRespoNavAndProfileIconsCounter = 1;
   public SearchRespoOpened = false;
   public wallet = "default";
+  public balance: string = "0";
 
   public isLoggedIn: boolean = false;
 
@@ -31,7 +32,7 @@ export class HeaderComponent implements OnInit {
     private _walletsConnectService: WalletsConnectService,
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
       console.log("hit1")
       this.isLoggedIn = true;
@@ -42,8 +43,17 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  openAvatar() {
+  async openAvatar() {
     this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount();
+
+    let algoAmount = await this._walletsConnectService.getBalance()
+      if(algoAmount >= 100000) {
+        this.balance = (algoAmount / 1000).toFixed(2) + "k"
+      } else {
+        this.balance = algoAmount.toFixed(2)
+      }
+      console.log(this.balance)
+
     if (this.isProfileOpened) {
       localStorage.setItem('opened', JSON.stringify(true))
     } else {

@@ -16,4 +16,8 @@ export class AuctionGridItemComponent implements OnInit {
     
   }
 
+  scaleAlgo(amount: number) {
+    return (amount / Math.pow(10, 6)).toFixed(2)
+  }
+
 }

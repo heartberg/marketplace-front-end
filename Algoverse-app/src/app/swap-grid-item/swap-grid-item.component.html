@@ -18,16 +18,7 @@
         <span class="unset-dm-style">{{mItem.acceptingAmount}}{{mItem.acceptingAsset.unitName}}</span>
       </div>
       <div class="section w-100">
-        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.offerer.name}}</h4>
-      </div>
-      <div class="section">
-        <h4>Status </h4>
-        <span class="unset-dm-style" *ngIf="mItem.isOpen">
-          Open
-        </span>
-        <span class="unset-dm-style" *ngIf="!mItem.isOpen">
-          Cancelled
-        </span>
+        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.offerer.name.length > 15 ?  mItem.offerer.name.substring(0,8).concat('...'): mItem.offerer.name}}</h4>
       </div>
     </div>
   </div>
