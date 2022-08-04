@@ -65,8 +65,22 @@ export class PopUpComponent implements OnInit {
   switchAcc(i: number) {
     localStorage.removeItem('wallet');
     localStorage.setItem('walletIndex', JSON.stringify(i));
-    this.selectedWalletConnect(AllowedWalletsEnum.WALLET_CONNECT);
-    this.isSwitched.emit(false)
+
+    const sessionWallet = JSON.parse(localStorage.getItem('sessionWallet')!);
+
+    switch (sessionWallet.wname) {
+      case 'my-algo-connect': {
+        this.selectedWalletConnect(AllowedWalletsEnum.MY_ALGO_CONNECT);
+        break;
+      }
+
+      case 'wallet-connect': {
+        this.selectedWalletConnect(AllowedWalletsEnum.WALLET_CONNECT);
+        break;
+      }
+    }
+
+    this.isSwitched.emit(false);
   }
 
   getValueFromDropDown($event: any) {
