@@ -37,8 +37,8 @@
             </div>
             <div class="scroll-bio">
               <div class="wrapper">
-              <span>
-                {{userProfile? userProfile.bio : ""}}
+              <span (click)="expandOrCollapseBio()">
+                 {{ ((userProfile && isTruncated) && userProfile.bio.length > 50) ? (userProfile.bio | slice:0:50) + '... read more.' : (userProfile.bio) }}
               </span>
               </div>
             </div>
