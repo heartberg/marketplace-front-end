@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
   starred: any;
   isOwnProfile: boolean = false;
   navigationSubscription: any;
+  public isTruncated: boolean = true;
 
   constructor(
     private userService: UserService,
@@ -123,4 +124,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
     }
   }
 
+  public expandOrCollapseBio() {
+    this.isTruncated = !this.isTruncated;
+  }
 }
