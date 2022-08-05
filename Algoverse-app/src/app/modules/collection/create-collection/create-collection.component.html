@@ -18,7 +18,7 @@
               <h4>Collection Icon</h4>
               <button class="btn-primary-costum" (click)="icon.click()">
                 Upload Icon
-                <input #icon type="file" (change)="onIconInput($event)" style="display:none;"/>
+                <input #icon type="file" (change)="onIconInput($event)" style="display:none;" accept="image/*"/>
               </button>
             </div>
             <img *ngIf="iconUrl" [src]="iconUrl" alt="collection-icon">
@@ -28,7 +28,7 @@
               <h4>Collection Banner</h4>
               <button class="btn-primary-costum" (click)="banner.click()">
                 Upload Banner
-                <input #banner type="file" (change)="onBannerInput($event)" style="display:none;"/>
+                <input #banner type="file" (change)="onBannerInput($event)" style="display:none;" accept="image/*"/>
               </button>
             </div>
             <img *ngIf="bannerUrl" [src]="bannerUrl" alt="collection-banner">
@@ -38,7 +38,7 @@
               <h4>Featured Image</h4>
               <button class="btn-primary-costum" (click)="fileInput.click()">
                 Upload Image
-                <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;"/>
+                <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" accept="image/*"/>
               </button>
             </div>
             <img *ngIf="imageUrl" [src]="imageUrl" alt="collection-image">
