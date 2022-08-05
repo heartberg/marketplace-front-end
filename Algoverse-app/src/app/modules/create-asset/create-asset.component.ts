@@ -343,49 +343,39 @@ export class CreateAssetComponent implements OnInit {
   async submitAsset() {
     this.assetMappingdata = [];
     this.assetMappingdata.push(
-      {first: this.FORM.value.ff, second: this.FORM.value.sf},
-      {first: this.FORM.value.ff2, second: this.FORM.value.sf2},
-      {first: this.FORM.value.ff3, second: this.FORM.value.sf3},
-      {first: this.FORM.value.ff4, second: this.FORM.value.sf4},
-      {first: this.FORM.value.ff5, second: this.FORM.value.sf5},
-      {first: this.FORM.value.ff6, second: this.FORM.value.sf6},
-      {first: this.FORM.value.ff7, second: this.FORM.value.sf7},
-      {first: this.FORM.value.ff8, second: this.FORM.value.sf8},
-      {first: this.FORM.value.ff9, second: this.FORM.value.sf9},
-      {first: this.FORM.value.ff10, second: this.FORM.value.sf10},
+      {trait_type: this.FORM.value.ff, value: this.FORM.value.sf},
+      {trait_type: this.FORM.value.ff2, value: this.FORM.value.sf2},
+      {trait_type: this.FORM.value.ff3, value: this.FORM.value.sf3},
+      {trait_type: this.FORM.value.ff4, value: this.FORM.value.sf4},
+      {trait_type: this.FORM.value.ff5, value: this.FORM.value.sf5},
+      {trait_type: this.FORM.value.ff6, value: this.FORM.value.sf6},
+      {trait_type: this.FORM.value.ff7, value: this.FORM.value.sf7},
+      {trait_type: this.FORM.value.ff8, value: this.FORM.value.sf8},
+      {trait_type: this.FORM.value.ff9, value: this.FORM.value.sf9},
+      {trait_type: this.FORM.value.ff10, value: this.FORM.value.sf10},
       )
 
     const filtered = this.assetMappingdata.filter((el: any) => {
-      if ((el.first === null || el.first === "") && (el.second !== null && el.second !== "")) {
+      if ((el.trait_type === null || el.trait_type === "") && (el.value !== null && el.value !== "")) {
         alert('Fill Both Fields');
         this.attributesOk = false;
-      } else if ((el.first !== null && el.first !== "") && (el.second === null || el.second === "")) {
+      } else if ((el.trait_type !== null && el.trait_type !== "") && (el.value === null || el.value === "")) {
         alert('Fill Both Fields');
         this.attributesOk = false;
       } else {
         this.attributesOk = this.attributesOk && true;
       }
-      return el.first != null && el.first != "" && el.second != null && el.second != "";
+      return el.trait_type != null && el.trait_type != "" && el.value != null && el.value != "";
     });
-    if(this.assetMappingdata.length == 0) {
+
+    if(filtered.length == 0) {
       this.attributesOk = true;
     }
 
-    let attributes: any = {}
-
-    if (this.attributesOk && this.assetMappingdata.length > 0) {
-      this.assetMappingdata = [...filtered]
-      if(this.assetMappingdata.length > 0) {
-        this.assetMappingdata.forEach((el:any) => {
-          attributes[el.first] = el.second
-        });
-      }
-    } else {
-      this.attributesOk = true;
+    if (this.attributesOk) {
+      alert("attributes not ok")
       return;
     }
-    console.log(attributes)
-    console.log(attributes.length)
 
     // if (!this.passedCollection) {
     //   alert('Please select a collection');
@@ -426,12 +416,12 @@ export class CreateAssetComponent implements OnInit {
     let collectionId = null
     if(this.passedCollection) {
       collectionId = this.passedCollection.collectionId
-      if(Object.keys(attributes).length > 0) {
+      if(filtered.length > 0) {
         delete this.passedCollection.creator;
 
         properties = {
-          collection: this.passedCollection,
-          attributes: attributes
+          attributes: filtered,
+          collection: this.passedCollection
         }
       } else {
         properties = {
@@ -439,9 +429,9 @@ export class CreateAssetComponent implements OnInit {
         }
       }
     } else {
-      if(Object.keys(attributes).length > 0) {
+      if(filtered.length > 0) {
         properties = {
-          attributes: attributes
+          attributes: filtered
         }
       } else {
         properties = {}
@@ -519,7 +509,7 @@ export class CreateAssetComponent implements OnInit {
         cover: this.coverUrl,
         externalLink: this.externalLink,
         collectionId: collectionId,
-        properties: attributes,
+        properties: filtered,
         createOffer: true
       }
 

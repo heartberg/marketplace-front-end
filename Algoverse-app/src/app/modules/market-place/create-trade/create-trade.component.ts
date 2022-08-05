@@ -109,11 +109,21 @@ export class CreateTradeComponent implements OnInit {
     let properties: any = {};
     let attributes: any = {};
     if (this.metadata.properties) {
+      console.log(this.metadata.properties)
       for (const [key, value] of Object.entries(this.metadata.properties)) {
+        //console.log(key, value)
         if(key === 'attributes') {
-          for (const [a_key, a_value] of Object.entries(value as Object)) {
-            attributes[a_key] = a_value
-          }
+          console.log(Array(value).length)
+          let props = Array(value)
+          console.log(props)
+          props.forEach(element => {
+            console.log(element)
+          });
+          //for (let index = 0; index < props.length; index++) {
+            //console.log(index)
+            //console.log(Array(value)[index])
+            //attributes[trait['trait_type']] = trait['value']
+          //}
         } else {
           properties[key] = value
         }
