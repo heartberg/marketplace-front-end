@@ -40,6 +40,7 @@ export class CreateSwapComponent implements OnInit {
   public acceptingAssetDecimals = 0;
   public acceptingAssetSupply = 0;
   public assetsName: any[] = [];
+  public properties: any[] = [];
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -158,22 +159,15 @@ export class CreateSwapComponent implements OnInit {
     }
 
     this.spinner.hide();
-    let properties: any = {};
-    let attributes: any = {};
+    const metaDataProperties: any = {}
+
     if (this.acceptingMetadata.properties) {
-      for (const [key, value] of Object.entries(this.acceptingMetadata.properties)) {
-        if(key === 'attributes') {
-          for (const [a_key, a_value] of Object.entries(value as Object)) {
-            attributes[a_key] = a_value
-          }
-        } else {
-          properties[key] = value
-        }
-      }
+      Object.entries(this.acceptingMetadata.properties).forEach(([key, value]) => {
+        metaDataProperties[key] = value;
+      });
     }
-    properties['attributes'] = attributes
-    this.acceptingMetadataProperties = properties;
-    this.acceptingMetadataAttributes = attributes;
+    this.acceptingMetadataProperties = metaDataProperties?.properties;
+    this.acceptingMetadataAttributes = metaDataProperties?.attributes;
   }
 
   async getMetadataOffer(ipfsUrl: string) {
@@ -188,22 +182,15 @@ export class CreateSwapComponent implements OnInit {
     }
 
     this.spinner.hide();
-    let properties: any = {};
-    let attributes: any = {};
+    const metaDataProperties: any = {}
+
     if (this.offerringMetadata.properties) {
-      for (const [key, value] of Object.entries(this.offerringMetadata.properties)) {
-        if(key === 'attributes') {
-          for (const [a_key, a_value] of Object.entries(value as Object)) {
-            attributes[a_key] = a_value
-          }
-        } else {
-          properties[key] = value
-        }
-      }
+      Object.entries(this.offerringMetadata.properties).forEach(([key, value]) => {
+        metaDataProperties[key] = value;
+      });
     }
-    properties['attributes'] = attributes
-    this.offerringMetadataProperties = properties;
-    this.offeringMetadataAttributes = attributes;
+    this.offerringMetadataProperties = metaDataProperties?.properties;
+    this.offeringMetadataAttributes = metaDataProperties?.attributes;
   }
 
   blurAcceptAmountEvent(event: any) {

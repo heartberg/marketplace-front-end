@@ -102,22 +102,15 @@ export class CreateAuctionComponent implements OnInit {
       this.metadata = await this.httpClient.get('https://' + this.selectedAsset.params.url).toPromise();
     }
 
-    let properties: any = {};
-    let attributes: any = {};
+    const metaDataProperties: any = {}
+
     if (this.metadata.properties) {
-      for (const [key, value] of Object.entries(this.metadata.properties)) {
-        if(key === 'attributes') {
-          for (const [a_key, a_value] of Object.entries(value as Object)) {
-            attributes[a_key] = a_value
-          }
-        } else {
-          properties[key] = value
-        }
-      }
+      Object.entries(this.metadata.properties).forEach(([key, value]) => {
+        metaDataProperties[key] = value;
+      });
     }
-    properties['attributes'] = attributes
-    this.metadataProperties = properties;
-    this.metadataAttributes = attributes;
+    this.metadataProperties = metaDataProperties?.properties;
+    this.metadataAttributes = metaDataProperties?.attributes;
   }
 
   async setMaxSupply(assetID: number) {

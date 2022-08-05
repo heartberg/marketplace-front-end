@@ -106,32 +106,16 @@ export class CreateTradeComponent implements OnInit {
     }
 
     this.spinner.hide();
-    let properties: any = {};
-    let attributes: any = {};
+
+    const metaDataProperties: any = {}
+
     if (this.metadata.properties) {
-      console.log(this.metadata.properties)
-      for (const [key, value] of Object.entries(this.metadata.properties)) {
-        //console.log(key, value)
-        if(key === 'attributes') {
-          console.log(Array(value).length)
-          let props = Array(value)
-          console.log(props)
-          props.forEach(element => {
-            console.log(element)
-          });
-          //for (let index = 0; index < props.length; index++) {
-            //console.log(index)
-            //console.log(Array(value)[index])
-            //attributes[trait['trait_type']] = trait['value']
-          //}
-        } else {
-          properties[key] = value
-        }
-      }
+      Object.entries(this.metadata.properties).forEach(([key, value]) => {
+        metaDataProperties[key] = value;
+      });
     }
-    properties['attributes'] = attributes
-    this.metadataProperties = properties;
-    this.metadataAttributes = attributes;
+    this.metadataProperties = metaDataProperties?.properties;
+    this.metadataAttributes = metaDataProperties?.attributes;
   }
 
   async setMaxSupply(assetID: number) {
