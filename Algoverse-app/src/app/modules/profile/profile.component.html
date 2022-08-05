@@ -6,11 +6,11 @@
           <div class="wrapper-border" style="height: 100%">
             <div class="avatar-section d-flex flex-column align-items-center">
               <div *ngIf="isOwnProfile" class="setting-section" routerLink="../../edit-profile">
-                <img src="data:image/png;base64,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" alt="">
+                <img src="assets/img/settings.svg" alt="">
               </div>
               <div class="img">
                 <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="" style="width: 100px; height: 100%">
-                <img *ngIf="!userProfile?.profileImage" src="https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png" alt="" style="width: 100px; height: 100%">
+                <img *ngIf="!userProfile?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 100px; height: 100%">
               </div>
               <div class="avatar-info d-flex flex-column align-items-center">
                 <div class="avatar-name">
@@ -59,22 +59,22 @@
             <div class="soc-section" *ngIf="userProfile">
               <div *ngIf="userProfile.website" class="img" style="cursor: pointer;">
                 <a href="{{userProfile.website}}" target="_blank">
-                  <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" alt="">
+                  <img src="assets/img/globe.svg" alt="">
                 </a>
               </div>
               <div *ngIf="userProfile.instagram" class="img" style="cursor: pointer;">
                 <a href="{{userProfile.instagram}}" target="_blank">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1024px-Instagram_icon.png" alt="">
+                  <img src="assets/img/instagram.svg" alt="">
                 </a>
               </div>
               <div *ngIf="userProfile.twitter" class="img" style="cursor: pointer;">
                 <a href="{{userProfile.twitter}}" target="_blank">
-                  <img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-Twitter-icon-transparent-PNG.png" alt="">
+                  <img src="assets/img/twitter.svg" alt="">
                 </a>
               </div>
               <div *ngIf="userProfile.telegram" class="img" style="cursor: pointer;">
                 <a href="{{userProfile.telegram}}" target="_blank">
-                  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="">
+                  <img src="assets/img/telegram.svg" alt="">
                 </a>
               </div>
             </div>
