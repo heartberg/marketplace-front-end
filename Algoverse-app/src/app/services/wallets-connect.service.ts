@@ -199,6 +199,11 @@ export class WalletsConnectService {
 
   setupTrade = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
+      if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
+        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        if (!result) return false;
+      }
+
       if (await isOptinAsset(assetId, getApplicationAddress(environment.TRADE_APP_ID))) {
         if (amount > 0) {
           const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
@@ -426,7 +431,7 @@ export class WalletsConnectService {
         const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
           from: this.sessionWallet!.getDefaultAccount(),
           to: getApplicationAddress(environment.TRADE_APP_ID),
-          amount: Number(tradingPrice) + 2000,
+          amount: Number(tradingPrice),
           note: new Uint8Array(Buffer.from("Amount to accept trade")),
           suggestedParams,
         });
@@ -507,6 +512,11 @@ export class WalletsConnectService {
 
   setupBid = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
+      if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
+        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        if (!result) return false;
+      }
+
       if (await isOptinAsset(assetId, getApplicationAddress(environment.BID_APP_ID))) {
         if (amount > 0) {
           const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
@@ -829,6 +839,11 @@ export class WalletsConnectService {
 
   setupSwap = async (indexAddress: string, offeringAssetId: number, acceptingAssetId: number, amount: number): Promise<any> => {
     try {
+      if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
+        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        if (!result) return false;
+      }
+
       if (await isOptinAsset(offeringAssetId, getApplicationAddress(environment.SWAP_APP_ID)) && await isOptinAsset(acceptingAssetId, getApplicationAddress(environment.SWAP_APP_ID))) {
         if (amount > 0) {
           const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
@@ -1097,6 +1112,11 @@ export class WalletsConnectService {
 
   setupAuction = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
+      if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
+        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        if (!result) return false;
+      }
+      
       if (await isOptinAsset(assetId, getApplicationAddress(environment.AUCTION_APP_ID))) {
         if (amount > 0) {
           const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
