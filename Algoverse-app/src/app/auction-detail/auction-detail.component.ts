@@ -4,6 +4,8 @@ import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
 import {Location} from '@angular/common';
 import { makePaymentTxnWithSuggestedParamsFromObject } from 'algosdk';
+import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey } from '../services/utils.algod';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-auction-detail',
@@ -16,6 +18,10 @@ export class AuctionDetailComponent implements OnInit {
   public assetStar: any;
 
   public isMine = false;
+  public isFinished = false;
+  public hasStarted = false;
+  public canClose = false;
+  public canCancel = false;
   public isOpen = true;
   private assets: any[] = [];
   public assetIDs: string[] = [];
@@ -61,6 +67,28 @@ export class AuctionDetailComponent implements OnInit {
   async showAuctionDetail() {
     this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.isOpen = this.mAuction.isOpen;
+
+    let now = new Date()
+    this.isFinished = new Date(this.mAuction.closingDate) < now
+    this.hasStarted = new Date(this.mAuction.startingDate) < now
+    console.log("finished", this.isFinished)
+    console.log("started", this.hasStarted)
+
+    if(this.isOpen) {
+      if(this.isMine && !this.hasStarted) {
+        this.canCancel = true;
+      } else if (this.isMine && this.isFinished) {
+        this.canClose = true;
+      } else {
+        const client = getAlgodClient()
+        let leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, this.mAuction.indexAddress, "LB_ADDR")
+        if (leadBidder && leadBidder == this._walletsConnectService.sessionWallet!.getDefaultAccount()) {
+          console.log("I am lead bidder!")
+          this.canClose = this.isFinished
+        }
+      }
+    }
+    
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.assetId;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
@@ -136,9 +164,12 @@ export class AuctionDetailComponent implements OnInit {
 
     if (this.isOpen) {
       if (this.isMine) {
-        // cancel auction
-        await this.closeAuction()
-
+        if(this.canClose || this.canCancel) {
+          // cancel auction
+          await this.closeAuction()
+        } else {
+          await this.bidAuction()
+        }
       } else {
         // bid on auction
         await this.bidAuction()

@@ -86,11 +86,20 @@
                     </div>
                     <div class="buttons">
                       <button class="btn-secondary-costum aligner" (click)="actionAuction()" style="width: 160px;">
-                        <ng-container *ngIf="isMine">
+                        <ng-container *ngIf="canCancel">
                           Cancel
                         </ng-container>
-                        <ng-container *ngIf="!isMine">
+                        <ng-container *ngIf="canClose">
+                          Close
+                        </ng-container>
+                        <ng-container *ngIf="!canClose && !canCancel && hasStarted && !isFinished">
                           Bid
+                        </ng-container>
+                        <ng-container *ngIf="!canClose && !canCancel && !hasStarted">
+                          Not Started
+                        </ng-container>
+                        <ng-container *ngIf="!canClose && !canCancel && isFinished">
+                          Finished
                         </ng-container>
                       </button>
                     </div>
