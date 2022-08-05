@@ -9,6 +9,7 @@ import {Asset} from "algosdk/dist/types/src/client/v2/algod/models/types";
 import {AssetService} from "../services/asset.service";
 import {Location} from '@angular/common';
 import { removeUndefinedProperties } from 'algosdk/dist/types/src/utils/utils';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-trade-detail',
@@ -49,7 +50,8 @@ export class TradeDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private _assetService: AssetService,
-    private _location: Location
+    private _location: Location,
+    private spinner: NgxSpinnerService
   ) {
   }
 
@@ -62,6 +64,7 @@ export class TradeDetailComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
     this._assetService.getAssetDetail(itemIdFromRoute).subscribe(
       async res => {
         console.log('res', res);
@@ -71,6 +74,7 @@ export class TradeDetailComponent implements OnInit {
         if(wallet) {
           this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
             (res: any) => {
+              this.spinner.hide();
               if(res) {
                 this.assetStar = res;
                 this.isStarred = true;
@@ -79,19 +83,27 @@ export class TradeDetailComponent implements OnInit {
                 this.isStarred = false;
               }
             }, error => {
+              this.spinner.hide();
               this.isStarred = false;
               this.assetStar = undefined;
             }
           )
+        } else {
+          this.spinner.hide();
         }
         this.receiveAssetCover(res.assetURL);
       },
-      error => console.log(error)
+      error => {
+        this.spinner.hide();
+        console.log(error)
+      }
     )
   }
 
   async showAssetDetails(asset: any) {
-    let assetInfo = await this._walletsConnectService.getAsset(asset.assetId)
+    this.spinner.show();
+    let assetInfo = await this._walletsConnectService.getAsset(asset.assetId);
+    this.spinner.hide();
     this.assetName = asset.name;
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     console.log('selectedAssetDescription', this.selectedAssetDescription)
@@ -106,30 +118,44 @@ export class TradeDetailComponent implements OnInit {
   async acceptBid() {
     const BidIndex = this.mItem.bids[this.index].indexAddress;
     console.log('start accept Bid');
+    this.spinner.show();
     const result = await this._walletsConnectService.acceptBid(BidIndex, this.mItem.bids[this.index].creatorWallet);
     if (result) {
       this._userService.acceptBid(this.mItem.bids[this.index].bidId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
+          this.spinner.hide();
           console.log('result', result);
           console.log('Successfully accepted')
         },
-        (error) => console.log('error', error)
+        (error) => {
+          this.spinner.hide();
+          console.log('error', error)
+        }
       )
+    } else {
+      this.spinner.hide();
     }
   }
 
   async cancelBid() {
     const bidIndex = this.mItem.bids[this.index].indexAddress;
     console.log('start cancel Bid');
+    this.spinner.show();
     const result = await this._walletsConnectService.cancelBid(bidIndex);
     if (result) {
       this._userService.cancelBid(bidIndex).subscribe(
         (result) => {
+          this.spinner.hide();
           console.log('result', result);
           console.log('Successfully cancelled')
         },
-        (error) => console.log('error', error)
+        (error) => {
+          this.spinner.hide();
+          console.log('error', error)
+        }
       )
+    } else {
+      this.spinner.hide();
     }
   }
 
@@ -138,17 +164,24 @@ export class TradeDetailComponent implements OnInit {
       alert('Connect your wallet!');
       return;
     }
+    this.spinner.show();
     const tradeIndex = this.mItem.openTrades[this.indexSecond].indexAddress;
     console.log('start cancel trade');
     const result = await this._walletsConnectService.cancelTrade(tradeIndex);
     if (result) {
       this._userService.cancelTrade(this.mItem.openTrades[this.indexSecond].tradeId).subscribe(
         (result) => {
+          this.spinner.hide();
           console.log('result', result);
           console.log('Successfully cancelled')
         },
-        (error) => console.log('error', error)
+        (error) => {
+          this.spinner.hide();
+          console.log('error', error)
+        }
       )
+    } else {
+      this.spinner.hide();
     }
   }
 
@@ -157,17 +190,24 @@ export class TradeDetailComponent implements OnInit {
       alert('Connect your wallet!');
       return;
     }
+    this.spinner.show();
     const tradeIndex = this.mItem.openTrades[this.indexSecond].indexAddress;
     console.log('start accept trade');
     const result = await this._walletsConnectService.acceptTrade(tradeIndex, this.mItem.openTrades[this.indexSecond].tradeCreator.wallet);
     if (result) {
       this._userService.acceptTrade(this.mItem.openTrades[this.indexSecond].tradeId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
+          this.spinner.hide();
           console.log('result', result);
           console.log('Successfully accepted')
         },
-        (error) => console.log('error', error)
+        (error) => {
+          console.log('error', error)
+          this.spinner.hide();
+        }
       )
+    } else {
+      this.spinner.hide();
     }
   }
 
