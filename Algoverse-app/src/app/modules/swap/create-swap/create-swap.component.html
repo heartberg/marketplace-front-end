@@ -56,16 +56,18 @@
           </div>
           <div class="propertiesborder wrapper-border">
             <h4 class="properties">Properties</h4>
-            <div *ngFor="let property of offeringMetadataAttributes | keyvalue">
-              <div class="row ml-1" style="width: 100%;">
-                <div class="col-md-5 restyle-col-bottom">
-                  <h4>{{property.key}}</h4>
-                </div>
-                <div class="col-md-7 restyle-col-bottom">
-                  <p class="color-violet" style="overflow-wrap: break-word;">{{property.value}}</p>
+            <ng-container *ngIf="offeringMetadataAttributes && offeringMetadataAttributes.length">
+              <div *ngFor="let attribute of offeringMetadataAttributes">
+                <div class="row ml-1" style="width: 100%;">
+                  <div class="col-md-5 restyle-col-bottom">
+                    <h4>{{attribute.trait_type}}</h4>
+                  </div>
+                  <div class="col-md-7 restyle-col-bottom">
+                    <p class="color-violet" style="overflow-wrap: break-word;">{{attribute.value}}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ng-container>
           </div>
           <h3 class="lookfor">Looking for</h3>
           <div class="dropdownborder wrapper-border">

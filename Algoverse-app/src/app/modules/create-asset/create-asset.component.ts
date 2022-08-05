@@ -372,7 +372,7 @@ export class CreateAssetComponent implements OnInit {
       this.attributesOk = true;
     }
 
-    if (this.attributesOk) {
+    if (!this.attributesOk) {
       alert("attributes not ok")
       return;
     }
