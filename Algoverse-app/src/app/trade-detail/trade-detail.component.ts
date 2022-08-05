@@ -159,7 +159,7 @@ export class TradeDetailComponent implements OnInit {
     }
     const tradeIndex = this.mItem.openTrades[this.indexSecond].indexAddress;
     console.log('start accept trade');
-    const result = await this._walletsConnectService.acceptTrade(tradeIndex, this.mItem.openTrades[this.indexSecond].creatorWallet);
+    const result = await this._walletsConnectService.acceptTrade(tradeIndex, this.mItem.openTrades[this.indexSecond].tradeCreator.wallet);
     if (result) {
       this._userService.acceptTrade(this.mItem.openTrades[this.indexSecond].tradeId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
