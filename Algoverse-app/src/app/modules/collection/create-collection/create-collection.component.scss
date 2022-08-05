@@ -88,3 +88,13 @@
     }
   }
 }
+
+.upload-section {
+  img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    -moz-border-radius: 12px;
+  }
+}
