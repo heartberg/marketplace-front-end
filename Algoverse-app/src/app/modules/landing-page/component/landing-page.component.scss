@@ -34,9 +34,19 @@
       }
       &.second-wrapper {
         margin-left: 8px;
+
         span {
           display: flex;
           justify-content: center;
+        }
+
+        img {
+          display: block;
+          object-fit: cover;
+          margin: 0 auto;
+          height: 92%;
+          min-width: 250px;
+          max-width: 100%;
         }
       }
       .buttons {
@@ -204,6 +214,12 @@
         width: 100%  !important;
         //margin: 0px !important;
         height: 100%;
+
+        &.second-wrapper {
+          img {
+            height: 350px;
+          }
+        }
       }
     }
     .first-section {
