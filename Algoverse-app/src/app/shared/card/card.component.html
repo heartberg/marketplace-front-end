@@ -15,7 +15,7 @@
         <h4>Creator </h4>
         <img class="creator-image" src="{{mItem.creator.profileImage}}" alt="">
         <span class="unset-dm-style">{{mItem.creator.name.length > 15? mItem.creator.name.substring(0,15).concat('...') : mItem.creator.name}}</span>
-        <img *ngIf="mItem.creator.isVerified" style='width: 25px; height: 25px;' src="https://thumbs.dreamstime.com/b/green-tick-icon-vector-symbol-checkmark-isolated-white-background-checked-icon-correct-choice-sign-check-mark-checkbox-154491019.jpg" alt="">
+        <img *ngIf="mItem.creator.isVerified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
       </div>
     </div>
     <div class="name" *ngIf="isCollection">
