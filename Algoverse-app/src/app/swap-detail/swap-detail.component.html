@@ -31,6 +31,10 @@
                       </video>
                     </div>
                     <div class="card-info-left">
+                      <div class="section asset-star-container" (click)="addOrRemoveStar(true)">
+                        <img class="asset-star" [src]="isStarredOffering  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                        <span>{{mSwap?.offeringAsset?.stars}}</span>
+                      </div>
                       <div class="section">
                         <h4>Name: </h4>
                         <span class="unset-dm-style">{{mSwap?.offeringAsset?.name}}</span>
@@ -58,6 +62,13 @@
                         <h4>Amount:</h4>
                         <span class="unset-dm-style">{{ amount }}</span>
                       </div>
+                      <div *ngIf="mSwap?.offeringAsset?.properties && mSwap?.offeringAsset?.properties.length > 0">
+                        <h3 style="overflow-wrap: break-word;">Properties</h3>
+                        <div class="section" *ngFor="let prop of mSwap?.offeringAsset?.properties">
+                          <h4 tyle="overflow-wrap: break-word;">{{prop.key}}</h4>
+                          <span>{{prop.value}}</span>
+                        </div>
+                      </div>
                     </div>
                   </ng-container>
                 </div>
@@ -83,6 +94,10 @@
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;">
+                        <div class="section asset-star-container" (click)="addOrRemoveStar(false)">
+                          <img class="asset-star" [src]="isStarredAccepting  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                          <span>{{mSwap?.acceptingAsset?.stars}}</span>
+                        </div>
                         <div class="section">
                           <h4>Name: </h4>
                           <span>{{mSwap?.acceptingAsset?.name}}</span>
@@ -109,6 +124,13 @@
                         <div class="section">
                           <h4>Amount:</h4>
                           <span class="unset-dm-style">{{ acceptingAmount }}</span>
+                        </div>
+                        <div *ngIf="mSwap?.acceptingAsset?.properties && mSwap?.acceptingAsset?.properties.length > 0">
+                          <h3 style="overflow-wrap: break-word;">Properties</h3>
+                          <div class="section" *ngFor="let prop of mSwap?.acceptingAsset?.properties">
+                            <h4 tyle="overflow-wrap: break-word;">{{prop.key}}</h4>
+                            <span>{{prop.value}}</span>
+                          </div>
                         </div>
                       </div>
                     </div>

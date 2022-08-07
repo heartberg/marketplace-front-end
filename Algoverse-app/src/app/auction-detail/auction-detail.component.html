@@ -23,6 +23,10 @@
                       </video>
                     </div>
                     <div class="card-info-left">
+                      <div class="section auction-star-container" (click)="addOrRemoveStar()">
+                        <img class="auction-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                        <span>{{mAuction?.asset?.stars}}</span>
+                      </div>
                       <div class="section">
                         <h4>Name: </h4>
                         <span class="unset-dm-style">{{mAuction?.asset.name}}</span>
@@ -51,9 +55,12 @@
                         <img src="{{mAuction?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
                         <span>{{mAuction?.collection?.name}}</span>
                       </div>
-                      <div class="section auction-star-container" (click)="addOrRemoveStar()">
-                        <img class="auction-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
-                        <span>{{mAuction?.asset?.stars}}</span>
+                      <div *ngIf="mAuction.asset.properties && mAuction.asset.properties.length > 0">
+                        <h3 style="overflow-wrap: break-word;">Properties</h3>
+                        <div class="section" *ngFor="let prop of mAuction.asset.properties">
+                          <h4 tyle="overflow-wrap: break-word;">{{prop.key}}</h4>
+                          <span>{{prop.value}}</span>
+                        </div>
                       </div>
                     </div>
                   </ng-container>

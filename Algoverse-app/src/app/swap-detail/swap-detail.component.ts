@@ -24,6 +24,12 @@ export class SwapDetailComponent implements OnInit {
   public acceptingAmount: string = "0";
   public acceptingAssetDecimals: number = 0;
   public price: string = "0";
+  public isStarredAccepting: boolean = false;
+  public isStarredOffering: boolean = false;
+
+  public offeringAssetStar: any;
+  public acceptingAssetStar: any;
+
   acceptingAssetSupply: number = 0;
   offeringAssetSupply: number = 0;
   public swapItemsFileData: any = {
@@ -47,6 +53,7 @@ export class SwapDetailComponent implements OnInit {
       this.router.navigateByUrl('items');
       return;
     }
+    let wallet = this._walletsConnectService.sessionWallet
 
     this._userService.loadSwapItem(SwapIdFromRoute).subscribe(
       res => {
@@ -56,6 +63,36 @@ export class SwapDetailComponent implements OnInit {
         this.showAssetDetails(asset);
         this.receiveAssetCover(res.offeringAsset.assetURL, 'offering');
         this.receiveAssetCover(res.acceptingAsset.assetURL, 'accepting');
+        if(wallet) {
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.mSwap.offeringAsset.assetId).subscribe(
+            (res: any) => {
+              if(res) {
+                this.offeringAssetStar = res;
+                this.isStarredOffering = true;
+              } else {
+                this.offeringAssetStar = undefined;
+                this.isStarredOffering = false;
+              }
+            }, error => {
+              this.isStarredOffering = false;
+              this.offeringAssetStar = undefined;
+            }
+          )
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.mSwap.acceptingAsset.assetId).subscribe(
+            (res: any) => {
+              if(res) {
+                this.acceptingAssetStar = res;
+                this.isStarredAccepting = true;
+              } else {
+                this.acceptingAssetStar = undefined;
+                this.isStarredAccepting = false;
+              }
+            }, error => {
+              this.isStarredAccepting = false;
+              this.acceptingAssetStar = undefined;
+            }
+          )
+        }
       },
       error => console.log(error)
     )
@@ -168,6 +205,62 @@ export class SwapDetailComponent implements OnInit {
     }
     if (this.swapItemsFileData[type].animation_url_mimetype.includes("audio")) {
       this.swapItemsFileData[type].isMimeTypeAudio = true;
+    }
+  }
+
+  addOrRemoveStar(isOffering: boolean) {
+    let wallet = this._walletsConnectService.sessionWallet;
+    if(wallet) {
+      if(isOffering) {
+        if (this.isStarredOffering) {
+          return this._userService.removeAssetStar(this.offeringAssetStar.assetStarId).subscribe(
+            (value: any) => {
+              console.log(value)
+              this.isStarredOffering = false;
+              this.mSwap.offeringAsset.stars--;
+              console.log("removed star")
+            }
+          )
+        } else {
+          const params = {
+            assetId: this.mSwap.offeringAsset.assetId,
+            wallet: wallet.getDefaultAccount()
+          }
+          return this._userService.addAssetStar(params).subscribe(
+            (value: any) => {
+              console.log(value)
+              this.isStarredOffering = true;
+              this.mSwap.offeringAsset.stars++;
+            }
+          )
+        }
+      } else {
+        if (this.isStarredAccepting) {
+          return this._userService.removeAssetStar(this.acceptingAssetStar.assetStarId).subscribe(
+            (value: any) => {
+              console.log(value)
+              this.isStarredAccepting = false;
+              this.mSwap.acceptingAsset.stars--;
+              console.log("removed star")
+            }
+          )
+        } else {
+          const params = {
+            assetId: this.mSwap.acceptingAsset.assetId,
+            wallet: wallet.getDefaultAccount()
+          }
+          return this._userService.addAssetStar(params).subscribe(
+            (value: any) => {
+              console.log(value)
+              this.isStarredAccepting = true;
+              this.mSwap.acceptingAsset.stars++;
+            }
+          )
+        }
+      }
+    } else {
+      alert('Connect wallet!')
+      return
     }
   }
 }

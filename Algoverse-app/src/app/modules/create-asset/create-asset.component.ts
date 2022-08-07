@@ -50,7 +50,7 @@ export class CreateAssetComponent implements OnInit {
   nineth: boolean = false;
   tenth: boolean = false;
   assetMappingdata: any = []
-  attributesOk: boolean = false;
+  attributesOk: boolean = true;
   public fileType: string = "";
   public acceptedFileFormats: string = "audio/mpeg, audio/mp3, audio/wav, video/mp4, video/mpeg, image/*";
   // ff first form // sf second form
@@ -374,6 +374,7 @@ export class CreateAssetComponent implements OnInit {
 
     if (!this.attributesOk) {
       alert("attributes not ok")
+      this.attributesOk = true;
       return;
     }
 
