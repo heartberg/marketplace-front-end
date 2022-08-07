@@ -4,7 +4,7 @@
       <ng-container *ngIf="SearchRespoOpened">
         <div class="search-section respo-search for_input">
           <div class="search">
-            <input type="text" placeholder="Collection, items...">
+            <input type="text" placeholder="Assets, Collections, Creators...">
           </div>
           <div class="search-btn search_btn" [ngClass]="{'search-respo-icon': SearchRespoOpened}">
             <svg viewBox="0 0 16 16" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN hOiKLt">
@@ -35,8 +35,8 @@
         <ul [ngClass]="{'clicked': isMenuRespoOpened}">
           <ng-container *ngIf="!changeRespoNavAndProfileIcons">
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace/all-types">Marketplace</li>
-            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/artists">Artists</li>
-            <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="artists/space-shuttle">SpaceShuttle</li> -->
+            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/creators">Creators</li>
+            <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="creators/space-shuttle">SpaceShuttle</li> -->
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}">SpaceShuttle</li>
             <!-- <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/token">Token</li> -->
             <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> EVO </li>

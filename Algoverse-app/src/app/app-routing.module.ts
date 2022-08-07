@@ -56,9 +56,9 @@ const routes: Routes = [
   { path: 'create-auction', component: CreateAuctionComponent },
   { path: 'get-verified', component: GetVerifiedComponent },
   { path: 'token', component: TokenComponent },
-  { path: 'artists', component: ArtistsComponent },
-  { path: 'artists/artist-application', component: ArtistApplicationComponent },
-  { path: 'artists/space-shuttle', component: SpaceshuttleComponent },
+  { path: 'creators', component: ArtistsComponent },
+  { path: 'creators/creator-application', component: ArtistApplicationComponent },
+  { path: 'creators/space-shuttle', component: SpaceshuttleComponent },
 ];
 
 @NgModule({

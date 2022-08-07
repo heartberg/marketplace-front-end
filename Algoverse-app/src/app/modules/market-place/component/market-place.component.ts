@@ -12,7 +12,7 @@ import { Options, LabelType } from '@angular-slider/ngx-slider';
 })
 export class MarketPlaceComponent implements OnInit {
   public typesDropDown: string[] = ['All Types', 'Trade', 'Bid', 'Swap', 'Auction'];
-  public categoriesDropDown: string[] = ['All NFTs', 'Collectible items', 'Artwork', 'Event tickets', 'Music and media', 'Gaming', 'Big Sports Moments', 'Virtual Fashion', 'Real-world assets', 'Memes', 'Domain names'];
+  public categoriesDropDown: string[] = ['All NFTs', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public collectionsDropDown: string[] = ['All Collections'];
   public artistsDropDown: string[] = ['All Artists'];
   public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];

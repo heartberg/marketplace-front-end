@@ -56,7 +56,7 @@
                       </div>
                       <div class="section">
                         <h4>Total Supply:</h4>
-                        <span class="unset-dm-style">{{ offeringAssetSupply}}</span>
+                        <span class="unset-dm-style">{{offeringAssetSupply}} {{ offeringAssetDecimals > 0? ' (Decimals:' : ''}} {{offeringAssetDecimals > 0? offeringAssetDecimals : ''}}{{ offeringAssetDecimals > 0? ')' : ''}}</span>
                       </div>
                       <div class="section">
                         <h4>Amount:</h4>
@@ -119,7 +119,7 @@
                         </div>
                         <div class="section">
                           <h4>Total Supply:</h4>
-                          <span> {{ acceptingAssetSupply }}</span>
+                          <span> {{ acceptingAssetSupply }} {{ acceptingAssetDecimals > 0? ' (Decimals:' : ''}} {{acceptingAssetDecimals > 0? acceptingAssetDecimals : ''}}{{ acceptingAssetDecimals > 0? ')' : ''}}</span>
                         </div>
                         <div class="section">
                           <h4>Amount:</h4>

@@ -13,12 +13,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class CreateCollectionComponent implements OnInit {
 
-  public categoryList = ['Collectible items', 'Artwork', 'Event tickets', 'Music and media', 'Gaming', 'Big Sports Moments', 'Virtual Fashion', 'Real-world assets', 'Memes', 'Domain names'];
+  public categoryList = ['Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public name: string = "";
   public description: string = "";
   public externalLink: string = "";
   public website: string = "0";
-  public category: string = "Collectible items";
+  public category: string = "Collectibles";
   public iconUrl: string = "";
   public bannerUrl: string = "";
   public imageUrl: string = "";
