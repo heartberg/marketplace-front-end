@@ -51,21 +51,6 @@ export class HeaderComponent implements OnInit {
   async openAvatar() {
     this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount();
 
-    this.spinner.show();
-    this.isBalanceLoading = true;
-
-    let algoAmount = await this._walletsConnectService.getBalance();
-    if (algoAmount) {
-      this.spinner.hide();
-      this.isBalanceLoading = false;
-    }
-    if (algoAmount >= 100000) {
-      this.balance = (algoAmount / 1000).toFixed(2) + "k"
-    } else {
-      this.balance = algoAmount.toFixed(2)
-    }
-    console.log(this.balance)
-
     if (this.isProfileOpened) {
       localStorage.setItem('opened', JSON.stringify(true))
     } else {
@@ -84,6 +69,19 @@ export class HeaderComponent implements OnInit {
       console.log(this.changeRespoNavAndProfileIcons);
     }
 
+    this.spinner.show();
+    this.isBalanceLoading = true;
+
+    let algoAmount = await this._walletsConnectService.getBalance();
+    if (algoAmount) {
+      this.spinner.hide();
+      this.isBalanceLoading = false;
+    }
+    if (algoAmount >= 100000) {
+      this.balance = (algoAmount / 1000).toFixed(2) + "k"
+    } else {
+      this.balance = algoAmount.toFixed(2)
+    }
   }
 
   connectWalletPopUp() {
