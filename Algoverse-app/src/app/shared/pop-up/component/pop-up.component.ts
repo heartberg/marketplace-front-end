@@ -40,6 +40,7 @@ export class PopUpComponent implements OnInit {
   }
 
   closePopUp(value: any) {
+    console.log(this.followed)
     this.isClosed.emit(false);
   }
 
