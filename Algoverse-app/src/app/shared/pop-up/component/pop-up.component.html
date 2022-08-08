@@ -6,20 +6,20 @@
     <ng-container *ngIf="showFollower || showFollowed">
       <div class="top-side">
         <div class="title">
-          <h3 *ngIf="showFollower">Your Followers: {{followers.length}}</h3>
-          <h3 *ngIf="showFollowed">You Followed: {{followed.length}}</h3>
+          <h3 *ngIf="showFollower">Your Followers: <span class="color-violet follow-count">{{followers.length}}</span></h3>
+          <h3 *ngIf="showFollowed">You Followed: <span class="color-violet follow-count">{{followed.length}}</span></h3>
         </div>
       </div>
-      <div *ngIf="showFollower">
-        <div class="d-flex align-baseline" *ngFor="let follow of followers">
+      <div *ngIf="showFollower" class="follow-container mt-3">
+        <div class="d-flex align-baseline mt-4" *ngFor="let follow of followers">
           <span class="color-violet" style="cursor: pointer;" (click)="openProfile(follow.followingUserWallet)">
             {{follow.followingUserName.length > 15? follow.followingUserName.substring(0, 15) : follow.followingUserName}}
           </span>
         </div>
       </div>
 
-      <div *ngIf="showFollowed">
-        <div class="d-flex align-baseline" *ngFor="let follow of followed">
+      <div *ngIf="showFollowed" class="follow-container mt-3">
+        <div class="d-flex align-baseline mt-4" *ngFor="let follow of followed">
           <span class="color-violet" style="cursor: pointer;" (click)="openProfile(follow.followedUserWallet)">
             {{follow.followedUserName.length > 15? follow.followedUserName.substring(0, 15) : follow.followedUserName}}
           </span>
