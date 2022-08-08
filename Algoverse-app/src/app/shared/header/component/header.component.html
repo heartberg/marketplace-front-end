@@ -107,7 +107,13 @@
             </ng-container>
             <div class="dropDown" *ngIf="isProfileOpened">
               <ul>
-                <li>Balance: {{balance}} Algo</li>
+                <li *ngIf="isBalanceLoading">Balance:
+                  <div class="position-relative d-inline">
+                    <ngx-spinner class="balance-spinner" type="ball-clip-rotate-multiple" [fullScreen]="false" size="small"
+                                 [bdColor]="'transparent'" color="#81007F"></ngx-spinner>
+                  </div>
+                </li>
+                <li *ngIf="!isBalanceLoading">Balance: {{balance}} Algo</li>
                 <li routerLink="/profile/{{wallet}}">Profile</li>
                 <li routerLink="/items">My Offers</li>
                 <li routerLink="/create-offer">Create Offer</li>

@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 import {ThemeService} from "../../../services/theme.service";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-header',
@@ -26,11 +27,13 @@ export class HeaderComponent implements OnInit {
   public isLoggedIn: boolean = false;
 
   public isPopUpOpenedSecond: boolean = false;
+  public isBalanceLoading: boolean = false;
 
   constructor(
     private router: Router,
     private _walletsConnectService: WalletsConnectService,
     private readonly _themeService: ThemeService,
+    private readonly spinner: NgxSpinnerService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -47,14 +50,6 @@ export class HeaderComponent implements OnInit {
 
   async openAvatar() {
     this.wallet = this._walletsConnectService.sessionWallet!.getDefaultAccount();
-
-    let algoAmount = await this._walletsConnectService.getBalance()
-      if(algoAmount >= 100000) {
-        this.balance = (algoAmount / 1000).toFixed(2) + "k"
-      } else {
-        this.balance = algoAmount.toFixed(2)
-      }
-      console.log(this.balance)
 
     if (this.isProfileOpened) {
       localStorage.setItem('opened', JSON.stringify(true))
@@ -74,6 +69,19 @@ export class HeaderComponent implements OnInit {
       console.log(this.changeRespoNavAndProfileIcons);
     }
 
+    this.spinner.show();
+    this.isBalanceLoading = true;
+
+    let algoAmount = await this._walletsConnectService.getBalance();
+    if (algoAmount) {
+      this.spinner.hide();
+      this.isBalanceLoading = false;
+    }
+    if (algoAmount >= 100000) {
+      this.balance = (algoAmount / 1000).toFixed(2) + "k"
+    } else {
+      this.balance = algoAmount.toFixed(2)
+    }
   }
 
   connectWalletPopUp() {
