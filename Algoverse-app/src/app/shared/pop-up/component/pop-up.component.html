@@ -11,18 +11,18 @@
         </div>
       </div>
       <div *ngIf="showFollower" class="follow-container mt-3">
-        <div class="d-flex align-baseline mt-4 align-items-center" *ngFor="let follow of followers">
+        <div class="d-flex align-baseline mt-4 align-items-center" style="cursor: pointer;" *ngFor="let follow of followers" (click)="openProfile(follow.followingUserWallet)">
           <img [src]="follow.followingUserImage ? follow.followingUserImage : 'assets/img/default-avatar.svg'" class="mr-2">
-          <span class="color-violet" style="cursor: pointer;" (click)="openProfile(follow.followingUserWallet)">
+          <span class="color-violet">
             {{follow.followingUserName.length > 15? follow.followingUserName.substring(0, 15) : follow.followingUserName}}
           </span>
         </div>
       </div>
 
       <div *ngIf="showFollowed" class="follow-container mt-3">
-        <div class="d-flex align-baseline mt-4 align-items-center" *ngFor="let follow of followed">
+        <div class="d-flex align-baseline mt-4 align-items-center" style="cursor: pointer;" *ngFor="let follow of followed" (click)="openProfile(follow.followedUserWallet)">
           <img [src]="follow.followedUserImage ? follow.followedUserImage : 'assets/img/default-avatar.svg'" class="mr-2">
-          <span class="color-violet" style="cursor: pointer;" (click)="openProfile(follow.followedUserWallet)">
+          <span class="color-violet">
             {{follow.followedUserName.length > 15? follow.followedUserName.substring(0, 15) : follow.followedUserName}}
           </span>
         </div>
