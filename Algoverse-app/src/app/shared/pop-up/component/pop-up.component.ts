@@ -164,11 +164,11 @@ export class PopUpComponent implements OnInit {
         if (result) {
           console.log(this.asset!.assetId)
           this._userService.optinAndRekeyToBid(indexAddress).subscribe(
-            (res) => {
+            async (res) => {
               console.log('setup bid response: ', res);
               if (res) {
-                this.sendCreateBidRequest(indexAddress);
-
+                await this.sendCreateBidRequest(indexAddress);
+                this.closePopUp(true)
               } else {
                 alert('optin and rekey failed');
               }
