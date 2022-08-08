@@ -55,13 +55,19 @@
                         <img src="{{mAuction?.collection?.featuredImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
                         <span>{{mAuction?.collection?.name}}</span>
                       </div>
-                      <div *ngIf="mAuction.asset.properties && mAuction.asset.properties.length > 0">
-                        <h3 style="overflow-wrap: break-word;">Properties</h3>
-                        <div class="section" *ngFor="let prop of mAuction.asset.properties">
-                          <h4 tyle="overflow-wrap: break-word;">{{prop.key}}</h4>
-                          <span>{{prop.value}}</span>
+                      <ng-container *ngIf="mAuction.asset.properties && mAuction.asset.properties.length > 0">
+                        <h4 class="text-center color-violet">Properties</h4>
+                        <div *ngFor="let prop of mAuction.asset.properties">
+                          <div class="d-flex justify-content-center" style="width: 100%;">
+                            <div class="mr-1">
+                              <h4>{{prop.trait_type}}:</h4>
+                            </div>
+                            <div class="">
+                              <p class="color-violet" style="overflow-wrap: break-word;">{{prop.value}}</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      </ng-container>
                     </div>
                   </ng-container>
                 </div>
