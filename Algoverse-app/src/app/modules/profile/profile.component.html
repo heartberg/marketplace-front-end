@@ -25,15 +25,25 @@
             </div>
             <div class="avatar-other-info">
               <div class="d-flex justify-content-between">
-                <div class="followers">
+                <div class="followers" style="cursor: pointer" (click)="showFollow(true)">
                   <span class="color-violet">Followers:</span>
                   <span>{{userProfile? userProfile.followers.length : 0}}</span>
                 </div>
-                <div class="followed">
+                <div class="followed" style="cursor: pointer" (click)="showFollow(false)">
                   <span class="color-violet">Followed:</span>
                   <span>{{userProfile? userProfile.followed.length : 0}}</span>
                 </div>
               </div>
+            </div>
+            <div *ngIf="userProfile && !isOwnProfile" class="verified-btn d-flex" >
+              <button class="btn-secondary-costum" (click)="followAction()">
+                <ng-container *ngIf="following">
+                  Unfollow
+                </ng-container>
+                <ng-container *ngIf="!following">
+                  Follow
+                </ng-container>
+              </button>
             </div>
             <div class="scroll-bio">
               <div class="wrapper" (click)="expandOrCollapseBio()">
@@ -164,3 +174,4 @@
 <!--    </div>-->
   </div>
 </div>
+<app-pop-up *ngIf="popupOpen" (isClosed)="closePopUp($event)" [followed]="userProfile.followed" [followers]="userProfile.followers" [showFollower]="showFollowers" [showFollowed]="!showFollowers"></app-pop-up>

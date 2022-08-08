@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ADDRCONFIG } from 'dns';
 import { StateService } from 'src/app/services/state.service';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
@@ -27,6 +28,9 @@ export class ProfileComponent implements OnInit, OnDestroy{
   isOwnProfile: boolean = false;
   navigationSubscription: any;
   public isTruncated: boolean = true;
+  public following: any;
+  public showFollowers = false;
+  public popupOpen = false;
 
   constructor(
     private userService: UserService,
@@ -71,8 +75,20 @@ export class ProfileComponent implements OnInit, OnDestroy{
               this._stateService.collections = res;
             }
           )
+          wallet = this.connectService.sessionWallet
+          console.log("wallet:", wallet)
+          if(wallet) {
+            console.log("CHECK FOLLOWING")
+            this.following = this.userProfile.followers.find((follow: any) => {
+              return follow.followingUserWallet == wallet!.getDefaultAccount()
+            })
+            console.log("user following: ", this.following)
+          } else {
+            this.following = undefined
+          }
         }
       )
+     
 
       this.userService.loadUserOwnedAssets(addr).subscribe(
         (res: any) => {
@@ -132,6 +148,31 @@ export class ProfileComponent implements OnInit, OnDestroy{
     }
   }
 
+  followAction() {
+    if(this.following) {
+      console.log("unfollow")
+      this.userService.unfollow(this.following.followingId).subscribe(
+        (res: any) => {
+          console.log("unfollowed")
+          this.userProfile.followers.splice(this.userProfile.followers.findIndex((item: any) => item.followingId == this.following.followingId), 1)
+        }
+      )
+    } else {
+      console.log("follow")
+      const params = {
+        followingUserWallet: this.connectService.sessionWallet!.getDefaultAccount(),
+        followedUserWallet: this.userProfile.wallet
+      }
+      this.userService.follow(params).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.following = res
+          this.userProfile.followers.push(res)
+        }
+      )
+    }
+  }
+
   ngOnDestroy() {
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
@@ -140,5 +181,16 @@ export class ProfileComponent implements OnInit, OnDestroy{
 
   public expandOrCollapseBio() {
     this.isTruncated = !this.isTruncated;
+  }
+
+  showFollow(showFollowers: boolean) {
+    this.showFollowers = showFollowers;
+    console.log(this.userProfile.followers)
+    console.log(this.userProfile.followed)
+    this.popupOpen = true;
+  }
+
+  closePopUp($event: boolean) {
+    this.popupOpen = $event;
   }
 }

@@ -31,6 +31,26 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  getFollowers(wallet: string): Observable<any> {
+    const url = `${this.baseUrl}user/get/followers?wallet=${wallet}`;
+    return this._http.get<any>(url);
+  }
+
+  getFollowed(wallet: string): Observable<any> {
+    const url = `${this.baseUrl}user/get/followings?wallet=${wallet}`;
+    return this._http.get<any>(url);
+  }
+
+  unfollow(followingId: string): Observable<any>{
+    const url = `${this.baseUrl}user/unfollow?followingId=${followingId}`;
+    return this._http.delete(url)
+  }
+
+  follow(following: any): Observable<any>{
+    const url = `${this.baseUrl}user/follow`;
+    return this._http.post(url, following)
+  }
+
   userUpdate(data: updateUser):Observable<any> {
     const url = `${this.baseUrl}user/update`;
     return this._http.post<any>(url, data);

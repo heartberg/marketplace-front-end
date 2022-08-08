@@ -3,6 +3,7 @@ import {WalletsConnectService} from "../../../services/wallets-connect.service";
 import {UserService} from 'src/app/services/user.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {AllowedWalletsEnum} from "../../../models";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pop-up',
@@ -17,7 +18,12 @@ export class PopUpComponent implements OnInit {
   @Input() selected = false;
   @Input() asset: any;
   @Input() decimals: any;
+  @Input() followers: any;
+  @Input() followed: any;
+  @Input() showFollower = false;
+  @Input() showFollowed = false;
 
+  ownFollowings: any;
   walletsForSwitching: any = '';
   enteredOffer: any;
   enteredAmount: any;
@@ -26,7 +32,8 @@ export class PopUpComponent implements OnInit {
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -91,6 +98,12 @@ export class PopUpComponent implements OnInit {
 
   cancel() {
     this.isClosed.emit(false);
+  }
+
+  openProfile(wallet: string) {
+    this.closePopUp(true);
+    let url = "profile/" + wallet
+    this.router.navigateByUrl(url)
   }
 
   blurOfferEvent(event: any) {
@@ -193,7 +206,5 @@ export class PopUpComponent implements OnInit {
         alert('Network error, please try again later')
       }
     );
-
   }
-
 }
