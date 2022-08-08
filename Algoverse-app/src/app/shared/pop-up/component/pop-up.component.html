@@ -10,7 +10,7 @@
           <h3 *ngIf="showFollowed">You Followed: <span class="color-violet follow-count">{{followed.length}}</span></h3>
         </div>
       </div>
-      <div *ngIf="showFollower">
+      <div *ngIf="showFollower" class="follow-container mt-3">
         <div class="d-flex align-baseline mt-4" *ngFor="let follow of followers">
           <span class="color-violet" style="cursor: pointer;" (click)="openProfile(follow.followingUserWallet)">
             {{follow.followingUserName.length > 15? follow.followingUserName.substring(0, 15) : follow.followingUserName}}
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div *ngIf="showFollowed">
+      <div *ngIf="showFollowed" class="follow-container mt-3">
         <div class="d-flex align-baseline mt-4" *ngFor="let follow of followed">
           <span class="color-violet" style="cursor: pointer;" (click)="openProfile(follow.followedUserWallet)">
             {{follow.followedUserName.length > 15? follow.followedUserName.substring(0, 15) : follow.followedUserName}}

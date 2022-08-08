@@ -18,6 +18,11 @@
     transform: translate(-50%, -50%);
     position: absolute;
 
+    .follow-container {
+      height: 150px;
+      overflow-y: auto;
+    }
+
     .close {
       position: absolute;
       right: 15px;
@@ -28,8 +33,9 @@
 
     .title {
       .follow-count {
-        display: inline-block;
+        display: inline-block !important;
         font-size: 22px;
+        line-height: 0 !important;
       }
       h3 {
         text-align: center;
