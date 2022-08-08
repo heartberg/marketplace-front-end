@@ -42,7 +42,7 @@ export class UserService {
   }
 
   unfollow(followingId: string): Observable<any>{
-    const url = `${this.baseUrl}user/unfollow?followingId=${followingId}`;
+    const url = `${this.baseUrl}user/unfollow/${followingId}`;
     return this._http.delete(url)
   }
 

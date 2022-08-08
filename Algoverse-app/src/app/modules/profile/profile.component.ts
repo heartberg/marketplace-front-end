@@ -155,6 +155,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
         (res: any) => {
           console.log("unfollowed")
           this.userProfile.followers.splice(this.userProfile.followers.findIndex((item: any) => item.followingId == this.following.followingId), 1)
+          this.following = undefined
         }
       )
     } else {
