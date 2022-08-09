@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-notification-centre',
@@ -12,7 +13,8 @@ export class NotificationCentreComponent implements OnInit {
   selectedType: string = 'all'
   constructor(
     private _walletConnectService: WalletsConnectService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -85,6 +87,10 @@ export class NotificationCentreComponent implements OnInit {
     }else {
       return "some other Type"
     }
+  }
+
+  back() {
+    this._location.back()
   }
 
 }

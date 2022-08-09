@@ -14,7 +14,8 @@
           <div class="collection-profile-info-left">
             <div class="creator-section d-flex">
               <div class="section-top">
-                <img src="{{mCollection.creator.profileImage}}" alt="">
+                <img *ngIf="mCollection.creator.profileImage" src="{{mCollection.creator.profileImage}}" alt="">
+                <img *ngIf="!mCollection.creator.profileImage" src="assets/img/default-avatar.svg" alt="">
               </div>
               <div class="section-bottom">
                 <h4>{{mCollection.creator.name.length > 15? mCollection.creator.name.substring(0,15).concat('...') : mCollection.creator.name}}</h4>
@@ -22,7 +23,7 @@
             </div>
             <div class="website-section d-flex">
               <div class="section-top">
-                <a href="{{mCollection.web}}">
+                <a href="{{mCollection.web}}" target="_blank">
                   <img src="assets/img/globe.svg" alt="">
                 </a>
               </div>

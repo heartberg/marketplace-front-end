@@ -6,6 +6,7 @@ import {Location} from '@angular/common';
 import { makePaymentTxnWithSuggestedParamsFromObject } from 'algosdk';
 import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey } from '../services/utils.algod';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-auction-detail',
@@ -50,7 +51,8 @@ export class AuctionDetailComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private spinner: NgxSpinnerService
   ) {
   }
 
@@ -163,6 +165,8 @@ export class AuctionDetailComponent implements OnInit {
     }
 
     if (this.isOpen) {
+      this.spinner.show()
+      console.log("spinner")
       if (this.isMine) {
         if(this.canClose || this.canCancel) {
           // cancel auction
@@ -174,6 +178,7 @@ export class AuctionDetailComponent implements OnInit {
         // bid on auction
         await this.bidAuction()
       }
+      this.spinner.hide()
     } else {
       if (this.isMine) {
 
@@ -191,8 +196,13 @@ export class AuctionDetailComponent implements OnInit {
         (result) => {
           console.log('result', result);
           console.log('Successfully cancelled')
+          alert("successfully cancelled!")
         },
-        (error) => console.log('error', error)
+        (error) => {
+          console.log('error', error)
+          alert("failed to close!")
+          
+        }
       )
     }
   }
@@ -215,7 +225,10 @@ export class AuctionDetailComponent implements OnInit {
           console.log('Successfully bid')
           alert("Successful bid")
         },
-        (error) => console.log('error', error)
+        (error) => {
+          console.log('error', error)
+          alert("failed to bid!")
+        }
       )
     }
   }

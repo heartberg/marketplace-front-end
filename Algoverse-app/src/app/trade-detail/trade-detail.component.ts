@@ -64,7 +64,6 @@ export class TradeDetailComponent implements OnInit {
       return;
     }
 
-    this.spinner.show();
     this._assetService.getAssetDetail(itemIdFromRoute).subscribe(
       async res => {
         console.log('res', res);
@@ -74,7 +73,6 @@ export class TradeDetailComponent implements OnInit {
         if(wallet) {
           this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
             (res: any) => {
-              this.spinner.hide();
               if(res) {
                 this.assetStar = res;
                 this.isStarred = true;
@@ -82,6 +80,7 @@ export class TradeDetailComponent implements OnInit {
                 this.assetStar = undefined;
                 this.isStarred = false;
               }
+              this.spinner.hide();
             }, error => {
               this.spinner.hide();
               this.isStarred = false;
@@ -124,11 +123,13 @@ export class TradeDetailComponent implements OnInit {
       this._userService.acceptBid(this.mItem.bids[this.index].bidId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
           this.spinner.hide();
+          alert("Successfully accepted bid!")
           console.log('result', result);
           console.log('Successfully accepted')
         },
         (error) => {
           this.spinner.hide();
+          alert("Failed to accept bid!")
           console.log('error', error)
         }
       )
@@ -146,11 +147,13 @@ export class TradeDetailComponent implements OnInit {
       this._userService.cancelBid(bidIndex).subscribe(
         (result) => {
           this.spinner.hide();
+          alert("Cancelled bid!")
           console.log('result', result);
           console.log('Successfully cancelled')
         },
         (error) => {
           this.spinner.hide();
+          alert("error cancelling bid!")
           console.log('error', error)
         }
       )
@@ -172,11 +175,13 @@ export class TradeDetailComponent implements OnInit {
       this._userService.cancelTrade(this.mItem.openTrades[this.indexSecond].tradeId).subscribe(
         (result) => {
           this.spinner.hide();
+          alert("Cancelled trade!")
           console.log('result', result);
           console.log('Successfully cancelled')
         },
         (error) => {
           this.spinner.hide();
+          alert("Failed to cancel trade!")
           console.log('error', error)
         }
       )
@@ -198,10 +203,12 @@ export class TradeDetailComponent implements OnInit {
       this._userService.acceptTrade(this.mItem.openTrades[this.indexSecond].tradeId, this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
         (result) => {
           this.spinner.hide();
+          alert("Accepted trade!")
           console.log('result', result);
           console.log('Successfully accepted')
         },
         (error) => {
+          alert("Failed to accept trade!")
           console.log('error', error)
           this.spinner.hide();
         }

@@ -169,7 +169,7 @@ export class PopUpComponent implements OnInit {
       alert("Please enter amount!");
       return;
     }
-
+    this.spinner.show();
     this._userService.getBidIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
       async (res) => {
         console.log('bidIndex', res);
@@ -182,6 +182,8 @@ export class PopUpComponent implements OnInit {
               console.log('setup bid response: ', res);
               if (res) {
                 await this.sendCreateBidRequest(indexAddress);
+                alert("setup bid!")
+                this.spinner.hide()
                 this.closePopUp(true)
               } else {
                 alert('optin and rekey failed');

@@ -45,7 +45,8 @@
                       </div>
                       <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mItem?.creator.wallet}}">
                         <h4 style="overflow-wrap: break-word;">Creator: </h4>
-                        <img src="{{mItem?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <img *ngIf="mItem?.creator?.profileImage" src="{{mItem?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
+                        <img *ngIf="!mItem?.creator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
                         <span>{{mItem?.creator?.name.length > 15 ?  mItem?.creator?.name.substring(0,8).concat('...'): mItem?.creator?.name}}</span>
                         <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                              *ngIf="mItem?.creator?.verified">
@@ -82,7 +83,9 @@
                              *ngFor="let item of mItem.bids;  let i = index" (click)="select(item, i)"
                              [class.selected]="index === i">
                           <div class="top-info d-flex">
-                            <img src="{{item?.biddingUser?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+                            <img *ngIf="item?.biddingUser?.profileImage" src="{{item?.biddingUser?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+                            <img *ngIf="!item?.biddingUser?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+
                             <span>{{item?.biddingUser?.name.length > 15 ?  item?.biddingUser?.name.substring(0,8).concat('...'): item?.biddingUser?.name}}</span>
                             <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                                  *ngIf="item?.biddingUser?.verified">
@@ -110,7 +113,8 @@
                              (click)="selectSecond(item, i)"
                              [class.selected]="indexSecond === i">
                           <div class="top-info">
-                            <img src="{{item?.tradeCreator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+                            <img *ngIf="item?.tradeCreator?.profileImage" src="{{item?.tradeCreator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
+                            <img *ngIf="!item?.tradeCreator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
                             <span>{{ item?.tradeCreator?.name.length > 15 ?  item?.tradeCreator?.name.substring(0,8).concat('...'): item?.tradeCreator?.name}}</span>
                             <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                                  *ngIf="item?.tradeCreator?.verified">
@@ -155,6 +159,7 @@
   </div>
 </div>
 <app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [decimals]="decimals" [selected]="true"></app-pop-up>
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
 
 
   <!--              <ng-container *ngIf = "isOpen; then open else close"></ng-container>-->
