@@ -109,7 +109,7 @@
               <ul>
                 <li *ngIf="isBalanceLoading">Balance:
                   <div class="position-relative d-inline">
-                    <ngx-spinner class="balance-spinner" type="ball-clip-rotate-multiple" [fullScreen]="false" size="small"
+                    <ngx-spinner [name]="spinnerName" class="balance-spinner" type="ball-clip-rotate-multiple" [fullScreen]="false" size="small"
                                  [bdColor]="'transparent'" color="#81007F"></ngx-spinner>
                   </div>
                 </li>
