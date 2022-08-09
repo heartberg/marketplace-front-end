@@ -6,6 +6,7 @@ import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, g
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
 import {Router} from "@angular/router";
+import { env } from 'process';
 
 
 const client = getAlgodClient()
@@ -1325,6 +1326,7 @@ export class WalletsConnectService {
       const client = getAlgodClient();
       const indexTokenID = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TK_ID");
       const indexTokenAmount = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "TKA");
+      const auctionCreator = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "S_ADDR")
       console.log(indexTokenID, indexTokenAmount)
 
       if (indexTokenID > 0 && indexTokenAmount > 0) {
@@ -1359,6 +1361,7 @@ export class WalletsConnectService {
         const assetCreator = (await this.getAsset(indexTokenID)).params.creator;
 
         if (accounts.length == 4) {
+          console.log(assetCreator)
           suggestedParams.fee = 2000;
           const appCallRoyaltyTxn = algosdk.makeApplicationNoOpTxnFromObject({
             from: this.sessionWallet!.getDefaultAccount(),
@@ -1381,7 +1384,7 @@ export class WalletsConnectService {
             appIndex: storeAppId,
             note: new Uint8Array(Buffer.from("Store bid accepting amounts")),
             appArgs: [new Uint8Array([...Buffer.from("auction")])],
-            accounts: [leadBidder, auctionIndex],
+            accounts: [leadBidder, auctionIndex, auctionCreator],
             foreignApps: [environment.AUCTION_APP_ID],
             suggestedParams,
           });

@@ -164,8 +164,13 @@ export class AuctionDetailComponent implements OnInit {
       return;
     }
 
+    if(!this.canClose && !this.canCancel && (!this.hasStarted || this.isFinished)){
+      return;
+    }
+
+    console.log(this.canClose, this.canCancel, this.hasStarted)
+
     if (this.isOpen) {
-      this.spinner.show()
       console.log("spinner")
       if (this.isMine) {
         if(this.canClose || this.canCancel) {
@@ -175,10 +180,13 @@ export class AuctionDetailComponent implements OnInit {
           await this.bidAuction()
         }
       } else {
-        // bid on auction
-        await this.bidAuction()
+        if(this.canClose) {
+          await this.closeAuction()
+        } else {
+          // bid on auction
+          await this.bidAuction()
+        }
       }
-      this.spinner.hide()
     } else {
       if (this.isMine) {
 
@@ -190,16 +198,19 @@ export class AuctionDetailComponent implements OnInit {
 
   async closeAuction() {
     console.log('start cancel trade:', this.mAuction.indexAddress);
+    this.spinner.show()
     const result = await this._walletsConnectService.closeAuction(this.mAuction.indexAddress);
     if (result) {
       this._userService.closeAuction(this.mAuction.auctionId).subscribe(
         (result) => {
           console.log('result', result);
-          console.log('Successfully cancelled')
-          alert("successfully cancelled!")
+          console.log('Successfully closed')
+          this.spinner.hide()
+          alert("successfully closed!")
         },
         (error) => {
           console.log('error', error)
+          this.spinner.hide()
           alert("failed to close!")
           
         }
@@ -210,6 +221,7 @@ export class AuctionDetailComponent implements OnInit {
   async bidAuction() {
     const auctionIndex = this.mAuction.indexAddress;
     console.log('start bidAuction', auctionIndex);
+    this.spinner.show()
     const result = await this._walletsConnectService.bidAuction(auctionIndex, this.bidAmount);
     if (result) {
       const params = {
@@ -223,13 +235,17 @@ export class AuctionDetailComponent implements OnInit {
         (result) => {
           console.log('result', result);
           console.log('Successfully bid')
+          this.spinner.hide()
           alert("Successful bid")
         },
         (error) => {
           console.log('error', error)
+          this.spinner.hide()
           alert("failed to bid!")
         }
       )
+    } else {
+      this.spinner.hide()
     }
   }
 
