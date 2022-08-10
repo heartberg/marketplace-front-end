@@ -28,6 +28,7 @@ export class HeaderComponent implements OnInit {
 
   public isPopUpOpenedSecond: boolean = false;
   public isBalanceLoading: boolean = false;
+  public spinnerName: string = 'balance-spinner';
 
   constructor(
     private router: Router,
@@ -69,12 +70,12 @@ export class HeaderComponent implements OnInit {
       console.log(this.changeRespoNavAndProfileIcons);
     }
 
-    this.spinner.show();
+    this.spinner.show(this.spinnerName);
     this.isBalanceLoading = true;
 
     let algoAmount = await this._walletsConnectService.getBalance();
     if (algoAmount) {
-      this.spinner.hide();
+      this.spinner.hide(this.spinnerName);
       this.isBalanceLoading = false;
     }
     if (algoAmount >= 100000) {
