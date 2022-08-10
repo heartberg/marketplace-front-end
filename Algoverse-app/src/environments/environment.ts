@@ -8,6 +8,9 @@ export const environment = {
   ALGOD_TOKEN:"Z4lUOOfIOm8thZUeUK9n349ImUCpiCC190RtGnm6",
   ALGOD_INDEXER_ADDRESS:"https://testnet-algorand.api.purestake.io/idx2",
 
+  IPFS_PROJECT_ID:"2DAfd3ckjka67HnrTTbdiZro1m3",
+  IPFS_PROJECT_SECRET:"bf1f036a83dcad9826819e5aa122ce6f",
+
   // ALGOD_URL:"http://localhost",
   // ALGOD_TOKEN:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   // ALGOD_INDEXER_ADDRESS:"http://localhost",
