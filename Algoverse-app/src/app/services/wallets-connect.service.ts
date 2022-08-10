@@ -1337,7 +1337,11 @@ export class WalletsConnectService {
         const leadBidder = await getAppLocalStateByKey(client, environment.AUCTION_APP_ID, auctionIndex, "LB_ADDR")
         console.log("leadBidder", encodeAddress(leadBidder));
         if (leadBidder && leadBidder != 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ') {
-          accounts.push(leadBidder);
+          if(leadBidder == this.sessionWallet?.getDefaultAccount()) {
+            accounts.push(auctionCreator)
+          } else {
+            accounts.push(leadBidder);
+          }
           const feeAddress = await getAppGlobalState(environment.FEE_APP_ID, "fa");
           accounts.push(feeAddress);
           const verseBackingAddress = await getAppGlobalState(environment.AUCTION_APP_ID, "VB_ADDR");
@@ -1375,7 +1379,7 @@ export class WalletsConnectService {
             foreignApps: [Number(environment.FEE_APP_ID)],
             suggestedParams,
           });
-          txns.push(appCallRoyaltyTxn);
+          txns.unshift(appCallRoyaltyTxn);
 
           const storeAppId = await getAppGlobalState(environment.AUCTION_APP_ID, "SA_ID");
           suggestedParams.fee = 1000
@@ -1388,7 +1392,7 @@ export class WalletsConnectService {
             foreignApps: [environment.AUCTION_APP_ID],
             suggestedParams,
           });
-          txns.push(storeAppCallTxn);
+          txns.unshift(storeAppCallTxn);
 
           const txnGroup = algosdk.assignGroupID(txns);
           const signedTxns = await this.sessionWallet!.signTxn(txns);
