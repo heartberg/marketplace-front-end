@@ -45,7 +45,7 @@
                 </ng-container>
               </button>
             </div>
-            <div class="scroll-bio" *ngIf="userProfile.bio">
+            <div class="scroll-bio" *ngIf="userProfile?.bio">
               <div class="wrapper" (click)="expandOrCollapseBio()">
               <span [ngStyle]="{'cursor': userProfile.bio.length > 50 ? 'pointer' : 'unset'}">
                  {{ ((userProfile && isTruncated) && userProfile.bio.length > 50) ? (userProfile.bio | slice:0:50) : (userProfile.bio) }}

@@ -22,7 +22,7 @@ export class UserService {
   }
 
   loadProfileByCustomUrl(customUrl: String): Observable<any> {
-    const url = `${this.baseUrl}user/get/byUrl?url=${customUrl}`;
+    const url = `${this.baseUrl}user/get/byURL?customURL=${customUrl}`;
     return this._http.get<any>(url);
   }
 
