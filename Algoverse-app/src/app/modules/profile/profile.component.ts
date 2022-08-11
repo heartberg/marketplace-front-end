@@ -33,6 +33,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
   public following: any;
   public showFollowers = false;
   public popupOpen = false;
+  public walletAddress = "";
 
   constructor(
     private userService: UserService,
@@ -57,15 +58,14 @@ export class ProfileComponent implements OnInit, OnDestroy{
     console.log(routeParams)
     const addr = routeParams.get('wallet')
     if(addr) {
-      let walletAddress = addr
-      if(algosdk.isValidAddress(walletAddress)){
+      if(algosdk.isValidAddress(addr)){
         console.log("address detected")
-            
-        this.userService.loadProfile(walletAddress).subscribe(
+        this.walletAddress = addr
+        this.userService.loadProfile(this.walletAddress).subscribe(
           (res: any) => {
             this.userProfile = res
             console.log(this.userProfile)
-            this.userService.loadCollections(walletAddress).subscribe(
+            this.userService.loadCollections(this.walletAddress).subscribe(
               (collections: any) => {
                 this.userCollections = collections
                 this._stateService.collections = res;
@@ -85,12 +85,12 @@ export class ProfileComponent implements OnInit, OnDestroy{
           }
         )
       } else {
-        this.userService.loadProfileByCustomUrl(walletAddress).subscribe(
+        this.userService.loadProfileByCustomUrl(addr).subscribe(
           (res: any) => {
             this.userProfile = res
             console.log(this.userProfile)
-            walletAddress = this.userProfile.wallet
-            this.userService.loadCollections(walletAddress).subscribe(
+            this.walletAddress = this.userProfile.wallet
+            this.userService.loadCollections(this.walletAddress).subscribe(
               (collections: any) => {
                 this.userCollections = collections
                 this._stateService.collections = res;
@@ -117,7 +117,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
       let wallet = this.connectService.sessionWallet
         if(wallet) {
           let connectedWallet = wallet.getDefaultAccount()
-          if(connectedWallet == walletAddress) {
+          if(connectedWallet == this.walletAddress) {
             this.isOwnProfile = true
           } else {
             this.isOwnProfile = false
@@ -125,56 +125,56 @@ export class ProfileComponent implements OnInit, OnDestroy{
         }
         console.log(this.isOwnProfile)
 
-      this.userService.loadUserOwnedAssets(walletAddress).subscribe(
+      this.userService.loadUserOwnedAssets(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.ownedAssets = res
         }
       )
 
-      this.userService.loadUserCreatedAssets(walletAddress).subscribe(
+      this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.createdAssets = res
         }
       )
 
-      this.userService.loadTrades(walletAddress).subscribe(
+      this.userService.loadTrades(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.forSale = res
         }
       )
 
-      this.userService.loadAuctionsWithMyBids(walletAddress).subscribe(
+      this.userService.loadAuctionsWithMyBids(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.myAuctionBids = res
         }
       )
 
-      this.userService.loadSwaps(walletAddress).subscribe(
+      this.userService.loadSwaps(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.forSwap = res
         }
       )
 
-      this.userService.loadAuctions(walletAddress).subscribe(
+      this.userService.loadAuctions(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.forAuction = res
         }
       )
 
-      this.userService.loadBids(walletAddress).subscribe(
+      this.userService.loadBids(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.myBids = res
         }
       )
 
-      this.userService.loadStarredAssets(walletAddress).subscribe(
+      this.userService.loadStarredAssets(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res);
           this.starred = res
