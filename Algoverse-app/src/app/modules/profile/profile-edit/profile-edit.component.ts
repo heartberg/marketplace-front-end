@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup,} from "@angular/forms";
 import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
 import { Location } from '@angular/common';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-profile-edit',
@@ -26,6 +27,7 @@ export class ProfileEditComponent implements OnInit {
     private _location: Location,
     private userService: UserService,
     private connectService: WalletsConnectService,
+    private spinner: NgxSpinnerService
     ) { }
 
   ngOnInit(): void {
@@ -80,24 +82,32 @@ export class ProfileEditComponent implements OnInit {
     finalObj.featuredImage = this.profileFeaturedUrl
     console.log(finalObj)
     //@ts-ignore
+    this.spinner.show();
     this.userServie.userUpdate(finalObj).subscribe( (item) => item);
+    this.spinner.hide();
   }
 
   async onImageUpload(event: any) {
     console.log('e', event.target.files[0]);
+    this.spinner.show();
     this.profileBannerUrl = await this.ipfs.uploadFile(event.target.files[0]);
+    this.spinner.hide();
     console.log(this.profileBannerUrl)
   }
 
   async onProfileImageUpload(event: any) {
     console.log('e', event.target.files[0]);
+    this.spinner.show();
     this.profileIconUrl = await this.ipfs.uploadFile(event.target.files[0]);
+    this.spinner.hide();
     console.log(this.profileIconUrl)
   }
 
   async onFeaturedImageUpload(event: any) {
     console.log('e', event.target.files[0]);
+    this.spinner.show();
     this.profileFeaturedUrl = await this.ipfs.uploadFile(event.target.files[0]);
+    this.spinner.hide();
     console.log(this.profileFeaturedUrl)
   }
 
