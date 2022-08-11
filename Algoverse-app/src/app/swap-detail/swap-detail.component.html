@@ -20,13 +20,13 @@
                 <div class="img card-info">
                   <ng-container>
                     <div class="section" [ngClass]="{'flex-column align-items-center': swapItemsFileData.offering?.isMimeTypeAudio}">
-                      <img *ngIf="!swapItemsFileData.offering?.isMimeTypeVideo" src="https://ipfs.infura.io/ipfs/{{mSwap?.offeringAsset?.file}}" alt="">
+                      <img *ngIf="!swapItemsFileData.offering?.isMimeTypeVideo" src="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.offeringAsset?.file}}" alt="">
                       <!--if mimetype is a audio-->
                       <audio controls *ngIf="swapItemsFileData.offering?.isMimeTypeAudio" class="mt-3">
                         <source [src]="swapItemsFileData.offering?.animation_url" [type]="swapItemsFileData.offering?.animation_url_mimetype">
                       </audio>
                       <!--if mimetype is a video-->
-                      <video width="250" height="250" controls *ngIf="swapItemsFileData.offering?.isMimeTypeVideo" poster="https://ipfs.infura.io/ipfs/{{mSwap?.offeringAsset?.file}}">
+                      <video width="250" height="250" controls *ngIf="swapItemsFileData.offering?.isMimeTypeVideo" poster="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.offeringAsset?.file}}">
                         <source [src]="swapItemsFileData.offering?.animation_url" [type]="swapItemsFileData.offering?.animation_url_mimetype">
                       </video>
                     </div>
@@ -85,13 +85,13 @@
                   <div class="wrapper">
                     <div class="img">
                       <div class="section" [ngClass]="{'flex-column align-items-center': swapItemsFileData.accepting?.isMimeTypeAudio}">
-                        <img *ngIf="!swapItemsFileData.accepting?.isMimeTypeVideo" src="https://ipfs.infura.io/ipfs/{{mSwap?.acceptingAsset?.file}}" alt="">
+                        <img *ngIf="!swapItemsFileData.accepting?.isMimeTypeVideo" src="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.acceptingAsset?.file}}" alt="">
                         <!--if mimetype is a audio-->
                         <audio controls *ngIf="swapItemsFileData.accepting?.isMimeTypeAudio" class="mt-3">
                           <source [src]="swapItemsFileData.accepting?.animation_url" [type]="swapItemsFileData.accepting?.animation_url_mimetype">
                         </audio>
                         <!--if mimetype is a video-->
-                        <video width="250" height="250" controls *ngIf="swapItemsFileData.accepting?.isMimeTypeVideo" poster="https://ipfs.infura.io/ipfs/{{mSwap?.acceptingAsset?.file}}">
+                        <video width="250" height="250" controls *ngIf="swapItemsFileData.accepting?.isMimeTypeVideo" poster="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.acceptingAsset?.file}}">
                           <source [src]="swapItemsFileData.accepting?.animation_url" [type]="swapItemsFileData.accepting?.animation_url_mimetype">
                         </video>
                       </div>

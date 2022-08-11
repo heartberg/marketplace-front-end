@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   baseUrl: 'https://algoverse.azurewebsites.net/',
-  ipfs_base: "https://ipfs.infura.io/ipfs/",
+  ipfs_base: "https://algoverse.infura-ipfs.io/ipfs/",
 
   ALGOD_URL:"https://testnet-algorand.api.purestake.io/ps2",
   ALGOD_TOKEN:"Z4lUOOfIOm8thZUeUK9n349ImUCpiCC190RtGnm6",

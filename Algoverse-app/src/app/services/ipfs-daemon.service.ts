@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class IpfsDaemonService {
 
   // private ipfsHttpClient = create({
-  //   url: 'https://ipfs.infura.io:5001/api/v0',
+  //   url: 'https://algoverse.infura-ipfs.io:5001/api/v0',
   //   headers: {
   //     authorization: "Basic " + btoa(environment.IPFS_PROJECT_ID + ":" + environment.IPFS_PROJECT_SECRET),
   //   }
@@ -29,7 +29,7 @@ export class IpfsDaemonService {
   uploadFile = async (file: any): Promise<string> => {
     try {
       const added = await this.ipfsHttpClient.add(file)
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`
+      const url = `https://algoverse.infura-ipfs.io/ipfs/${added.path}`
       return url;
 
     } catch (err) {
@@ -41,7 +41,7 @@ export class IpfsDaemonService {
   addMetaData = async (data: any): Promise<string> => {
     try {
       const added = await this.ipfsHttpClient.add(JSON.stringify(data))
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`
+      const url = `https://algoverse.infura-ipfs.io/ipfs/${added.path}`
       return url;
 
     } catch (err) {
