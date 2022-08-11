@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import algosdk from 'algosdk';
 import { ADDRCONFIG } from 'dns';
 import { StateService } from 'src/app/services/state.service';
 import { UserService } from 'src/app/services/user.service';
+import { getAlgodClient } from 'src/app/services/utils.algod';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 
 @Component({
@@ -54,92 +56,125 @@ export class ProfileComponent implements OnInit, OnDestroy{
     const routeParams = this.route.snapshot.paramMap
     console.log(routeParams)
     const addr = routeParams.get('wallet')
-    let wallet = this.connectService.sessionWallet
-    if(wallet) {
-      let connectedWallet = wallet.getDefaultAccount()
-      if(connectedWallet == addr) {
-        this.isOwnProfile = true
-      } else {
-        this.isOwnProfile = false
-      }
-    }
-    console.log(this.isOwnProfile)
     if(addr) {
-      this.userService.loadProfile(addr).subscribe(
-        (res: any) => {
-          this.userProfile = res
-          console.log(this.userProfile)
-          this.userService.loadCollections(addr).subscribe(
-            (collections: any) => {
-              this.userCollections = collections
-              this._stateService.collections = res;
+      let walletAddress = addr
+      if(algosdk.isValidAddress(walletAddress)){
+        console.log("address detected")
+            
+        this.userService.loadProfile(walletAddress).subscribe(
+          (res: any) => {
+            this.userProfile = res
+            console.log(this.userProfile)
+            this.userService.loadCollections(walletAddress).subscribe(
+              (collections: any) => {
+                this.userCollections = collections
+                this._stateService.collections = res;
+              }
+            )
+            wallet = this.connectService.sessionWallet
+            console.log("wallet:", wallet)
+            if(wallet) {
+              console.log("CHECK FOLLOWING")
+              this.following = this.userProfile.followers.find((follow: any) => {
+                return follow.followingUserWallet == wallet!.getDefaultAccount()
+              })
+              console.log("user following: ", this.following)
+            } else {
+              this.following = undefined
             }
-          )
-          wallet = this.connectService.sessionWallet
-          console.log("wallet:", wallet)
-          if(wallet) {
-            console.log("CHECK FOLLOWING")
-            this.following = this.userProfile.followers.find((follow: any) => {
-              return follow.followingUserWallet == wallet!.getDefaultAccount()
-            })
-            console.log("user following: ", this.following)
+          }
+        )
+      } else {
+        this.userService.loadProfileByCustomUrl(walletAddress).subscribe(
+          (res: any) => {
+            this.userProfile = res
+            console.log(this.userProfile)
+            walletAddress = this.userProfile.wallet
+            this.userService.loadCollections(walletAddress).subscribe(
+              (collections: any) => {
+                this.userCollections = collections
+                this._stateService.collections = res;
+              }
+            )
+            wallet = this.connectService.sessionWallet
+            console.log("wallet:", wallet)
+            if(wallet) {
+              console.log("CHECK FOLLOWING")
+              this.following = this.userProfile.followers.find((follow: any) => {
+                return follow.followingUserWallet == wallet!.getDefaultAccount()
+              })
+              console.log("user following: ", this.following)
+            } else {
+              this.following = undefined
+            }
+          }, error => {
+            alert("No Profile found with this URL")
+            this.router.navigateByUrl("home")
+          }
+        )
+      }
+     
+      let wallet = this.connectService.sessionWallet
+        if(wallet) {
+          let connectedWallet = wallet.getDefaultAccount()
+          if(connectedWallet == walletAddress) {
+            this.isOwnProfile = true
           } else {
-            this.following = undefined
+            this.isOwnProfile = false
           }
         }
-      )
-     
+        console.log(this.isOwnProfile)
 
-      this.userService.loadUserOwnedAssets(addr).subscribe(
+      this.userService.loadUserOwnedAssets(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.ownedAssets = res
         }
       )
 
-      this.userService.loadUserCreatedAssets(addr).subscribe(
+      this.userService.loadUserCreatedAssets(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.createdAssets = res
         }
       )
 
-      this.userService.loadTrades(addr).subscribe(
+      this.userService.loadTrades(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.forSale = res
         }
       )
 
-      this.userService.loadAuctionsWithMyBids(addr).subscribe(
+      this.userService.loadAuctionsWithMyBids(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.myAuctionBids = res
         }
       )
 
-      this.userService.loadSwaps(addr).subscribe(
+      this.userService.loadSwaps(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.forSwap = res
         }
       )
 
-      this.userService.loadAuctions(addr).subscribe(
+      this.userService.loadAuctions(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.forAuction = res
         }
       )
 
-      this.userService.loadBids(addr).subscribe(
+      this.userService.loadBids(walletAddress).subscribe(
         (res: any) => {
           console.log(res)
           this.myBids = res
         }
       )
 
-      this.userService.loadStarredAssets(addr).subscribe(
+      this.userService.loadStarredAssets(walletAddress).subscribe(
         (res: any) => {
           console.log(res);
           this.starred = res
