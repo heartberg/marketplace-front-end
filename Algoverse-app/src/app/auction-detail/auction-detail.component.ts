@@ -70,9 +70,13 @@ export class AuctionDetailComponent implements OnInit {
     this.isMine = this.mAuction.creatorWallet == this._walletsConnectService.sessionWallet?.getDefaultAccount();
     this.isOpen = this.mAuction.isOpen;
 
-    let now = new Date()
-    this.isFinished = new Date(this.mAuction.closingDate) < now
-    this.hasStarted = new Date(this.mAuction.startingDate) < now
+    let now = Math.floor(new Date().getTime() / 1000)
+
+    this.startTime = this.formatDate(this.mAuction.startingDate)
+    this.endTime = this.formatDate(this.mAuction.closingTime)
+
+    this.isFinished = this.mAuction.closingDate < now
+    this.hasStarted = this.mAuction.startingDate < now
     console.log("finished", this.isFinished)
     console.log("started", this.hasStarted)
 
@@ -348,4 +352,19 @@ export class AuctionDetailComponent implements OnInit {
       this.isMimeTypeAudio = true;
     }
   }
+
+  formatDate(timestamp: number): string {
+    let date = new Date(timestamp * 1000)
+    //console.log(date)
+    let minutes = date.getMinutes().toString()
+    if(date.getMinutes() < 10) {
+      minutes = "0" + minutes
+    }
+    let hours = date.getHours().toString()
+    if(date.getHours() < 10){
+      hours = "0" + hours
+    }
+    return date.toDateString() + " - " + hours + ":" + minutes
+  }
+
 }

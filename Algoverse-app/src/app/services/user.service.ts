@@ -21,6 +21,11 @@ export class UserService {
     return this._http.get<any>(url);
   }
 
+  loadProfileByCustomUrl(customUrl: String): Observable<any> {
+    const url = `${this.baseUrl}user/get/byUrl?url=${customUrl}`;
+    return this._http.get<any>(url);
+  }
+
   loadAllUsers(ordering: string): Observable<any> {
     const url = `${this.baseUrl}user/get/all?ordering=${ordering}`;
     return this._http.get<any>(url);
