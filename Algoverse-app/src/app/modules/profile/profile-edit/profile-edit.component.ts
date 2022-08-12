@@ -83,7 +83,16 @@ export class ProfileEditComponent implements OnInit {
     console.log(finalObj)
     //@ts-ignore
     this.spinner.show();
-    this.userServie.userUpdate(finalObj).subscribe( (item) => item);
+    this.userServie.userUpdate(finalObj).subscribe( (item) => {
+      if(item) {
+        console.log(item)
+        if(item.status == 0) {
+          alert(item.data)
+        } else {
+          alert(item.data)
+        }
+      }
+    });
     this.spinner.hide();
   }
 

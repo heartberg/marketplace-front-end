@@ -120,8 +120,11 @@ export class ProfileComponent implements OnInit, OnDestroy{
           if(connectedWallet == this.walletAddress) {
             this.isOwnProfile = true
           } else {
+            console.log("not same address")
             this.isOwnProfile = false
           }
+        } else {
+          console.log("not wallet")
         }
         console.log(this.isOwnProfile)
 

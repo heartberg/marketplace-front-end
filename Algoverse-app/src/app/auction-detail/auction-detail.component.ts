@@ -73,7 +73,7 @@ export class AuctionDetailComponent implements OnInit {
     let now = Math.floor(new Date().getTime() / 1000)
 
     this.startTime = this.formatDate(this.mAuction.startingDate)
-    this.endTime = this.formatDate(this.mAuction.closingTime)
+    this.endTime = this.formatDate(this.mAuction.closingDate)
 
     this.isFinished = this.mAuction.closingDate < now
     this.hasStarted = this.mAuction.startingDate < now
@@ -219,6 +219,8 @@ export class AuctionDetailComponent implements OnInit {
           
         }
       )
+    } else {
+      this.spinner.hide()
     }
   }
 
