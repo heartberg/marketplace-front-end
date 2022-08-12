@@ -6,6 +6,7 @@ import { StateService } from 'src/app/services/state.service';
 import { UserService } from 'src/app/services/user.service';
 import { getAlgodClient } from 'src/app/services/utils.algod';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
+import {SessionWallet} from "algorand-session-wallet";
 
 @Component({
   selector: 'app-profile',
@@ -51,6 +52,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    this.detectOwnProfile(this.connectService.sessionWallet);
   }
 
   initialiseProfile() {
@@ -113,20 +115,9 @@ export class ProfileComponent implements OnInit, OnDestroy{
           }
         )
       }
-     
-      let wallet = this.connectService.sessionWallet
-        if(wallet) {
-          let connectedWallet = wallet.getDefaultAccount()
-          if(connectedWallet == this.walletAddress) {
-            this.isOwnProfile = true
-          } else {
-            console.log("not same address")
-            this.isOwnProfile = false
-          }
-        } else {
-          console.log("not wallet")
-        }
-        console.log(this.isOwnProfile)
+
+      let wallet = this.connectService.sessionWallet;
+      this.detectOwnProfile(wallet)
 
       this.userService.loadUserOwnedAssets(this.walletAddress).subscribe(
         (res: any) => {
@@ -231,5 +222,20 @@ export class ProfileComponent implements OnInit, OnDestroy{
 
   closePopUp($event: boolean) {
     this.popupOpen = $event;
+  }
+
+  private detectOwnProfile(wallet: SessionWallet | undefined) {
+    if (wallet) {
+      let connectedWallet = wallet.getDefaultAccount();
+      if (connectedWallet == this.walletAddress) {
+        this.isOwnProfile = true;
+      } else {
+        console.log("not same address");
+        this.isOwnProfile = false;
+      }
+    } else {
+      console.log("not wallet");
+    }
+    console.log(this.isOwnProfile);
   }
 }
