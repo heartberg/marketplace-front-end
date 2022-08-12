@@ -7,11 +7,13 @@ import { UserService } from 'src/app/services/user.service';
 import { getAlgodClient } from 'src/app/services/utils.algod';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import {SessionWallet} from "algorand-session-wallet";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  providers: [Location]
 })
 export class ProfileComponent implements OnInit, OnDestroy{
   profileTitle: string = 'Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM Message text LOREM IPSUM '
@@ -41,7 +43,8 @@ export class ProfileComponent implements OnInit, OnDestroy{
     private connectService: WalletsConnectService,
     private _stateService: StateService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private readonly location: Location,
   ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
@@ -65,7 +68,10 @@ export class ProfileComponent implements OnInit, OnDestroy{
         this.walletAddress = addr
         this.userService.loadProfile(this.walletAddress).subscribe(
           (res: any) => {
-            this.userProfile = res
+            this.userProfile = res;
+            if (this.userProfile.customURL) {
+              this.location.replaceState(`profile/${this.userProfile.customURL}`);
+            }
             console.log(this.userProfile)
             this.userService.loadCollections(this.walletAddress).subscribe(
               (collections: any) => {
@@ -99,6 +105,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
               }
             )
             wallet = this.connectService.sessionWallet
+            this.detectOwnProfile(wallet);
             console.log("wallet:", wallet)
             if(wallet) {
               console.log("CHECK FOLLOWING")
@@ -117,7 +124,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
       }
 
       let wallet = this.connectService.sessionWallet;
-      this.detectOwnProfile(wallet)
+      this.detectOwnProfile(wallet);
 
       this.userService.loadUserOwnedAssets(this.walletAddress).subscribe(
         (res: any) => {
@@ -236,6 +243,5 @@ export class ProfileComponent implements OnInit, OnDestroy{
     } else {
       console.log("not wallet");
     }
-    console.log(this.isOwnProfile);
   }
 }
