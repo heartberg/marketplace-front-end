@@ -226,13 +226,16 @@ export class ProfileComponent implements OnInit, OnDestroy{
 
   private detectOwnProfile(wallet: SessionWallet | undefined) {
     if (wallet) {
-      let connectedWallet = wallet.getDefaultAccount()
+      let connectedWallet = wallet.getDefaultAccount();
       if (connectedWallet == this.walletAddress) {
-        this.isOwnProfile = true
+        this.isOwnProfile = true;
       } else {
-        this.isOwnProfile = false
+        console.log("not same address");
+        this.isOwnProfile = false;
       }
+    } else {
+      console.log("not wallet");
     }
-    console.log(this.isOwnProfile)
+    console.log(this.isOwnProfile);
   }
 }

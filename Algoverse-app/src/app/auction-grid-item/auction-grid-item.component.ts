@@ -20,4 +20,18 @@ export class AuctionGridItemComponent implements OnInit {
     return (amount / Math.pow(10, 6)).toFixed(2)
   }
 
+  formatDate(timestamp: number): string {
+    let date = new Date(timestamp * 1000)
+    //console.log(date)
+    let minutes = date.getMinutes().toString()
+    if(date.getMinutes() < 10) {
+      minutes = "0" + minutes
+    }
+    let hours = date.getHours().toString()
+    if(date.getHours() < 10){
+      hours = "0" + hours
+    }
+    return date.toDateString() + " - " + hours + ":" + minutes
+  }
+
 }

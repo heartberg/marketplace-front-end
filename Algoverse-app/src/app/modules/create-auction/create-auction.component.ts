@@ -245,8 +245,8 @@ export class CreateAuctionComponent implements OnInit {
         assetId: this.selectedAsset.index,
         amount: this.assetAmount,
         creatorWallet: this._walletsConnectService.sessionWallet?.getDefaultAccount(),
-        startTime: this.startTime,
-        closingTime: this.endTime,
+        startTime: Date.parse(this.startTime) / 1000,
+        closingTime: Date.parse(this.endTime) / 1000,
         minimumBid: this.minimumIncrement,
         minimumPrice: this.price
       }
