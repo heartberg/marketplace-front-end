@@ -67,21 +67,27 @@ export class CreateCollectionComponent implements OnInit {
   }
 
   async onIconInput(e: any) {
+    this.spinner.show()
     console.log('e', e.target.files[0]);
     this.iconUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('iconUrl', this.iconUrl);
+    this.spinner.hide()
   }
 
   async onBannerInput(e: any) {
+    this.spinner.show()
     console.log('e', e.target.files[0]);
     this.bannerUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('bannerUrl', this.bannerUrl);
+    this.spinner.hide()
   }
 
   async onFileInput(e: any) {
+    this.spinner.show()
     console.log('e', e.target.files[0]);
     this.imageUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     console.log('imageUrl', this.imageUrl);
+    this.spinner.hide()
   }
 
   onSubmit() {
@@ -130,8 +136,10 @@ export class CreateCollectionComponent implements OnInit {
     console.log('param', param);
     this._userService.createCollection(param).subscribe(
       res => {
+        console.log(res)
         this.spinner.hide();
         alert('Successfully added');
+        //this.router.navigateByUrl("/collection-detail/" + )
       },
       error => {
         this.spinner.hide();

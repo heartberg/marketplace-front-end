@@ -5,6 +5,8 @@ import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
 import { Location } from '@angular/common';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
+import { S_IFREG } from 'constants';
 
 @Component({
   selector: 'app-profile-edit',
@@ -27,7 +29,8 @@ export class ProfileEditComponent implements OnInit {
     private _location: Location,
     private userService: UserService,
     private connectService: WalletsConnectService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router, 
     ) { }
 
   ngOnInit(): void {
@@ -90,6 +93,7 @@ export class ProfileEditComponent implements OnInit {
           alert(item.data)
         } else {
           alert(item.data)
+          this.router.navigateByUrl("/profile/" + this.userProfile.wallet)
         }
       }
     });

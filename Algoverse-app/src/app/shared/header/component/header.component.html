@@ -37,9 +37,9 @@
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace/all-types">Marketplace</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/creators">Creators</li>
             <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="creators/space-shuttle">SpaceShuttle</li> -->
-            <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}">SpaceShuttle</li>
+            <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li>
             <!-- <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/token">Token</li> -->
-            <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> EVO </li>
+            <!-- <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> EVO </li> -->
           </ng-container>
           <ng-container *ngIf="changeRespoNavAndProfileIcons">
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}">Balance: {{balance}} Algo</li>
@@ -47,7 +47,6 @@
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/items">My Offers</li>
             <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}"  routerLink="/create-offer">Create Offer</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">Collections</li>
-            <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li>
             <li (click)="switcher()">Switch Acc</li>
             <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}">Log Out</li>
           </ng-container>
@@ -118,7 +117,6 @@
                 <li routerLink="/items">My Offers</li>
                 <li routerLink="/create-offer">Create Offer</li>
                 <li routerLink="/collection">Collections</li>
-                <li routerLink="/notification-center">Notifications</li>
                 <li (click)="switcher()">Switch Acc</li>
                 <li (click)="logOut()">Log Out</li>
               </ul>

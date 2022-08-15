@@ -45,33 +45,21 @@
             <h4 class="amountheader">Name</h4>
             <input type="text" placeholder="Name" class="input-costum" (blur)="blurNameEvent($event)">
           </div>
-          <div class="createoffer wrapper-border">
-            <h4 class="amountheader">Unit Name</h4>
-            <input type="text" placeholder="Unit name" class="input-costum" (blur)="blurUnitNameEvent($event)">
-          </div>
           <div class="typeoffer wrapper-border">
             <h4 class="typeheader">Description</h4>
             <input type="text" placeholder="Description" class="input-costum" (blur)="blurDescriptionEvent($event)">
           </div>
           <div class="price wrapper-border">
             <h4 class="priceheader">External Link</h4>
-            <input type="text" placeholder="https://www.external-link.com/..." class="input-costum" (blur)="blurExternalLinkEvent($event)">
+            <input type="text" placeholder="www.website.com" class="input-costum" (blur)="blurExternalLinkEvent($event)">
           </div>
           <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
-            <h4>Collection</h4>
+            <h4>Add to Collection (Optional)</h4>
             <div class="dropdown">
               <div class="AssetsList">
                 <app-drop-down-selector [dropDownValues]="collections" [defaultValue]="passedCollectionName" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
               </div>
             </div>
-          </div>
-          <div class="price wrapper-border">
-            <h4 class="priceheader">Supply</h4>
-            <input type="text" placeholder="1" class="input-costum" (blur)="blurSupplyEvent($event)">
-          </div>
-          <div class="price wrapper-border">
-            <h4 class="priceheader">Decimal</h4>
-            <input type="text" placeholder="0" class="input-costum" (blur)="blurDecimalsEvent($event)">
           </div>
           <div class="price wrapper-border">
             <h4 class="priceheader">Properties</h4>
@@ -252,6 +240,26 @@
               </form>
             </div>
           </div>
+          <div class="wrapper-border" style="margin-bottom: 16px;">
+            <div class="d-flex align-items-center"  (click)="activateFractionalized()"   [ngStyle]="{'margin-bottom': fractionalized ? '8px' : '0px'}">
+              <input type="checkbox" name="checkboxFractionalize" id="checkboxFractionalize" #checkboxFractionalize>
+              <label for="checkboxFractionalize" style="color: #81007F; font-weight: 700;margin-left: 5px; cursor: pointer; margin-bottom: 0px;" (click)="activateFractionalized()">Create Fractional NFT</label>
+            </div>
+            <ng-container *ngIf="fractionalized">
+              <div class="createoffer wrapper-border">
+                <h4 class="amountheader">Unit Name</h4>
+                <input type="text" placeholder="Unit name" class="input-costum" (blur)="blurUnitNameEvent($event)">
+              </div>
+              <div class="price wrapper-border">
+                <h4 class="priceheader">Supply</h4>
+                <input type="text" placeholder="1" class="input-costum" (blur)="blurSupplyEvent($event)">
+              </div>
+              <div class="price wrapper-border">
+                <h4 class="priceheader">Decimal</h4>
+                <input type="text" placeholder="0" class="input-costum" (blur)="blurDecimalsEvent($event)">
+              </div>
+            </ng-container>
+          </div>
           <!-- <div class="price wrapper-border">
             <div class="d-flex justify-content-between" style="padding: 0px 10px">
               <h4 class="priceheader new-section">Create offer on marketplace</h4>
@@ -277,7 +285,7 @@
             </div>
           </div> -->
           <div class="btn-secondary-costum aligner" (click)="submitAsset()">
-            Create Item
+            Create Asset
           </div>
         </div>
       </div>

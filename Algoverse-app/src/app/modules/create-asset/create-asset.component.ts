@@ -1,5 +1,5 @@
 import { ThrowStmt } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { getHashes } from 'crypto';
 import { IpfsDaemonService } from 'src/app/services/ipfs-daemon.service';
@@ -11,6 +11,7 @@ import * as sha256 from 'js-sha256';
 import { Location } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {FormBuilder} from "@angular/forms";
+import { ignoreElements } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-asset',
@@ -32,6 +33,12 @@ export class CreateAssetComponent implements OnInit {
   public fileUrl: string = "";
   public coverUrl: string = "";
   public decimals: string = "0";
+
+  public fractionalized: boolean = false;
+  @ViewChild('checkboxFractionalize', {static: false})
+  // @ts-ignore
+  private checkboxFractionalize: ElementRef;
+  
 
   public isMusicUpload: boolean = false;
   public isVideoUpload: boolean = false;
@@ -311,6 +318,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   async onFileInput(e: any) {
+    this.spinner.show()
     console.log("fileupload")
     console.log('e', e.target.files[0]);
     console.log('e type: ', e.target.files[0].type)
@@ -331,13 +339,16 @@ export class CreateAssetComponent implements OnInit {
       this.isImageUpload = true;
       this.image_mimetype = e.target.files[0].type.toString();
     }
+    this.spinner.hide()
   }
 
   async onCoverInput(e: any) {
+    this.spinner.show()
     console.log('e', e.target.files[0]);
     this.coverUrl = await this.ipfsDaemonService.uploadFile(e.target.files[0]);
     this.image_mimetype = e.target.files[0].type.toString()
     console.log('coverUrl', this.coverUrl);
+    this.spinner.hide()
   }
 
   async submitAsset() {
@@ -519,6 +530,7 @@ export class CreateAssetComponent implements OnInit {
         res => {
           this.spinner.hide();
           alert('Successfully minted')
+          this.router.navigateByUrl("asset-detail/" + assetId)
         },
         err => {
           this.spinner.hide();
@@ -550,6 +562,18 @@ export class CreateAssetComponent implements OnInit {
       //   this.assetMappingdata = [];
       //   this.assetMappingdata.push({first: this.FORM.value.ff2, second: this.FORM.value.sf2})
       // }
+    }
+  }
+
+  activateFractionalized() {
+    if(this.fractionalized) {
+      this.fractionalized = false;
+      this.checkboxFractionalize.nativeElement.checked = false;
+      console.log(this.checkboxFractionalize.nativeElement.checked)
+    } else {
+      this.fractionalized = true;
+      this.checkboxFractionalize.nativeElement.checked = true;
+      console.log(this.checkboxFractionalize.nativeElement.checked)
     }
   }
 }
