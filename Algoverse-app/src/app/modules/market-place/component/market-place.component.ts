@@ -11,12 +11,13 @@ import { Options, LabelType } from '@angular-slider/ngx-slider';
   styleUrls: ['./market-place.component.scss']
 })
 export class MarketPlaceComponent implements OnInit {
-  public typesDropDown: string[] = ['All Types', 'Trade', 'Bid', 'Swap', 'Auction'];
+  public typesDropDown: string[] = ['All NFTs', 'All Offers', 'Trade', 'Bid', 'Swap', 'Auction'];
   public categoriesDropDown: string[] = ['All NFTs', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public collectionsDropDown: string[] = ['All Collections'];
   public artistsDropDown: string[] = ['All Artists'];
   public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
-
+  
+  public nfts: any[] = [];
   public trades: any[] = [];
   public bids: any[] = [];
   public swaps: any[] = [];
@@ -32,7 +33,7 @@ export class MarketPlaceComponent implements OnInit {
   public isTimedAuction: boolean = false;
 
   public isLoaded: boolean = false;
-  public type: string = 'all';
+  public type: string = 'nfts';
   public category: string = '';
   public collection: string = '';
   public artist: string = '';
@@ -72,16 +73,14 @@ export class MarketPlaceComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
+    this.searchItems();
     this._userService.loadTrendingItems().subscribe(
       res => {
         this.isLoaded = true;
         console.log(res);
         this.spinner.hide();
 
-        this.trades = res.trades;
-        this.bids = res.bids;
-        this.swaps = res.swaps;
-        this.auctions = res.auctions;
+        this.nfts = res.assets
 
         this.collections = res.collections;
         for (let item of res.collections) {
@@ -115,8 +114,11 @@ export class MarketPlaceComponent implements OnInit {
   }
 
   selectedType(type: string) {
-    if (type == "All Types") {
-      this.type = "all";
+    if (type == "All NFTs") {
+      this.type = "nfts";
+    }
+    else if(type == "All Offers") {
+      this.type = "all"
     }
     else if (type == "Trade") {
       this.type = "trade";
@@ -182,11 +184,14 @@ export class MarketPlaceComponent implements OnInit {
     this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice * Math.pow(10, 6), this.highPrice * Math.pow(10, 6), this.sort).subscribe(
       res => {
         this.spinner.hide();
-
-        this.trades = res.trades;
-        this.bids = res.bids;
-        this.swaps = res.swaps;
-        this.auctions = res.auctions;
+        if(this.type == 'nfts') {
+          this.nfts = res;
+        } else {
+          this.trades = res.trades;
+          this.bids = res.bids;
+          this.swaps = res.swaps;
+          this.auctions = res.auctions;
+        }
       },
       err => {
         this.spinner.hide();

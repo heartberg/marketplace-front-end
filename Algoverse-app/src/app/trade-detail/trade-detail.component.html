@@ -35,7 +35,7 @@
                         <h4>Asset ID: </h4>
                         <span class="unset-dm-style">{{mItem?.assetId}}</span>
                       </div>
-                      <div class="section">
+                      <div class="section" *ngIf="mItem?.unitName">
                         <h4>Asset Unit:</h4>
                         <span class="unset-dm-style">{{mItem?.unitName}}</span>
                       </div>

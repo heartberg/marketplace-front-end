@@ -49,6 +49,10 @@
             <h4 class="typeheader">Description</h4>
             <input type="text" placeholder="Description" class="input-costum" (blur)="blurDescriptionEvent($event)">
           </div>
+          <div class="createoffer wrapper-border">
+            <h4>Category</h4>
+            <app-drop-down-selector [dropDownValues]="categoryList" style="width: 100%;" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
+          </div>
           <div class="price wrapper-border">
             <h4 class="priceheader">External Link</h4>
             <input type="text" placeholder="www.website.com" class="input-costum" (blur)="blurExternalLinkEvent($event)">

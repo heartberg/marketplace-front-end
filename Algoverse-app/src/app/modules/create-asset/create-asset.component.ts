@@ -26,13 +26,14 @@ export class CreateAssetComponent implements OnInit {
   public pushedItems: any[] = [1];
   public toggleCounter: number = 1;
   public name: string = "";
-  public unitName: string = "";
+  public unitName: string | undefined = undefined;
   public description: string = "";
   public externalLink: string = "";
-  public supply: string = "0";
+  public supply: string = "1";
   public fileUrl: string = "";
   public coverUrl: string = "";
   public decimals: string = "0";
+  public categoryList = ['Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
 
   public fractionalized: boolean = false;
   @ViewChild('checkboxFractionalize', {static: false})
@@ -60,6 +61,7 @@ export class CreateAssetComponent implements OnInit {
   attributesOk: boolean = true;
   public fileType: string = "";
   public acceptedFileFormats: string = "audio/mpeg, audio/mp3, audio/wav, video/mp4, video/mpeg, image/*";
+  category: string = "Collectibles";
   // ff first form // sf second form
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
@@ -276,11 +278,17 @@ export class CreateAssetComponent implements OnInit {
     }
   }
 
+  selectedCategory(category: string) {
+    this.category = category;
+    console.log(this.category);
+  }
+
   selectedCollection(collectionName: string) {
     if(collectionName != "No Collection") {
       this.passedCollection = this._stateService.getCollectionByName(collectionName);
       delete this.passedCollection.stars
       delete this.passedCollection.volume
+      this.category = this.passedCollection.category
     } else {
       this.passedCollection = null
     }
@@ -398,10 +406,6 @@ export class CreateAssetComponent implements OnInit {
       alert('Please input name');
       return;
     }
-    if (!this.unitName) {
-      alert('Please input unit name');
-      return;
-    }
     if (!this.description) {
       alert('Please input description');
       return;
@@ -508,6 +512,7 @@ export class CreateAssetComponent implements OnInit {
         assetId: assetId,
         name: this.name,
         unitName: this.unitName,
+        category: this.category,
         creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         assetURL: ipfsUrl,
         description: this.description,
