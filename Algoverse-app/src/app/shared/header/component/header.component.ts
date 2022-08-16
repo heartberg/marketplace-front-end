@@ -49,6 +49,8 @@ export class HeaderComponent implements OnInit {
       this.walletConnectionPassed = true;
     }
     this.receiveTheme();
+
+    this.router.onSameUrlNavigation = "reload"
   }
 
   async openAvatar() {
