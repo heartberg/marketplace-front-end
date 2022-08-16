@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="collection-profile-info-left">
-            <div class="creator-section d-flex">
+            <div class="creator-section d-flex" routerLink="/profile/{{mCollection.creator.wallet}}" style="cursor: pointer;">
               <div class="section-top">
                 <img *ngIf="mCollection.creator.profileImage" src="{{mCollection.creator.profileImage}}" alt="">
                 <img *ngIf="!mCollection.creator.profileImage" src="assets/img/default-avatar.svg" alt="">
@@ -64,7 +64,7 @@
     <div class="wrapper-border">
       <div class="create-asset w-100 d-flex mb-3 mr-1">
         <div style="flex: 1;"></div>
-        <button class="btn-secondary-costum" routerLink="/create-asset">
+        <button *ngIf="myCollection" class="btn-secondary-costum" routerLink="/create-asset">
           Create Asset
         </button>
       </div>
