@@ -8,6 +8,7 @@ import { getAlgodClient } from 'src/app/services/utils.algod';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 import {SessionWallet} from "algorand-session-wallet";
 import {Location} from "@angular/common";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-profile',
@@ -45,6 +46,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute,
     private router: Router,
     private readonly location: Location,
+    private spinner: NgxSpinnerService
   ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
@@ -126,17 +128,28 @@ export class ProfileComponent implements OnInit, OnDestroy{
       let wallet = this.connectService.sessionWallet;
       this.detectOwnProfile(wallet);
 
-      this.userService.loadUserAssets(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.myAssets = res
-        }
-      )
+      // this.userService.loadUserAssets(this.walletAddress).subscribe(
+      //   (res: any) => {
+      //     console.log(res)
+      //     this.myAssets = res
+      //   }
+      // )
 
-      this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
+      // this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
+      //   (res: any) => {
+      //     console.log(res)
+      //     this.createdAssets = res
+      //   }
+      // )
+
+      console.log('user wallet', this.walletAddress);
+      this.spinner.show();
+      this.userService.syncUserAssets(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
-          this.createdAssets = res
+          this.spinner.hide();
+          this.createdAssets = res.created;
+          this.myAssets = res.owned;
         }
       )
 

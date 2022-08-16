@@ -90,9 +90,9 @@ export class ProfileEditComponent implements OnInit {
       if(item) {
         console.log(item)
         if(item.status == 0) {
-          alert(item.data)
+          alert("Error updating profile!")
         } else {
-          alert(item.data)
+          alert("Updated profile!")
           this.router.navigateByUrl("/profile/" + this.userProfile.wallet)
         }
       }

@@ -16,6 +16,7 @@ export class CollectionDetailComponent implements OnInit {
   public isStarred: boolean = false;
   public collectionStar: any;
   public collectionId: string = "";
+  public myCollection: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -44,10 +45,18 @@ export class CollectionDetailComponent implements OnInit {
         this.mCollection = res;
         this.mAssets = this.mCollection.assets;
         this._stateService.passingData = this.mCollection;
+        let wallet = this._walletsConnectService.sessionWallet
+        if(wallet) {
+          if(wallet.getDefaultAccount() == this.mCollection.creator.wallet) {
+            this.myCollection = true;
+          } else {
+            this.myCollection = false;
+          }
+        }
         this.showCollectionDetails();
 
-        if(this._walletsConnectService.sessionWallet) {
-          this._userService.getCollectionStar(this._walletsConnectService.sessionWallet.getDefaultAccount(), this.mCollection.collectionId).subscribe(
+        if(wallet) {
+          this._userService.getCollectionStar(wallet.getDefaultAccount(), this.mCollection.collectionId).subscribe(
             (value:any) => {
               if(value){
                 this.collectionStar = value;

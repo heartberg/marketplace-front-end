@@ -66,7 +66,7 @@
             </div>
           </div>
           <div class="price wrapper-border">
-            <h4 class="priceheader">Properties</h4>
+            <h4 class="priceheader">Properties (Optional)</h4>
             <div class="row">
               <form action="" [formGroup]="FORM">
                 <ng-container *ngIf="first">
@@ -247,7 +247,7 @@
           <div class="wrapper-border" style="margin-bottom: 16px;">
             <div class="d-flex align-items-center"  (click)="activateFractionalized()"   [ngStyle]="{'margin-bottom': fractionalized ? '8px' : '0px'}">
               <input type="checkbox" name="checkboxFractionalize" id="checkboxFractionalize" #checkboxFractionalize>
-              <label for="checkboxFractionalize" style="color: #81007F; font-weight: 700;margin-left: 5px; cursor: pointer; margin-bottom: 0px;" (click)="activateFractionalized()">Create Fractional NFT</label>
+              <label for="checkboxFractionalize" style="color: #81007F; font-weight: 700;margin-left: 5px; cursor: pointer; margin-bottom: 0px;" (click)="activateFractionalized()">Create Fractional NFT (Optional)</label>
             </div>
             <ng-container *ngIf="fractionalized">
               <div class="createoffer wrapper-border">

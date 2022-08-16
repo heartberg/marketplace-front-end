@@ -68,7 +68,7 @@
           <h3 class="color-violet title">All NFTs</h3>
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 mb-2" *ngFor="let item of nfts">
-              <app-card [routerLink]="'/asset-detail' + item['assetId']" [mItem]="item"></app-card>
+              <app-card [routerLink]="'/asset-detail/' + item['assetId']" [mItem]="item"></app-card>
             </div>
           </div>
         </div>
