@@ -51,7 +51,7 @@
           </div>
           <div class="createoffer wrapper-border">
             <h4>Category</h4>
-            <app-drop-down-selector [dropDownValues]="categoryList" style="width: 100%;" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
+            <app-drop-down-selector [isCategoryDisabled]="isCollectionSelected" [dropDownValues]="categoryList" style="width: 100%;" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
           </div>
           <div class="price wrapper-border">
             <h4 class="priceheader">External Link</h4>

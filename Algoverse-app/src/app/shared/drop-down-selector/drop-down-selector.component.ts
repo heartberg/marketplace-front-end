@@ -12,6 +12,7 @@ export class DropDownSelectorComponent implements OnInit {
   @Input() public dropDownValuesWithLabels: any[] = [];
   @Input() public defaultValue: string = "";
 
+  @Input() public isCategoryDisabled: boolean = false;
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
   // profile

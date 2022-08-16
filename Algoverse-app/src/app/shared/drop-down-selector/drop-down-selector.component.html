@@ -107,7 +107,7 @@
     </ng-container>
     <!--    added-->
   </div>
-  <div class="dropDown" *ngIf="isDropDownOpened" [class.marketplace-w_position-unset]="isNotAccordion" [class.left-0]="treeDots" [class.isTree]="tree && !isProfileSection">
+  <div class="dropDown" *ngIf="isDropDownOpened && !isCategoryDisabled" [class.marketplace-w_position-unset]="isNotAccordion" [class.left-0]="treeDots" [class.isTree]="tree && !isProfileSection">
     <ng-container *ngIf="!dropDownValuesWithLabels.length">
       <div class="section" *ngFor="let button of dropDownValues; let last = last; let i = index" (click)="selectValue(button, i+ 1)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection"
            [class.hidden]="isSwitcher">

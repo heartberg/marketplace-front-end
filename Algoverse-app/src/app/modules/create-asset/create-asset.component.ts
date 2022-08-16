@@ -39,7 +39,7 @@ export class CreateAssetComponent implements OnInit {
   @ViewChild('checkboxFractionalize', {static: false})
   // @ts-ignore
   private checkboxFractionalize: ElementRef;
-  
+
 
   public isMusicUpload: boolean = false;
   public isVideoUpload: boolean = false;
@@ -63,6 +63,8 @@ export class CreateAssetComponent implements OnInit {
   public acceptedFileFormats: string = "audio/mpeg, audio/mp3, audio/wav, video/mp4, video/mpeg, image/*";
   category: string = "Collectibles";
   // ff first form // sf second form
+  public isCollectionSelected: boolean = false;
+
   constructor(
     private ipfsDaemonService: IpfsDaemonService,
     private _walletsConnectService: WalletsConnectService,
@@ -285,11 +287,13 @@ export class CreateAssetComponent implements OnInit {
 
   selectedCollection(collectionName: string) {
     if(collectionName != "No Collection") {
+      this.isCollectionSelected = true;
       this.passedCollection = this._stateService.getCollectionByName(collectionName);
       delete this.passedCollection.stars
       delete this.passedCollection.volume
       this.category = this.passedCollection.category
     } else {
+      this.isCollectionSelected = false;
       this.passedCollection = null
     }
 
