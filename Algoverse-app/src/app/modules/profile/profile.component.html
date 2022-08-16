@@ -15,6 +15,8 @@
               <div class="avatar-info d-flex flex-column align-items-center">
                 <div class="avatar-name">
                   <h4>{{userProfile?.name.substring(0, 28)}}</h4>
+                  <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
+                                 *ngIf="userProfile?.verified">
                 </div>
                 <div class="address" style="cursor: pointer;">
                   <a href="https://algoexplorer.io/address/{{userProfile?.wallet}}" target="_blank">
