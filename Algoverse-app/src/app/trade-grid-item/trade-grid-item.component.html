@@ -13,9 +13,14 @@
         <h4>Name: {{mItem.asset.name}}</h4>
         <span class="unset-dm-style">{{mItem.asset.unitName}}</span>
       </div>
-      <div class="section w-100">
-        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.tradeCreator.name.length > 15 ?  mItem.tradeCreator.name.substring(0,8).concat('...'): mItem.tradeCreator.name}}</h4>
-
+      <div class="section">
+        <!-- <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.tradeCreator.name.length > 15 ?  mItem.tradeCreator.name.substring(0,8).concat('...'): mItem.tradeCreator.name}}</h4> -->
+        <h4>Creator </h4>
+        <img *ngIf="mItem.tradeCreator.profileImage" class="creator-image" src="{{mItem.tradeCreator.profileImage}}" alt="">
+        <img *ngIf="!mItem.tradeCreator.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
+        <span class="unset-dm-style">{{mItem.tradeCreator.name.length > 15? mItem.tradeCreator.name.substring(0,15).concat('...') : mItem.tradeCreator.name}}</span>
+        <img *ngIf="mItem.tradeCreator.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
+      
       </div>
       <div class="section">
         <h4>Price </h4>
