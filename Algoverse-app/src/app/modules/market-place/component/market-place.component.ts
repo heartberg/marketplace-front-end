@@ -14,7 +14,7 @@ export class MarketPlaceComponent implements OnInit {
   public typesDropDown: string[] = ['All NFTs', 'All Offers', 'Trade', 'Bid', 'Swap', 'Auction'];
   public categoriesDropDown: string[] = ['All NFTs', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public collectionsDropDown: string[] = ['All Collections'];
-  public artistsDropDown: string[] = ['All Artists'];
+  public artistsDropDown: string[] = ['All Creators'];
   public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
   
   public nfts: any[] = [];
@@ -152,7 +152,7 @@ export class MarketPlaceComponent implements OnInit {
   }
 
   selectedArtist(artistName: string) {
-    if (artistName == 'All Artists') {
+    if (artistName == 'All Creators') {
       this.artist = '';
     } else {
       this.artist = artistName;
