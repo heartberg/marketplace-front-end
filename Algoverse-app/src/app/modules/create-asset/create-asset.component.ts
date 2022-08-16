@@ -441,20 +441,25 @@ export class CreateAssetComponent implements OnInit {
 
         properties = {
           attributes: filtered,
-          collection: this.passedCollection
+          collection: this.passedCollection,
+          category: this.category
         }
       } else {
         properties = {
-          collection: this.passedCollection
+          collection: this.passedCollection,
+          category: this.category
         }
       }
     } else {
       if(filtered.length > 0) {
         properties = {
-          attributes: filtered
+          attributes: filtered,
+          category: this.category
         }
       } else {
-        properties = {}
+        properties = {
+          category: this.category
+        }
       }
     }
 
