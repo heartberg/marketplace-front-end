@@ -1,7 +1,7 @@
 <div class="drop-down">
   <div class="valueCatcher" (click)="openDropDown()"
        [class.isProfile]="isProfileSection"
-       [class.border-bottom-none]="isDropDownOpened && !tree"
+       [class.border-bottom-none]="isDropDownOpened && !tree && !isCategoryDisabled"
        [class.no-border]="treeDots"
        [class.justify-content-end]="tree"
        [style.width]="widthPX">
