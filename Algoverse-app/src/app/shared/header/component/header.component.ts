@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 import {ThemeService} from "../../../services/theme.service";
 import {NgxSpinnerService} from "ngx-spinner";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit {
   public SearchRespoOpened = false;
   public wallet = "default";
   public balance: string = "0";
+  public version = environment.VERSION
 
   public isLoggedIn: boolean = false;
 
@@ -47,6 +49,8 @@ export class HeaderComponent implements OnInit {
       this.walletConnectionPassed = true;
     }
     this.receiveTheme();
+
+    this.router.onSameUrlNavigation = "reload"
   }
 
   async openAvatar() {

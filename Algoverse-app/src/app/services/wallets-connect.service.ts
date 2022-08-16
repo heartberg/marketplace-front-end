@@ -201,7 +201,8 @@ export class WalletsConnectService {
   setupTrade = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
       if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
-        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        console.log("Not opted in to Store App")
+        const result = await optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
         if (!result) return false;
       }
 
@@ -514,7 +515,7 @@ export class WalletsConnectService {
   setupBid = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
       if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
-        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        const result = await optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
         if (!result) return false;
       }
 
@@ -841,7 +842,7 @@ export class WalletsConnectService {
   setupSwap = async (indexAddress: string, offeringAssetId: number, acceptingAssetId: number, amount: number): Promise<any> => {
     try {
       if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
-        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        const result = await optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
         if (!result) return false;
       }
 
@@ -1114,7 +1115,7 @@ export class WalletsConnectService {
   setupAuction = async (indexAddress: string, assetId: number, amount: number): Promise<any> => {
     try {
       if (!(await isOptinApp(environment.STORE_APP_ID, this.sessionWallet!.getDefaultAccount()))) {
-        const result = optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
+        const result = await optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
         if (!result) return false;
       }
       

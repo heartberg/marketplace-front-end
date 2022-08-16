@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 
@@ -7,11 +7,12 @@ import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
   templateUrl: './drop-down-selector.component.html',
   styleUrls: ['./drop-down-selector.component.scss']
 })
-export class DropDownSelectorComponent implements OnInit {
+export class DropDownSelectorComponent implements OnChanges {
   @Input() public dropDownValues: string[] = [];
   @Input() public dropDownValuesWithLabels: any[] = [];
   @Input() public defaultValue: string = "";
 
+  @Input() public isCategoryDisabled: boolean = false;
   @Input() public isNotAccordion: boolean = true;
   @Input() public treeDots: boolean = false;
   // profile
@@ -23,8 +24,8 @@ export class DropDownSelectorComponent implements OnInit {
   @Input() public isSwitcher: boolean = false;
   // #switcher
   @Input() public tree: boolean = false;
-  @Input() public hasTitle: string  = '';
-  @Input() public  widthPX: string = ''
+  @Input() public hasTitle: string = '';
+  @Input() public widthPX: string = ''
   @Output() dropDownValue = new EventEmitter<string>();
   @Output() switcherEmit = new EventEmitter<any>();
   public isDropDownOpened = false;
@@ -32,9 +33,10 @@ export class DropDownSelectorComponent implements OnInit {
   public showDropDownSelected: string = '';
   public selectedLabelValue: any = '';
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {
+  }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.showDropDownSelected = this.defaultValue ? this.defaultValue : (this.dropDownValues.length > 0 ? this.dropDownValues[0] : '')
     this.selectedLabelValue = this.defaultValue ? this.defaultValue : (this.dropDownValuesWithLabels.length > 0 ? this.dropDownValuesWithLabels[0] : '')
   }
