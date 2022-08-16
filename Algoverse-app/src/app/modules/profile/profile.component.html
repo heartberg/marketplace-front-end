@@ -1,179 +1,153 @@
-<div class="wrapper-border">
-  <div class="main">
-    <div class="wrapper">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="wrapper-border" style="height: 100%">
-            <div class="avatar-section d-flex flex-column align-items-center">
-              <div *ngIf="isOwnProfile" class="setting-section" routerLink="../../edit-profile">
-                <img src="assets/img/settings.svg" alt="">
-              </div>
-              <div class="img">
-                <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="" style="width: 100px; height: 100%">
-                <img *ngIf="!userProfile?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 100px; height: 100%">
-              </div>
-              <div class="avatar-info d-flex flex-column align-items-center">
-                <div class="avatar-name d-flex align-items-center">
-                  <h4>{{userProfile?.name.substring(0, 28)}}</h4>
-                  <img class="pe-none" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
-                                 *ngIf="userProfile?.verified">
-                </div>
-                <div class="address" style="cursor: pointer;">
-                  <a href="https://algoexplorer.io/address/{{userProfile?.wallet}}" target="_blank">
-                    <span class="color-violet">{{userProfile?.wallet.substring(0, 5)}}...{{userProfile?.wallet.substring(53, 59)}}</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="avatar-other-info">
-              <div class="d-flex justify-content-between">
-                <div class="followers" style="cursor: pointer" (click)="showFollow(true)">
-                  <span class="color-violet">Followers:</span>
-                  <span>{{userProfile? userProfile.followers.length : 0}}</span>
-                </div>
-                <div class="followed" style="cursor: pointer" (click)="showFollow(false)">
-                  <span class="color-violet">Followed:</span>
-                  <span>{{userProfile? userProfile.followed.length : 0}}</span>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="userProfile && !isOwnProfile" class="verified-btn d-flex" >
-              <button class="btn-secondary-costum" (click)="followAction()">
-                <ng-container *ngIf="following">
-                  Unfollow
-                </ng-container>
-                <ng-container *ngIf="!following">
-                  Follow
-                </ng-container>
-              </button>
-            </div>
-            <div class="scroll-bio" *ngIf="userProfile?.bio">
-              <div class="wrapper" (click)="expandOrCollapseBio()">
-              <span [ngStyle]="{'cursor': userProfile.bio.length > 50 ? 'pointer' : 'unset'}">
-                 {{ ((userProfile && isTruncated) && userProfile.bio.length > 50) ? (userProfile.bio | slice:0:50) : (userProfile.bio) }}
-                <span *ngIf="(userProfile.bio.length > 50) && isTruncated" class="color-violet read-more">... read more.</span>
-              </span>
-              </div>
-            </div>
-            <div class="collection-section">
-              <h4>Collections</h4>
-              <div class="collection-section-img">
-                <div class="row" *ngIf="userCollections">
-                  <div class="col-4" *ngFor="let collection of userCollections">
-                    <div routerLink="/collection-detail/{{collection.collectionId}}" style="cursor: pointer;">
-                      <img src="{{collection.icon}}" alt="">
-                      <span class="color-violet">{{collection.name}}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="soc-section" *ngIf="userProfile">
-              <div *ngIf="userProfile.website" class="img" style="cursor: pointer;">
-                <a href="{{userProfile.website}}" target="_blank">
-                  <img src="assets/img/globe.svg" alt="">
-                </a>
-              </div>
-              <div *ngIf="userProfile.instagram" class="img" style="cursor: pointer;">
-                <a href="{{userProfile.instagram}}" target="_blank">
-                  <img src="assets/img/instagram.svg" alt="">
-                </a>
-              </div>
-              <div *ngIf="userProfile.twitter" class="img" style="cursor: pointer;">
-                <a href="{{userProfile.twitter}}" target="_blank">
-                  <img src="assets/img/twitter.svg" alt="">
-                </a>
-              </div>
-              <div *ngIf="userProfile.telegram" class="img" style="cursor: pointer;">
-                <a href="{{userProfile.telegram}}" target="_blank">
-                  <img src="assets/img/telegram.svg" alt="">
-                </a>
-              </div>
-            </div>
-            <div *ngIf="userProfile && isOwnProfile" class="verified-btn d-flex" >
-              <button *ngIf="!userProfile.verified" class="btn-secondary-costum" routerLink="../../get-verified">
-                Get Verified
-              </button>
+<div class="main">
+  <div class="wrapper-top wrapper-border">
+    <div class="profile-section">
+      <div class="cover position-relative">
+        <img *ngIf="userProfile?.bannerImage" style="border-radius:12px" src="{{userProfile?.bannerImage}}" alt="">
+        <img *ngIf="!userProfile?.bannerImage" style="border-radius:12px"
+             src="https://img.freepik.com/free-vector/space-banner-with-purple-planet-landscape_107791-6230.jpg?w=2000&t=st=1658221048~exp=1658221648~hmac=c65eb9aee01fdb8c97e698f7c4d794de0780c30ecec37acaba246e8cd15c321f"
+             alt="">
+        <div class="social-media-container">
+          <div *ngIf="userProfile.website" class="img" style="cursor: pointer;">
+            <div>
+              <a href="{{userProfile.website}}" target="_blank">
+                <img src="assets/img/globe.svg" alt="">
+              </a>
             </div>
           </div>
+          <div *ngIf="userProfile.instagram" class="img" style="cursor: pointer;">
+            <a href="{{userProfile.instagram}}" target="_blank">
+              <img src="assets/img/instagram.svg" alt="">
+            </a>
+          </div>
+          <div *ngIf="userProfile.twitter" class="img" style="cursor: pointer;">
+            <a href="{{userProfile.twitter}}" target="_blank">
+              <img src="assets/img/twitter.svg" alt="">
+            </a>
+          </div>
+          <div *ngIf="userProfile.telegram" class="img" style="cursor: pointer;">
+            <a href="{{userProfile.telegram}}" target="_blank">
+              <img src="assets/img/telegram.svg" alt="">
+            </a>
+          </div>
         </div>
-        <div class="col-md-9">
-          <div class="right-section">
-            <div class="wrapper-border">
-              <div class="cover">
-                <img *ngIf="userProfile?.bannerImage" style="border-radius:12px" src="{{userProfile?.bannerImage}}" alt="">
-                <img *ngIf="!userProfile?.bannerImage" style="border-radius:12px" src="https://img.freepik.com/free-vector/space-banner-with-purple-planet-landscape_107791-6230.jpg?w=2000&t=st=1658221048~exp=1658221648~hmac=c65eb9aee01fdb8c97e698f7c4d794de0780c30ecec37acaba246e8cd15c321f" alt="">
-              </div>
+        <div class="profile-avatar">
+          <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="">
+          <img *ngIf="!userProfile?.profileImage" src="assets/img/default-avatar.svg" alt="">
+        </div>
+      </div>
+      <div class="profile-info">
+        <div class="d-flex flex-column align-items-center">
+          <div class="d-flex align-items-center">
+            <h4>{{userProfile?.name.substring(0, 28)}}</h4>
+            <img class="pe-none" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
+                 *ngIf="userProfile?.verified">
+          </div>
+          <div class="address" style="cursor: pointer;">
+            <a href="https://algoexplorer.io/address/{{userProfile?.wallet}}" target="_blank">
+              <span class="color-violet">{{userProfile?.wallet.substring(0, 5)}}
+                ...{{userProfile?.wallet.substring(53, 59)}}</span>
+            </a>
+          </div>
+          <div class="scroll-bio mb-2" *ngIf="userProfile?.bio">
+            <div class="wrapper" (click)="expandOrCollapseBio()">
+                        <span [ngStyle]="{'cursor': userProfile.bio.length > 50 ? 'pointer' : 'unset'}">
+                           {{ ((userProfile && isTruncated) && userProfile.bio.length > 50) ? (userProfile.bio | slice:0:50) : (userProfile.bio) }}
+                          <span *ngIf="(userProfile.bio.length > 50) && isTruncated" class="color-violet read-more">... read more.</span>
+                        </span>
             </div>
-            <div class="wrapper-border tabs-section">
-              <div class="tabs">
-                <mat-tab-group>
-                  <mat-tab label="Owned">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of ownedAssets; let i = index; last as last">
-                        <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="Created">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of createdAssets; let i = index; last as last">
-                        <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="For Sale">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of forSale; let i = index; last as last">
-                        <app-trade-grid-item routerLink="../../asset-detail/{{item.assetId}}" [mItem]="item"></app-trade-grid-item>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="For Auction">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of forAuction; let i = index; last as last">
-                        <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="For Swap">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of forSwap; let i = index; last as last">
-                        <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="Open Bids">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of myBids; let i = index; last as last">
-                        <app-bid-grid-item routerLink="../../asset-detail/{{item.assetId}}" [mItem]="item"></app-bid-grid-item>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="Auction Bids">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of myAuctionBids; let i = index; last as last">
-                        <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']" [mItem]="item"></app-auction-grid-item>
-                      </div>
-                    </div>
-                  </mat-tab>
-                  <mat-tab label="Starred">
-                    <div class="row">
-                      <div class="col-4 mb-4" *ngFor="let item of starred; let i = index; last as last">
-                        <app-card [mItem]="item" routerLink="/asset-detail/{{item.assetId}}"></app-card>
-                      </div>
-                    </div>
-                  </mat-tab>
-                </mat-tab-group>
-              </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="followers mr-3" style="cursor: pointer" (click)="showFollow(true)">
+              <span class="color-violet">Followers: </span>
+              <span>{{userProfile ? userProfile.followers.length : 0}}</span>
+            </div>
+            <div class="followed" style="cursor: pointer" (click)="showFollow(false)">
+              <span class="color-violet">Followed: </span>
+              <span>{{userProfile ? userProfile.followed.length : 0}}</span>
             </div>
           </div>
         </div>
       </div>
+      <div *ngIf="isOwnProfile" class="setting-section" routerLink="../../edit-profile">
+        <img src="assets/img/settings.svg" alt="">
+      </div>
     </div>
-<!--    <div class="wrapper-bottom">-->
-<!--      <h3>Swap Requests</h3>-->
-<!--    </div>-->
+    <div class="wrapper-border tabs-section mb-4">
+      <div class="tabs">
+        <h2>Assets</h2>
+        <mat-tab-group>
+          <mat-tab label="My Assets">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of myAssets; let i = index; last as last">
+                <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Created">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of createdAssets; let i = index; last as last">
+                <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="For Sale">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of forSale; let i = index; last as last">
+                <app-trade-grid-item routerLink="../../asset-detail/{{item.assetId}}"
+                                     [mItem]="item"></app-trade-grid-item>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="For Auction">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of forAuction; let i = index; last as last">
+                <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']"
+                                       [mItem]="item"></app-auction-grid-item>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="For Swap">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of forSwap; let i = index; last as last">
+                <app-swap-grid-item [routerLink]="'/swap/' + item['swapId']" [mItem]="item"></app-swap-grid-item>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Open Bids">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of myBids; let i = index; last as last">
+                <app-bid-grid-item routerLink="../../asset-detail/{{item.assetId}}" [mItem]="item"></app-bid-grid-item>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Auction Bids">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of myAuctionBids; let i = index; last as last">
+                <app-auction-grid-item [routerLink]="'/auction/' + item['auctionId']"
+                                       [mItem]="item"></app-auction-grid-item>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Starred">
+            <div class="row mt-4">
+              <div class="col-4 mb-4" *ngFor="let item of starred; let i = index; last as last">
+                <app-card [mItem]="item" routerLink="/asset-detail/{{item.assetId}}"></app-card>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+    <div class="wrapper-border">
+        <h2>Collections</h2>
+        <div class="row mt-4">
+          <div class="col-4 mb-4" *ngFor="let collection of userCollections">
+            <app-card [mItem]="collection" routerLink="/collection-detail/{{collection.collectionId}}" [isCollection]="true"></app-card>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
-<app-pop-up *ngIf="popupOpen" (isClosed)="closePopUp($event)" [followed]="userProfile.followed" [followers]="userProfile.followers" [showFollower]="showFollowers" [showFollowed]="!showFollowers"></app-pop-up>
+<app-pop-up *ngIf="popupOpen" (isClosed)="closePopUp($event)" [followed]="userProfile.followed"
+            [followers]="userProfile.followers" [showFollower]="showFollowers"
+            [showFollowed]="!showFollowers"></app-pop-up>

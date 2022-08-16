@@ -70,6 +70,12 @@
             <h4>Bio</h4>
             <textarea style="width: 100%; height: 100px" formControlName="bio"></textarea>
           </div>
+          <div *ngIf="!userProfile.verified" class="section wrapper-border justify-content-between">
+            <h4>You can verify you account</h4>
+            <button class="btn-secondary-costum" routerLink="../get-verified">
+              Get Verified
+            </button>
+          </div>
           <div class="section wrapper-border flex-column">
             <h4>Custom Algoverse URL</h4>
             <div class="row">
@@ -79,8 +85,6 @@
               <div class="col-md-7">
                 <input type="text" placeholder="your-name" class="input-costum" formControlName="customURL">
               </div>
-              
-            
             </div>
             </div>
           <div class="section wrapper-border flex-column">
