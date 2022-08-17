@@ -181,6 +181,20 @@ export class MarketPlaceComponent implements OnInit {
     console.log('highPrice', this.highPrice);
     console.log('sort', this.sort);
     
+    let sortBy = "Newest";
+    if (this.sort == "Ending soon") {
+      sortBy = "EndSoon";
+    }
+    else if (this.sort == "Price high to low") {
+      sortBy = "PriceHTL";
+    }
+    else if (this.sort == "Price low to high") {
+      sortBy = "PriceLTH";
+    }
+    else if (this.sort == "Stars") {
+      sortBy = "MostLikes";
+    }
+
     this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice * Math.pow(10, 6), this.highPrice * Math.pow(10, 6), this.sort).subscribe(
       res => {
         this.spinner.hide();

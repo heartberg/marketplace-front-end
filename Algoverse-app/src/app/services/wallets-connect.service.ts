@@ -154,7 +154,7 @@ export class WalletsConnectService {
             if (assetInfo.amount > 0) {
               const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
               //console.log('asset-id:' + assetInfo['asset-id'], asset);
-              const assetURL = asset.params.url;
+              const assetURL = asset.params.url;  
               if (assetURL && assetURL.endsWith('#arc3')) {
                 result.push(asset);
               }
