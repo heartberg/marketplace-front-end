@@ -8,57 +8,108 @@
         <img src="{{mCollection.icon}}" alt="">
       </div>
     </div>
-    <div class="collection-profile-info">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="collection-profile-info-left">
-            <div class="creator-section d-flex" routerLink="/profile/{{mCollection.creator.wallet}}" style="cursor: pointer;">
-              <div class="section-top">
-                <img *ngIf="mCollection.creator.profileImage" src="{{mCollection.creator.profileImage}}" alt="">
-                <img *ngIf="!mCollection.creator.profileImage" src="assets/img/default-avatar.svg" alt="">
-              </div>
-              <div class="section-bottom">
-                <h4>{{mCollection.creator.name.length > 15? mCollection.creator.name.substring(0,15).concat('...') : mCollection.creator.name}}</h4>
-              </div>
-            </div>
-            <div class="website-section d-flex">
-              <div class="section-top">
-                <a href="{{mCollection.web}}" target="_blank">
-                  <img src="assets/img/globe.svg" alt="">
-                </a>
-              </div>
-            </div>
+    <div class="collection-profile-info row justify-content-center">
+      <div class="col-2">
+        <div class="creator-section d-flex align-items-center" routerLink="/profile/{{mCollection.creator.wallet}}"
+             style="cursor: pointer;">
+          <div class="section-top">
+            <img *ngIf="mCollection.creator.profileImage" src="{{mCollection.creator.profileImage}}" alt="">
+            <img *ngIf="!mCollection.creator.profileImage" src="assets/img/default-avatar.svg" alt="">
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="collection-profile-info-middle">
-            <h4>{{mCollection.name}}</h4>
-            <p class="color-violet">
-              {{mCollection.description}}
-            </p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="collection-profile-info-right">
-            <div class="d-flex right-section-info">
-              <div class="section d-flex">
-                <!-- <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i> -->
-                <img class="collection-star" *ngIf="!isStarred" src="assets/img/unfilled_star.png" alt="" (click)="addStar()">
-                <img class="collection-star" *ngIf="isStarred" src="assets/img/filled_star.png" alt="" (click)="removeStar()">
-                <span>{{mCollection.stars}}</span>
-              </div>
-              <div class="section d-flex">
-                <app-drop-down-selector [dropDownValues]="['Settings', 'Report']" [isNotAccordion]="false" [treeDots]="true"></app-drop-down-selector>
-              </div>
-            </div>
-            <div class="category-section d-flex">
-              <h4>Category:</h4>
-              <span class="color-violet">{{mCollection.category}}</span>
-            </div>
+          <div class="section-bottom">
+            <h4>{{mCollection.creator.name.length > 15 ? mCollection.creator.name.substring(0, 15).concat('...') : mCollection.creator.name}}</h4>
           </div>
         </div>
       </div>
+      <div class="col-8 d-flex justify-content-center">
+        <div class="collection-profile-info-middle">
+          <div class="collection-name d-flex align-items-center justify-content-center">
+            <h4>{{mCollection.name}}</h4>
+            <div class="section d-flex align-items-center">
+              <img class="collection-star" *ngIf="!isStarred" src="assets/img/unfilled_star.png" alt=""
+                   (click)="addStar()">
+              <img class="collection-star" *ngIf="isStarred" src="assets/img/filled_star.png" alt=""
+                   (click)="removeStar()">
+              <span>{{mCollection.stars}}</span>
+            </div>
+          </div>
+          <p class="color-violet">
+            {{mCollection.description}}
+          </p>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex right-section-info">
+          <div class="section d-flex align-items-center">
+            <app-drop-down-selector
+              [dropDownValues]="['Settings', 'Report']"
+              [isNotAccordion]="false"
+              [treeDots]="true">
+            </app-drop-down-selector>
+            <div class="section-top">
+              <a href="{{mCollection.web}}" target="_blank">
+                <img src="assets/img/globe.svg" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="category-section d-flex">
+          <h4>Category:</h4>
+          <span class="color-violet">{{mCollection.category}}</span>
+        </div>
+      </div>
     </div>
+<!--    <div class="collection-profile-info">-->
+<!--      <div class="row">-->
+<!--        <div class="col-md-4">-->
+<!--          <div class="collection-profile-info-left">-->
+<!--            <div class="creator-section d-flex" routerLink="/profile/{{mCollection.creator.wallet}}" style="cursor: pointer;">-->
+<!--              <div class="section-top">-->
+<!--                <img *ngIf="mCollection.creator.profileImage" src="{{mCollection.creator.profileImage}}" alt="">-->
+<!--                <img *ngIf="!mCollection.creator.profileImage" src="assets/img/default-avatar.svg" alt="">-->
+<!--              </div>-->
+<!--              <div class="section-bottom">-->
+<!--                <h4>{{mCollection.creator.name.length > 15? mCollection.creator.name.substring(0,15).concat('...') : mCollection.creator.name}}</h4>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="website-section d-flex">-->
+<!--              <div class="section-top">-->
+<!--                <a href="{{mCollection.web}}" target="_blank">-->
+<!--                  <img src="assets/img/globe.svg" alt="">-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-4">-->
+<!--          <div class="collection-profile-info-middle">-->
+<!--            <h4>{{mCollection.name}}</h4>-->
+<!--            <p class="color-violet">-->
+<!--              {{mCollection.description}}-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-4">-->
+<!--          <div class="collection-profile-info-right">-->
+<!--            <div class="d-flex right-section-info">-->
+<!--              <div class="section d-flex">-->
+<!--                &lt;!&ndash; <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i> &ndash;&gt;-->
+<!--                <img class="collection-star" *ngIf="!isStarred" src="assets/img/unfilled_star.png" alt="" (click)="addStar()">-->
+<!--                <img class="collection-star" *ngIf="isStarred" src="assets/img/filled_star.png" alt="" (click)="removeStar()">-->
+<!--                <span>{{mCollection.stars}}</span>-->
+<!--              </div>-->
+<!--              <div class="section d-flex">-->
+<!--                <app-drop-down-selector [dropDownValues]="['Settings', 'Report']" [isNotAccordion]="false" [treeDots]="true"></app-drop-down-selector>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="category-section d-flex">-->
+<!--              <h4>Category:</h4>-->
+<!--              <span class="color-violet">{{mCollection.category}}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
   <div class="wrapper-bottom">
     <div class="wrapper-border">
