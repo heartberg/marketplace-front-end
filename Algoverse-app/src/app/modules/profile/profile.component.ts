@@ -46,17 +46,13 @@ export class ProfileComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute,
     private router: Router,
     private readonly location: Location,
+    private readonly walletsConnectService: WalletsConnectService,
     private spinner: NgxSpinnerService
-  ) {
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
-      if (e instanceof NavigationEnd) {
-        this.initialiseProfile();
-      }
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.walletAddress = this.walletsConnectService.myAlgoAddress[0];
+    this.initialiseProfile();
     this.detectOwnProfile(this.connectService.sessionWallet);
   }
 
