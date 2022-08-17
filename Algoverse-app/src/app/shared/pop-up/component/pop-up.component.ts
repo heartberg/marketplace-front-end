@@ -4,6 +4,9 @@ import {UserService} from 'src/app/services/user.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {AllowedWalletsEnum} from "../../../models";
 import { Router } from '@angular/router';
+import GetAssetByID from 'algosdk/dist/types/src/client/v2/algod/getAssetByID';
+import algosdk from 'algosdk';
+import { getAlgodClient } from 'src/app/services/utils.algod';
 
 @Component({
   selector: 'app-pop-up',
@@ -17,16 +20,17 @@ export class PopUpComponent implements OnInit {
   @Output() isSwitched = new EventEmitter<boolean>();
   @Input() selected = false;
   @Input() asset: any;
-  @Input() decimals: any;
+  @Input() assetInfo: any;
   @Input() followers: any;
   @Input() followed: any;
   @Input() showFollower = false;
   @Input() showFollowed = false;
+  @Input() trade = false;
 
   ownFollowings: any;
   walletsForSwitching: any = '';
   enteredOffer: any;
-  enteredAmount: any;
+  enteredAmount: number = 1;
   public allowedWallets: typeof AllowedWalletsEnum = AllowedWalletsEnum;
 
   constructor(
@@ -113,7 +117,7 @@ export class PopUpComponent implements OnInit {
   }
 
   blurAmount(event: any) {
-    this.enteredAmount = event.target.value * Math.pow(10, this.decimals);
+    this.enteredAmount = event.target.value * Math.pow(10, this.assetInfo.params.decimals);
     console.log(this.enteredAmount);
   }
 
@@ -165,7 +169,7 @@ export class PopUpComponent implements OnInit {
       return;
     }
 
-    if(!this.enteredAmount) {
+    if(this.assetInfo.params.decimals > 0 && !this.enteredAmount) {
       alert("Please enter amount!");
       return;
     }
@@ -183,6 +187,96 @@ export class PopUpComponent implements OnInit {
               if (res) {
                 await this.sendCreateBidRequest(indexAddress);
                 alert("setup bid!")
+                this.spinner.hide()
+                this.closePopUp(true)
+              } else {
+                alert('optin and rekey failed');
+              }
+            },
+            (err) => {
+              this.spinner.hide();
+              alert('setup bid error: ' + err);
+            }
+          )
+        } else {
+          this.spinner.hide();
+          if (result === 0) {
+            alert("Insufficient balance");
+          } else {
+            alert("Exception occurred, please retry again later");
+          }
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        console.log('algo net create bid error', error)
+        alert('Network error, please try again later')
+      }
+    );
+  }
+
+  async sendCreateTradeRequest(indexAddress: string) {
+    const params1 = {
+      assetID: this.asset.assetId,
+      amount: this.enteredAmount,
+      price: this.enteredOffer,
+      tradeIndex: indexAddress
+    }
+    const txID = await this._walletsConnectService.createTrade(params1);
+
+    if (txID) {
+      const params2 = {
+        tradeId: txID,
+        assetId: this.asset.assetId,
+        indexAddress,
+        price: this.enteredOffer,
+        creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
+        amount: this.enteredAmount
+      }
+      console.log('params2', params2);
+      this._userService.createTrade(params2).subscribe(
+        res => {
+          this.spinner.hide();
+          alert("Created trade successfully");
+          console.log(res)
+        },
+        error => {
+          this.spinner.hide();
+          alert(error);
+          console.log(error)
+        }
+      );
+    } else {
+      this.spinner.hide();
+      alert("Failed creating trade on algorand network");
+    }
+  }
+
+  createSale() {
+    if(!this.enteredOffer) {
+      alert("Please enter offered amount!");
+      return;
+    }
+
+    if(this.assetInfo.params.decimals > 0 && !this.enteredAmount) {
+      alert("Please enter amount!");
+      return;
+    }
+
+    this.spinner.show();
+    this._userService.getTradeIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
+      async (res) => {
+        console.log('tradeIndex', res);
+        const indexAddress = res.indexAddress;
+        let result = await this._walletsConnectService.setupTrade(indexAddress, Number(this.asset!.assetId), res.optinPrice);
+        if (result) {
+          console.log(this.asset!.assetId)
+          this._userService.optinAndRekeyToBid(indexAddress).subscribe(
+            async (res) => {
+              console.log('setup sale response: ', res);
+              if (res) {
+                await this.sendCreateTradeRequest(indexAddress);
+                alert("setup sale!")
                 this.spinner.hide()
                 this.closePopUp(true)
               } else {

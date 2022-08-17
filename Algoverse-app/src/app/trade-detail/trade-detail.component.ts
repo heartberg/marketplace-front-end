@@ -37,11 +37,14 @@ export class TradeDetailComponent implements OnInit {
   public indexSecond: number = -1;
   isPopUpOpened: boolean = false;
 
+  balance: number = 0;
   isStarred: boolean = false;
   public animation_url: string = "";
   public animation_url_mimetype: string = "";
   public isMimeTypeVideo: boolean = false;
   public isMimeTypeAudio: boolean = false;
+  public createTrade: boolean = false;
+  assetInfo: any;
 
 
   constructor(
@@ -71,6 +74,9 @@ export class TradeDetailComponent implements OnInit {
         await this.showAssetDetails(this.mItem);
         let wallet = this._walletsConnectService.sessionWallet
         if(wallet) {
+          this.balance = await getBalance(wallet.getDefaultAccount(), this.mItem.assetId)
+          let client = getAlgodClient()
+          this.assetInfo = await client.getAssetByID(this.mItem.assetId).do()
           this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
             (res: any) => {
               if(res) {
@@ -248,7 +254,13 @@ export class TradeDetailComponent implements OnInit {
     localStorage.setItem('asset', JSON.stringify(item));
   }
 
-  selectBtn() {
+  createBid() {
+    this.createTrade = false;
+    this.isPopUpOpened = true;
+  }
+
+  createSale() {
+    this.createTrade = true;
     this.isPopUpOpened = true;
   }
 

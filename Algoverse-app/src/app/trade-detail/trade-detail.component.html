@@ -43,6 +43,10 @@
                         <h4>Total Supply:</h4>
                         <span class="unset-dm-style">{{maxSupply}} {{ decimals > 0? ' (Decimals:' : ''}} {{decimals > 0? decimals : ''}}{{ decimals > 0? ')' : ''}}</span>
                       </div>
+                      <div class="section">
+                        <h4>Owned:</h4>
+                        <span class="unset-dm-style">{{scaleAmount(balance)}}</span>
+                      </div>
                       <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mItem?.creator.wallet}}">
                         <h4 style="overflow-wrap: break-word;">Creator: </h4>
                         <img *ngIf="mItem?.creator?.profileImage" src="{{mItem?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">
@@ -151,14 +155,15 @@
             <button class="btn-secondary-costum aligner" (click)="cancelTrade()" *ngIf="index === -1 && indexSecond !== -1 && isMine(false, indexSecond)" style="width: 160px;">
               Cancel Trade
             </button>
-            <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="selectBtn()" style="width: 160px;">Place Bid</button>
+            <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="createBid()" style="width: 160px;">Place Bid</button>
+            <button class="btn-secondary-costum" style="margin-left: 8px; width: 160px;" *ngIf="balance > 0" (click)="createSale()">Create Sale</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [decimals]="decimals" [selected]="true"></app-pop-up>
+<app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [assetInfo]="assetInfo" [selected]="true" [trade]="createTrade"></app-pop-up>
 <ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
 
 
