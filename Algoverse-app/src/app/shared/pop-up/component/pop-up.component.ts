@@ -173,6 +173,8 @@ export class PopUpComponent implements OnInit {
       alert("Please enter amount!");
       return;
     }
+
+    console.log('start bid');
     this.spinner.show();
     this._userService.getBidIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
       async (res) => {
@@ -263,6 +265,7 @@ export class PopUpComponent implements OnInit {
       return;
     }
 
+    console.log('start bid');
     this.spinner.show();
     this._userService.getTradeIndex(this._walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe(
       async (res) => {
@@ -270,8 +273,7 @@ export class PopUpComponent implements OnInit {
         const indexAddress = res.indexAddress;
         let result = await this._walletsConnectService.setupTrade(indexAddress, Number(this.asset!.assetId), res.optinPrice);
         if (result) {
-          console.log(this.asset!.assetId)
-          this._userService.optinAndRekeyToBid(indexAddress).subscribe(
+          this._userService.optinAndRekeyToTrade(indexAddress).subscribe(
             async (res) => {
               console.log('setup sale response: ', res);
               if (res) {

@@ -59,6 +59,7 @@ export class TradeDetailComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.isPopUpOpened = false;
     const routeParams = this.route.snapshot.paramMap;
     const itemIdFromRoute = routeParams.get('itemId');
     console.log(itemIdFromRoute)

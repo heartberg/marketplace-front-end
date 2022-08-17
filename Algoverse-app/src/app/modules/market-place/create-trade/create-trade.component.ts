@@ -167,7 +167,6 @@ export class CreateTradeComponent implements OnInit {
     this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
       async (res) => {
         console.log('tradeIndex', res);
-
         const indexAddress = res.indexAddress;
         let result = await this._walletsConnectService.setupTrade(indexAddress, Number(this.selectedAssetID), res.optinPrice);
         if (result) {
