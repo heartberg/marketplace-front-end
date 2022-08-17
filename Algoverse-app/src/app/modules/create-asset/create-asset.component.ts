@@ -330,6 +330,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   async onFileInput(e: any) {
+    if(!e) return
     this.spinner.show()
     console.log("fileupload")
     console.log('e', e.target.files[0]);
@@ -340,10 +341,12 @@ export class CreateAssetComponent implements OnInit {
     if(e.target.files[0].type.toString() == "audio/mpeg" || e.target.files[0].type.toString() == "audio/mp3" || e.target.files[0].type.toString() == "audio/wav") {
       this.isMusicUpload = true;
       this.isVideoUpload = false;
+      this.isImageUpload = false;
       this.animation_url_mimetype = e.target.files[0].type.toString();
     } else if(e.target.files[0].type.toString() == "video/mp4" || e.target.files[0].type.toString() == "video/mpeg") {
       this.isMusicUpload = false;
       this.isVideoUpload = true;
+      this.isImageUpload = false;
       this.animation_url_mimetype = e.target.files[0].type.toString();
     } else {
       this.isMusicUpload = false;

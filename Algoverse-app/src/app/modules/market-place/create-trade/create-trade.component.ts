@@ -220,7 +220,7 @@ export class CreateTradeComponent implements OnInit {
         assetId: this.selectedAssetID,
         indexAddress,
         price: this.price,
-        creatorWallet: this._walletsConnectService.myAlgoAddress[0],
+        creatorWallet: this._walletsConnectService.sessionWallet!.getDefaultAccount(),
         amount: this.amount
       }
       console.log('params2', params2);
