@@ -128,30 +128,30 @@ export class ProfileComponent implements OnInit, OnDestroy{
       let wallet = this.connectService.sessionWallet;
       this.detectOwnProfile(wallet);
 
-      // this.userService.loadUserAssets(this.walletAddress).subscribe(
-      //   (res: any) => {
-      //     console.log(res)
-      //     this.myAssets = res
-      //   }
-      // )
-
-      // this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
-      //   (res: any) => {
-      //     console.log(res)
-      //     this.createdAssets = res
-      //   }
-      // )
-
-      console.log('user wallet', this.walletAddress);
-      this.spinner.show();
-      this.userService.syncUserAssets(this.walletAddress).subscribe(
+      this.userService.loadUserAssets(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
-          this.spinner.hide();
-          this.createdAssets = res.created;
-          this.myAssets = res.owned;
+          this.myAssets = res
         }
       )
+
+      this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.createdAssets = res
+        }
+      )
+
+      console.log('user wallet', this.walletAddress);
+      // this.spinner.show();
+      // this.userService.syncUserAssets(this.walletAddress).subscribe(
+      //   (res: any) => {
+      //     console.log(res)
+      //     this.spinner.hide();
+      //     this.createdAssets = res.created;
+      //     this.ownedAssets = res.owned;
+      //   }
+      // )
 
       this.userService.loadTrades(this.walletAddress).subscribe(
         (res: any) => {
