@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
   public exampleArr:any = [];
   userProfile: any;
   userCollections: any;
-  ownedAssets: any;
+  myAssets: any;
   createdAssets: any;
   forSale: any;
   forSwap: any;
@@ -128,10 +128,10 @@ export class ProfileComponent implements OnInit, OnDestroy{
       let wallet = this.connectService.sessionWallet;
       this.detectOwnProfile(wallet);
 
-      this.userService.loadUserOwnedAssets(this.walletAddress).subscribe(
+      this.userService.loadUserAssets(this.walletAddress).subscribe(
         (res: any) => {
           console.log(res)
-          this.ownedAssets = res
+          this.myAssets = res
         }
       )
 

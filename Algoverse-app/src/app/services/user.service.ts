@@ -61,7 +61,7 @@ export class UserService {
     return this._http.post<any>(url, data);
   }
 
-  loadUserOwnedAssets(address: string): Observable<any> {
+  loadUserAssets(address: string): Observable<any> {
     const url = `${this.baseUrl}asset/get/ownedAssetsByWallet?wallet=${address}&page=0`;
     return this._http.get<any>(url);
   }

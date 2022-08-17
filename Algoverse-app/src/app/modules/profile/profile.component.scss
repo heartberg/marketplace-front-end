@@ -1,48 +1,21 @@
 ::ng-deep {
-  .right-section {
     .mat-tab-body {
       overflow: unset !important;
     }
     .mat-tab-body-content {
       overflow: unset !important;
     }
-  }
 }
 
 .main {
-  .wrapper {
+  .profile-section {
     position: relative;
 
-    .setting-section {
-      position: absolute;
-      top: 17px;
-      right: 25px;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
 
-      img {
-        height: 100%;
-        width: 100%;
-      }
+    .profile-info {
+      margin-top: 5rem;
     }
-    .avatar-section {
-      margin-top: 20px;
-      .img {
-        margin-bottom: 10px;
-      }
-    }
-    .avatar-info {
-      .avatar-name {
-        margin-bottom: 10px;
-      }
-    }
-    .avatar-other-info {
-      margin-top: 20px;
-      .color-violet {
-        margin-right: 5px;
-      }
-    }
+
     .scroll-bio {
       margin-top: 20px;
       .wrapper {
@@ -53,69 +26,59 @@
         }
       }
     }
-    .collection-section {
-      margin-top: 20px;
-      .collection-section-img {
-        margin-top: 10px;
-        span {
-          text-align: center;
-          margin-top: 5px;
-          display: block;
-        }
-      }
+
+    .setting-section {
+      position: absolute;
+      background-color: #ffffff;
+      border-radius: 50%;
+      top: 13px;
+      right: 25px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+
       img {
         height: 100%;
         width: 100%;
       }
     }
-    .soc-section {
-      margin-top: 50px;
+
+    img {
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .cover {
+      img {
+        height: 400px;
+        width: 100%;
+      }
+    }
+    .social-media-container {
       display: flex;
       align-items: center;
-      .img {
-        margin-right: 15px;
-      }
+      justify-content: flex-start;
+      gap: 20px;
+
       img {
+        object-fit: contain;
+        display: inline-block;
         width: 40px;
         height: 40px;
       }
     }
-    .verified-btn {
-      margin-top: 30px;
-      width: 100%;
-      justify-content: center;
+    .profile-avatar {
+      border-radius: 12px;
+      position: absolute;
+      left: 50%;
+      bottom: -70px;
+      transform: translateX(-50%);
 
-    }
-  .right-section {
-    height: 100%;
-    .cover {
-      height: 190px;
-      width: 100%;
       img {
-        height: 100%;
-        width: 100%;
+        height: 150px;
+        width: 150px;
+        object-fit: fill;
+        border-radius: 12px;
       }
     }
-    .tabs-section {
-      min-height: 51.5%;
-      margin-top: 20px;
-      .row {
-        margin-top: 20px !important;
-      }
-    }
-  }
-  }
-  .wrapper-bottom {
-    h3 {
-      margin-bottom: 20px;
-    }
-  }
-  .dropDownSection {
-    margin-top: 20px;
-  }
-}
-@media (max-width: 767px) {
-  .d-none-respo {
-    display: none !important;
   }
 }
