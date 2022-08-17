@@ -6,7 +6,13 @@
         <img *ngIf="!userProfile?.bannerImage" style="border-radius:12px"
              src="https://img.freepik.com/free-vector/space-banner-with-purple-planet-landscape_107791-6230.jpg?w=2000&t=st=1658221048~exp=1658221648~hmac=c65eb9aee01fdb8c97e698f7c4d794de0780c30ecec37acaba246e8cd15c321f"
              alt="">
-        <div class="social-media-container">
+        <div class="profile-avatar">
+          <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="">
+          <img *ngIf="!userProfile?.profileImage" src="assets/img/default-avatar.svg" alt="">
+        </div>
+      </div>
+      <div class="profile-info row justify-content-center">
+        <div class="col-2 social-media-container">
           <div *ngIf="userProfile.website" class="img" style="cursor: pointer;">
             <div>
               <a href="{{userProfile.website}}" target="_blank">
@@ -30,13 +36,7 @@
             </a>
           </div>
         </div>
-        <div class="profile-avatar">
-          <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="">
-          <img *ngIf="!userProfile?.profileImage" src="assets/img/default-avatar.svg" alt="">
-        </div>
-      </div>
-      <div class="profile-info">
-        <div class="d-flex flex-column align-items-center">
+        <div class="col-8 d-flex flex-column align-items-center">
           <div class="d-flex align-items-center">
             <h4>{{userProfile?.name.substring(0, 28)}}</h4>
             <img class="pe-none" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
@@ -56,7 +56,7 @@
                         </span>
             </div>
           </div>
-          <div class="d-flex justify-content-between mb-3">
+          <div class="d-flex justify-content-between mb-2">
             <div class="followers mr-3" style="cursor: pointer" (click)="showFollow(true)">
               <span class="color-violet">Followers: </span>
               <span>{{userProfile ? userProfile.followers.length : 0}}</span>
@@ -66,7 +66,18 @@
               <span>{{userProfile ? userProfile.followed.length : 0}}</span>
             </div>
           </div>
+          <div *ngIf="userProfile && !isOwnProfile" class="verified-btn d-flex mb-3" >
+            <button class="btn-secondary-costum" (click)="followAction()">
+              <ng-container *ngIf="following">
+                Unfollow
+              </ng-container>
+              <ng-container *ngIf="!following">
+                Follow
+              </ng-container>
+            </button>
+          </div>
         </div>
+        <div class="col-2"></div>
       </div>
       <div *ngIf="isOwnProfile" class="setting-section" routerLink="../../edit-profile">
         <img src="assets/img/settings.svg" alt="">
