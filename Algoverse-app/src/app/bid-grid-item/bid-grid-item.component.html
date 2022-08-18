@@ -14,11 +14,23 @@
         <span class="unset-dm-style">{{mItem.asset.unitName}}</span>
       </div>
       <div class="section w-100">
-        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.biddingUser.name.length > 15 ?  mItem.biddingUser.name.substring(0,8).concat('...'): mItem.biddingUser.name}}</h4>
+        <h4>Creator </h4>
+        <img *ngIf="mItem.biddingUser.profileImage" class="creator-image" src="{{mItem.biddingUser.profileImage}}" alt="">
+        <img *ngIf="!mItem.biddingUser.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
+        <span class="unset-dm-style">{{mItem.biddingUser.name.length > 15? mItem.biddingUser.name.substring(0,15).concat('...') : mItem.biddingUser.name}}</span>
+        <img *ngIf="mItem.biddingUser.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
+      
+      
       </div>
       <div class="section">
-        <h4>Price </h4>
+        <h4>Highest Bid</h4>
         <span class="unset-dm-style">{{(mItem.price / 1000000).toFixed(3)}}</span>
+      </div>
+    </div>
+    <div class="card-info-right">
+      <div class="section">
+        <i class="fa fa-star" aria-hidden="true" style="color: rgb(254, 218, 3);"></i>
+        <span>{{mItem.asset.stars}}</span>
       </div>
     </div>
   </div>

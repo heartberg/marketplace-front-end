@@ -8,7 +8,7 @@
   <div class="card-info" [class.flex-column]="isCollection">
     <div class="card-info-left"  *ngIf="!isCollection">
       <div class="section">
-        <h4>Name: </h4>
+        <h4>Name </h4>
         <span class="unset-dm-style">{{mItem.name}}</span>
       </div>
       <div class="section" *ngIf="mItem.creator">
@@ -17,6 +17,15 @@
         <img *ngIf="!mItem.creator.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
         <span class="unset-dm-style">{{mItem.creator.name.length > 15? mItem.creator.name.substring(0,15).concat('...') : mItem.creator.name}}</span>
         <img *ngIf="mItem.creator.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
+      </div>
+      <div class="section">
+        <h4>Price</h4>
+        <span *ngIf="mItem.price > 0" class="unset-dm-style">{{(mItem.price / 1000000).toFixed(3)}}</span>
+        <span *ngIf="mItem.price == 0" class="unset-dm-style">Not for Sale</span>
+      </div>
+      <div class="section" *ngIf="mItem.highestBid > 0">
+        <h4>Highest Bid</h4>
+        <span class="unset-dm-style">{{(mItem.highestBid).toFixed(3)}}</span>
       </div>
     </div>
     <div class="name" *ngIf="isCollection">
