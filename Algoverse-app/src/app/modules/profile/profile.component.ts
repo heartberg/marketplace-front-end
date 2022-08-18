@@ -60,6 +60,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
     const routeParams = this.route.snapshot.paramMap
     console.log(routeParams)
     const addr = routeParams.get('wallet')
+    console.log("router param: ", addr)
     if(addr) {
       if(algosdk.isValidAddress(addr)){
         console.log("address detected")
@@ -71,14 +72,12 @@ export class ProfileComponent implements OnInit, OnDestroy{
               this.location.replaceState(`profile/${this.userProfile.customURL}`);
             }
             console.log(this.userProfile)
-            this.userService.loadCollections(this.walletAddress).subscribe(
-              (collections: any) => {
-                this.userCollections = collections
-                this._stateService.collections = res;
-              }
-            )
-            wallet = this.connectService.sessionWallet
+            let wallet = this.connectService.sessionWallet
+            this.detectOwnProfile(wallet)
             console.log("wallet:", wallet)
+
+            this.loadAssets()
+
             if(wallet) {
               console.log("CHECK FOLLOWING")
               this.following = this.userProfile.followers.find((follow: any) => {
@@ -96,14 +95,9 @@ export class ProfileComponent implements OnInit, OnDestroy{
             this.userProfile = res
             console.log(this.userProfile)
             this.walletAddress = this.userProfile.wallet
-            this.userService.loadCollections(this.walletAddress).subscribe(
-              (collections: any) => {
-                this.userCollections = collections
-                this._stateService.collections = res;
-              }
-            )
-            wallet = this.connectService.sessionWallet
+            let wallet = this.connectService.sessionWallet
             this.detectOwnProfile(wallet);
+            this.loadAssets()
             console.log("wallet:", wallet)
             if(wallet) {
               console.log("CHECK FOLLOWING")
@@ -120,77 +114,74 @@ export class ProfileComponent implements OnInit, OnDestroy{
           }
         )
       }
-
-      let wallet = this.connectService.sessionWallet;
-      this.detectOwnProfile(wallet);
-
-      this.userService.loadUserAssets(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.myAssets = res
-        }
-      )
-
-      this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.createdAssets = res
-        }
-      )
-
-      console.log('user wallet', this.walletAddress);
-      // this.spinner.show();
-      // this.userService.syncUserAssets(this.walletAddress).subscribe(
-      //   (res: any) => {
-      //     console.log(res)
-      //     this.spinner.hide();
-      //     this.createdAssets = res.created;
-      //     this.ownedAssets = res.owned;
-      //   }
-      // )
-
-      this.userService.loadTrades(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.forSale = res
-        }
-      )
-
-      this.userService.loadAuctionsWithMyBids(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.myAuctionBids = res
-        }
-      )
-
-      this.userService.loadSwaps(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.forSwap = res
-        }
-      )
-
-      this.userService.loadAuctions(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.forAuction = res
-        }
-      )
-
-      this.userService.loadBids(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.myBids = res
-        }
-      )
-
-      this.userService.loadStarredAssets(this.walletAddress).subscribe(
-        (res: any) => {
-          console.log(res);
-          this.starred = res
-        }
-      )
     }
+  }
+
+  loadAssets() {
+
+    this.userService.loadUserAssets(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.myAssets = res
+      }
+    )
+
+    this.userService.loadUserCreatedAssets(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.createdAssets = res
+      }
+    )
+
+    console.log('user wallet', this.walletAddress);
+
+    this.userService.loadTrades(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.forSale = res
+      }
+    )
+
+    this.userService.loadAuctionsWithMyBids(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.myAuctionBids = res
+      }
+    )
+
+    this.userService.loadSwaps(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.forSwap = res
+      }
+    )
+
+    this.userService.loadAuctions(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.forAuction = res
+      }
+    )
+
+    this.userService.loadBids(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res)
+        this.myBids = res
+      }
+    )
+
+    this.userService.loadStarredAssets(this.walletAddress).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.starred = res
+      }
+    )
+    this.userService.loadCollections(this.walletAddress).subscribe(
+      (collections: any) => {
+        this.userCollections = collections
+        this._stateService.collections = collections;
+      }
+    )
   }
 
   followAction() {

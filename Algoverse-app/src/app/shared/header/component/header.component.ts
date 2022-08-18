@@ -89,6 +89,10 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  openProfile() {
+    this.router.navigateByUrl("/profile/" + this.wallet)
+  }
+
   connectWalletPopUp() {
     this.isPopUpOpened = !this.isPopUpOpened;
   }

@@ -84,6 +84,12 @@ export class CreateSwapComponent implements OnInit {
     this.offeringAssetParams = await this._walletsConnectService.getAsset(+assetID);
     this.offeringAssetDecimals = this.offeringAssetParams['params']['decimals']
 
+    if(this.offeringAssetDecimals == 0) {
+      this.amount = "1"
+    } else {
+      this.amount = "0"
+    }
+
     this.spinner.show();
 
     const asset = this.getAsset(assetID);
@@ -134,6 +140,12 @@ export class CreateSwapComponent implements OnInit {
     console.log("accepting", this.acceptingAsset)
     this.acceptingAssetDecimals = this.acceptingAsset['params']['decimals']
     this.acceptingAssetSupply = this.acceptingAsset['params']['total'] / Math.pow(10, this.acceptingAssetDecimals)
+
+    if(this.acceptingAssetDecimals == 0) {
+      this.acceptAmount = "1"
+    } else {
+      this.acceptAmount = "0"
+    }
 
     if (asset.params.url) {
       await this.getMetadataAccepting(asset.params.url)

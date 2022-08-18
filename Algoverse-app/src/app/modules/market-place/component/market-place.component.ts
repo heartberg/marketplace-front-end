@@ -15,7 +15,8 @@ export class MarketPlaceComponent implements OnInit {
   public categoriesDropDown: string[] = ['All NFTs', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public collectionsDropDown: string[] = ['All Collections'];
   public artistsDropDown: string[] = ['All Creators'];
-  public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
+  public sortDropDown: string[] = ['Newest', 'Stars', 'Price high to low', 'Price low to high'];
+  //public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
   
   public nfts: any[] = [];
   public trades: any[] = [];
@@ -181,7 +182,21 @@ export class MarketPlaceComponent implements OnInit {
     console.log('highPrice', this.highPrice);
     console.log('sort', this.sort);
     
-    this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice * Math.pow(10, 6), this.highPrice * Math.pow(10, 6), this.sort).subscribe(
+    let sortBy = "Newest";
+    if (this.sort == "Ending soon") {
+      sortBy = "EndSoon";
+    }
+    else if (this.sort == "Price high to low") {
+      sortBy = "PriceHTL";
+    }
+    else if (this.sort == "Price low to high") {
+      sortBy = "PriceLTH";
+    }
+    else if (this.sort == "Stars") {
+      sortBy = "MostLikes";
+    }
+
+    this._userService.search(this.type, "", "", this.category, this.collection, this.artist, this.lowPrice * Math.pow(10, 6), this.highPrice * Math.pow(10, 6), sortBy).subscribe(
       res => {
         this.spinner.hide();
         console.log(res)

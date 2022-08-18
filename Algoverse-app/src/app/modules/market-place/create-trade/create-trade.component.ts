@@ -80,6 +80,13 @@ export class CreateTradeComponent implements OnInit {
 
     this.chosenAssetParams = await this._walletsConnectService.getAsset(+assetID)
     this.selectedAssetDecimals = this.chosenAssetParams['params']['decimals']
+
+    if(this.selectedAssetDecimals == 0) {
+      this.amount = "1"
+    } else {
+      this.amount = "0"
+    }
+
     this.chosenAsset = this.getAsset(assetID);
     console.log('asset', this.chosenAsset);
 
@@ -167,7 +174,6 @@ export class CreateTradeComponent implements OnInit {
     this._userService.getTradeIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(
       async (res) => {
         console.log('tradeIndex', res);
-
         const indexAddress = res.indexAddress;
         let result = await this._walletsConnectService.setupTrade(indexAddress, Number(this.selectedAssetID), res.optinPrice);
         if (result) {

@@ -9,6 +9,14 @@
         </div>
         <app-drop-down-selector [dropDownValues]="typesDropDown" (dropDownValue)="selectedType($event)"></app-drop-down-selector>
       </div>
+      <div class="section">
+        <div class="title">
+          <h3>
+            Sort by
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedSort($event)"></app-drop-down-selector>
+      </div>
       <div class="section first">
         <div class="title">
           <h3>
@@ -45,21 +53,13 @@
         </div>
         <app-drop-down-selector [dropDownValues]="collectionsDropDown" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
       </div>
-      <div class="section">
+      <div class="section last">
         <div class="title">
           <h3>
             Creators
           </h3>
         </div>
         <app-drop-down-selector [dropDownValues]="artistsDropDown" (dropDownValue)="selectedArtist($event)"></app-drop-down-selector>
-      </div>
-      <div class="section last">
-        <div class="title">
-          <h3>
-            Sort by
-          </h3>
-        </div>
-        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedSort($event)"></app-drop-down-selector>
       </div>
     </div>
     <div class="right-section">

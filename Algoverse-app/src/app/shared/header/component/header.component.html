@@ -43,7 +43,7 @@
           </ng-container>
           <ng-container *ngIf="changeRespoNavAndProfileIcons">
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}">Balance: {{balance}} Algo</li>
-            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/profile/{{wallet}}">Profile</li>
+            <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" (click)="openProfile()">Profile</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/items">My Offers</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">My Collections</li>
             <li (click)="switcher()">Switch Acc</li>
@@ -113,7 +113,7 @@
                   </div>
                 </li>
                 <li *ngIf="!isBalanceLoading">Balance: {{balance}} Algo</li>
-                <li routerLink="/profile/{{wallet}}">Profile</li>
+                <li (click)="openProfile()">Profile</li>
                 <li routerLink="/items">My Offers</li>
                 <li routerLink="/collection">My Collections</li>
                 <li (click)="switcher()">Switch Acc</li>

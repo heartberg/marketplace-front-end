@@ -80,6 +80,12 @@ export class CreateAuctionComponent implements OnInit {
 
     this.selectedAssetDecimals = asset['params']['decimals']
 
+    if(this.selectedAssetDecimals == 0) {
+      this.assetAmount = 1
+    } else {
+      this.assetAmount = 0
+    }
+
     if (asset.params.url) {
       await this.getMetadata(asset.params.url)
     } else {

@@ -68,6 +68,12 @@ export class CreateBidComponent implements OnInit {
     this.selectedAssetDecimals = asset['params']['decimals']
     this.maxSupply = asset['params']['total'] / Math.pow(10, this.selectedAssetDecimals)
 
+    if(this.selectedAssetDecimals == 0) {
+      this.amount = "1"
+    } else {
+      this.amount = "0"
+    }
+
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;
     this.mSelectedAsset = asset;
 
