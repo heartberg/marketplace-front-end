@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
-import algosdk, { Algodv2, Indexer, IntDecoding, BaseHTTPClient, getApplicationAddress, encodeAddress } from 'algosdk';
+import algosdk, { Indexer, getApplicationAddress, encodeAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
-import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey, getBalance, getTransactionParams, isOptinApp, isOptinAsset, metadataHash, optinApp, optinAsset, singleAssetOptInTxn, singlePayTxn, waitForTransaction } from './utils.algod';
+import {
+  getAlgodClient,
+  getAppGlobalState,
+  getAppLocalStateByKey,
+  getBalance,
+  getTransactionParams,
+  isOptinApp,
+  isOptinAsset,
+  optinApp,
+  optinAsset,
+  singlePayTxn,
+  waitForTransaction,
+  exceptionFilter
+} from './utils.algod';
 import { Buffer } from 'buffer';
 import { SessionWallet } from 'algorand-session-wallet';
-import {Router} from "@angular/router";
-import { env } from 'process';
-
+import { Router } from "@angular/router";
 
 const client = getAlgodClient()
 
@@ -28,43 +39,47 @@ export class WalletsConnectService {
   }
 
   connect = async (choice: string): Promise<void> => {
-    console.log('choice', choice);
-    const sw = new SessionWallet("TestNet", undefined, choice);
+    try {
+      console.log('choice', choice);
+      const sw = new SessionWallet("TestNet", undefined, choice);
 
-    if (!await sw.connect()) return alert("Couldnt connect")
+      if (!await sw.connect()) return alert("Couldnt connect")
 
-    this.myAlgoAddress = sw.accountList()
-    console.log("AlgoAddress: " + this.myAlgoAddress)
-    let index = localStorage.getItem('walletIndex');
-    let finalIndex = +index!;
-    if (localStorage.getItem('walletsOfUser')) {
-      localStorage.setItem('wallet', JSON.parse(localStorage.getItem('walletsOfUser')!)[finalIndex]);
-    } else {
-      localStorage.setItem('wallet', this.myAlgoAddress[finalIndex]);
-    }
-    this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
-
-    sw.wallet.defaultAccount = finalIndex;
-    const finalSw = sw;
-    this.sessionWallet = finalSw!;
-    // check
-    if (sessionStorage.getItem('acct-list')!.length) {
-      let wallets = sessionStorage.getItem('acct-list');
-      let fWallets = JSON.parse(wallets!);
-      if (!localStorage.getItem('walletsOfUser')) {
-        localStorage.setItem('walletsOfUser', sessionStorage.getItem('acct-list')!);
+      this.myAlgoAddress = sw.accountList()
+      console.log("AlgoAddress: " + this.myAlgoAddress)
+      let index = localStorage.getItem('walletIndex');
+      let finalIndex = +index!;
+      if (localStorage.getItem('walletsOfUser')) {
+        localStorage.setItem('wallet', JSON.parse(localStorage.getItem('walletsOfUser')!)[finalIndex]);
+      } else {
+        localStorage.setItem('wallet', this.myAlgoAddress[finalIndex]);
       }
-    }
-    let parsedWallets = localStorage.getItem('walletsOfUser');
+      this.myAlgoName = this.myAlgoAddress.map((value: { name: any; }) => value.name)
 
-    this.sessionWallet.wallet.accounts = JSON.parse(parsedWallets!);
-    // check
-    localStorage.setItem('sessionWallet', JSON.stringify(this.sessionWallet));
-    // localStorage.setItem('walletsOfUser', JSON.stringify(this.sessionWallet.wallet.accounts));
-    console.log(this.sessionWallet, 'esaaa');
+      sw.wallet.defaultAccount = finalIndex;
+      const finalSw = sw;
+      this.sessionWallet = finalSw!;
+      // check
+      if (sessionStorage.getItem('acct-list')!.length) {
+        let wallets = sessionStorage.getItem('acct-list');
+        let fWallets = JSON.parse(wallets!);
+        if (!localStorage.getItem('walletsOfUser')) {
+          localStorage.setItem('walletsOfUser', sessionStorage.getItem('acct-list')!);
+        }
+      }
+      let parsedWallets = localStorage.getItem('walletsOfUser');
 
-    if (this.myAlgoAddress.length > 0) {
-      this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
+      this.sessionWallet.wallet.accounts = JSON.parse(parsedWallets!);
+      // check
+      localStorage.setItem('sessionWallet', JSON.stringify(this.sessionWallet));
+      // localStorage.setItem('walletsOfUser', JSON.stringify(this.sessionWallet.wallet.accounts));
+      console.log(this.sessionWallet, 'esaaa');
+
+      if (this.myAlgoAddress.length > 0) {
+        this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
+      }
+    } catch (e) {
+      exceptionFilter(e);
     }
   }
 
@@ -154,7 +169,7 @@ export class WalletsConnectService {
             if (assetInfo.amount > 0) {
               const asset = await algod.getAssetByID(assetInfo['asset-id']).do();
               //console.log('asset-id:' + assetInfo['asset-id'], asset);
-              const assetURL = asset.params.url;  
+              const assetURL = asset.params.url;
               if (assetURL && assetURL.endsWith('#arc3')) {
                 result.push(asset);
               }
@@ -193,8 +208,8 @@ export class WalletsConnectService {
       const ptx = await algosdk.waitForConfirmation(client, results.txId, 4);
       return ptx["asset-index"];
 
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      exceptionFilter(err);
     }
 
     return false;
@@ -286,7 +301,7 @@ export class WalletsConnectService {
       }
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return false;
@@ -342,7 +357,7 @@ export class WalletsConnectService {
       return results.txId;
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return 0;
@@ -379,7 +394,7 @@ export class WalletsConnectService {
         return true;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -444,7 +459,7 @@ export class WalletsConnectService {
         const feeAddress = await getAppGlobalState(environment.FEE_APP_ID, "fa");
         const verseBackingAddress = await getAppGlobalState(environment.TRADE_APP_ID, "VB_ADDR");
         console.log('feeAddress', feeAddress);
-        
+
         let tokens = [Number(indexTokenID)];
 
         let accounts = [
@@ -508,7 +523,7 @@ export class WalletsConnectService {
         return false;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -599,7 +614,7 @@ export class WalletsConnectService {
       }
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return false;
@@ -674,7 +689,7 @@ export class WalletsConnectService {
       return results.txId;
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return 0;
@@ -710,7 +725,7 @@ export class WalletsConnectService {
         return true;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -835,7 +850,7 @@ export class WalletsConnectService {
         return false;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -878,65 +893,69 @@ export class WalletsConnectService {
       }
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return false;
   }
 
   callSetup = async (indexAddress: string, assets: number[], amount: number): Promise<any> => {
-    const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
-    if (balance < 100000 + 2000 + 1000 * assets.length + (amount > 0 ? (amount + 1000) : 0)) {
-      console.log('Insufficient Balance');
-      return 0;
-    }
+    try {
+      const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
+      if (balance < 100000 + 2000 + 1000 * assets.length + (amount > 0 ? (amount + 1000) : 0)) {
+        console.log('Insufficient Balance');
+        return 0;
+      }
 
-    const client = getAlgodClient();
-    const suggestedParams = await getTransactionParams();
-    let txns = [];
+      const client = getAlgodClient();
+      const suggestedParams = await getTransactionParams();
+      let txns = [];
 
-    const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: this.sessionWallet!.getDefaultAccount(),
-      to: getApplicationAddress(environment.SWAP_APP_ID),
-      amount: 100000,
-      note: new Uint8Array(Buffer.from("Amount to setup bid")),
-      suggestedParams,
-    });
-    txns.push(payTxn);
-
-    suggestedParams.fee = 1000 + 1000 * assets.length;
-    const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
-      from: this.sessionWallet!.getDefaultAccount(),
-      appIndex: environment.SWAP_APP_ID,
-      note: new Uint8Array(Buffer.from("Setup application call")),
-      appArgs: [new Uint8Array([...Buffer.from("setup")])],
-      foreignAssets: assets,
-      suggestedParams,
-    });
-    console.log("appCallTxn", appCallTxn)
-    txns.push(appCallTxn);
-
-    let payToCreatePoolTxn;
-    if (amount > 0) {
-      suggestedParams.fee = 1000;
-      payToCreatePoolTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      const payTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
         from: this.sessionWallet!.getDefaultAccount(),
-        to: indexAddress,
-        amount,
-        note: new Uint8Array(Buffer.from("Amount to optin app")),
+        to: getApplicationAddress(environment.SWAP_APP_ID),
+        amount: 100000,
+        note: new Uint8Array(Buffer.from("Amount to setup bid")),
         suggestedParams,
       });
-      txns.push(payToCreatePoolTxn);
+      txns.push(payTxn);
+
+      suggestedParams.fee = 1000 + 1000 * assets.length;
+      const appCallTxn = algosdk.makeApplicationNoOpTxnFromObject({
+        from: this.sessionWallet!.getDefaultAccount(),
+        appIndex: environment.SWAP_APP_ID,
+        note: new Uint8Array(Buffer.from("Setup application call")),
+        appArgs: [new Uint8Array([...Buffer.from("setup")])],
+        foreignAssets: assets,
+        suggestedParams,
+      });
+      console.log("appCallTxn", appCallTxn)
+      txns.push(appCallTxn);
+
+      let payToCreatePoolTxn;
+      if (amount > 0) {
+        suggestedParams.fee = 1000;
+        payToCreatePoolTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: this.sessionWallet!.getDefaultAccount(),
+          to: indexAddress,
+          amount,
+          note: new Uint8Array(Buffer.from("Amount to optin app")),
+          suggestedParams,
+        });
+        txns.push(payToCreatePoolTxn);
+      }
+
+      const txnGroup = algosdk.assignGroupID(txns);
+      const signedTxns = await this.sessionWallet!.signTxn(txns);
+
+      const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
+      console.log("Transaction result : ", results);
+      await waitForTransaction(client, results.txId);
+
+      return results.txId;
+    } catch (err) {
+      exceptionFilter(err);
     }
-
-    const txnGroup = algosdk.assignGroupID(txns);
-    const signedTxns = await this.sessionWallet!.signTxn(txns);
-
-    const results = await client.sendRawTransaction(signedTxns.map(txn => txn.blob)).do();
-    console.log("Transaction result : ", results);
-    await waitForTransaction(client, results.txId);
-
-    return results.txId;
   }
 
   createSwap = async (params: any) => {
@@ -980,7 +999,7 @@ export class WalletsConnectService {
       return results.txId;
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return 0;
@@ -1017,7 +1036,7 @@ export class WalletsConnectService {
         return true;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -1108,7 +1127,7 @@ export class WalletsConnectService {
         return false;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -1120,7 +1139,7 @@ export class WalletsConnectService {
         const result = await optinApp(environment.STORE_APP_ID, this.sessionWallet!.wallet);
         if (!result) return false;
       }
-      
+
       if (await isOptinAsset(assetId, getApplicationAddress(environment.AUCTION_APP_ID))) {
         if (amount > 0) {
           const balance = await getBalance(this.sessionWallet!.getDefaultAccount());
@@ -1199,7 +1218,7 @@ export class WalletsConnectService {
       }
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return false;
@@ -1261,7 +1280,7 @@ export class WalletsConnectService {
       }
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return result;
@@ -1318,7 +1337,7 @@ export class WalletsConnectService {
       return results.txId;
 
     } catch (err) {
-      console.error(err);
+      exceptionFilter(err);
     }
 
     return 0;
@@ -1417,7 +1436,7 @@ export class WalletsConnectService {
         return true;
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
@@ -1505,7 +1524,7 @@ export class WalletsConnectService {
         console.error('Invalid auction item');
       }
     } catch (err) {
-      console.error(err)
+      exceptionFilter(err);
     }
 
     return false;
