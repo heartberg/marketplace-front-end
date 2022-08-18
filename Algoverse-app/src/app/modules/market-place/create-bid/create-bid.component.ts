@@ -33,6 +33,7 @@ export class CreateBidComponent implements OnInit {
 
   searchAssetControl: FormControl;
   metadataAttributes: any;
+  selectedAssetTotal: number = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -69,11 +70,12 @@ export class CreateBidComponent implements OnInit {
     this.mSelectedAsset = asset;
     this.selectedAssetDecimals = asset['params']['decimals']
     this.maxSupply = asset['params']['total'] / Math.pow(10, this.selectedAssetDecimals)
+    this.selectedAssetTotal = asset['params']['total']
 
-    if(this.selectedAssetDecimals == 0) {
+    if(this.selectedAssetDecimals == 0 && this.selectedAssetTotal == 1) {
       this.amount = "1"
     } else {
-      this.amount = "0"
+      this.amount = ""
     }
 
     this.selectedAssetDescription = `Name: ${asset.params.name} \nUnitName: ${asset.params['unit-name']}`;

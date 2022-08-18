@@ -66,10 +66,10 @@
               </div>
             </ng-container>
           </div>
-          <div class="createoffer wrapper-border" *ngIf="selectedAssetDecimals > 0">
+          <div class="createoffer wrapper-border" *ngIf="selectedAssetDecimals > 0 || maxSupply > 1">
             <div class="row d-flex align-items-center" style="width: 100%">
               <div class="col-md-5">
-                <h4 class="amountheader">Amount (<= {{maxSupply}}, Decimals: {{selectedAssetDecimals}})</h4>
+                <h4 class="amountheader">Amount (<= {{maxSupply}}, Fractions: {{selectedAssetDecimals}})</h4>
               </div>
               <div class="col-md-7">
                 <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAmountEvent($event)">

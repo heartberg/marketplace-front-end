@@ -47,6 +47,10 @@
           <h4 class="typeheader">Description</h4>
           <input type="text" placeholder="Description" class="input-costum" (blur)="blurDescriptionEvent($event)">
         </div>
+        <div class="price wrapper-border">
+          <h4 class="priceheader">Supply</h4>
+          <input type="text" placeholder="1" class="input-costum" (blur)="blurSupplyEvent($event)">
+        </div>
         <div class="createoffer wrapper-border">
           <h4>Category</h4>
           <app-drop-down-selector [isCategoryDisabled]="isCollectionSelected" [dropDownValues]="categoryList"
@@ -263,11 +267,7 @@
               <input type="text" placeholder="Unit name" class="input-costum" (blur)="blurUnitNameEvent($event)">
             </div>
             <div class="price wrapper-border">
-              <h4 class="priceheader">Supply</h4>
-              <input type="text" placeholder="1" class="input-costum" disabled>
-            </div>
-            <div class="price wrapper-border">
-              <h4 class="priceheader">Decimal</h4>
+              <h4 class="priceheader">Number of fractions</h4>
               <input type="text" placeholder="0" class="input-costum" (blur)="blurDecimalsEvent($event)">
             </div>
           </ng-container>

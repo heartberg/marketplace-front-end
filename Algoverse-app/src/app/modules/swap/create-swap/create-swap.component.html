@@ -18,8 +18,8 @@
               </div>
             </div>
           </div>
-          <div class="createoffer wrapper-border" *ngIf="offeringAssetDecimals > 0">
-            <h4 class="amountheader">Amount (<= {{maxSupply}}, Decimals: {{offeringAssetDecimals}})</h4>
+          <div class="createoffer wrapper-border" *ngIf="offeringAssetDecimals > 0 || offeringAssetTotal > 1">
+            <h4 class="amountheader">Amount (<= {{maxSupply}} {{ offeringAssetDecimals > 0 ? " ,Fractions: " : ")"}} {{offeringAssetDecimals > 0 ? offeringAssetDecimals : ""}} {{offeringAssetDecimals > 0 ? ")" : ""}}</h4>
             <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAmountOfferEvent($event)">
           </div>
           <div class="metaheader">
@@ -79,8 +79,8 @@
             </div>
             <h4>Name: {{acceptingAsset?acceptingAsset.params? acceptingAsset.params.name : '' : ''}}</h4>
           </div>
-          <div class="createoffer wrapper-border" *ngIf="acceptingAssetDecimals > 0">
-            <h4 class="amountheader">Amount (<= {{acceptingAssetSupply}}, Decimals: {{acceptingAssetDecimals}}) </h4>
+          <div class="createoffer wrapper-border" *ngIf="acceptingAssetDecimals > 0 || acceptingAssetTotal > 1">
+            <h4 class="amountheader">Amount (<= {{acceptingAssetSupply}} {{ acceptingAssetDecimals > 0 ? " ,Fractions: " : ")"}} {{acceptingAssetDecimals > 0 ? acceptingAssetDecimals : ""}} {{acceptingAssetDecimals > 0 ? ")" : ""}}</h4>
             <input type="text" placeholder="Max is Supply" class="input-costum" (blur)="blurAcceptAmountEvent($event)">
           </div>
           <div class="collectionborder wrapper-border">

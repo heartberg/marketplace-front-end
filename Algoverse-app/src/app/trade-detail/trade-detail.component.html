@@ -41,7 +41,7 @@
                       </div>
                       <div class="section">
                         <h4>Total Supply:</h4>
-                        <span class="unset-dm-style">{{maxSupply}} {{ decimals > 0? ' (Decimals:' : ''}} {{decimals > 0? decimals : ''}}{{ decimals > 0? ')' : ''}}</span>
+                        <span class="unset-dm-style">{{maxSupply}} {{ decimals > 0? ' (Fractions: ' : ""}} {{decimals > 0 ? decimals : ''}}{{decimals > 0 ? ")" : ''}}</span>
                       </div>
                       <div class="section">
                         <h4>Owned:</h4>
@@ -99,7 +99,7 @@
                               <span>{{scaleAlgo(item?.price)}}</span>
                               <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
                             </div>
-                            <div class="show">
+                            <div class="show" *ngIf="total > 1 || decimals > 0">
                               <span>for {{scaleAmount(item?.amount)}}</span>
                             </div>
                           </div>
@@ -129,7 +129,7 @@
                               <span>{{scaleAlgo(item?.price)}}</span>
                               <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
                             </div>
-                            <div class="show">
+                            <div class="show" *ngIf="total > 1 || decimals > 0">
                               <span>for {{scaleAmount(item?.amount)}} </span>
                             </div>
                           </div>

@@ -42,6 +42,8 @@ export class CreateSwapComponent implements OnInit {
   public acceptingAssetSupply = 0;
   public assetsName: any[] = [];
   public properties: any[] = [];
+  offeringAssetTotal: number = 0;
+  acceptingAssetTotal: number = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -85,11 +87,12 @@ export class CreateSwapComponent implements OnInit {
     this.offeringAssetId = +assetID;
     this.offeringAssetParams = await this._walletsConnectService.getAsset(+assetID);
     this.offeringAssetDecimals = this.offeringAssetParams['params']['decimals']
+    this.offeringAssetTotal = this.offeringAssetParams['params']['total']
 
-    if(this.offeringAssetDecimals == 0) {
+    if(this.offeringAssetDecimals == 0 && this.offeringAssetTotal == 1) {
       this.amount = "1"
     } else {
-      this.amount = "0"
+      this.amount = ""
     }
 
     this.spinner.show();
@@ -142,11 +145,12 @@ export class CreateSwapComponent implements OnInit {
     console.log("accepting", this.acceptingAsset)
     this.acceptingAssetDecimals = this.acceptingAsset['params']['decimals']
     this.acceptingAssetSupply = this.acceptingAsset['params']['total'] / Math.pow(10, this.acceptingAssetDecimals)
+    this.acceptingAssetTotal = this.acceptingAsset['params']['total']
 
-    if(this.acceptingAssetDecimals == 0) {
+    if(this.acceptingAssetDecimals == 0 && this.acceptingAssetTotal == 1) {
       this.acceptAmount = "1"
     } else {
-      this.acceptAmount = "0"
+      this.acceptAmount = ""
     }
 
     if (asset.params.url) {
