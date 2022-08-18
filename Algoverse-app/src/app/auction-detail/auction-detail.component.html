@@ -1,6 +1,6 @@
 <div class="wrapper wrapper-border">
   <div class="backArrow" (click)="actionBack()">
-    <img src="src/assets/img/arrow.svg" alt="">
+    <img src="assets/img/arrow.svg" alt="">
   </div>
   <div class="whole">
     <div class="row w-100">
@@ -35,13 +35,13 @@
                         <h4>Asset ID: </h4>
                         <span class="unset-dm-style">{{mAuction?.asset.assetId}}</span>
                       </div>
-                      <div class="section">
+                      <div class="section" *ngIf="mAuction?.asset.unitName">
                         <h4>Asset Unit:</h4>
                         <span class="unset-dm-style">{{mAuction?.asset.unitName}}</span>
                       </div>
                       <div class="section">
                         <h4>Total Supply:</h4>
-                        <span class="unset-dm-style">{{ totalSupply }} {{ decimals > 0? ' (Decimals:' : ''}} {{decimals > 0? decimals : ''}}{{ decimals > 0? ')' : ''}}</span>
+                        <span class="unset-dm-style">{{ totalSupply }} {{ decimals > 0? ' (Fractions: ' : ''}} {{decimals > 0? decimals : ''}}{{ decimals > 0? ')' : ''}}</span>
                       </div>
                       <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mAuction?.asset.creator.wallet}}">
                         <h4 style="overflow-wrap: break-word;">Creator: </h4>

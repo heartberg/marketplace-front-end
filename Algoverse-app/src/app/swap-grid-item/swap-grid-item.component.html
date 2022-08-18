@@ -18,7 +18,12 @@
         <span class="unset-dm-style">{{mItem.acceptingAmount}}{{mItem.acceptingAsset.unitName}}</span>
       </div>
       <div class="section w-100">
-        <h4 class="w-100" style="overflow-wrap: break-word;">Creator: {{mItem.offerer.name.length > 15 ?  mItem.offerer.name.substring(0,8).concat('...'): mItem.offerer.name}}</h4>
+        <h4>Creator </h4>
+        <img *ngIf="mItem.offerer.profileImage" class="creator-image" src="{{mItem.offerer.profileImage}}" alt="">
+        <img *ngIf="!mItem.offerer.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
+        <span class="unset-dm-style">{{mItem.offerer.name.length > 15? mItem.offerer.name.substring(0,15).concat('...') : mItem.offerer.name}}</span>
+        <img *ngIf="mItem.offerer.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
+
       </div>
     </div>
   </div>

@@ -36,6 +36,8 @@ export class SwapDetailComponent implements OnInit {
     offering: {},
     accepting: {}
   }
+  acceptingAssetTotal: number = 0;
+  offeringAssetTotal: number = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -104,9 +106,11 @@ export class SwapDetailComponent implements OnInit {
 
     let acceptingAssetInfo = await this._walletsConnectService.getAsset(this.mSwap.acceptingAsset.assetId);
     this.acceptingAssetDecimals = acceptingAssetInfo['params']['decimals']
+    this.acceptingAssetTotal = acceptingAssetInfo['params']['total']
     let offeringAssetInfo = await this._walletsConnectService.getAsset(this.mSwap.offeringAsset.assetId);
     this.offeringAssetDecimals = offeringAssetInfo['params']['decimals']
     this.offeringAssetSupply = offeringAssetInfo['params']['total'] / Math.pow(10, this.offeringAssetDecimals)
+    this.offeringAssetTotal = offeringAssetInfo['params']['total']
     this.acceptingAssetSupply = acceptingAssetInfo['params']['total'] / Math.pow(10, this.acceptingAssetDecimals)
     this.amount = (this.mSwap.offeringAmount / Math.pow(10, this.offeringAssetDecimals)).toFixed(this.offeringAssetDecimals)
     this.acceptingAmount = (this.mSwap.acceptingAmount / Math.pow(10, this.acceptingAssetDecimals)).toFixed(this.acceptingAssetDecimals)

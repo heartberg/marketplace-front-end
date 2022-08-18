@@ -33,6 +33,7 @@ export class CreateAuctionComponent implements OnInit {
   public assetsName: any[] = [];
 
   metadataAttributes: any;
+  selectedAssetTotal: number = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -81,8 +82,9 @@ export class CreateAuctionComponent implements OnInit {
     console.log(asset);
 
     this.selectedAssetDecimals = asset['params']['decimals']
+    this.selectedAssetTotal = asset['params']['total']
 
-    if(this.selectedAssetDecimals == 0) {
+    if(this.selectedAssetDecimals == 0 && this.selectedAssetTotal == 1) {
       this.assetAmount = 1
     } else {
       this.assetAmount = 0

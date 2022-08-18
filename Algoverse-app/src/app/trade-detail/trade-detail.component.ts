@@ -32,6 +32,7 @@ export class TradeDetailComponent implements OnInit {
   public amount: string = "0";
   public price: string = "0";
   public decimals: number = 0;
+  public total: number = 0;
 
   public index: number = -1;
   public indexSecond: number = -1;
@@ -114,6 +115,9 @@ export class TradeDetailComponent implements OnInit {
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     console.log('selectedAssetDescription', this.selectedAssetDescription)
     this.decimals = assetInfo['params']['decimals'];
+    this.total = assetInfo['params']['total']
+    console.log(this.decimals)
+    console.log(this.total)
     this.maxSupply = +asset.supply / Math.pow(10, this.decimals);
     this.amount = this.mItem.amount;
     this.metaDataProperties = asset.properties;

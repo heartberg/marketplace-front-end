@@ -32,6 +32,7 @@ export class CreateTradeComponent implements OnInit {
   public metadataAttributes: any = {};
   public selectedAssetName: string = "";
   public assetsName: any[] = [];
+  selectedAssetTotal: number = 0;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -81,11 +82,12 @@ export class CreateTradeComponent implements OnInit {
 
     this.chosenAssetParams = await this._walletsConnectService.getAsset(+assetID)
     this.selectedAssetDecimals = this.chosenAssetParams['params']['decimals']
+    this.selectedAssetTotal = this.chosenAssetParams['params']['total']
 
-    if(this.selectedAssetDecimals == 0) {
+    if(this.selectedAssetDecimals == 0 && this.selectedAssetTotal == 1) {
       this.amount = "1"
     } else {
-      this.amount = "0"
+      this.amount = ""
     }
 
     this.chosenAsset = this.getAsset(assetID);
@@ -169,6 +171,8 @@ export class CreateTradeComponent implements OnInit {
       alert('Please select a valid asset to auction');
       return;
     }
+
+    console.log(this.amount)
 
     console.log('trade start');
     this.spinner.show();
