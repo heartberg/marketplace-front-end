@@ -1,301 +1,306 @@
-<div class="wrapper wrapper-border">
-  <div class="backArrow" (click)="onBack()">
-    <img src="assets/img/arrow.svg" alt="">
-  </div>
-  <div class="whole wrapper-border hide-on-respo">
-    <div class="row" style="width: 100%;">
-      <div class="col-lg-2"></div>
-      <div class="col-lg-8 col-12">
-        <div class="inside wrapper-border">
-          <div class="header">
-            <h3>Create Asset</h3>
+<div class="whole hide-on-respo">
+  <div class="row" style="width: 100%;">
+    <div class="col-lg-2 col-xl-3"></div>
+    <div class="col-lg-8 col-xl-6 col-12">
+      <div class="inside wrapper-border">
+        <div class="header">
+          <h3>Create Asset</h3>
+        </div>
+        <div class="wrapper-border section">
+          <div class="d-flex align-items-center">
+            <h4>Upload File</h4>
+            <button class="btn-primary-costum" (click)="fileInput.click()">
+              Upload File
+              <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;"
+                     [accept]="acceptedFileFormats"/>
+            </button>
           </div>
-          <div class="wrapper-border section">
-            <div class="d-flex align-items-center">
-              <h4>Upload File</h4>
-              <button class="btn-primary-costum" (click)="fileInput.click()">
-                Upload File
-                <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" [accept]="acceptedFileFormats"/>
-              </button>
-            </div>
-            <!--if uploaded file is a audio-->
-            <audio controls *ngIf="isMusicUpload">
-              <source [src]="fileUrl" [type]="fileType">
-            </audio>
-            <!--if uploaded file is a video-->
-            <video width="250" height="250" controls *ngIf="isVideoUpload">
-              <source [src]="fileUrl" [type]="fileType">
-            </video>
-            <!--if uploaded file is a photo-->
-            <img class="uploaded-image" [src]="fileUrl" alt="uploaded image" *ngIf="isImageUpload">
+          <!--if uploaded file is a audio-->
+          <audio controls *ngIf="isMusicUpload">
+            <source [src]="fileUrl" [type]="fileType">
+          </audio>
+          <!--if uploaded file is a video-->
+          <video width="250" height="250" controls *ngIf="isVideoUpload">
+            <source [src]="fileUrl" [type]="fileType">
+          </video>
+          <!--if uploaded file is a photo-->
+          <img class="uploaded-image" [src]="fileUrl" alt="uploaded image" *ngIf="isImageUpload">
 
+        </div>
+        <div class="wrapper-border section" *ngIf="isMusicUpload || isVideoUpload">
+          <div class="d-flex align-items-center">
+            <h4>Upload Cover</h4>
+            <button class="btn-primary-costum" (click)="coverInput.click()">
+              Upload Cover
+              <input #coverInput type="file" (change)="onCoverInput($event)" style="display:none;"
+                     [accept]="acceptedFileFormats"/>
+            </button>
+            <!--if cover image is uploaded-->
           </div>
-          <div class="wrapper-border section" *ngIf="isMusicUpload || isVideoUpload">
-            <div class="d-flex align-items-center">
-              <h4>Upload Cover</h4>
-              <button class="btn-primary-costum" (click)="coverInput.click()">
-                Upload Cover
-                <input #coverInput type="file" (change)="onCoverInput($event)" style="display:none;" [accept]="acceptedFileFormats"/>
-              </button>
-              <!--if cover image is uploaded-->
+          <img class="uploaded-image" [src]="coverUrl" alt="cover image" *ngIf="coverUrl">
+        </div>
+        <div class="createoffer wrapper-border">
+          <h4 class="amountheader">Name</h4>
+          <input type="text" placeholder="Name" class="input-costum" (blur)="blurNameEvent($event)">
+        </div>
+        <div class="typeoffer wrapper-border">
+          <h4 class="typeheader">Description</h4>
+          <input type="text" placeholder="Description" class="input-costum" (blur)="blurDescriptionEvent($event)">
+        </div>
+        <div class="createoffer wrapper-border">
+          <h4>Category</h4>
+          <app-drop-down-selector [isCategoryDisabled]="isCollectionSelected" [dropDownValues]="categoryList"
+                                  [defaultValue]="category" style="width: 100%;"
+                                  (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
+        </div>
+        <div class="price wrapper-border">
+          <h4 class="priceheader">External Link</h4>
+          <input type="text" placeholder="www.website.com" class="input-costum" (blur)="blurExternalLinkEvent($event)">
+        </div>
+        <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
+          <h4>Add to Collection (Optional)</h4>
+          <div class="dropdown">
+            <div class="AssetsList">
+              <app-drop-down-selector [dropDownValues]="collections" [defaultValue]="passedCollectionName"
+                                      (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
             </div>
-            <img class="uploaded-image" [src]="coverUrl" alt="cover image" *ngIf="coverUrl">
-          </div>
-          <div class="createoffer wrapper-border">
-            <h4 class="amountheader">Name</h4>
-            <input type="text" placeholder="Name" class="input-costum" (blur)="blurNameEvent($event)">
-          </div>
-          <div class="typeoffer wrapper-border">
-            <h4 class="typeheader">Description</h4>
-            <input type="text" placeholder="Description" class="input-costum" (blur)="blurDescriptionEvent($event)">
-          </div>
-          <div class="createoffer wrapper-border">
-            <h4>Category</h4>
-            <app-drop-down-selector [isCategoryDisabled]="isCollectionSelected" [dropDownValues]="categoryList" [defaultValue]="category" style="width: 100%;" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
-          </div>
-          <div class="price wrapper-border">
-            <h4 class="priceheader">External Link</h4>
-            <input type="text" placeholder="www.website.com" class="input-costum" (blur)="blurExternalLinkEvent($event)">
-          </div>
-          <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
-            <h4>Add to Collection (Optional)</h4>
-            <div class="dropdown">
-              <div class="AssetsList">
-                <app-drop-down-selector [dropDownValues]="collections" [defaultValue]="passedCollectionName" (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
-              </div>
-            </div>
-          </div>
-          <div class="price wrapper-border">
-            <h4 class="priceheader">Properties (Optional)</h4>
-            <div class="row">
-              <form action="" [formGroup]="FORM">
-                <ng-container *ngIf="first">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff" (blur)="onBlurMethod(1.1)">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf" (blur)="onBlurMethod(1.2)">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(1)" *ngIf="!second">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="pushedItems.length > 1"
-                         (click)="minus(1)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container  *ngIf="second">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum"  formControlName="ff2" (blur)="onBlurMethod(2.1)">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum"  formControlName="sf2" (blur)="onBlurMethod(2.2)">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(2)" *ngIf="!third">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!third"
-                         (click)="minus(2)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="third">
-                  <div class="form">
-                    <div class="row">
-                      <div class="col-md-5">
-                        <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff3">
-                      </div>
-                      <div class="col-md-5">
-                        <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf3">
-                      </div>
-                      <div class="plus-icon" (click)="addSection(3)" *ngIf="!fourth">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                      </div>
-                      <div class="plus-icon" *ngIf="!fourth"
-                           (click)="minus(3)">
-                        <i class="fa fa-minus" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="fourth">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff4">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf4">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(4)" *ngIf="!fiveth">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!fiveth"
-                         (click)="minus(4)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="fiveth">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff5">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf5">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(5)" *ngIf="!sixth">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!sixth"
-                         (click)="minus(5)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="sixth">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff6">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf6">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(6)" *ngIf="!seventh">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!seventh"
-                         (click)="minus(6)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="seventh">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff7">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf7">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(7)" *ngIf="!eighth">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!eighth"
-                         (click)="minus(7)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="eighth">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(8)" *ngIf="!nineth">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!nineth"
-                         (click)="minus(8)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="nineth">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(9)" *ngIf="!tenth">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="!tenth"
-                         (click)="minus(9)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="tenth">
-                  <div class="row">
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
-                    </div>
-                    <div class="col-md-5">
-                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
-                    </div>
-                    <div class="plus-icon" (click)="addSection(10)" *ngIf="false">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                    </div>
-                    <div class="plus-icon" *ngIf="tenth"
-                         (click)="minus(10)">
-                      <i class="fa fa-minus" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </ng-container>
-              </form>
-            </div>
-          </div>
-          <div class="wrapper-border" style="margin-bottom: 16px;">
-            <div class="d-flex align-items-center"  (click)="activateFractionalized()"   [ngStyle]="{'margin-bottom': fractionalized ? '8px' : '0px'}">
-              <input type="checkbox" name="checkboxFractionalize" id="checkboxFractionalize" #checkboxFractionalize>
-              <label for="checkboxFractionalize" style="color: #81007F; font-weight: 700;margin-left: 5px; cursor: pointer; margin-bottom: 0px;" (click)="activateFractionalized()">Create Fractional NFT (Optional)</label>
-            </div>
-            <ng-container *ngIf="fractionalized">
-              <div class="createoffer wrapper-border">
-                <h4 class="amountheader">Unit Name</h4>
-                <input type="text" placeholder="Unit name" class="input-costum" (blur)="blurUnitNameEvent($event)">
-              </div>
-              <div class="price wrapper-border">
-                <h4 class="priceheader">Supply</h4>
-                <input type="text" placeholder="1" class="input-costum" disabled>
-              </div>
-              <div class="price wrapper-border">
-                <h4 class="priceheader">Decimal</h4>
-                <input type="text" placeholder="0" class="input-costum" (blur)="blurDecimalsEvent($event)">
-              </div>
-            </ng-container>
-          </div>
-          <!-- <div class="price wrapper-border">
-            <div class="d-flex justify-content-between" style="padding: 0px 10px">
-              <h4 class="priceheader new-section">Create offer on marketplace</h4>
-              <mat-slide-toggle id="sliddertoggle3" (click)="toggleEvent()"></mat-slide-toggle>
-            </div>
-            <div class="wrapper-border" *ngIf="toggleCounter % 2 === 0">
-              <div class="price wrapper-border">
-                <h4 class="priceheader">Amount</h4>
-                <input type="text" placeholder="1" class="input-costum">
-              </div>
-              <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
-                <h4>Type</h4>
-                <div class="dropdown">
-                  <div class="AssetsList">
-                    <app-drop-down-selector [dropDownValues]="['Fixed Price', 'Timed Auction']"></app-drop-down-selector>
-                  </div>
-                </div>
-              </div>
-              <div class="price wrapper-border">
-                <h4 class="priceheader">Price</h4>
-                <input type="text" placeholder="1" class="input-costum">
-              </div>
-            </div>
-          </div> -->
-          <div class="btn-secondary-costum aligner" (click)="submitAsset()">
-            Create Asset
           </div>
         </div>
+        <div class="price wrapper-border">
+          <h4 class="priceheader">Properties (Optional)</h4>
+          <div class="row">
+            <form action="" [formGroup]="FORM">
+              <ng-container *ngIf="first">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff"
+                           (blur)="onBlurMethod(1.1)">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf"
+                           (blur)="onBlurMethod(1.2)">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(1)" *ngIf="!second">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="pushedItems.length > 1"
+                       (click)="minus(1)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="second">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff2"
+                           (blur)="onBlurMethod(2.1)">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf2"
+                           (blur)="onBlurMethod(2.2)">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(2)" *ngIf="!third">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!third"
+                       (click)="minus(2)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="third">
+                <div class="form">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff3">
+                    </div>
+                    <div class="col-md-5">
+                      <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf3">
+                    </div>
+                    <div class="plus-icon" (click)="addSection(3)" *ngIf="!fourth">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="plus-icon" *ngIf="!fourth"
+                         (click)="minus(3)">
+                      <i class="fa fa-minus" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="fourth">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff4">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf4">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(4)" *ngIf="!fiveth">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!fiveth"
+                       (click)="minus(4)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="fiveth">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff5">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf5">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(5)" *ngIf="!sixth">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!sixth"
+                       (click)="minus(5)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="sixth">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff6">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf6">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(6)" *ngIf="!seventh">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!seventh"
+                       (click)="minus(6)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="seventh">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff7">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf7">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(7)" *ngIf="!eighth">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!eighth"
+                       (click)="minus(7)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="eighth">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(8)" *ngIf="!nineth">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!nineth"
+                       (click)="minus(8)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="nineth">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(9)" *ngIf="!tenth">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="!tenth"
+                       (click)="minus(9)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="tenth">
+                <div class="row">
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g height" class="input-costum" formControlName="ff8">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" placeholder="e.g 4m" class="input-costum" formControlName="sf8">
+                  </div>
+                  <div class="plus-icon" (click)="addSection(10)" *ngIf="false">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </div>
+                  <div class="plus-icon" *ngIf="tenth"
+                       (click)="minus(10)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+        </div>
+        <div class="wrapper-border" style="margin-bottom: 16px;">
+          <div class="d-flex align-items-center" (click)="activateFractionalized()"
+               [ngStyle]="{'margin-bottom': fractionalized ? '8px' : '0px'}">
+            <input type="checkbox" name="checkboxFractionalize" id="checkboxFractionalize" #checkboxFractionalize>
+            <label for="checkboxFractionalize"
+                   style="color: #81007F; font-weight: 700;margin-left: 5px; cursor: pointer; margin-bottom: 0px;"
+                   (click)="activateFractionalized()">Create Fractional NFT (Optional)</label>
+          </div>
+          <ng-container *ngIf="fractionalized">
+            <div class="createoffer wrapper-border">
+              <h4 class="amountheader">Unit Name</h4>
+              <input type="text" placeholder="Unit name" class="input-costum" (blur)="blurUnitNameEvent($event)">
+            </div>
+            <div class="price wrapper-border">
+              <h4 class="priceheader">Supply</h4>
+              <input type="text" placeholder="1" class="input-costum" disabled>
+            </div>
+            <div class="price wrapper-border">
+              <h4 class="priceheader">Decimal</h4>
+              <input type="text" placeholder="0" class="input-costum" (blur)="blurDecimalsEvent($event)">
+            </div>
+          </ng-container>
+        </div>
+        <!-- <div class="price wrapper-border">
+          <div class="d-flex justify-content-between" style="padding: 0px 10px">
+            <h4 class="priceheader new-section">Create offer on marketplace</h4>
+            <mat-slide-toggle id="sliddertoggle3" (click)="toggleEvent()"></mat-slide-toggle>
+          </div>
+          <div class="wrapper-border" *ngIf="toggleCounter % 2 === 0">
+            <div class="price wrapper-border">
+              <h4 class="priceheader">Amount</h4>
+              <input type="text" placeholder="1" class="input-costum">
+            </div>
+            <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
+              <h4>Type</h4>
+              <div class="dropdown">
+                <div class="AssetsList">
+                  <app-drop-down-selector [dropDownValues]="['Fixed Price', 'Timed Auction']"></app-drop-down-selector>
+                </div>
+              </div>
+            </div>
+            <div class="price wrapper-border">
+              <h4 class="priceheader">Price</h4>
+              <input type="text" placeholder="1" class="input-costum">
+            </div>
+          </div>
+        </div> -->
+        <div class="btn-secondary-costum aligner" (click)="submitAsset()">
+          Create Asset
+        </div>
       </div>
-      <div class="col-lg-2"></div>
     </div>
+    <div class="col-lg-2 col-xl-3"></div>
   </div>
 </div>
-
-<ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

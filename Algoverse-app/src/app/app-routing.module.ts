@@ -25,10 +25,10 @@ import { CreateAuctionComponent } from "./modules/create-auction/create-auction.
 import { CreateBidComponent } from './modules/market-place/create-bid/create-bid.component';
 import { ItemsComponent } from './modules/profile/items/items.component';
 import { TradeDetailComponent } from './trade-detail/trade-detail.component';
-import { BidDetailComponent } from './bid-detail/bid-detail.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SwapDetailComponent } from './swap-detail/swap-detail.component';
 import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
+import { CreateWrapperComponent } from "./modules/create-wrapper/create-wrapper.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -38,6 +38,16 @@ const routes: Routes = [
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
   { path: 'collection-detail/:collectionId', component: CollectionDetailComponent },
+  {
+    path: 'create',
+    component: CreateWrapperComponent,
+    children: [
+      { path: '', component: CreateAssetComponent },
+      { path: 'collection', component: CreateCollectionComponent},
+      { path: 'offer', component: CreateOfferComponent},
+      { path: '**', redirectTo: '' }
+    ]
+  },
   { path: 'create-offer', component: CreateOfferComponent },
   { path: 'profile/:wallet', component: ProfileComponent, runGuardsAndResolvers: 'always'},
   { path: 'items', component: ItemsComponent },
@@ -59,6 +69,7 @@ const routes: Routes = [
   { path: 'creators', component: ArtistsComponent },
   { path: 'creators/creator-application', component: ArtistApplicationComponent },
   { path: 'creators/space-shuttle', component: SpaceshuttleComponent },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

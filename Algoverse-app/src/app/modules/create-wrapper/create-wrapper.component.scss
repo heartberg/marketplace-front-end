@@ -1,0 +1,26 @@
+.tabs {
+  background-color: #e8e8e8;
+  border-radius: 10px;
+  max-width: fit-content;
+  height: fit-content;
+
+  .tab {
+    cursor: pointer;
+    height: fit-content;
+    padding: 10px 15px;
+    transition: .3s ease-in-out;
+
+    h4 {
+      color: #464646 !important;
+    }
+
+    &-active {
+      background: #464646;
+      border-radius: 10px;
+
+      h4 {
+        color: #ffffff !important;
+      }
+    }
+  }
+}
