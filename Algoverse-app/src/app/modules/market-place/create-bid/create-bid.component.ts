@@ -9,6 +9,7 @@ import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-create-bid',
@@ -38,7 +39,8 @@ export class CreateBidComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private httpClient: HttpClient,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private _location: Location
   ) {
     this.searchAssetControl = new FormControl();
     this.searchAssetControl.valueChanges.pipe(debounceTime(1000)).subscribe(async res => {
@@ -251,7 +253,7 @@ export class CreateBidComponent implements OnInit {
   }
 
   public actionBack() {
-    this.router.navigateByUrl('/create-offer')
+    this._location.back();
   }
 
 }
