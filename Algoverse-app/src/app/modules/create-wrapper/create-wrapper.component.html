@@ -1,0 +1,23 @@
+<div class="wrapper wrapper-border">
+  <div class="d-flex row mb-3 align-items-center">
+    <div class="col-lg-2 col-xl-3 col-1 backArrow" (click)="onBack()">
+      <img class="mb-0" src="assets/img/arrow.svg" alt="">
+    </div>
+    <div class="col-lg-8 col-xl-6 col-10 d-flex justify-content-sm-center justify-content-lg-start">
+      <div class="tabs d-flex">
+        <div class="tab" routerLinkActive="tab-active" routerLink="/create" [routerLinkActiveOptions]="{exact: true}">
+          <h4 class="text-white">Create Asset</h4>
+        </div>
+        <div class="tab" routerLinkActive="tab-active" routerLink="/create/collection">
+          <h4 class="text-white">Create Collection</h4>
+        </div>
+        <div class="tab" routerLinkActive="tab-active" routerLink="/create/offer">
+          <h4 class="text-white">Create Offer</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-xl-3 col-1"></div>
+  </div>
+    <router-outlet></router-outlet>
+</div>
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
