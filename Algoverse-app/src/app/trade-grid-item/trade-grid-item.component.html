@@ -20,12 +20,12 @@
         <img *ngIf="!mItem.tradeCreator.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
         <span class="unset-dm-style">{{mItem.tradeCreator.name.length > 15? mItem.tradeCreator.name.substring(0,15).concat('...') : mItem.tradeCreator.name}}</span>
         <img *ngIf="mItem.tradeCreator.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
-      
+
       </div>
       <div class="section">
         <h4>Price </h4>
         <span class="unset-dm-style">{{(mItem.price / 1000000).toFixed(3)}}</span>
-        <img style='width: 25px; height: 25px;' src="assets/img/algorand-algo-logo.png" alt="">
+        <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
       </div>
     </div>
     <div class="card-info-right">

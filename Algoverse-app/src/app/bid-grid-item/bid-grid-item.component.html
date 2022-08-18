@@ -19,13 +19,13 @@
         <img *ngIf="!mItem.biddingUser.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
         <span class="unset-dm-style">{{mItem.biddingUser.name.length > 15? mItem.biddingUser.name.substring(0,15).concat('...') : mItem.biddingUser.name}}</span>
         <img *ngIf="mItem.biddingUser.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
-      
-      
+
+
       </div>
       <div class="section">
         <h4>Highest Bid</h4>
         <span class="unset-dm-style">{{(mItem.price / 1000000).toFixed(3)}}</span>
-        <img style='width: 25px; height: 25px;' src="assets/img/algorand-algo-logo.png" alt="">
+        <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
       </div>
     </div>
     <div class="card-info-right">

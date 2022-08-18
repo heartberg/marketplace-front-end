@@ -21,13 +21,13 @@
       <div class="section">
         <h4>Price</h4>
         <span *ngIf="mItem.price > 0" class="unset-dm-style">{{(mItem.price / 1000000).toFixed(3)}}</span>
-        <img *ngIf="mItem.price > 0" style='width: 25px; height: 25px;' src="assets/img/algorand-algo-logo.png" alt="">
+        <img  *ngIf="mItem.price > 0" class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
         <span *ngIf="mItem.price == 0" class="unset-dm-style">Not for Sale</span>
       </div>
       <div class="section" *ngIf="mItem.highestBid > 0">
         <h4>Highest Bid</h4>
         <span class="unset-dm-style">{{(mItem.highestBid).toFixed(3)}}</span>
-        <img style='width: 25px; height: 25px;' src="assets/img/algorand-algo-logo.png" alt="">
+        <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
       </div>
     </div>
     <div class="name" *ngIf="isCollection">
