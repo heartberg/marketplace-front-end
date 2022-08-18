@@ -6,6 +6,7 @@ import { getBalance, getUUID } from 'src/app/services/utils.algod';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-create-auction',
@@ -38,7 +39,8 @@ export class CreateAuctionComponent implements OnInit {
     private _userService: UserService,
     private router: Router,
     private httpClient: HttpClient,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private _location: Location
   ) {
   }
 
@@ -299,7 +301,7 @@ export class CreateAuctionComponent implements OnInit {
   }
 
   public actionBack() {
-    this.router.navigateByUrl('/create-offer')
+    this._location.back();
   }
 
   private extractAssetsName() {

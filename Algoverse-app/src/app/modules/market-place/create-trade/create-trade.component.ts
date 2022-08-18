@@ -3,10 +3,10 @@ import { WalletsConnectService } from 'src/app/services/wallets-connect.service'
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { getAlgodClient, getBalance, getUUID, isOptinAsset } from 'src/app/services/utils.algod';
-import { getApplicationAddress } from 'algosdk';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-create-trade',
@@ -38,7 +38,8 @@ export class CreateTradeComponent implements OnInit {
     private _userService: UserService,
     private httpClient: HttpClient,
     private router: Router,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private _location: Location
   ) {
   }
 
@@ -272,7 +273,7 @@ export class CreateTradeComponent implements OnInit {
   }
 
   public actionBack() {
-    this.router.navigateByUrl('/create-offer')
+    this._location.back();
   }
 
   private extractAssetsName() {
