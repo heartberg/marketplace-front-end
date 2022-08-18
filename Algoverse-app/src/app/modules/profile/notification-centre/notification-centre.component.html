@@ -38,7 +38,7 @@
               <div class="wrapper-notification wrapper-border"
               [class.no-margin]="last"
               *ngIf="showType(item.type)"
-         >
+            >
            <div class="alligner">
              <div class="inside">
                <span>{{getType(item.type)}}</span>
@@ -47,7 +47,7 @@
                <span>{{item.text}}</span>
              </div>
            </div>
-           <div class="alligner-right">
+           <div class="alligner-right" style="margin-left: 8px;">
              <span>{{formatDate(item.date)}}</span>
            </div>
             </div>

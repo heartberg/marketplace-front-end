@@ -87,7 +87,7 @@
       <div class="tabs">
         <h2>Assets</h2>
         <mat-tab-group>
-          <mat-tab label="My Assets">
+          <mat-tab label="My Assets" *ngIf="isOwnProfile">
             <div class="row mt-4">
               <div class="col-4 mb-4" *ngFor="let item of myAssets; let i = index; last as last">
                 <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>

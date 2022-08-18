@@ -15,7 +15,8 @@ export class MarketPlaceComponent implements OnInit {
   public categoriesDropDown: string[] = ['All NFTs', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public collectionsDropDown: string[] = ['All Collections'];
   public artistsDropDown: string[] = ['All Creators'];
-  public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
+  public sortDropDown: string[] = ['Newest', 'Stars', 'Price high to low', 'Price low to high'];
+  //public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
   
   public nfts: any[] = [];
   public trades: any[] = [];
