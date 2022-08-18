@@ -26,7 +26,7 @@
       </div>
       <div class="section" *ngIf="mItem.highestBid > 0">
         <h4>Highest Bid</h4>
-        <span class="unset-dm-style">{{(mItem.highestBid).toFixed(3)}}</span>
+        <span class="unset-dm-style">{{(mItem.highestBid/ 1000000).toFixed(3)}}</span>
         <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
       </div>
     </div>
