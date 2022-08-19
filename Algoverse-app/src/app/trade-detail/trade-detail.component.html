@@ -141,13 +141,13 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-center action-buttons-section">
-                      <button class="btn-secondary-costum" [class.disabled]="!isAssetMine() || balance < 0" [disabled]="!isAssetMine() || balance < 0" style="margin-left: 8px; width: 160px;" (click)="createSale()">
+                      <button class="btn-secondary-costum" [class.disabled]="balance == 0" [disabled]="balance == 0" style="margin-left: 8px; width: 160px;" (click)="createSale()">
                         Create Sale
                       </button>
                       <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="createBid()" style="width: 160px;">
                         Make Offer
                       </button>
-                      <button class="btn-secondary-costum aligner" (click)="acceptBid()" *ngIf="index !== -1 && indexSecond === -1 && !isMine(true, index)" style="width: 160px;">
+                      <button class="btn-secondary-costum aligner" [class.disabled]="balance < mItem.bids[index].amount" [disabled]="balance < mItem.bids[index].amount" (click)="acceptBid()" *ngIf="index !== -1 && indexSecond === -1 && !isMine(true, index)" style="width: 160px;">
                         Accept Bid
                       </button>
                       <button class="btn-secondary-costum aligner" (click)="cancelBid()" *ngIf="index !== -1 && indexSecond === -1 && isMine(true, index)" style="width: 160px;">

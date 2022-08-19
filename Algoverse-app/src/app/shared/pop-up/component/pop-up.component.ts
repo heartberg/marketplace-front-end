@@ -108,7 +108,9 @@ export class PopUpComponent implements OnInit {
   openProfile(wallet: string) {
     this.closePopUp(true);
     let url = "profile/" + wallet
-    this.router.navigateByUrl(url)
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+    this.router.navigate([url]));
+    //this.router.navigateByUrl()
   }
 
   blurOfferEvent(event: any) {
@@ -306,4 +308,5 @@ export class PopUpComponent implements OnInit {
       }
     );
   }
+  
 }

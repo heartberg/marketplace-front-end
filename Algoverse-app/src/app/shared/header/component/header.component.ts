@@ -91,7 +91,9 @@ export class HeaderComponent implements OnInit {
   }
 
   openProfile() {
-    this.router.navigateByUrl("/profile/" + this.wallet)
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+    this.router.navigate(["/profile/" + this.wallet]));
+    //this.router.navigateByUrl()
   }
 
   connectWalletPopUp() {
