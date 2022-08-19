@@ -79,7 +79,7 @@
             </div>
               <div class="col-md-6" *ngIf="mItem">
                 <ng-container>
-                  <div class="card-info mt-3 wrapper-border col-8">
+                  <div class="card-info mt-3 wrapper-border col-lg-8 col">
                     <div class="section right">
                       <h4>Sale price:</h4>
                       <div class="bids img scroll">
@@ -141,27 +141,28 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-center action-buttons-section">
-                      <button class="btn-secondary-costum" style="margin-left: 8px; width: 160px;" *ngIf="balance > 0" (click)="makeOffer()">Make Offer</button>
-                      <button class="btn-secondary-costum" style="margin-left: 8px; width: 160px;" *ngIf="balance > 0" (click)="buyNow()">Buy Now</button>
+                      <button class="btn-secondary-costum" [class.disabled]="!isAssetMine() || balance < 0" [disabled]="!isAssetMine() || balance < 0" style="margin-left: 8px; width: 160px;" (click)="createSale()">
+                        Create Sale
+                      </button>
+                      <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="createBid()" style="width: 160px;">
+                        Make Offer
+                      </button>
+                      <button class="btn-secondary-costum aligner" (click)="acceptBid()" *ngIf="index !== -1 && indexSecond === -1 && !isMine(true, index)" style="width: 160px;">
+                        Accept Bid
+                      </button>
+                      <button class="btn-secondary-costum aligner" (click)="cancelBid()" *ngIf="index !== -1 && indexSecond === -1 && isMine(true, index)" style="width: 160px;">
+                        Cancel Bid
+                      </button>
+                      <button class="btn-secondary-costum aligner" (click)="acceptTrade()" *ngIf="index === -1 && indexSecond !== -1 && !isMine(false, indexSecond)" style="width: 160px;">
+                        Accept Trade
+                      </button>
+                      <button class="btn-secondary-costum aligner" (click)="cancelTrade()" *ngIf="index === -1 && indexSecond !== -1 && isMine(false, indexSecond)" style="width: 160px;">
+                        Cancel Trade
+                      </button>
                     </div>
                   </div>
                 </ng-container>
               </div>
-          </div>
-          <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="acceptBid()" *ngIf="index !== -1 && indexSecond === -1 && !isMine(true, index)" style="width: 160px;">
-                Accept Bid
-            </button>
-            <button class="btn-secondary-costum aligner" (click)="cancelBid()" *ngIf="index !== -1 && indexSecond === -1 && isMine(true, index)" style="width: 160px;">
-              Cancel Bid
-            </button>
-            <button class="btn-secondary-costum aligner" (click)="acceptTrade()" *ngIf="index === -1 && indexSecond !== -1 && !isMine(false, indexSecond)" style="width: 160px;">
-                Accept Trade
-            </button>
-            <button class="btn-secondary-costum aligner" (click)="cancelTrade()" *ngIf="index === -1 && indexSecond !== -1 && isMine(false, indexSecond)" style="width: 160px;">
-              Cancel Trade
-            </button>
-            <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="createBid()" style="width: 160px;">Place Bid</button>
           </div>
         </div>
       </div>
@@ -170,7 +171,6 @@
 </div>
 <app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [assetInfo]="assetInfo" [selected]="true" [trade]="createTrade"></app-pop-up>
 <ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>
-
 
   <!--              <ng-container *ngIf = "isOpen; then open else close"></ng-container>-->
 <!--              <ng-template #open>-->
