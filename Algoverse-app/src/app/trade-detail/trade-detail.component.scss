@@ -13,6 +13,11 @@
 .card-info {
   .action-buttons-section {
     gap: 12px;
+
+    .disabled {
+      cursor: unset;
+      background-color: #464646;
+    }
   }
 
   .section {

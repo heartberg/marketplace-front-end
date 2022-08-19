@@ -76,7 +76,7 @@ export class TradeDetailComponent implements OnInit {
         await this.showAssetDetails(this.mItem);
         let wallet = this._walletsConnectService.sessionWallet
         if(wallet) {
-          this.balance = await getBalance(wallet.getDefaultAccount(), this.mItem.assetId)
+          this.balance = await getBalance(wallet.getDefaultAccount(), this.mItem.assetId);
           let client = getAlgodClient()
           this.assetInfo = await client.getAssetByID(this.mItem.assetId).do()
           this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
@@ -264,7 +264,7 @@ export class TradeDetailComponent implements OnInit {
     this.isPopUpOpened = true;
   }
 
-  makeOffer() {
+  createSale() {
     this.createTrade = true;
     this.isPopUpOpened = true;
   }
@@ -287,6 +287,10 @@ export class TradeDetailComponent implements OnInit {
         return false;
       }
     }
+  }
+
+  isAssetMine(): boolean {
+    return this.mItem.creator.wallet === this._walletsConnectService.sessionWallet?.getDefaultAccount();
   }
 
   scaleAmount(amount: number) {
