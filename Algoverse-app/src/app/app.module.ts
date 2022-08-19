@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgMarqueeModule } from 'ng-marquee';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     CarouselModule,
     FormsModule,
     NgxSpinnerModule,
-    NgxSliderModule
+    NgxSliderModule,
+    NgMarqueeModule,
     // OwlModule,
   ],
   providers: [

@@ -6,6 +6,7 @@ import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
 import {ThemeService} from "../../../services/theme.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import { environment } from 'src/environments/environment';
+import { NgMarqueeModule } from "ng-marquee"
 
 @Component({
   selector: 'app-header',

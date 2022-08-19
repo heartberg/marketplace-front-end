@@ -15,6 +15,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ScrollComponent } from './scroll/scroll.component';
 import { SwiperModule } from "swiper/angular";
 import { OnlyNumbers } from "./directives/only-number.directive";
+import { NgMarqueeModule } from "ng-marquee"
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { OnlyNumbers } from "./directives/only-number.directive";
     NgxSpinnerModule,
     NgxSliderModule,
     SwiperModule,
+    NgMarqueeModule,
   ],
   exports: [
     PopUpComponent,
