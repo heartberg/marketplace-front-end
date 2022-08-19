@@ -44,7 +44,7 @@
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="marketplace/all-types">Marketplace</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/creators">Creators</li>
             <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="creators/space-shuttle">SpaceShuttle</li> -->
-            <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li>
+            <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li> -->
             <!-- <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/token">Token</li> -->
             <!-- <li [ngClass]="{'menuRespoAnimationFifth': isMenuRespoOpened}"> EVO </li> -->
           </ng-container>
@@ -104,6 +104,11 @@
           </ng-container>
         </div>
         <ng-container *ngIf="walletConnectionPassed">
+          <button class="btn-default btn-icon-round" (click)="showNotifications()">
+            <svg width="14" height="23" viewBox="0 0 14 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.3866 11.3385L9.25538 0.819527C9.60421 0.405795 10.2701 0.763916 10.1173 1.28304L7.42105 10.4407H12.8054C13.6631 10.4407 14.1228 11.4496 13.56 12.0968L4.75363 22.2252C4.39943 22.6326 3.74032 22.2672 3.89816 21.751L6.57895 12.9831H1.15112C0.300592 12.9831 -0.161647 11.9887 0.3866 11.3385Z" fill="#373739"/>
+            </svg>
+          </button>
           <div class="avatar btn-icon-round specific-size"  (click)="openAvatar()" [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened, 'm-l_10': isMenuRespoOpened}">
             <i class="fa fa-user" aria-hidden="true" *ngIf="!changeRespoNavAndProfileIcons"></i>
             <ng-container *ngIf="changeRespoNavAndProfileIcons">

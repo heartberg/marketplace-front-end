@@ -146,4 +146,9 @@ export class HeaderComponent implements OnInit {
       theme === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
     });
   }
+
+  showNotifications(): void {
+    this.router.navigateByUrl("/notification-center")
+  }
+
 }
