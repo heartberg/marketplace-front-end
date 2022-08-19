@@ -2076,7 +2076,7 @@ export const optinAsset = async (tokenId: number, wallet: Wallet) => {
     return true;
 
   } catch (err) {
-    console.error (err);
+    exceptionFilter(err);
   }
 
   return false;
@@ -2124,7 +2124,7 @@ export const optinApp = async (appId: number, wallet: Wallet) => {
     return true;
 
   } catch (err) {
-    console.error (err);
+    exceptionFilter(err);
   }
 
   return false;
@@ -2169,4 +2169,10 @@ export const metadataHash = (metadataJson: string): string => {
   //return sha512.sha512_256("arc0003/am" || sha512.sha512_256("arc0003/amj" || metadataJson))
   var hash2 = sha256.sha256.hmac.update('arc0003/amj', metadataJson);
   return new TextDecoder().decode(new Uint8Array(hash2.digest()));
+}
+
+export const exceptionFilter = (error: any): void => {
+  error.message.includes("popup")
+    ? alert("Pop-up Blocker is enabled! Please add this site to your exception list.")
+    : console.error(error);
 }
