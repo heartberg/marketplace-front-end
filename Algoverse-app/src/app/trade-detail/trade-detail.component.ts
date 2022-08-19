@@ -264,7 +264,7 @@ export class TradeDetailComponent implements OnInit {
     this.isPopUpOpened = true;
   }
 
-  createSale() {
+  makeOffer() {
     this.createTrade = true;
     this.isPopUpOpened = true;
   }
@@ -355,5 +355,9 @@ export class TradeDetailComponent implements OnInit {
     if (this.animation_url_mimetype.includes("audio")) {
       this.isMimeTypeAudio = true;
     }
+  }
+
+  public buyNow(): void {
+
   }
 }

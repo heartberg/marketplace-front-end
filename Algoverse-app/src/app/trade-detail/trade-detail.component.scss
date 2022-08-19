@@ -11,6 +11,10 @@
   margin-bottom: 10px;
 }
 .card-info {
+  .action-buttons-section {
+    gap: 12px;
+  }
+
   .section {
     display: flex;
     align-items: baseline;
@@ -30,7 +34,7 @@
 }
 
 .bids {
-  width: 60%;
+  width: 100%;
 }
 
 .bid {
@@ -259,7 +263,7 @@ input[type=date] {
 }
 .scroll {
   height: 160px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .selected {
   transform: scale(1.003);
@@ -295,5 +299,6 @@ input[type=date] {
 }
 
 .asset-image {
+  object-fit: cover;
   margin-right: 8px;
 }
