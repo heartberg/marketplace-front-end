@@ -157,6 +157,7 @@
     .profile-section {
       display: flex;
       align-items: center;
+      gap: 10px;
 
       .create-section {
         margin-right: 10px;
@@ -193,7 +194,6 @@
         }
       }
       .dark-light-mode {
-        margin-left: 10px;
         button {
           svg {
             width: 20px !important;
@@ -296,11 +296,11 @@
       }
       .search-respo {
         display: block;
-        margin-left: 10px;
+        //margin-left: 10px;
 
         &.m-l_0 {
-          margin-left: 0px !important;
-          margin-right: 10px !important;
+          //margin-left: 0px !important;
+          //margin-right: 10px !important;
         }
         .search-section {
           margin: 0px;
@@ -338,7 +338,7 @@
 
       .search-btn {
         display: flex;
-        margin-left: 10px;
+        //margin-left: 10px;
       }
 
       .wrapper {

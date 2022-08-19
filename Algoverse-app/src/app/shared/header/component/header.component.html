@@ -2,7 +2,7 @@
   <div style="background-color: rgb(62, 62, 237); height: 40px; ">
     <ng-marquee speed="drowsy" style="line-height: 40px; height: 40px;">
       <div>
-        <mark style="background-color: rgb(62, 62, 237);"><span style="color: white;">This is the v1 Marketplace UI - Massively improved v2 design coming soon</span></mark>
+        <mark style="background-color: rgb(62, 62, 237); padding: 0;"><span style="color: white;">This is the v1 Marketplace UI - Massively improved v2 design coming soon</span></mark>
       </div>
     </ng-marquee>
   </div>
@@ -82,7 +82,7 @@
             <div class="search">
               <input type="text" placeholder="Collection, items...">
             </div>
-            <div class="search-btn btn-icon-round specific-size">
+            <div class="search-btn btn-icon-round ">
               <svg viewBox="0 0 16 16" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN hOiKLt"
               *ngIf="!SearchRespoOpened">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 9.76142 9.76142 12 7 12C4.23858 12 2 9.76142 2 7ZM7 0C3.13401 0 0 3.13401 0 7C0 10.866 3.13401 14 7 14C8.57591 14 10.0302 13.4792 11.2001 12.6004C11.2281 12.6376 11.259 12.6733 11.2929 12.7071L14.2929 15.7071C14.6834 16.0976 15.3166 16.0976 15.7071 15.7071C16.0976 15.3166 16.0976 14.6834 15.7071 14.2929L12.7071 11.2929C12.6733 11.259 12.6376 11.2281 12.6004 11.2001C13.4792 10.0302 14 8.57591 14 7C14 3.13401 10.866 0 7 0Z" fill="currentColor"></path>
@@ -104,7 +104,7 @@
           </ng-container>
         </div>
         <ng-container *ngIf="walletConnectionPassed">
-          <div class="avatar btn-icon-round specific-size"  (click)="openAvatar()" [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened, 'm-l_10': isMenuRespoOpened}">
+          <div class="avatar btn-icon-round"  (click)="openAvatar()" [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened, 'm-l_10': isMenuRespoOpened}">
             <i class="fa fa-user" aria-hidden="true" *ngIf="!changeRespoNavAndProfileIcons"></i>
             <ng-container *ngIf="changeRespoNavAndProfileIcons">
               <svg viewBox="0 0 18 8" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN jZIhBR">
@@ -130,9 +130,16 @@
             </div>
           </div>
           <button class="btn-default btn-icon-round" (click)="showNotifications()">
-            <svg width="14" height="23" viewBox="0 0 14 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.3866 11.3385L9.25538 0.819527C9.60421 0.405795 10.2701 0.763916 10.1173 1.28304L7.42105 10.4407H12.8054C13.6631 10.4407 14.1228 11.4496 13.56 12.0968L4.75363 22.2252C4.39943 22.6326 3.74032 22.2672 3.89816 21.751L6.57895 12.9831H1.15112C0.300592 12.9831 -0.161647 11.9887 0.3866 11.3385Z" fill="#373739"/>
-            </svg>
+            <ng-container *ngIf="!isDarkMode">
+              <svg width="14" height="23" viewBox="0 0 14 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.3866 11.3385L9.25538 0.819527C9.60421 0.405795 10.2701 0.763916 10.1173 1.28304L7.42105 10.4407H12.8054C13.6631 10.4407 14.1228 11.4496 13.56 12.0968L4.75363 22.2252C4.39943 22.6326 3.74032 22.2672 3.89816 21.751L6.57895 12.9831H1.15112C0.300592 12.9831 -0.161647 11.9887 0.3866 11.3385Z" fill="#373739"/>
+              </svg>
+            </ng-container>
+            <ng-container *ngIf="isDarkMode">
+              <svg width="14" height="23" viewBox="0 0 14 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.3866 11.3385L9.25538 0.819527C9.60421 0.405795 10.2701 0.763916 10.1173 1.28304L7.42105 10.4407H12.8054C13.6631 10.4407 14.1228 11.4496 13.56 12.0968L4.75363 22.2252C4.39943 22.6326 3.74032 22.2672 3.89816 21.751L6.57895 12.9831H1.15112C0.300592 12.9831 -0.161647 11.9887 0.3866 11.3385Z" fill="currentColor"/>
+              </svg>
+            </ng-container>
           </button>
         </ng-container>
         <ng-container *ngIf="!isMenuRespoOpened">
