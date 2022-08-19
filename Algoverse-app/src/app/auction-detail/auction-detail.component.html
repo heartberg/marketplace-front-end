@@ -127,10 +127,10 @@
                             margin-bottom: 3px;"
                            *ngFor="let item of mAuction.bids; let i = index"
                            routerLink="../../profile/{{item.biddingUserWallet}}">
-                        <div class="top-info">
+                        <div class="top-info" style="margin-right: 80px;">
                           <img *ngIf="item?.biddingUserPhoto" src="{{item?.biddingUserPhoto}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
                           <img *ngIf="!item?.biddingUserPhoto" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 5px;">
-                          <span>{{ item?.biddingUserName?.length > 15 ?  item?.biddingUserName.substring(0,8).concat('...'): item?.biddingUserName}}</span>
+                          <span>{{ item?.biddingUserName?.length > 33 ?  item?.biddingUserName.substring(0,33).concat('...'): item?.biddingUserName}}</span>
                           <!-- <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                                *ngIf="item?.biddingUser?.verified"> -->
                         </div>
