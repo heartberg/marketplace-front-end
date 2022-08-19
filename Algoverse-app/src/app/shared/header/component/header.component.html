@@ -60,7 +60,7 @@
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/items">My Offers</li>
             <li [ngClass]="{'menuRespoAnimationFourth': isMenuRespoOpened}" routerLink="/collection">My Collections</li>
             <li (click)="switcher()">Switch Acc</li>
-            <li [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}">Log Out</li>
+            <li (click)="logOut()" [ngClass]="{'menuRespoAnimationSixth': isMenuRespoOpened}">Log Out</li>
             <li style="font-size:66%;">{{version}}</li>
           </ng-container>
         </ul>
