@@ -270,6 +270,7 @@ export class TradeDetailComponent implements OnInit {
 
   closePopUp($event: boolean) {
     this.isPopUpOpened = $event;
+    console.log("closing popup")
   }
 
   isMine(isBid: boolean, index: number): boolean {
