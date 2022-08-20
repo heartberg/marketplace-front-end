@@ -139,7 +139,7 @@ export class CreateCollectionComponent implements OnInit {
         console.log(res)
         this.spinner.hide();
         alert('Successfully added');
-        //this.router.navigateByUrl("/collection-detail/" + )
+        this.router.navigateByUrl("/collection")
       },
       error => {
         this.spinner.hide();
