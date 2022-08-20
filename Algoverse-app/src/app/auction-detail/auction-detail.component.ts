@@ -168,6 +168,11 @@ export class AuctionDetailComponent implements OnInit {
       return;
     }
 
+    if(this.bidAmount < this.minimumIncrement * Math.pow(10, 6)) {
+      alert('Bid too low!');
+      return;
+    }
+
     if(!this.canClose && !this.canCancel && (!this.hasStarted || this.isFinished)){
       return;
     }
