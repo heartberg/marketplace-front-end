@@ -201,7 +201,7 @@ export class AuctionDetailComponent implements OnInit {
   }
 
   async closeAuction() {
-    console.log('start cancel trade:', this.mAuction.indexAddress);
+    console.log('start close auction:', this.mAuction.indexAddress);
     this.spinner.show()
     const result = await this._walletsConnectService.closeAuction(this.mAuction.indexAddress);
     if (result) {
