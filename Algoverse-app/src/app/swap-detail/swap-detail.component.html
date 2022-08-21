@@ -31,8 +31,8 @@
                       </video>
                     </div>
                     <div class="card-info-left">
-                      <div class="section asset-star-container" (click)="addOrRemoveStar(true)">
-                        <img class="asset-star" [src]="isStarredOffering  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                      <div class="section asset-star-container">
+                        <img (click)="addOrRemoveStar(true)" class="asset-star" [src]="isStarredOffering  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
                         <span>{{mSwap?.offeringAsset?.stars}}</span>
                       </div>
                       <div class="section">
@@ -101,8 +101,8 @@
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;">
-                        <div class="section asset-star-container" (click)="addOrRemoveStar(false)">
-                          <img class="asset-star" [src]="isStarredAccepting  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                        <div class="section asset-star-container">
+                          <img (click)="addOrRemoveStar(false)" class="asset-star" [src]="isStarredAccepting  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
                           <span>{{mSwap?.acceptingAsset?.stars}}</span>
                         </div>
                         <div class="section">

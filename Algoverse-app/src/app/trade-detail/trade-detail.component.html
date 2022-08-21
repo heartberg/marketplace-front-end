@@ -23,8 +23,8 @@
                       </video>
                     </div>
                     <div class="card-info-left">
-                      <div class="section asset-star-container" (click)="addOrRemoveStar()">
-                        <img class="asset-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                      <div class="section asset-star-container">
+                        <img class="asset-star" (click)="addOrRemoveStar()" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
                         <span>{{mItem?.stars}}</span>
                       </div>
                       <div class="section">
@@ -81,9 +81,9 @@
                 <ng-container>
                   <div class="card-info mt-3 wrapper-border col-lg-8 col">
                     <div class="section right">
-                      <h4>Sale price:</h4>
+                      <h4 style="color:#666">Sale price:</h4>
                       <div class="bids img scroll">
-                        <h4 *ngIf="mItem.openTrades.length == 0" style="margin-top: 15px; color: grey;">No open Sales yet</h4>
+                        <h4 *ngIf="mItem.openTrades.length == 0" style="margin-top: 15px;">Not set</h4>
                         <div class="bid section d-flex align-items-center wrapper-card"
                              *ngFor="let item of mItem.openTrades; let i = index"
                              (click)="selectSecond(item, i)"
@@ -112,9 +112,9 @@
                       </div>
                     </div>
                     <div class="section d-flex last right" style="margin-top: 30px; margin-bottom: 30px;">
-                      <h4>Bids:</h4>
+                      <h4 style="color:#666">Bids:</h4>
                       <div class="bids img scroll">
-                        <h4 *ngIf="mItem.bids.length == 0" style="margin-top: 15px; color: grey;">No bids yet</h4>
+                        <h4 *ngIf="mItem.bids.length == 0" style="margin-top: 15px;">No bids yet</h4>
                         <div class="bid section d-flex align-items-center wrapper-card d-flex"
                              *ngFor="let item of mItem.bids;  let i = index" (click)="select(item, i)"
                              [class.selected]="index === i">
@@ -144,10 +144,10 @@
                     </div>
                     <div class="d-flex justify-content-center action-buttons-section">
                       <button class="btn-secondary-costum" [class.disabled]="balance == 0" [disabled]="balance == 0" style="margin-left: 8px; width: 160px;" (click)="createSale()">
-                        Sell Asset
+                        Sell
                       </button>
                       <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="createBid()" style="width: 160px;">
-                        Make Offer
+                        Bid
                       </button>
                       <button class="btn-secondary-costum aligner" [class.disabled]="balance < mItem.bids[index].amount" [disabled]="balance < mItem.bids[index].amount" (click)="acceptBid()" *ngIf="index !== -1 && indexSecond === -1 && !isMine(true, index)" style="width: 160px;">
                         Accept Bid

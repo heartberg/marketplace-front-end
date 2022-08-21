@@ -160,6 +160,7 @@ export class TradeDetailComponent implements OnInit {
           alert("Cancelled bid!")
           console.log('result', result);
           console.log('Successfully cancelled')
+          this.mItem.bids.splice(this.index, this.index+1)
         },
         (error) => {
           this.spinner.hide();
@@ -271,6 +272,7 @@ export class TradeDetailComponent implements OnInit {
   closePopUp($event: boolean) {
     this.isPopUpOpened = $event;
     console.log("closing popup")
+    
   }
 
   isMine(isBid: boolean, index: number): boolean {
