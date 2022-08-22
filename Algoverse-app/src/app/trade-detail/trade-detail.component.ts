@@ -78,7 +78,6 @@ export class TradeDetailComponent implements OnInit {
         if(wallet) {
           this.balance = await getBalance(wallet.getDefaultAccount(), this.mItem.assetId);
           let client = getAlgodClient()
-          this.assetInfo = await client.getAssetByID(this.mItem.assetId).do()
           this._userService.getAssetStar(wallet.getDefaultAccount(), this.mItem.assetId).subscribe(
             (res: any) => {
               if(res) {
@@ -109,13 +108,13 @@ export class TradeDetailComponent implements OnInit {
 
   async showAssetDetails(asset: any) {
     this.spinner.show();
-    let assetInfo = await this._walletsConnectService.getAsset(asset.assetId);
+    this.assetInfo = await this._walletsConnectService.getAsset(asset.assetId);
     this.spinner.hide();
     this.assetName = asset.name;
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
     console.log('selectedAssetDescription', this.selectedAssetDescription)
-    this.decimals = assetInfo['params']['decimals'];
-    this.total = assetInfo['params']['total']
+    this.decimals = this.assetInfo['params']['decimals'];
+    this.total = this.assetInfo['params']['total']
     console.log(this.decimals)
     console.log(this.total)
     this.maxSupply = +asset.supply / Math.pow(10, this.decimals);
@@ -161,6 +160,7 @@ export class TradeDetailComponent implements OnInit {
           alert("Cancelled bid!")
           console.log('result', result);
           console.log('Successfully cancelled')
+          this.mItem.bids.splice(this.index, this.index+1)
         },
         (error) => {
           this.spinner.hide();
@@ -271,6 +271,8 @@ export class TradeDetailComponent implements OnInit {
 
   closePopUp($event: boolean) {
     this.isPopUpOpened = $event;
+    console.log("closing popup")
+    
   }
 
   isMine(isBid: boolean, index: number): boolean {

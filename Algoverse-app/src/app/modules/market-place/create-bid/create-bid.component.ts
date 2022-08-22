@@ -149,6 +149,11 @@ export class CreateBidComponent implements OnInit {
       return;
     }
 
+    if(+this.amount < 1) {
+      alert("Too many decimals on asset amount!");
+      return;
+    }
+
     console.log('bid start');
     this.spinner.show();
     this._userService.getBidIndex(this._walletsConnectService.myAlgoAddress[0]).subscribe(

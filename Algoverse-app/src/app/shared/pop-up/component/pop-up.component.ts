@@ -26,11 +26,14 @@ export class PopUpComponent implements OnInit {
   @Input() showFollower = false;
   @Input() showFollowed = false;
   @Input() trade = false;
+  @Input() balance = 0;
 
   ownFollowings: any;
   walletsForSwitching: any = '';
   enteredOffer: any;
   enteredAmount: number = 1;
+  totalSupply: number = 0;
+  decimals: number = 0;
   public allowedWallets: typeof AllowedWalletsEnum = AllowedWalletsEnum;
 
   constructor(
@@ -41,6 +44,14 @@ export class PopUpComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(this.selected) {
+      this.totalSupply = this.assetInfo.params.total
+      this.decimals = this.assetInfo.params.decimals
+    }
+  }
+
+  scaleTotalSupply(supply: number){
+    return supply / Math.pow(10, this.decimals)
   }
 
   closePopUp(value: any) {
@@ -167,13 +178,22 @@ export class PopUpComponent implements OnInit {
 
   placeBid() {
     if(!this.enteredOffer) {
-      alert("Please enter offered amount!");
+      alert("Please enter offered Algo amount!");
       return;
     }
 
-    if(this.assetInfo.params.decimals > 0 && !this.enteredAmount) {
-      alert("Please enter amount!");
+    if((this.assetInfo.params.decimals > 0 || this.assetInfo.params.total > 1 ) && !this.enteredAmount) {
+      alert("Please enter asset amount!");
       return;
+    }
+
+    if(this.enteredAmount > this.totalSupply) {
+      alert("Entered asset amount higher than supply!");
+      return;
+    }
+
+    if(this.enteredAmount * Math.pow(10, this.decimals) < 1) {
+      alert("Too many decimals on asset amount!");
     }
 
     console.log('start bid');
@@ -258,12 +278,22 @@ export class PopUpComponent implements OnInit {
 
   createSale() {
     if(!this.enteredOffer) {
-      alert("Please enter offered amount!");
+      alert("Please enter offered Algo amount!");
       return;
     }
 
-    if(this.assetInfo.params.decimals > 0 && !this.enteredAmount) {
+    if((this.assetInfo.params.decimals > 0 || this.assetInfo.params.total > 1) && !this.enteredAmount) {
       alert("Please enter amount!");
+      return;
+    }
+
+    if(this.enteredAmount > this.balance) {
+      alert("Entered asset amount exceeds wallet balance!");
+      return;
+    }
+
+    if(this.enteredAmount * Math.pow(10, this.decimals) < 1) {
+      alert("Too many decimals on asset amount!");
       return;
     }
 

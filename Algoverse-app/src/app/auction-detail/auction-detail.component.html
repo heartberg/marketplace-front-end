@@ -23,8 +23,8 @@
                       </video>
                     </div>
                     <div class="card-info-left">
-                      <div class="section auction-star-container" (click)="addOrRemoveStar()">
-                        <img class="auction-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
+                      <div class="section auction-star-container">
+                        <img (click)="addOrRemoveStar()" class="auction-star" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
                         <span>{{mAuction?.asset?.stars}}</span>
                       </div>
                       <div class="section">

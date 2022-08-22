@@ -20,6 +20,7 @@
 }
 
 .filters{
+  height: 550px;
   flex-direction: column;
   overflow: overlay;
 
@@ -40,11 +41,12 @@
 
 .notification{
   display: flex;
+  height: 550px;
   flex-direction: column;
   overflow: overlay;
 
   .fix-height {
-    height: 337px;
+    height: 550px;
     overflow-y: scroll;
   }
 }

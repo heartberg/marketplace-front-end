@@ -22,6 +22,9 @@ app-drop-down-selector {
 
   .title {
     margin-top: 2em;
+    h3 {
+      color: #666;
+    }
   }
 
   .sale-section {
@@ -43,7 +46,7 @@ app-drop-down-selector {
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
-        align-items: center;
+        text-align: left;
 
         &.first {
           .price-input-section {
@@ -101,8 +104,9 @@ app-drop-down-selector {
 
     }
   }
-  .color-violet {
-    text-align: center;
+  .custom-color {
+    color: #666;
+    text-align: left;
     margin-bottom: 20px;
     font-size: 22px;
   }
@@ -201,3 +205,4 @@ app-drop-down-selector {
     }
   }
 }
+

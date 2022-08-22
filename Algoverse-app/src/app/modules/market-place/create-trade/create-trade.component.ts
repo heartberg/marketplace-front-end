@@ -166,6 +166,12 @@ export class CreateTradeComponent implements OnInit {
       alert('Please input amount smaller then max supply');
       return;
     }
+
+    if(+this.amount * Math.pow(10, this.selectedAssetDecimals) < 1) {
+      alert("Too many decimals on asset amount!");
+      return;
+    }
+
     const asset = this.getAsset('' + this.selectedAssetID);
     if (!asset) {
       alert('Please select a valid asset to auction');
