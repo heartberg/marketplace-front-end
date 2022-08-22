@@ -1,7 +1,8 @@
 .ucard {
   flex: 1 0 auto;
-  max-width: 451px;
+  max-width: 260px;
   margin: 0 auto;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -65,8 +66,8 @@
 
     .card-image {
       display: block;
-      width: 451px;
-      height: 451px;
+      width: 260px;
+      height: 260px;
       border-radius: 10px;
       object-fit: cover;
     }
@@ -108,13 +109,13 @@
     h3 {
       font-size: 15px;
       font-weight: 700;
-      color: rgba(190, 195, 200, 1);
+      color: #666;
     }
 
     h4 {
       font-size: 15px;
       font-weight: 500;
-      color: rgba(190, 195, 200, 0.6);
+      color: #666;
     }
 
     .accepting-id {

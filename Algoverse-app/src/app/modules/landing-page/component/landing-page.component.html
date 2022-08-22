@@ -59,10 +59,7 @@
           <img src="{{item['icon']}}" alt="" routerLink="../collection-detail/{{item['collectionId']}}">
           <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
         </div>
-        <div class="mitem" *ngIf="item['isAsset']">
-          <img src="https://algoverse.infura-ipfs.io/ipfs/{{item['file']}}" alt="" routerLink="../asset-detail/{{item['assetId']}}">
-          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
-        </div>
+        <app-updated-card *ngIf="item['isAsset']" [item]="item" [type]="marketplaceTypes.ALL" routerLink="../asset-detail/{{item['assetId']}}"></app-updated-card>
         <div class="mitem" *ngIf="item['isUser']">
           <img src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt=""
           routerLink="../profile/{{item['wallet']}}">

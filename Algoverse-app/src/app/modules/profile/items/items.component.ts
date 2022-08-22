@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MarketplaceTypeEnum } from 'src/app/models';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
 
@@ -12,6 +13,7 @@ export class ItemsComponent implements OnInit {
   public arr = []
   public types: string[] = ['Trade', 'Bid', 'Swap', 'Auction'];
   profileOpened: boolean = false;
+  public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
 
   constructor(
     private router: Router,
