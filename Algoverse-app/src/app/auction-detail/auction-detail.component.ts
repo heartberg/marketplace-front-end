@@ -374,4 +374,12 @@ export class AuctionDetailComponent implements OnInit {
     return date.toDateString() + " - " + hours + ":" + minutes
   }
 
+  formatFractions(decimals: number) {
+    if(decimals < 5) {
+      return Math.pow(10, decimals).toFixed(0)
+    } else {
+      return decimals
+    }
+  }
+
 }

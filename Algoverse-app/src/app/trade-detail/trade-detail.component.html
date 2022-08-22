@@ -41,7 +41,7 @@
                       </div>
                       <div class="section">
                         <h4>Supply:</h4>
-                        <span class="unset-dm-style">{{maxSupply}} {{ decimals > 0? ' (Fractions: ' : ""}} {{decimals > 0 ? decimals : ''}}{{decimals > 0 ? ")" : ''}}</span>
+                        <span class="unset-dm-style">{{maxSupply}} {{ decimals > 0? ' (Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}}{{decimals > 0 ? ")" : ''}}</span>
                       </div>
                       <div class="section">
                         <h4>Owned:</h4>

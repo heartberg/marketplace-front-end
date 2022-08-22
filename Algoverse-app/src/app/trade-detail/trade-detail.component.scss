@@ -304,6 +304,12 @@ input[type=date] {
   }
 }
 
+.sup{
+  position: relative;
+  bottom: 1ex; 
+  font-size: 80%;
+}
+
 .asset-image {
   object-fit: cover;
   margin-right: 8px;

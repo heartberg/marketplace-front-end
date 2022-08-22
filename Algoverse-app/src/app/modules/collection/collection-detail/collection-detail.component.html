@@ -70,7 +70,7 @@
       </div>
       <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" *ngFor="let item of mAssets">
-          <app-card [mItem]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-card>
+          <app-updated-card [type]="marketplaceTypes.ALL" [item]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-updated-card>
           <!-- [routerLink]="'/asset-detail/' + item['assetId']" -->
         </div>
       </div>

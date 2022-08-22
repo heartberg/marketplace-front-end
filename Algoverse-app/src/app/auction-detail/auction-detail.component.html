@@ -41,7 +41,7 @@
                       </div>
                       <div class="section">
                         <h4>Supply:</h4>
-                        <span class="unset-dm-style">{{ totalSupply }} {{ decimals > 0? ' (Fractions: ' : ''}} {{decimals > 0? decimals : ''}}{{ decimals > 0? ')' : ''}}</span>
+                        <span class="unset-dm-style">{{totalSupply}} {{ decimals > 0? ' (Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}} {{decimals > 0 ? ")" : ''}}</span>
                       </div>
                       <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mAuction?.asset.creator.wallet}}">
                         <h4 style="overflow-wrap: break-word;">Creator: </h4>

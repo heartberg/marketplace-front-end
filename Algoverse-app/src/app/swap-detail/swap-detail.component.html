@@ -57,7 +57,7 @@
                       </div>
                       <div class="section">
                         <h4>Supply:</h4>
-                        <span class="unset-dm-style">{{offeringAssetSupply}} {{offeringAssetDecimals > 0 ? "(Fractions: " : ''}} {{offeringAssetDecimals > 0 ? offeringAssetDecimals : ''}}{{offeringAssetDecimals > 0 ? ")" : ''}} </span>
+                        <span class="unset-dm-style">{{offeringAssetSupply}} {{ offeringAssetDecimals > 0? ' (Fractions: ' : ""}} {{offeringAssetDecimals >= 5 ? 10 : "" }}<sup *ngIf="offeringAssetDecimals >= 5">{{offeringAssetDecimals}}</sup> {{(offeringAssetDecimals < 5 && offeringAssetDecimals > 0)? formatFractions(offeringAssetDecimals) : ""}}{{offeringAssetDecimals > 0 ? ")" : ''}}</span>
                       </div>
                       <div class="section">
                         <h4>Amount:</h4>
@@ -127,7 +127,7 @@
                         </div>
                         <div class="section">
                           <h4>Supply:</h4>
-                          <span> {{ acceptingAssetSupply }} {{ acceptingAssetDecimals > 0? ' (Fractions: {{acceptingAssetDecimals}}' : ''}}</span>
+                          <span class="unset-dm-style">{{acceptingAssetSupply}} {{ acceptingAssetDecimals > 0? ' (Fractions: ' : ""}} {{acceptingAssetDecimals >= 5 ? 10 : "" }}<sup *ngIf="acceptingAssetDecimals >= 5">{{acceptingAssetDecimals}}</sup> {{(acceptingAssetDecimals < 5 && acceptingAssetDecimals > 0)? formatFractions(acceptingAssetDecimals) : ""}}{{acceptingAssetDecimals > 0 ? ")" : ''}}</span>
                         </div>
                         <div class="section">
                           <h4>Amount:</h4>
