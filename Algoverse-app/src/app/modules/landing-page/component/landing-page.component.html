@@ -13,7 +13,7 @@
     <div *ngIf="featuredArtists.length" class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" routerLink="/profile/{{featuredArtists[0].wallet}}">
       <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
         <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded" class="featured-artist-profile-picture">
-        <span style="margin-top: 10px;">@{{featuredArtists[0].name}}</span>
+        <span style="margin-top: 10px; color: #666;">@{{featuredArtists[0].name}}</span>
       </div>
   </div>
   <div class="second-section wrapper-border relative">
