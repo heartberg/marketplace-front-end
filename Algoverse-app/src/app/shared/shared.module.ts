@@ -15,7 +15,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ScrollComponent } from './scroll/scroll.component';
 import { SwiperModule } from "swiper/angular";
 import { OnlyNumbers } from "./directives/only-number.directive";
-import { NgMarqueeModule } from "ng-marquee"
+import { NgMarqueeModule } from "ng-marquee";
+import { UpdatedCardComponent } from './updated-card/updated-card.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NgMarqueeModule } from "ng-marquee"
     SkeletonImgComponent,
     SkeletonCardComponent,
     ScrollComponent,
-    OnlyNumbers
+    OnlyNumbers,
+    UpdatedCardComponent
   ],
   imports: [
     BrowserModule,
@@ -38,20 +40,21 @@ import { NgMarqueeModule } from "ng-marquee"
     SwiperModule,
     NgMarqueeModule,
   ],
-  exports: [
-    PopUpComponent,
-    HeaderComponent,
-    DropDownSelectorComponent,
-    CardComponent,
-    SwapCardComponent,
-    TimedAuctionCardComponent,
-    SkeletonImgComponent,
-    SkeletonCardComponent,
-    NgxSpinnerModule,
-    NgxSliderModule,
-    ScrollComponent,
-    OnlyNumbers
-  ],
+    exports: [
+        PopUpComponent,
+        HeaderComponent,
+        DropDownSelectorComponent,
+        CardComponent,
+        SwapCardComponent,
+        TimedAuctionCardComponent,
+        SkeletonImgComponent,
+        SkeletonCardComponent,
+        NgxSpinnerModule,
+        NgxSliderModule,
+        ScrollComponent,
+        OnlyNumbers,
+        UpdatedCardComponent
+    ],
   providers: [WalletsConnectService],
 })
 

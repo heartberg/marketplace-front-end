@@ -23,7 +23,6 @@
         <img *ngIf="!mItem.offerer.profileImage" class="creator-image" src="assets/img/default-avatar.svg" alt="">
         <span class="unset-dm-style">{{mItem.offerer.name.length > 15? mItem.offerer.name.substring(0,15).concat('...') : mItem.offerer.name}}</span>
         <img *ngIf="mItem.offerer.verified" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt="">
-
       </div>
     </div>
   </div>

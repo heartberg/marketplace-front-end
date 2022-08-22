@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSliderChange } from '@angular/material/slider';
 import { Options, LabelType } from '@angular-slider/ngx-slider';
+import { MarketplaceTypeEnum } from "../../../models";
 
 @Component({
   selector: 'app-market-place',
@@ -17,7 +18,7 @@ export class MarketPlaceComponent implements OnInit {
   public artistsDropDown: string[] = ['All Creators'];
   public sortDropDown: string[] = ['Newest', 'Stars', 'Price high to low', 'Price low to high'];
   //public sortDropDown: string[] = ['Newest', 'Ending soon', 'Price high to low', 'Price low to high','Stars'];
-  
+
   public nfts: any[] = [];
   public trades: any[] = [];
   public bids: any[] = [];
@@ -41,6 +42,7 @@ export class MarketPlaceComponent implements OnInit {
   public sort: string = 'Newest';
   public lowPrice: number = 0;
   public highPrice: number = 10000;
+  public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
 
   public options: Options = {
     floor: 0,
@@ -181,7 +183,7 @@ export class MarketPlaceComponent implements OnInit {
     console.log('lowPrice', this.lowPrice);
     console.log('highPrice', this.highPrice);
     console.log('sort', this.sort);
-    
+
     let sortBy = "Newest";
     if (this.sort == "Ending soon") {
       sortBy = "EndSoon";

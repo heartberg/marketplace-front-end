@@ -1,0 +1,117 @@
+<div class="ucard">
+  <div class="card-image-section">
+    <div class="card-image-wrapper">
+      <!--default behaviour-->
+      <img *ngIf="type === marketplaceTypes.ALL" class="card-image" src="https://algoverse.infura-ipfs.io/ipfs/{{item.file}}" alt="image">
+      <!--if type is auction-->
+      <img *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE" class="card-image" src="https://algoverse.infura-ipfs.io/ipfs/{{item.asset.file}}" alt="image">
+      <!--if type is swap-->
+      <img *ngIf="type === marketplaceTypes.SWAP" class="card-image" src="https://algoverse.infura-ipfs.io/ipfs/{{item.offeringAsset.file}}" alt="image">
+    </div>
+    <div class="creator-section">
+      <ng-container *ngIf="type === marketplaceTypes.ALL">
+        <ng-container *ngIf="item.collection">
+          <img [src]="item.collection.icon"
+               alt="Collection">
+          <h4>{{(item.collection.name.length > 15) ? (item.collection.name | slice:0:15) + '...' : (item.collection.name)}}</h4>
+        </ng-container>
+        <ng-container *ngIf="!item.collection">
+          <h4>No Collection</h4>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE">
+        <ng-container *ngIf="item.asset.collection">
+          <img [src]="item.asset.collection.icon"
+               alt="Collection">
+          <h4>{{(item.asset.collection.name.length > 15) ? (item.asset.collection.name | slice:0:15) + '...' : (item.asset.collection.name)}}</h4>
+        </ng-container>
+        <ng-container *ngIf="!item.asset.collection">
+          <h4>No Collection</h4>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="type === marketplaceTypes.SWAP">
+        <ng-container *ngIf="item.offeringAsset.collection">
+        <img [src]="item.offeringAsset.collection.icon"
+             alt="Collection">
+        <h4>{{(item.offeringAsset.collection.name.length > 15) ? (item.offeringAsset.collection.name | slice:0:15) + '...' : (item.offeringAsset.collection.name)}}</h4>
+        </ng-container>
+        <ng-container *ngIf="!item.offeringAsset.collection">
+          <h4>No Collection</h4>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="hearted-section">
+      <img src="assets/img/heart.svg" alt="heart">
+      <h4 *ngIf="type === marketplaceTypes.ALL">{{item.stars}}</h4>
+      <h4 *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE">{{item.asset.stars}}</h4>
+      <h4 *ngIf="type === marketplaceTypes.SWAP">{{item.offeringAsset.stars}}</h4>
+    </div>
+    <div class="timing-section" *ngIf="type === marketplaceTypes.AUCTION">
+      <h4>{{auctionCountdown}}</h4>
+    </div>
+  </div>
+  <div class="card-info-section">
+    <div class="card-info row m-0 justify-content-between">
+      <ng-container *ngIf="type === marketplaceTypes.ALL">
+        <h3>{{item.name}}</h3>
+        <h4 *ngIf="!item.price">No price</h4>
+        <div class="d-flex align-items-center" *ngIf="item.price > 0">
+          <h4 class="mr-1">{{(item.price / 1000000).toFixed(3)}}</h4>
+          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+        </div>
+      </ng-container>
+      <ng-container *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE">
+        <h3>{{item.asset.name}}</h3>
+        <h4 *ngIf="type === marketplaceTypes.AUCTION">Auction</h4>
+        <h4 *ngIf="type === marketplaceTypes.BID">Bid</h4>
+        <h4 *ngIf="type === marketplaceTypes.TRADE">Trade</h4>
+      </ng-container>
+      <ng-container *ngIf="type === marketplaceTypes.SWAP">
+        <h3>{{item.offeringAsset.name}}</h3>
+        <h4>Swap</h4>
+      </ng-container>
+    </div>
+    <div class="card-info row m-0 justify-content-between">
+      <!--Default Behavior-->
+      <h3 *ngIf="type === marketplaceTypes.ALL || type === marketplaceTypes.AUCTION">@{{(item.creator.name.length > 15) ? (item.creator.name | slice:0:15) + '...' : (item.creator.name)}}</h3>
+      <h3 *ngIf="type === marketplaceTypes.BID">@{{(item.biddingUser.name.length > 15) ? (item.biddingUser.name.name | slice:0:15) + '...' : (item.biddingUser.name)}}</h3>
+      <!--If type is All-->
+      <ng-container *ngIf="type === marketplaceTypes.ALL">
+        <div class="d-flex align-items-center" *ngIf="item.highestBid && item.highestBid < (item.price / 1000)">-
+          <h4 class="mr-1">Bid {{item.highestBid}}</h4>
+          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+        </div>
+        <h4 *ngIf="!item.highestBid">No Bids</h4>
+      </ng-container>
+      <!--If type is Bid-->
+      <ng-container *ngIf="type === marketplaceTypes.BID">
+        <div class="d-flex align-items-center">
+          <h4 class="mr-1">Bid {{(item.price / 1000000).toFixed(3)}}</h4>
+          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+        </div>
+      </ng-container>
+      <!--If type is Trade-->
+      <ng-container *ngIf="type === marketplaceTypes.TRADE">
+        <div class="d-flex align-items-center">
+          <h4 class="mr-1">Price {{(item.price / 1000000).toFixed(3)}}</h4>
+          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+        </div>
+      </ng-container>
+      <!--If type is Auctiom-->
+      <ng-container *ngIf="type === marketplaceTypes.AUCTION">
+        <div class="d-flex align-items-center" *ngIf="item.bids.length">
+          <h4 class="mr-1">Bid {{highestBid}}</h4>
+          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+        </div>
+        <ng-container *ngIf="!item.bids.length">
+          <h4>No Bids</h4>
+        </ng-container>
+      </ng-container>
+      <!--If type is Swap-->
+      <ng-container *ngIf="type === marketplaceTypes.SWAP">
+        <h3 *ngIf="type === marketplaceTypes.SWAP">@{{(item.offerer.name.length > 15) ? (item.offerer.name | slice:0:15) + '...' : (item.offerer.name)}}</h3>
+        <h4>For <span class="accepting-id">{{item.acceptingAsset.assetId}}</span></h4>
+      </ng-container>
+    </div>
+  </div>
+</div>
