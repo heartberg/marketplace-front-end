@@ -319,6 +319,7 @@ export class TradeDetailComponent implements OnInit {
           console.log(value)
           this.isStarred = true;
           this.mItem.stars++;
+          this.assetStar = value;
         }
       )
     } else {
