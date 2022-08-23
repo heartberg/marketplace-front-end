@@ -3,7 +3,7 @@
 >
   <ng-template swiperSlide *ngFor="let scrollItem of scrollItems">
     <div class="scroll-item" (click)="openArtistProfile.emit(scrollItem.wallet)">
-        <img class="featured-artist-profile-picture" [src]="scrollItem.profileImage ? scrollItem.profileImage : defaultImageSource" alt="artist-image">
+        <img class="featured-artist-profile-picture" [src]="scrollItem.profileImage ? scrollItem.profileImage : defaultImageSource" alt="artist-image" [ngClass]="{default: !scrollItem.profileImage}">
         <span class="artist-name">@{{(scrollItem.name.length > 15) ? (scrollItem.name | slice:0:15) + '...' : (scrollItem.name)}}</span>
     </div>
   </ng-template>

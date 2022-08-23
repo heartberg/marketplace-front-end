@@ -14,15 +14,17 @@
   margin-right: 15px;
   margin-left: 15px;
 
-  img {
+  .featured-artist-profile-picture {
     max-width: 100%;
     height: 300px;
     border-radius: 25px;
+    object-fit: cover;
+  }
+  .default {
+    object-fit: unset;
   }
 }
-.featured-artist-profile-picture {
-  object-fit: cover;
-}
+
 .artist-name {
   margin: 0 auto;
   color: #666;
