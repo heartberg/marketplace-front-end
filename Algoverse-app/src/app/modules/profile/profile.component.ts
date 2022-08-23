@@ -9,6 +9,7 @@ import { WalletsConnectService } from 'src/app/services/wallets-connect.service'
 import {SessionWallet} from "algorand-session-wallet";
 import {Location} from "@angular/common";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MarketplaceTypeEnum } from 'src/app/models';
 
 @Component({
   selector: 'app-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
   public showFollowers = false;
   public popupOpen = false;
   public walletAddress = "";
+  public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
 
   constructor(
     private userService: UserService,
@@ -48,7 +50,6 @@ export class ProfileComponent implements OnInit, OnDestroy{
   ) {}
 
   ngOnInit(): void {
-    this.walletAddress = this.walletsConnectService.myAlgoAddress[0];
     this.initialiseProfile();
     this.detectOwnProfile(this.connectService.sessionWallet);
   }

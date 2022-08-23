@@ -61,6 +61,7 @@ export class CreateAssetComponent implements OnInit {
   attributesOk: boolean = true;
   public fileType: string = "";
   public acceptedFileFormats: string = "audio/mpeg, audio/mp3, audio/wav, video/mp4, video/mpeg, image/*";
+  public acceptedImageFileFormats: string = "image/*";
   category: string = "Collectibles";
   // ff first form // sf second form
   public isCollectionSelected: boolean = false;
@@ -330,9 +331,9 @@ export class CreateAssetComponent implements OnInit {
   }
 
   async onFileInput(e: any) {
-    if(!e) return
-    this.spinner.show()
     console.log("fileupload")
+    if(!e || !e.target.files.length) return;
+    this.spinner.show()
     console.log('e', e.target.files[0]);
     console.log('e type: ', e.target.files[0].type)
     this.fileType = e.target.files[0].type;

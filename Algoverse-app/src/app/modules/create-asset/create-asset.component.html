@@ -11,7 +11,7 @@
             <h4>Upload File</h4>
             <button class="btn-primary-costum" (click)="fileInput.click()">
               Upload File
-              <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;"
+              <input id="asset-input" #fileInput type="file" (change)="onFileInput($event)" style="display:none;"
                      [accept]="acceptedFileFormats"/>
             </button>
           </div>
@@ -33,7 +33,7 @@
             <button class="btn-primary-costum" (click)="coverInput.click()">
               Upload Cover
               <input #coverInput type="file" (change)="onCoverInput($event)" style="display:none;"
-                     [accept]="acceptedFileFormats"/>
+                     [accept]="acceptedImageFileFormats"/>
             </button>
             <!--if cover image is uploaded-->
           </div>

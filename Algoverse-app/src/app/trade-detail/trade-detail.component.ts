@@ -189,6 +189,7 @@ export class TradeDetailComponent implements OnInit {
           alert("Cancelled trade!")
           console.log('result', result);
           console.log('Successfully cancelled')
+          this.mItem.openTrades.splice(this.indexSecond, this.indexSecond+1)
         },
         (error) => {
           this.spinner.hide();
@@ -366,4 +367,13 @@ export class TradeDetailComponent implements OnInit {
   public buyNow(): void {
 
   }
+
+  formatFractions(decimals: number) {
+    if(decimals < 5) {
+      return Math.pow(10, decimals).toFixed(0)
+    } else {
+      return decimals
+    }
+  }
+
 }

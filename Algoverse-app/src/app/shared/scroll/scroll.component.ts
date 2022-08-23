@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Mousewheel, SwiperOptions} from "swiper";
+import {Mousewheel, Scrollbar, SwiperOptions} from "swiper";
 import SwiperCore from 'swiper';
 
-SwiperCore.use([Mousewheel])
+SwiperCore.use([Mousewheel, Scrollbar])
 
 @Component({
   selector: 'app-scroll',
@@ -15,11 +15,13 @@ export class ScrollComponent {
   @Output() public openArtistProfile: EventEmitter<string> = new EventEmitter<string>();
 
   public config: SwiperOptions = {
+    direction: 'horizontal',
+    centeredSlides: false,
     spaceBetween: 8,
     slidesPerView: 1,
-    mousewheel: {
-      sensitivity: 1,
-      releaseOnEdges: true
+    scrollbar: {
+      draggable: true,
+      snapOnRelease: true,
     },
     on: {},
     breakpoints: {

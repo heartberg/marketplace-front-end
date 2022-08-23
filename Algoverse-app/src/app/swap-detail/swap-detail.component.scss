@@ -493,3 +493,9 @@ input[type=date] {
   display: flex;
   flex-direction: column;
 }
+
+.sup{
+  position: relative;
+  bottom: 1ex; 
+  font-size: 80%;
+}

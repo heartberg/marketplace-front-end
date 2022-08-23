@@ -99,25 +99,27 @@
       overflow-x: scroll;
       overflow-y: hidden;
       width: 100%;
-      height: 160px;
+      height: 400px;
       white-space: nowrap;
 
       .box {
         margin: 5px 10px 5px 10px;
-        height: 140px;
+        height: 340px;
         cursor: pointer;
         display:inline-block;
         *display:inline;/* For IE7*/
         *zoom:1;/* For IE7*/
 
         .mitem {
+          height: 340px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           align-items: center;
 
           img {
-            height: 100px;
+            height: 290px;
+            object-fit: contain;
           }
         }
       }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MarketplaceTypeEnum } from 'src/app/models';
 import { StateService } from 'src/app/services/state.service';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
@@ -17,6 +18,7 @@ export class CollectionDetailComponent implements OnInit {
   public collectionStar: any;
   public collectionId: string = "";
   public myCollection: boolean = false;
+  public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,

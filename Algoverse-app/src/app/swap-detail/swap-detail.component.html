@@ -51,13 +51,13 @@
                         <h4 style="overflow-wrap: break-word;">Creator: </h4>
                         <img *ngIf="mSwap?.offeringAsset?.creator?.profileImage" src="{{mSwap?.offeringAsset?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
                         <img *ngIf="!mSwap?.offeringAsset?.creator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
-                        <span>{{mSwap?.offeringAsset?.creator?.name.length > 15? mSwap?.offeringAsset?.creator?.name.substring(0,15).concat('...') : mSwap?.offeringAsset?.creator?.name}}</span>
+                        <span>@{{mSwap?.offeringAsset?.creator?.name.length > 15? mSwap?.offeringAsset?.creator?.name.substring(0,15).concat('...') : mSwap?.offeringAsset?.creator?.name}}</span>
                         <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                              *ngIf="mSwap?.offeringAsset?.creator?.verified">
                       </div>
                       <div class="section">
-                        <h4>Total Supply:</h4>
-                        <span class="unset-dm-style">{{offeringAssetSupply}} {{offeringAssetDecimals > 0 ? "(Fractions: " : ''}} {{offeringAssetDecimals > 0 ? offeringAssetDecimals : ''}}{{offeringAssetDecimals > 0 ? ")" : ''}} </span>
+                        <h4>Supply:</h4>
+                        <span class="unset-dm-style">{{offeringAssetSupply}} {{ offeringAssetDecimals > 0? ' (Fractions: ' : ""}} {{offeringAssetDecimals >= 5 ? 10 : "" }}<sup *ngIf="offeringAssetDecimals >= 5">{{offeringAssetDecimals}}</sup> {{(offeringAssetDecimals < 5 && offeringAssetDecimals > 0)? formatFractions(offeringAssetDecimals) : ""}}{{offeringAssetDecimals > 0 ? ")" : ''}}</span>
                       </div>
                       <div class="section">
                         <h4>Amount:</h4>
@@ -121,13 +121,13 @@
                           <h4 style="overflow-wrap: break-word;">Creator: </h4>
                           <img *ngIf="mSwap?.acceptingAsset?.creator?.profileImage" src="{{mSwap?.acceptingAsset?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
                           <img *ngIf="!mSwap?.acceptingAsset?.creator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
-                          <span>{{mSwap?.acceptingAsset?.creator?.name.length > 15? mSwap?.acceptingAsset?.creator?.name.substring(0,15).concat('...') : mSwap?.acceptingAsset?.creator?.name}}</span>
+                          <span>@{{mSwap?.acceptingAsset?.creator?.name.length > 15? mSwap?.acceptingAsset?.creator?.name.substring(0,15).concat('...') : mSwap?.acceptingAsset?.creator?.name}}</span>
                           <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                                *ngIf="mSwap?.acceptingAsset?.creator?.verified">
                         </div>
                         <div class="section">
-                          <h4>Total Supply:</h4>
-                          <span> {{ acceptingAssetSupply }} {{ acceptingAssetDecimals > 0? ' (Fractions: {{acceptingAssetDecimals}}' : ''}}</span>
+                          <h4>Supply:</h4>
+                          <span class="unset-dm-style">{{acceptingAssetSupply}} {{ acceptingAssetDecimals > 0? ' (Fractions: ' : ""}} {{acceptingAssetDecimals >= 5 ? 10 : "" }}<sup *ngIf="acceptingAssetDecimals >= 5">{{acceptingAssetDecimals}}</sup> {{(acceptingAssetDecimals < 5 && acceptingAssetDecimals > 0)? formatFractions(acceptingAssetDecimals) : ""}}{{acceptingAssetDecimals > 0 ? ")" : ''}}</span>
                         </div>
                         <div class="section">
                           <h4>Amount:</h4>

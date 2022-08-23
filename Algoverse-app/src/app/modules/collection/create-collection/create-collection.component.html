@@ -10,7 +10,7 @@
           <h4>Collection Icon</h4>
           <button class="btn-primary-costum" (click)="icon.click()">
             Upload Icon
-            <input #icon type="file" (change)="onIconInput($event)" style="display:none;" accept="image/*"/>
+            <input id="collection-input" #icon type="file" (change)="onIconInput($event)" style="display:none;" accept="image/*"/>
           </button>
         </div>
         <img *ngIf="iconUrl" [src]="iconUrl" alt="collection-icon">

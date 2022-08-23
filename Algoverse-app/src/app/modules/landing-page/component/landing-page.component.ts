@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from "@angular/router";
+import { MarketplaceTypeEnum } from 'src/app/models';
 
 @Component({
   selector: 'app-landing-page',
@@ -13,6 +14,7 @@ export class LandingPageComponent implements OnInit {
   public hotDropDown = ['Collections', 'Asset', 'Buyers', 'Sellers', 'Creators'];
   public hotInDropDown = ['1 Day', '7 Days', '30 Days', 'All Time',];
   public isLoaded:boolean = true;
+  public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
 
   public featuredArtists: Array<any> = [];
   public hotItems: Array<any> = [];

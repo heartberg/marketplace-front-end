@@ -13,7 +13,7 @@
     <div *ngIf="featuredArtists.length" class="wrapper second-wrapper wrapper-border relative" style="cursor: pointer;" routerLink="/profile/{{featuredArtists[0].wallet}}">
       <app-skeleton-img *ngIf="!isLoaded"></app-skeleton-img>
         <img src="{{featuredArtists[0].profileImage}}" alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU" *ngIf="isLoaded" class="featured-artist-profile-picture">
-        <span style="margin-top: 10px;">{{featuredArtists[0].name}}</span>
+        <span style="margin-top: 10px; color: #666;">@{{featuredArtists[0].name}}</span>
       </div>
   </div>
   <div class="second-section wrapper-border relative">
@@ -55,18 +55,14 @@
     </div>
     <div class="scrolls">
       <div class="box" *ngFor="let item of hotItems">
-        <div class="mitem" *ngIf="item['isCollection']">
-          <img src="{{item['icon']}}" alt="" routerLink="../collection-detail/{{item['collectionId']}}">
-          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+        <div *ngIf="item['isCollection']">
+          <app-card [mItem]="item" [isCollection]="true"></app-card>
         </div>
-        <div class="mitem" *ngIf="item['isAsset']">
-          <img src="https://algoverse.infura-ipfs.io/ipfs/{{item['file']}}" alt="" routerLink="../asset-detail/{{item['assetId']}}">
-          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
-        </div>
+        <app-updated-card *ngIf="item['isAsset']" [item]="item" [type]="marketplaceTypes.ALL" routerLink="../asset-detail/{{item['assetId']}}"></app-updated-card>
         <div class="mitem" *ngIf="item['isUser']">
-          <img src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt=""
+          <img class="featured-artist-profile-picture" src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt=""
           routerLink="../profile/{{item['wallet']}}">
-          <span style="max-width: 150px;overflow: hidden;">{{item['name']}}</span>
+          <span style="color: #666;">@{{item['name'].length > 15 ?  item['name'].substring(0,15).concat('...'): item['name']}}</span>
         </div>
       </div>
     </div>
