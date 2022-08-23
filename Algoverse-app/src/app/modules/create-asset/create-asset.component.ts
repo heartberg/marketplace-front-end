@@ -332,7 +332,7 @@ export class CreateAssetComponent implements OnInit {
 
   async onFileInput(e: any) {
     console.log("fileupload")
-    if(!e) return
+    if(!e || !e.target.files.length) return;
     this.spinner.show()
     console.log('e', e.target.files[0]);
     console.log('e type: ', e.target.files[0].type)
