@@ -12,7 +12,7 @@
       <ng-container *ngIf="type === marketplaceTypes.ALL">
         <ng-container *ngIf="item.collection">
           <img [src]="item.collection.icon"
-               alt="Collection">
+               alt="Collection" routerLink="../../collection-detail/{{item.collection.collectionId}}">
           <h4>{{(item.collection.name.length > 15) ? (item.collection.name | slice:0:15) + '...' : (item.collection.name)}}</h4>
         </ng-container>
         <ng-container *ngIf="!item.collection">
@@ -22,7 +22,7 @@
       <ng-container *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE">
         <ng-container *ngIf="item.asset.collection">
           <img [src]="item.asset.collection.icon"
-               alt="Collection">
+               alt="Collection" routerLink="../../collection-detail/{{item.asset.collection.collectionId}}">
           <h4>{{(item.asset.collection.name.length > 15) ? (item.asset.collection.name | slice:0:15) + '...' : (item.asset.collection.name)}}</h4>
         </ng-container>
         <ng-container *ngIf="!item.asset.collection">
@@ -32,7 +32,7 @@
       <ng-container *ngIf="type === marketplaceTypes.SWAP">
         <ng-container *ngIf="item.offeringAsset.collection">
         <img [src]="item.offeringAsset.collection.icon"
-             alt="Collection">
+             alt="Collection" routerLink="../../collection-detail/{{item.offeringAsset.collection.collectionId}}">
         <h4>{{(item.offeringAsset.collection.name.length > 15) ? (item.offeringAsset.collection.name | slice:0:15) + '...' : (item.offeringAsset.collection.name)}}</h4>
         </ng-container>
         <ng-container *ngIf="!item.offeringAsset.collection">
