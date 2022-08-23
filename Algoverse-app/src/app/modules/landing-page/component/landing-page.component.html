@@ -60,7 +60,7 @@
         </div>
         <app-updated-card *ngIf="item['isAsset']" [item]="item" [type]="marketplaceTypes.ALL" routerLink="../asset-detail/{{item['assetId']}}"></app-updated-card>
         <div class="mitem" *ngIf="item['isUser']">
-          <img class="featured-artist-profile-picture" src="{{item['profileImage']?item['profileImage']:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIpwPBaVYiXVLl_gTRHBWJPkkjp5JdeBqGQ&usqp=CAU'}}" alt=""
+          <img class="featured-artist-profile-picture" src="{{item['profileImage']?item['profileImage']:'assets/img/default-avatar.svg'}}" alt=""
           routerLink="../profile/{{item['wallet']}}">
           <span style="color: #666;">@{{item['name'].length > 15 ?  item['name'].substring(0,15).concat('...'): item['name']}}</span>
         </div>
