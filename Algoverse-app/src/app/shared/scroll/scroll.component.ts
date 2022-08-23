@@ -23,6 +23,9 @@ export class ScrollComponent {
       draggable: true,
       snapOnRelease: true,
     },
+    mousewheel: {
+      forceToAxis: true,
+    },
     on: {},
     breakpoints: {
       769: {
