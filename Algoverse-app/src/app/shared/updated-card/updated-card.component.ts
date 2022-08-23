@@ -26,9 +26,10 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
     if (this.type === this.marketplaceTypes.AUCTION && this.item.bids.length) {
       this.findForHighestBid();
     }
-    if (this.type === MarketplaceTypeEnum.AUCTION && this.item.isOpen) {
+    if (this.type === MarketplaceTypeEnum.AUCTION) {
       this.timeDiff = moment.duration(moment(moment.unix(this.item.closingDate)).diff(moment()));
       this.$subscription = interval(1000).subscribe(() => this.startCountdown());
+      return;
     }
   }
 
@@ -38,10 +39,19 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
 
   private startCountdown(): void {
     this.timeDiff.subtract(1, 'second');
+    if(!this.countDownValid()) {
+      this.auctionCountdown = "Ended";
+      this.$subscription.unsubscribe();
+      return;
+    }
     this.auctionCountdown =  [Math.floor(this.timeDiff.asHours()), this.timeDiff.minutes(), this.timeDiff.seconds()].join(':');
   }
 
   private findForHighestBid(): void {
     this.highestBid = Math.max(...this.item.bids.map((bid: any) => bid.amount));
+  }
+
+  private countDownValid(): boolean {
+    return !(this.timeDiff.minutes() < 0 || this.timeDiff.seconds() < 0);
   }
 }
