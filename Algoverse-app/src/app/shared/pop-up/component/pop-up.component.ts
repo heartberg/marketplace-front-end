@@ -338,5 +338,13 @@ export class PopUpComponent implements OnInit {
       }
     );
   }
+
+  formatFractions(decimals: number) {
+    if(decimals < 5) {
+      return Math.pow(10, decimals).toFixed(0)
+    } else {
+      return decimals
+    }
+  }
   
 }
