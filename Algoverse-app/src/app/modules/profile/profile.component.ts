@@ -50,7 +50,6 @@ export class ProfileComponent implements OnInit, OnDestroy{
   ) {}
 
   ngOnInit(): void {
-    this.walletAddress = this.walletsConnectService.myAlgoAddress[0];
     this.initialiseProfile();
     this.detectOwnProfile(this.connectService.sessionWallet);
   }
