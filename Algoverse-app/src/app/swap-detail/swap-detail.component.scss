@@ -229,6 +229,7 @@ input[type=date] {
 .last {
   margin-bottom: 10px;
 }
+
 .card-info {
   .section {
     display: flex;
@@ -247,6 +248,7 @@ input[type=date] {
     }
   }
 }
+
 .bid {
   justify-content: flex-end;
   align-items: center !important;
@@ -496,6 +498,97 @@ input[type=date] {
 
 .sup{
   position: relative;
-  bottom: 1ex; 
+  bottom: 1ex;
   font-size: 80%;
+}
+
+.asset-wrapper {
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 12px;
+  &:hover {
+    cursor: unset;
+  }
+
+  .gap {
+    gap: 10px;
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #666;
+    opacity: .5;
+    margin: 1em 0;
+    padding: 0;
+  }
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+  }
+  .audio {
+    width: 250px;
+  }
+
+  img {
+    border-radius: 12px;
+  }
+}
+
+.asset-image {
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
+}
+
+.fixed {
+  min-width: 95px;
+}
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.property-gap {
+  gap: 6px;
+}
+
+.card-info-left {
+  h4 {
+    color: #666
+  }
+  .property {
+    color: #000;
+  }
+}
+
+.touched {
+  color: #FF419B;
+}
+
+.asset-heart {
+  width: 18px !important;
+  height: 15px !important;
+  border-radius: 0 !important;
+}
+.asset-heart-container {
+  display: flex !important;
+  align-items: center !important;
+  transition: all .3s ease-in-out;
+  gap: 5px;
+
+  span {
+    line-height: 15px;
+  }
+
+  img {
+    cursor: pointer;
+  }
 }

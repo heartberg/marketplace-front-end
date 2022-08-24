@@ -17,12 +17,12 @@
             </div>
             <div class="row">
               <div class="col-md-6">
-                <div class="img card-info">
+                <div class="img card-info asset-wrapper">
                   <ng-container>
-                    <div class="section" [ngClass]="{'flex-column align-items-center': swapItemsFileData.offering?.isMimeTypeAudio}">
-                      <img *ngIf="!swapItemsFileData.offering?.isMimeTypeVideo" src="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.offeringAsset?.file}}" alt="">
+                    <div class="" [ngClass]="{'flex-column align-items-center': swapItemsFileData.offering?.isMimeTypeAudio}">
+                      <img class="asset-image" *ngIf="!swapItemsFileData.offering?.isMimeTypeVideo" src="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.offeringAsset?.file}}" alt="">
                       <!--if mimetype is a audio-->
-                      <audio controls *ngIf="swapItemsFileData.offering?.isMimeTypeAudio" class="mt-3">
+                      <audio controls *ngIf="swapItemsFileData.offering?.isMimeTypeAudio" class="mt-3 audio">
                         <source [src]="swapItemsFileData.offering?.animation_url" [type]="swapItemsFileData.offering?.animation_url_mimetype">
                       </audio>
                       <!--if mimetype is a video-->
@@ -31,63 +31,77 @@
                       </video>
                     </div>
                     <div class="card-info-left">
-                      <div class="section asset-star-container">
-                        <img (click)="addOrRemoveStar(true)" class="asset-star" [src]="isStarredOffering  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
-                        <span>{{mSwap?.offeringAsset?.stars}}</span>
+                      <div class="names">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <span class="unset-dm-style">{{mSwap?.offeringAsset?.name}}</span>
+                          <div class="d-flex align-items-center justify-content-between asset-heart-container">
+                            <img class="asset-heart" (click)="addOrRemoveStar(true)"
+                                 [src]="isOfferingHovered ? './assets/img/heart-touched.svg' : isStarredOffering  ? './assets/img/heart-dark.svg' : './assets/img/heart-dark-unfilled.svg'"
+                                 alt="heart" (mouseover)="isOfferingHovered = true;" (mouseleave)="isOfferingHovered = false;">
+                            <span [ngClass]="{'touched': isOfferingHovered}">{{mSwap?.offeringAsset?.stars}}</span>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column gap">
+                          <div *ngIf="mSwap?.offeringAsset?.collection" class="d-flex align-items-center gap" style="cursor: pointer"
+                               routerLink="../../collection-detail/{{mSwap?.offeringAsset?.collectionId}}">
+                            <img src="{{mSwap?.offeringAsset?.collection?.icon}}" alt=""
+                                 style="width: 30px; height: 30px;">
+                            <span>{{mSwap?.offeringAsset?.collection?.name}}</span>
+                          </div>
+                          <div class="d-flex align-items-center gap" style="align-items: center; cursor: pointer"
+                               routerLink="../../profile/{{mSwap?.offeringAsset?.creator?.wallet}}">
+                            <img *ngIf="mSwap?.offeringAsset?.creator?.profileImage" src="{{mSwap?.offeringAsset?.creator?.profileImage}}" alt=""
+                                 style="width: 30px; height: 30px;">
+                            <img *ngIf="!mSwap?.offeringAsset?.creator?.profileImage" src="assets/img/default-avatar.svg" alt=""
+                                 style="width: 30px; height: 30px;">
+                            <span>@{{mSwap?.offeringAsset?.creator?.name.length > 15 ? mSwap?.offeringAsset?.creator?.name.substring(0, 8).concat('...') : mSwap?.offeringAsset?.creator?.name}}</span>
+                            <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
+                                 *ngIf="mSwap?.offeringAsset?.creator?.verified">
+                          </div>
+                        </div>
                       </div>
-                      <div class="section">
-                        <h4>Name: </h4>
-                        <span class="unset-dm-style">{{mSwap?.offeringAsset?.name}}</span>
-                      </div>
-                      <div class="section">
-                        <h4>Asset ID: </h4>
-                        <span class="unset-dm-style">{{mSwap?.offeringAsset?.assetId}}</span>
-                      </div>
-                      <div class="section" *ngIf="mSwap?.offeringAsset?.unitName">
-                        <h4>Asset Unit:</h4>
-                        <span class="unset-dm-style">{{mSwap?.offeringAsset?.unitName}}</span>
-                      </div>
-                      <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mSwap?.offeringAsset?.creator?.wallet}}">
-                        <h4 style="overflow-wrap: break-word;">Creator: </h4>
-                        <img *ngIf="mSwap?.offeringAsset?.creator?.profileImage" src="{{mSwap?.offeringAsset?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
-                        <img *ngIf="!mSwap?.offeringAsset?.creator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
-                        <span>@{{mSwap?.offeringAsset?.creator?.name.length > 15? mSwap?.offeringAsset?.creator?.name.substring(0,15).concat('...') : mSwap?.offeringAsset?.creator?.name}}</span>
-                        <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
-                             *ngIf="mSwap?.offeringAsset?.creator?.verified">
-                      </div>
-                      <div class="section">
-                        <h4>Supply:</h4>
-                        <span class="unset-dm-style">{{offeringAssetSupply}} {{ offeringAssetDecimals > 0? ' (Fractions: ' : ""}} {{offeringAssetDecimals >= 5 ? 10 : "" }}<sup *ngIf="offeringAssetDecimals >= 5">{{offeringAssetDecimals}}</sup> {{(offeringAssetDecimals < 5 && offeringAssetDecimals > 0)? formatFractions(offeringAssetDecimals) : ""}}{{offeringAssetDecimals > 0 ? ")" : ''}}</span>
-                      </div>
-                      <div class="section">
-                        <h4>Amount:</h4>
-                        <span class="unset-dm-style">{{ amount }}</span>
-                      </div>
-                      <ng-container *ngIf="mSwap?.offeringAsset?.properties && mSwap?.offeringAsset?.properties.length > 0">
-                        <h4 class="text-center color-violet">Properties</h4>
-                        <div *ngFor="let prop of mSwap?.offeringAsset?.properties">
-                          <div class="d-flex justify-content-center" style="width: 100%;">
-                            <div class="mr-1">
-                              <h4>{{prop.trait_type}}:</h4>
-                            </div>
-                            <div>
-                              <p class="color-violet" style="overflow-wrap: break-word;">{{prop.value}}</p>
+                      <hr>
+                      <div class="desc">
+                        <div class="d-flex gap">
+                          <h4 class="fixed">Asset ID: </h4>
+                          <span class="unset-dm-style">{{mSwap?.offeringAsset?.assetId}}</span>
+                        </div>
+                        <div class="d-flex gap" *ngIf="mSwap?.offeringAsset?.unitName">
+                          <h4 class="fixed">Asset Unit:</h4>
+                          <span class="unset-dm-style">{{mSwap?.offeringAsset?.unitName}}</span>
+                        </div>
+                        <div class="d-flex gap">
+                          <h4 class="fixed">Supply:</h4>
+                          <span
+                            class="unset-dm-style">{{maxSupply}} {{ offeringAssetDecimals > 0 ? ' (Fractions: ' : ""}} {{offeringAssetDecimals >= 5 ? 10 : "" }}
+                            <sup
+                              *ngIf="offeringAssetDecimals >= 5">{{offeringAssetDecimals}}</sup> {{(offeringAssetDecimals < 5 && offeringAssetDecimals > 0) ? formatFractions(offeringAssetDecimals) : ""}}{{offeringAssetDecimals > 0 ? ")" : ''}}</span>
+                        </div>
+                        <div class="row m-0" *ngIf="mSwap?.offeringAsset?.properties && mSwap?.offeringAsset?.properties.length > 0">
+                          <div class="col-5 p-0" style="width: fit-content">
+                            <h4>Properties:</h4>
+                          </div>
+                          <div class="col-7 p-0">
+                            <div *ngFor="let prop of mSwap?.offeringAsset?.properties">
+                              <div class="d-flex property-gap">
+                                <h4 class="property">{{prop.trait_type}}:</h4>
+                                <p style="overflow-wrap: break-word;">{{prop.value}}</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </ng-container>
+                      </div>
                     </div>
                   </ng-container>
                 </div>
             </div>
               <div class="col-md-6" *ngIf="mSwap">
                 <ng-container>
-                  <div class="wrapper">
-                    <div class="img">
-                      <div class="section" [ngClass]="{'flex-column align-items-center': swapItemsFileData.accepting?.isMimeTypeAudio}">
-                        <img *ngIf="!swapItemsFileData.accepting?.isMimeTypeVideo" src="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.acceptingAsset?.file}}" alt="">
+                    <div class="img asset-wrapper">
+                      <div [ngClass]="{'flex-column align-items-center': swapItemsFileData.accepting?.isMimeTypeAudio}">
+                        <img class="asset-image" *ngIf="!swapItemsFileData.accepting?.isMimeTypeVideo" src="https://algoverse.infura-ipfs.io/ipfs/{{mSwap?.acceptingAsset?.file}}" alt="">
                         <!--if mimetype is a audio-->
-                        <audio controls *ngIf="swapItemsFileData.accepting?.isMimeTypeAudio" class="mt-3">
+                        <audio controls *ngIf="swapItemsFileData.accepting?.isMimeTypeAudio" class="mt-3 audio">
                           <source [src]="swapItemsFileData.accepting?.animation_url" [type]="swapItemsFileData.accepting?.animation_url_mimetype">
                         </audio>
                         <!--if mimetype is a video-->
@@ -95,57 +109,66 @@
                           <source [src]="swapItemsFileData.accepting?.animation_url" [type]="swapItemsFileData.accepting?.animation_url_mimetype">
                         </video>
                       </div>
-                    </div>
-                    <div class="card-info mt-3">
-                      <div class="card-info-left" style="display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;">
-                        <div class="section asset-star-container">
-                          <img (click)="addOrRemoveStar(false)" class="asset-star" [src]="isStarredAccepting  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">
-                          <span>{{mSwap?.acceptingAsset?.stars}}</span>
+                    <div class="card-info-left">
+                      <div class="names">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <span class="unset-dm-style">{{mSwap?.acceptingAsset?.name}}</span>
+                          <div class="d-flex align-items-center justify-content-between asset-heart-container">
+                            <img class="asset-heart" (click)="addOrRemoveStar(false)"
+                                 [src]="isAcceptingHovered ? './assets/img/heart-touched.svg' : isStarredAccepting  ? './assets/img/heart-dark.svg' : './assets/img/heart-dark-unfilled.svg'"
+                                 alt="heart" (mouseover)="isAcceptingHovered = true;" (mouseleave)="isAcceptingHovered = false;">
+                            <span [ngClass]="{'touched': isAcceptingHovered}">{{mSwap?.acceptingAsset?.stars}}</span>
+                          </div>
                         </div>
-                        <div class="section">
-                          <h4>Name: </h4>
-                          <span>{{mSwap?.acceptingAsset?.name}}</span>
+                        <div class="d-flex flex-column gap">
+                          <div *ngIf="mSwap?.acceptingAsset?.collection" class="d-flex align-items-center gap" style="cursor: pointer"
+                               routerLink="../../collection-detail/{{mSwap?.acceptingAsset?.collectionId}}">
+                            <img src="{{mSwap?.acceptingAsset?.collection?.icon}}" alt=""
+                                 style="width: 30px; height: 30px;">
+                            <span>{{mSwap?.acceptingAsset?.collection?.name}}</span>
+                          </div>
+                          <div class="d-flex align-items-center gap" style="align-items: center; cursor: pointer"
+                               routerLink="../../profile/{{mSwap?.acceptingAsset?.creator?.wallet}}">
+                            <img *ngIf="mSwap?.acceptingAsset?.creator?.profileImage" src="{{mSwap?.acceptingAsset?.creator?.profileImage}}" alt=""
+                                 style="width: 30px; height: 30px;">
+                            <img *ngIf="!mSwap?.acceptingAsset?.creator?.profileImage" src="assets/img/default-avatar.svg" alt=""
+                                 style="width: 30px; height: 30px;">
+                            <span>@{{mSwap?.acceptingAsset?.creator?.name.length > 15 ? mSwap?.acceptingAsset?.creator?.name.substring(0, 8).concat('...') : mSwap?.acceptingAsset?.creator?.name}}</span>
+                            <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
+                                 *ngIf="mSwap?.acceptingAsset?.creator?.verified">
+                          </div>
                         </div>
-                        <div class="section">
-                          <h4>Asset ID:</h4>
-                          <span> {{mSwap?.acceptingAsset.assetId}}</span>
+                      </div>
+                      <hr>
+                      <div class="desc">
+                        <div class="d-flex gap">
+                          <h4 class="fixed">Asset ID: </h4>
+                          <span class="unset-dm-style">{{mSwap?.acceptingAsset?.assetId}}</span>
                         </div>
-                        <div class="section" *ngIf="mSwap?.acceptingAsset?.unitName">
-                          <h4>Asset Unit: </h4>
+                        <div class="d-flex gap" *ngIf="mSwap?.acceptingAsset?.unitName">
+                          <h4 class="fixed">Asset Unit:</h4>
                           <span class="unset-dm-style">{{mSwap?.acceptingAsset?.unitName}}</span>
                         </div>
-                        <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mSwap?.accepting?.creator?.wallet}}">
-                          <h4 style="overflow-wrap: break-word;">Creator: </h4>
-                          <img *ngIf="mSwap?.acceptingAsset?.creator?.profileImage" src="{{mSwap?.acceptingAsset?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
-                          <img *ngIf="!mSwap?.acceptingAsset?.creator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 4px; border-radius: 12px;">
-                          <span>@{{mSwap?.acceptingAsset?.creator?.name.length > 15? mSwap?.acceptingAsset?.creator?.name.substring(0,15).concat('...') : mSwap?.acceptingAsset?.creator?.name}}</span>
-                          <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
-                               *ngIf="mSwap?.acceptingAsset?.creator?.verified">
+                        <div class="d-flex gap">
+                          <h4 class="fixed">Supply:</h4>
+                          <span
+                            class="unset-dm-style">{{maxSupply}} {{ acceptingAssetDecimals > 0 ? ' (Fractions: ' : ""}} {{acceptingAssetDecimals >= 5 ? 10 : "" }}
+                            <sup
+                              *ngIf="acceptingAssetDecimals >= 5">{{acceptingAssetDecimals}}</sup> {{(acceptingAssetDecimals < 5 && acceptingAssetDecimals > 0) ? formatFractions(acceptingAssetDecimals) : ""}}{{acceptingAssetDecimals > 0 ? ")" : ''}}</span>
                         </div>
-                        <div class="section">
-                          <h4>Supply:</h4>
-                          <span class="unset-dm-style">{{acceptingAssetSupply}} {{ acceptingAssetDecimals > 0? ' (Fractions: ' : ""}} {{acceptingAssetDecimals >= 5 ? 10 : "" }}<sup *ngIf="acceptingAssetDecimals >= 5">{{acceptingAssetDecimals}}</sup> {{(acceptingAssetDecimals < 5 && acceptingAssetDecimals > 0)? formatFractions(acceptingAssetDecimals) : ""}}{{acceptingAssetDecimals > 0 ? ")" : ''}}</span>
-                        </div>
-                        <div class="section">
-                          <h4>Amount:</h4>
-                          <span class="unset-dm-style">{{ acceptingAmount }}</span>
-                        </div>
-                        <ng-container *ngIf="mSwap?.acceptingAsset?.properties && mSwap?.acceptingAsset?.properties.length > 0">
-                          <h4 class="text-center color-violet">Properties</h4>
-                          <div *ngFor="let prop of mSwap?.acceptingAsset?.properties">
-                            <div class="d-flex justify-content-center" style="width: 100%;">
-                              <div class="mr-1">
-                                <h4>{{prop.trait_type}}:</h4>
-                              </div>
-                              <div>
-                                <p class="color-violet" style="overflow-wrap: break-word;">{{prop.value}}</p>
+                        <div class="row m-0" *ngIf="mSwap?.acceptingAsset?.properties && mSwap?.acceptingAsset?.properties.length > 0">
+                          <div class="col-5 p-0" style="width: fit-content">
+                            <h4>Properties:</h4>
+                          </div>
+                          <div class="col-7 p-0">
+                            <div *ngFor="let prop of mSwap?.acceptingAsset?.properties">
+                              <div class="d-flex property-gap">
+                                <h4 class="property">{{prop.trait_type}}:</h4>
+                                <p style="overflow-wrap: break-word;">{{prop.value}}</p>
                               </div>
                             </div>
                           </div>
-                        </ng-container>
+                        </div>
                       </div>
                     </div>
                   </div>
