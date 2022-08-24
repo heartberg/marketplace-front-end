@@ -11,7 +11,7 @@
       <ng-container *ngIf="SearchRespoOpened">
         <div class="search-section respo-search for_input">
           <div class="search">
-            <input type="text" placeholder="Assets, Collections, Creators...">
+            <input type="text" placeholder="Assets, Collections, Creators..." (blur)="onSearchInput($event)">
           </div>
           <div class="search-btn search_btn" [ngClass]="{'search-respo-icon': SearchRespoOpened}">
             <svg viewBox="0 0 16 16" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN hOiKLt">
@@ -35,7 +35,7 @@
         </div>
         <div class="search-section hide-respo">
           <div class="search">
-            <input type="text" placeholder="Collection, items...">
+            <input type="text" placeholder="Collection, items..." (blur)="onSearchInput($event)">
           </div>
           <div class="search-btn search_btn">
             <svg viewBox="0 0 16 16" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN hOiKLt">
@@ -86,13 +86,13 @@
         <div class="search-respo" *ngIf="!isMenuRespoOpened" [ngClass]="{'m-l_0': walletConnectionPassed}">
           <div class="search-section" (click)="openSearchRespo()" [ngClass]="{'search-respo-x-button': SearchRespoOpened}">
             <div class="search">
-              <input type="text" placeholder="Collection, items...">
+              <input type="text" placeholder="Collection, items..." (blur)="onSearchInput($event)">
             </div>
           </div>
           <ng-container *ngIf="SearchRespoOpened" (click)="closeSearchRespo()">
             <div class="search-section second_one" [ngClass]="{'search-respo-x-button': SearchRespoOpened}">
               <div class="search">
-                <input type="text" placeholder="Collection, items...">
+                <input type="text" placeholder="Collection, items..." (blur)="onSearchInput($event)">
               </div>
               <div class="search-btn btn-icon-round specific-size" (click)="closeSearchRespo()">
                 <svg viewBox="0 0 16 16" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN jZIhBR"

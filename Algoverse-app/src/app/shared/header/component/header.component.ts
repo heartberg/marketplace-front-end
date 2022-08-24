@@ -7,6 +7,7 @@ import {ThemeService} from "../../../services/theme.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import { environment } from 'src/environments/environment';
 import { NgMarqueeModule } from "ng-marquee"
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -38,6 +39,7 @@ export class HeaderComponent implements OnInit {
     private _walletsConnectService: WalletsConnectService,
     private readonly _themeService: ThemeService,
     private readonly spinner: NgxSpinnerService,
+    private _userService: UserService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -151,6 +153,15 @@ export class HeaderComponent implements OnInit {
 
   showNotifications(): void {
     this.router.navigateByUrl("/notification-center")
+  }
+
+  onSearchInput(event: any): void {
+    console.log(event.target.value)
+    this._userService.search("", "", event.target.value, "", "", "", 0, 0, "").subscribe(
+      (value: any) => {
+        console.log(value)
+      }
+    )
   }
 
 }

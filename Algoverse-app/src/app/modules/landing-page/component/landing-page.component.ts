@@ -17,6 +17,8 @@ export class LandingPageComponent implements OnInit {
   public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
 
   public featuredArtists: Array<any> = [];
+  featuredAssets: Array<any> = [];
+  featuredCollections: Array<any> = [];
   public hotItems: Array<any> = [];
 
   private loadingIndex = 0;
