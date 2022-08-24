@@ -31,9 +31,9 @@ import { AuctionDetailComponent } from './auction-detail/auction-detail.componen
 import { CreateWrapperComponent } from "./modules/create-wrapper/create-wrapper.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: LandingPageComponent },
-  { path: 'marketplace/:slugId', component: MarketPlaceComponent },
+  { path: '', redirectTo: 'marketplace', pathMatch: 'full' },
+  // { path: 'home', component: LandingPageComponent },
+  { path: 'marketplace', component: MarketPlaceComponent },
   { path: 'collection', component: MyCollectionComponent },
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
@@ -69,7 +69,7 @@ const routes: Routes = [
   { path: 'creators', component: ArtistsComponent },
   { path: 'creators/creator-application', component: ArtistApplicationComponent },
   { path: 'creators/space-shuttle', component: SpaceshuttleComponent },
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: 'marketplace' }
 ];
 
 @NgModule({
