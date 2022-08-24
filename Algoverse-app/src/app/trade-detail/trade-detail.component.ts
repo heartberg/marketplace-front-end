@@ -45,6 +45,7 @@ export class TradeDetailComponent implements OnInit {
   public isMimeTypeVideo: boolean = false;
   public isMimeTypeAudio: boolean = false;
   public createTrade: boolean = false;
+  public isHovered: boolean = false;
   assetInfo: any;
 
 
@@ -273,7 +274,7 @@ export class TradeDetailComponent implements OnInit {
   closePopUp($event: boolean) {
     this.isPopUpOpened = $event;
     console.log("closing popup")
-    
+
   }
 
   isMine(isBid: boolean, index: number): boolean {

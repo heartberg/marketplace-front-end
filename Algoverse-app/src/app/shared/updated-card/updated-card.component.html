@@ -40,11 +40,9 @@
         </ng-container>
       </ng-container>
     </div>
-    <div class="hearted-section">
-      <img src="assets/img/heart.svg" alt="heart">
-      <h4 *ngIf="type === marketplaceTypes.ALL">{{item.stars}}</h4>
-      <h4 *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE">{{item.asset.stars}}</h4>
-      <h4 *ngIf="type === marketplaceTypes.SWAP">{{item.offeringAsset.stars}}</h4>
+    <div class="hearted-section" (click)="addOrRemoveStar($event)" (mouseover)="isHovered = true;" (mouseleave)="isHovered = false;">
+      <img [src]="isHovered ? './assets/img/heart-touched.svg' : isStarred  ? './assets/img/heart.svg' : './assets/img/heart-unfilled.svg'" alt="heart">
+      <h4 [ngClass]="{'touched': isHovered}">{{stars}}</h4>
     </div>
     <div class="timing-section" *ngIf="type === marketplaceTypes.AUCTION">
       <h4>{{auctionCountdown}}</h4>

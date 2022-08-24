@@ -29,6 +29,10 @@
       padding: 5px;
       border-radius: 5px;
 
+      .touched {
+        color: #FF419B;
+      }
+
       img {
         width: 11px;
         height: 9px;
@@ -85,6 +89,10 @@
         height: 30px;
         width: 30px;
         border-radius: 50%;
+      }
+
+      h4 {
+        font-size: 14px;
       }
     }
 

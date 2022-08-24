@@ -23,7 +23,9 @@
   .section {
     display: flex;
     align-items: baseline;
+    justify-content: flex-start;
     margin-bottom: 10px;
+
     button {
       margin-left: 8px;
       height: 35px;
@@ -32,7 +34,7 @@
       align-items: center;
     }
     h4 {
-      color: #81007F;
+      color: #666;
       margin-right: 5px;
     }
   }
@@ -62,8 +64,6 @@
 }
 .img {
   .section {
-    display: flex;
-    justify-content: center;
 
     img {
       width: 250px;
@@ -275,8 +275,35 @@ input[type=date] {
   border: 3px solid rgba(129, 0, 127, 0.4) !important;
 }
 .wrapper-card {
+  .asset-wrapper {
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 12px;
+  }
   &:hover {
     cursor: unset;
+  }
+
+  .gap {
+    gap: 10px;
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #666;
+    opacity: .5;
+    margin: 1em 0;
+    padding: 0;
+  }
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    gap: 8px
   }
 }
 .bid{
@@ -290,27 +317,57 @@ input[type=date] {
   display: flex;
   flex-direction: column;
 }
-.asset-star {
-  width: 30px !important;
-  height: 30px !important;
+.asset-heart {
+  width: 18px !important;
+  height: 15px !important;
+  border-radius: 0;
 }
-.asset-star-container {
+.asset-heart-container {
   display: flex !important;
   align-items: center !important;
+  transition: all .3s ease-in-out;
+  gap: 5px;
 
   img {
     cursor: pointer;
-    margin-right: 8px !important;
   }
+}
+
+.touched {
+  color: #FF419B;
 }
 
 .sup{
   position: relative;
-  bottom: 1ex; 
+  bottom: 1ex;
   font-size: 80%;
 }
 
 .asset-image {
   object-fit: cover;
-  margin-right: 8px;
+  width: 250px;
+  height: 250px;
+}
+
+.fixed {
+  min-width: 77px;
+}
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.property-gap {
+  gap: 6px;
+}
+
+.card-info-left {
+  h4 {
+    color: #666
+  }
+  .property {
+    color: #000;
+  }
 }
