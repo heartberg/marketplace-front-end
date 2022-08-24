@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
 import {Location} from '@angular/common';
+import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-swap-detail',
@@ -70,6 +71,7 @@ export class SwapDetailComponent implements OnInit {
             (res: any) => {
               if(res) {
                 this.offeringAssetStar = res;
+                console.log(this.offeringAssetStar)
                 this.isStarredOffering = true;
               } else {
                 this.offeringAssetStar = undefined;
@@ -233,6 +235,7 @@ export class SwapDetailComponent implements OnInit {
           return this._userService.addAssetStar(params).subscribe(
             (value: any) => {
               console.log(value)
+              this.offeringAssetStar = value;
               this.isStarredOffering = true;
               this.mSwap.offeringAsset.stars++;
             }
@@ -256,6 +259,7 @@ export class SwapDetailComponent implements OnInit {
           return this._userService.addAssetStar(params).subscribe(
             (value: any) => {
               console.log(value)
+              this.acceptingAssetStar = value;
               this.isStarredAccepting = true;
               this.mSwap.acceptingAsset.stars++;
             }

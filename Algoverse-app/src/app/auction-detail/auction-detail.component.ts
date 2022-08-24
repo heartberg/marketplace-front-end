@@ -281,6 +281,7 @@ export class AuctionDetailComponent implements OnInit {
       this._userService.addAssetStar(params).subscribe(
         (value: any) => {
           console.log(value)
+          this.assetStar = value;
           this.isStarred = true;
           console.log("added star")
           this.loadAuctionDetails(this.mAuction.auctionId)
@@ -300,6 +301,7 @@ export class AuctionDetailComponent implements OnInit {
           console.log(value)
           this.isStarred = false;
           this.mAuction.asset.stars--;
+          this.assetStar = undefined;
           this.loadAuctionDetails(this.mAuction.auctionId)
           console.log("removed star")
         }
@@ -317,7 +319,7 @@ export class AuctionDetailComponent implements OnInit {
         this.showAuctionDetail();
         let wallet = this._walletsConnectService.sessionWallet
         if(wallet) {
-          this._userService.getAssetStar(wallet.getDefaultAccount(), this.selectedAssetID).subscribe(
+          this._userService.getAssetStar(wallet.getDefaultAccount(), this.mAuction.asset.assetId).subscribe(
             (res: any) => {
               if(res) {
                 this.assetStar = res;
