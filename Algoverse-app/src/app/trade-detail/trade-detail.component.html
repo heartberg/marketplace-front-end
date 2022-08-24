@@ -1,191 +1,3 @@
-<!--<div class="wrapper wrapper-border">-->
-<!--  <div class="backArrow" (click)="actionBack()">-->
-<!--    <img src="assets/img/arrow.svg" alt="">-->
-<!--  </div>-->
-<!--  <div class="whole">-->
-<!--    <div class="row w-100">-->
-<!--      <div class="col-md-12">-->
-<!--        <div class="inside">-->
-<!--          <div class="wrapper-card">-->
-<!--            <div class="row">-->
-<!--              <div class="col-md-6">-->
-<!--                <div class="img card-info">-->
-<!--                  <ng-container>-->
-<!--                    <div class="section" *ngIf="mItem?.file" [ngClass]="{'flex-column align-items-center': isMimeTypeAudio}">-->
-<!--                      <img *ngIf="!isMimeTypeVideo" class="asset-image" src="https://algoverse.infura-ipfs.io/ipfs/{{mItem?.file}}" alt="">-->
-<!--                      &lt;!&ndash;if mimetype is a audio&ndash;&gt;-->
-<!--                      <audio controls *ngIf="isMimeTypeAudio" class="mt-3">-->
-<!--                        <source [src]="animation_url" [type]="animation_url_mimetype">-->
-<!--                      </audio>-->
-<!--                      &lt;!&ndash;if mimetype is a video&ndash;&gt;-->
-<!--                      <video width="250" height="250" controls *ngIf="isMimeTypeVideo" poster="https://algoverse.infura-ipfs.io/ipfs/{{mItem?.file}}">-->
-<!--                        <source [src]="animation_url" [type]="animation_url_mimetype">-->
-<!--                      </video>-->
-<!--                    </div>-->
-<!--                    <div class="card-info-left">-->
-<!--                      <div class="section asset-star-container">-->
-<!--                        <img class="asset-star" (click)="addOrRemoveStar()" [src]="isStarred  ? './assets/img/filled_star.png' : './assets/img/unfilled_star.png'" alt="star">-->
-<!--                        <span>{{mItem?.stars}}</span>-->
-<!--                      </div>-->
-<!--                      <div class="">-->
-<!--                        <h4>Name: </h4>-->
-<!--                        <span class="unset-dm-style">{{mItem?.name}}</span>-->
-<!--                      </div>-->
-<!--                      <div class="section">-->
-<!--                        <h4>Asset ID: </h4>-->
-<!--                        <span class="unset-dm-style">{{mItem?.assetId}}</span>-->
-<!--                      </div>-->
-<!--                      <div class="section" *ngIf="mItem?.unitName">-->
-<!--                        <h4>Asset Unit:</h4>-->
-<!--                        <span class="unset-dm-style">{{mItem?.unitName}}</span>-->
-<!--                      </div>-->
-<!--                      <div class="section">-->
-<!--                        <h4>Supply:</h4>-->
-<!--                        <span class="unset-dm-style">{{maxSupply}} {{ decimals > 0? ' (Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}}{{decimals > 0 ? ")" : ''}}</span>-->
-<!--                      </div>-->
-<!--                      <div class="section">-->
-<!--                        <h4>Owned:</h4>-->
-<!--                        <span class="unset-dm-style">{{scaleAmount(balance)}}</span>-->
-<!--                      </div>-->
-<!--                      <div class="section" style="align-items: center; cursor: pointer" routerLink="../../profile/{{mItem?.creator.wallet}}">-->
-<!--                        <h4 style="overflow-wrap: break-word;">Creator: </h4>-->
-<!--                        <img *ngIf="mItem?.creator?.profileImage" src="{{mItem?.creator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">-->
-<!--                        <img *ngIf="!mItem?.creator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 4px;">-->
-<!--                        <span>@{{mItem?.creator?.name.length > 15 ?  mItem?.creator?.name.substring(0,8).concat('...'): mItem?.creator?.name}}</span>-->
-<!--                        <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""-->
-<!--                             *ngIf="mItem?.creator?.verified">-->
-<!--                      </div>-->
-<!--                      <div *ngIf="mItem.collection" class="section" style="align-items: center; cursor: pointer" routerLink="../../collection-detail/{{mItem?.collection.collectionId}}">-->
-<!--                        <h4 style="overflow-wrap: break-word;">Collection: </h4>-->
-<!--                        <img src="{{mItem?.collection?.icon}}" alt="" style="width: 30px; height: 30px; margin-right: 4px;">-->
-<!--                        <span>{{mItem?.collection?.name}}</span>-->
-<!--                      </div>-->
-<!--                      <ng-container *ngIf="mItem.properties && mItem.properties.length > 0">-->
-<!--                        <h4 class="text-center color-violet">Properties</h4>-->
-<!--                        <div *ngFor="let prop of mItem.properties">-->
-<!--                          <div class="d-flex justify-content-center" style="width: 100%;">-->
-<!--                            <div class="mr-1">-->
-<!--                              <h4>{{prop.trait_type}}:</h4>-->
-<!--                            </div>-->
-<!--                            <div>-->
-<!--                              <p class="color-violet" style="overflow-wrap: break-word;">{{prop.value}}</p>-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </ng-container>-->
-<!--                    </div>-->
-<!--                  </ng-container>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--              <div class="col-md-6" *ngIf="mItem">-->
-<!--                <ng-container>-->
-<!--                  <div class="card-info mt-3 wrapper-border col-lg-8 col">-->
-<!--                    <div class="section right">-->
-<!--                      <h4 style="color:#666">Sale price:</h4>-->
-<!--                      <div class="bids img scroll">-->
-<!--                        <h4 *ngIf="mItem.openTrades.length == 0" style="margin-top: 15px;">Not set</h4>-->
-<!--                        <div class="bid section d-flex align-items-center wrapper-card"-->
-<!--                             *ngFor="let item of mItem.openTrades; let i = index"-->
-<!--                             (click)="selectSecond(item, i)"-->
-<!--                             [class.selected]="indexSecond === i">-->
-<!--                          <div class="top-info">-->
-<!--                            <img *ngIf="item?.tradeCreator?.profileImage" src="{{item?.tradeCreator?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">-->
-<!--                            <img *ngIf="!item?.tradeCreator?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 5px;">-->
-<!--                            <span>@{{ item?.tradeCreator?.name.length > 15 ?  item?.tradeCreator?.name.substring(0,8).concat('...'): item?.tradeCreator?.name}}</span>-->
-<!--                            <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""-->
-<!--                                 *ngIf="item?.tradeCreator?.verified">-->
-<!--                          </div>-->
-<!--                          <div class="show-info d-flex">-->
-<!--                            <div class="show first">-->
-<!--                              <span>{{scaleAlgo(item?.price)}}</span>-->
-<!--                              <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">-->
-<!--                            </div>-->
-<!--                            <div class="show" *ngIf="total > 1 || decimals > 0">-->
-<!--                              <span>for {{scaleAmount(item?.amount)}} </span>-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash;                        <div class="bid" *ngFor="let item of mItem.biddingUser">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                          <h4>profileImage:</h4>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                          <span>{{item.name}}</span>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="section d-flex last right" style="margin-top: 30px; margin-bottom: 30px;">-->
-<!--                      <h4 style="color:#666">Bids:</h4>-->
-<!--                      <div class="bids img scroll">-->
-<!--                        <h4 *ngIf="mItem.bids.length == 0" style="margin-top: 15px;">No bids yet</h4>-->
-<!--                        <div class="bid section d-flex align-items-center wrapper-card d-flex"-->
-<!--                             *ngFor="let item of mItem.bids;  let i = index" (click)="select(item, i)"-->
-<!--                             [class.selected]="index === i">-->
-<!--                          <div class="top-info d-flex">-->
-<!--                            <img *ngIf="item?.biddingUser?.profileImage" src="{{item?.biddingUser?.profileImage}}" alt="" style="width: 30px; height: 30px; margin-right: 5px;">-->
-<!--                            <img *ngIf="!item?.biddingUser?.profileImage" src="assets/img/default-avatar.svg" alt="" style="width: 30px; height: 30px; margin-right: 5px;">-->
-
-<!--                            <span>@{{item?.biddingUser?.name.length > 15 ?  item?.biddingUser?.name.substring(0,8).concat('...'): item?.biddingUser?.name}}</span>-->
-<!--                            <img style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""-->
-<!--                                 *ngIf="item?.biddingUser?.verified">-->
-<!--                          </div>-->
-<!--                          <div class="show-info d-flex">-->
-<!--                            <div class="show first">-->
-<!--                              <span>{{scaleAlgo(item?.price)}}</span>-->
-<!--                              <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">-->
-<!--                            </div>-->
-<!--                            <div class="show" *ngIf="total > 1 || decimals > 0">-->
-<!--                              <span>for {{scaleAmount(item?.amount)}}</span>-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash;                        <div class="bid" *ngFor="let item of mItem.biddingUser">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                          <h4>profileImage:</h4>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                          <span>{{item.name}}</span>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="d-flex justify-content-center action-buttons-section">-->
-<!--                      <button class="btn-secondary-costum" [class.disabled]="balance == 0" [disabled]="balance == 0" style="margin-left: 8px; width: 160px;" (click)="createSale()">-->
-<!--                        Sell-->
-<!--                      </button>-->
-<!--                      <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1" (click)="createBid()" style="width: 160px;">-->
-<!--                        Bid-->
-<!--                      </button>-->
-<!--                      <button class="btn-secondary-costum aligner" [class.disabled]="balance < mItem.bids[index].amount" [disabled]="balance < mItem.bids[index].amount" (click)="acceptBid()" *ngIf="index !== -1 && indexSecond === -1 && !isMine(true, index)" style="width: 160px;">-->
-<!--                        Accept Bid-->
-<!--                      </button>-->
-<!--                      <button class="btn-secondary-costum aligner" (click)="cancelBid()" *ngIf="index !== -1 && indexSecond === -1 && isMine(true, index)" style="width: 160px;">-->
-<!--                        Cancel Bid-->
-<!--                      </button>-->
-<!--                      <button class="btn-secondary-costum aligner" (click)="acceptTrade()" *ngIf="index === -1 && indexSecond !== -1 && !isMine(false, indexSecond)" style="width: 160px;">-->
-<!--                        Accept Sale-->
-<!--                      </button>-->
-<!--                      <button class="btn-secondary-costum aligner" (click)="cancelTrade()" *ngIf="index === -1 && indexSecond !== -1 && isMine(false, indexSecond)" style="width: 160px;">-->
-<!--                        Cancel Sale-->
-<!--                      </button>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </ng-container>-->
-<!--              </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<app-pop-up *ngIf="isPopUpOpened" (isClosed)="closePopUp($event)" [asset]="mItem" [assetInfo]="assetInfo" [selected]="true" [trade]="createTrade" [balance]="balance"></app-pop-up>-->
-<!--<ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>-->
-
-  <!--              <ng-container *ngIf = "isOpen; then open else close"></ng-container>-->
-<!--              <ng-template #open>-->
-<!--                <ng-container *ngIf = "isMine; then cancel else bid"></ng-container>-->
-<!--                <ng-template #cancel>Cancel offer</ng-template>-->
-<!--                <ng-template #bid>Bid</ng-template>-->
-<!--              </ng-template>-->
-<!--              <ng-template #close>-->
-<!--                <ng-container *ngIf = "isMine; then reopen else nothing"></ng-container>-->
-<!--                <ng-template #reopen>Reopen</ng-template>-->
-<!--                <ng-template #nothing>Test</ng-template>-->
-<!--              </ng-template>-->
-
 <div class="wrapper wrapper-border">
   <div class="backArrow" (click)="actionBack()">
     <img src="assets/img/arrow.svg" alt="">
@@ -204,7 +16,7 @@
                       <img *ngIf="!isMimeTypeVideo" class="asset-image"
                            src="https://algoverse.infura-ipfs.io/ipfs/{{mItem?.file}}" alt="">
                       <!--if mimetype is a audio-->
-                      <audio controls *ngIf="isMimeTypeAudio" class="mt-3">
+                      <audio controls *ngIf="isMimeTypeAudio" class="mt-3 audio">
                         <source [src]="animation_url" [type]="animation_url_mimetype">
                       </audio>
                       <!--if mimetype is a video-->
@@ -271,25 +83,12 @@
                           <div class="col-7 p-0">
                             <div *ngFor="let prop of mItem.properties">
                               <div class="d-flex property-gap">
-                                  <h4 class="property">{{prop.trait_type}}:</h4>
-                                  <p style="overflow-wrap: break-word;">{{prop.value}}</p>
+                                <h4 class="property">{{prop.trait_type}}:</h4>
+                                <p style="overflow-wrap: break-word;">{{prop.value}}</p>
                               </div>
                             </div>
                           </div>
                         </div>
-<!--                        <ng-container *ngIf="mItem.properties && mItem.properties.length > 0">-->
-<!--                          <h4 class="text-center color-violet fixed">Properties</h4>-->
-<!--                          <div *ngFor="let prop of mItem.properties">-->
-<!--                            <div class="d-flex justify-content-center" style="width: 100%;">-->
-<!--                              <div class="mr-1">-->
-<!--                                <h4>{{prop.trait_type}}:</h4>-->
-<!--                              </div>-->
-<!--                              <div>-->
-<!--                                <p class="color-violet" style="overflow-wrap: break-word;">{{prop.value}}</p>-->
-<!--                              </div>-->
-<!--                            </div>-->
-<!--                          </div>-->
-<!--                        </ng-container>-->
                       </div>
                     </div>
                   </ng-container>
@@ -301,7 +100,8 @@
                     <div class="section right">
                       <h4 style="margin-bottom: 15px; color:#666">Sale price:</h4>
                       <div class="bids img scroll">
-                        <h4 class="bid wrapper-card" *ngIf="mItem.openTrades.length == 0" style="color: #000000">Not set</h4>
+                        <h4 class="bid wrapper-card" *ngIf="mItem.openTrades.length == 0" style="color: #000000">Not
+                          set</h4>
                         <div class="bid section d-flex align-items-center wrapper-card"
                              *ngFor="let item of mItem.openTrades; let i = index"
                              (click)="selectSecond(item, i)"
@@ -334,7 +134,8 @@
                     <div class="section d-flex last right" style="margin-top: 30px; margin-bottom: 30px;">
                       <h4 style="margin-bottom: 15px;color:#666">Bids:</h4>
                       <div class="bids img scroll">
-                        <h4 class="bid wrapper-card" *ngIf="mItem.bids.length == 0" style="color: #000000">No bids yet</h4>
+                        <h4 class="bid wrapper-card" *ngIf="mItem.bids.length == 0" style="color: #000000">No bids
+                          yet</h4>
                         <div class="bid section d-flex align-items-center wrapper-card d-flex"
                              *ngFor="let item of mItem.bids;  let i = index" (click)="select(item, i)"
                              [class.selected]="index === i">
