@@ -10,6 +10,7 @@ import {SessionWallet} from "algorand-session-wallet";
 import {Location} from "@angular/common";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MarketplaceTypeEnum } from 'src/app/models';
+import {ThemeService} from "../../services/theme.service";
 
 @Component({
   selector: 'app-profile',
@@ -37,6 +38,7 @@ export class ProfileComponent implements OnInit, OnDestroy{
   public popupOpen = false;
   public walletAddress = "";
   public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
+  public isDark: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -46,11 +48,13 @@ export class ProfileComponent implements OnInit, OnDestroy{
     private router: Router,
     private readonly location: Location,
     private readonly walletsConnectService: WalletsConnectService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private readonly _themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
     this.initialiseProfile();
+    this.subscribeToThemeColor();
     this.detectOwnProfile(this.connectService.sessionWallet);
   }
 
@@ -241,5 +245,11 @@ export class ProfileComponent implements OnInit, OnDestroy{
     } else {
       console.log("not wallet");
     }
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    });
   }
 }

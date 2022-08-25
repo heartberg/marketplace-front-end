@@ -5,6 +5,24 @@
     .mat-tab-body-content {
       overflow: unset !important;
     }
+
+    .mat-ink-bar {
+      background-color: #81007F !important;
+    }
+    .mat-tab-label {
+      font-family: primary !important;
+      font-size: 18px !important;
+      font-weight: initial !important;
+    }
+
+  .dark-mode {
+    .mat-tab-label-content {
+      color: #ffffff;
+    }
+    .mat-tab-header-pagination-chevron {
+      border-color: rgba(255, 255, 255, 0.87);
+    }
+  }
 }
 
 .main {
