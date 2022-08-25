@@ -1,0 +1,45 @@
+<div class="wrapper-border search-wrapper">
+  <div class="row">
+    <div class="search-info d-flex align-items-center col col-md-2 col-lg-1 mb-2 mb-md-0">
+<!--      <h4>Search: <span>{{searchValue}}</span></h4>-->
+      <h4>Search: <span>{{(searchValue.length > 10) ? (searchValue | slice:0:10) + '...' : searchValue}}</span></h4>
+    </div>
+    <div class="col col-md-10 col-lg-11 p-0 d-flex justify-content-center justify-content-md-start">
+      <div class="nav-tabs d-flex">
+        <div class="tab" [ngClass]="{'tab-active': selectedSearchFilterType === searchFilterEnum.NFT}" (click)="changeSearchFilterType(searchFilterEnum.NFT)">
+          <h4 class="text-white">NFTs</h4>
+        </div>
+        <div class="tab" [ngClass]="{'tab-active': selectedSearchFilterType === searchFilterEnum.COLLECTION}" (click)="changeSearchFilterType(searchFilterEnum.COLLECTION)">
+          <h4 class="text-white">Collections</h4>
+        </div>
+        <div class="tab" [ngClass]="{'tab-active': selectedSearchFilterType === searchFilterEnum.PROFILE}" (click)="changeSearchFilterType(searchFilterEnum.PROFILE)">
+          <h4 class="text-white">Profiles</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <ng-container *ngIf="filteredSearchResult && filteredSearchResult.length">
+      <div class="col mb-2" *ngFor="let item of filteredSearchResult">
+        <app-updated-card *ngIf="selectedSearchFilterType === searchFilterEnum.NFT" [item]="item"
+                          [routerLink]="'/asset-detail/' + item['assetId']"></app-updated-card>
+        <app-card *ngIf="selectedSearchFilterType === searchFilterEnum.COLLECTION" [mItem]="item" [isCollection]="true"
+                  [routerLink]="'/asset-detail/' + item['assetId']"></app-card>
+        <div *ngIf="selectedSearchFilterType === searchFilterEnum.PROFILE"
+             class="d-flex flex-column align-items-center justify-content-center profile-section" routerLink="../profile/{{item.wallet}}">
+          <img class="profile-image" [src]="item.profileImage ? item.profileImage : 'assets/img/default-avatar.svg'" alt="image">
+          <div class="d-flex align-items-center profile-name-section">
+            <h4>{{(item.name.length > 15) ? (item.name | slice:0:15) + '...' : item.name}}</h4>
+            <img *ngIf="item.verified" src="assets/img/verified-mark.png" alt="Verified">
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!filteredSearchResult || !filteredSearchResult.length">
+      <div class="d-flex align-items-center flex-column not-found w-100">
+        <h3>No results found!</h3>
+        <h4>Please try again!</h4>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -29,11 +29,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { SwapDetailComponent } from './swap-detail/swap-detail.component';
 import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
 import { CreateWrapperComponent } from "./modules/create-wrapper/create-wrapper.component";
+import {SearchWrapperComponent} from "./modules/search-wrapper/search-wrapper.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'marketplace', pathMatch: 'full' },
   // { path: 'home', component: LandingPageComponent },
   { path: 'marketplace', component: MarketPlaceComponent },
+  { path: 'search', component: SearchWrapperComponent },
   { path: 'collection', component: MyCollectionComponent },
   { path: 'create-collection', component: CreateCollectionComponent },
   { path: 'update-collection', component: UpdateCollectionComponent },
