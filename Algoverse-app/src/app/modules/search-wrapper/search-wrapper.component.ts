@@ -37,10 +37,6 @@ export class SearchWrapperComponent implements OnInit {
         this.filteredSearchResult = result.assets;
       } else {
         const previousUrl = this._routerService.getPreviousUrl();
-        if (previousUrl === '/search') {
-          this._router.navigate(['/marketplace']);
-          return;
-        }
         this._router.navigateByUrl(previousUrl);
       }
     })

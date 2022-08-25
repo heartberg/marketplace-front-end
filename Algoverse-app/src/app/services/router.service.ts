@@ -21,6 +21,9 @@ export class RouterService {
   }
 
   public getPreviousUrl() {
+    if (this.previousUrl === "/search") {
+      this.previousUrl = "/marketplace";
+    }
     return this.previousUrl;
   }
 }
