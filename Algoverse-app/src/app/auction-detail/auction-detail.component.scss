@@ -233,6 +233,92 @@ input[type=date] {
     }
   }
 }
+.card-info-left {
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 12px;
+
+  &:hover {
+    cursor: unset;
+  }
+
+  img {
+    border-radius: 12px;
+  }
+
+  .gap {
+    gap: 10px;
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #666;
+    opacity: .5;
+    margin: 1em 0;
+    padding: 0;
+  }
+
+  .names {
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+  }
+  .audio {
+    width: 250px;
+  }
+  .auction-image {
+    object-fit: cover;
+    width: 250px;
+    height: 250px;
+  }
+  .fixed {
+    min-width: 95px;
+  }
+
+  .desc {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .property-gap {
+    gap: 6px;
+  }
+  .asset-heart {
+    width: 18px !important;
+    height: 15px !important;
+    border-radius: 0;
+  }
+  .asset-heart-container {
+    display: flex !important;
+    align-items: center !important;
+    transition: all .3s ease-in-out;
+    gap: 5px;
+
+    img {
+      cursor: pointer;
+    }
+  }
+  .touched {
+    color: #FF419B;
+  }
+
+  .card-info-left {
+    h4 {
+      color: #666
+    }
+    .property {
+      color: #000;
+    }
+  }
+  .verified-gap {
+    gap: 5px;
+  }
+}
 .bid {
   justify-content: flex-end;
   align-items: center !important;
@@ -459,7 +545,7 @@ input[type=date] {
 }
 .scroll {
   height: 160px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .selected {
   transform: scale(1.003);
@@ -495,6 +581,32 @@ input[type=date] {
 
 .sup{
   position: relative;
-  bottom: 1ex; 
+  bottom: 1ex;
   font-size: 80%;
+}
+
+.audio {
+  width: 250px;
+}
+
+.auction-countdown {
+  font-weight: 500;
+  line-height: 8px;
+  font-size: 18px;
+  color: #FFFFFF;
+  padding: 9px 6px;
+  background-color: #4838FF;
+  border-radius: 5px;
+}
+
+.auction-info {
+  max-width: 500px;
+
+  .fixed {
+    min-width: 112px;
+  }
+
+  h4, h5 {
+    color: #666 !important;
+  }
 }

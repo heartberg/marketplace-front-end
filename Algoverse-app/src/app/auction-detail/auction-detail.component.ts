@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
@@ -7,13 +7,16 @@ import { makePaymentTxnWithSuggestedParamsFromObject } from 'algosdk';
 import { getAlgodClient, getAppGlobalState, getAppLocalStateByKey } from '../services/utils.algod';
 import { environment } from 'src/environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import moment from "moment";
+import {interval, Subscription} from "rxjs";
+import {countDownFormatter, isCountdownValid} from "../shared/utils";
 
 @Component({
   selector: 'app-auction-detail',
   templateUrl: './auction-detail.component.html',
   styleUrls: ['./auction-detail.component.scss']
 })
-export class AuctionDetailComponent implements OnInit {
+export class AuctionDetailComponent implements OnInit, OnDestroy {
 
   public mAuction: any = {};
   public assetStar: any;
@@ -45,6 +48,11 @@ export class AuctionDetailComponent implements OnInit {
   public animation_url_mimetype: string = "";
   public isMimeTypeVideo: boolean = false;
   public isMimeTypeAudio: boolean = false;
+  public isHovered: boolean = false;
+  public auctionCountdown: string = "00:00:00";
+
+  private timeDiff: moment.Duration = moment.duration();
+  private $subscription: Subscription = new Subscription();
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -64,6 +72,10 @@ export class AuctionDetailComponent implements OnInit {
       return;
     }
     this.loadAuctionDetails(auctionIdFromRoute);
+  }
+
+  ngOnDestroy(): void {
+    this.$subscription.unsubscribe();
   }
 
   async showAuctionDetail() {
@@ -94,7 +106,7 @@ export class AuctionDetailComponent implements OnInit {
         }
       }
     }
-    
+
     this.selectedAsset = this.mAuction.asset;
     this.selectedAssetID = this.selectedAsset.assetId;
     this.selectedAssetDescription = `Name: ${this.selectedAsset.name} \nUnitName: ${this.selectedAsset.unitName}`;
@@ -108,7 +120,7 @@ export class AuctionDetailComponent implements OnInit {
     } else {
       this.minimumIncrement = this.mAuction.reserve / Math.pow(10, 6)
     }
-    
+
     if (this.selectedAsset.assetURL) {
       this._userService.loadMetaData(this.selectedAsset.assetUrl).subscribe(
         (result) => {
@@ -221,7 +233,7 @@ export class AuctionDetailComponent implements OnInit {
           console.log('error', error)
           this.spinner.hide()
           alert("failed to close!")
-          
+
         }
       )
     } else {
@@ -316,6 +328,7 @@ export class AuctionDetailComponent implements OnInit {
       res => {
         console.log('res', res);
         this.mAuction = res;
+        this.getTimeDiff();
         this.showAuctionDetail();
         let wallet = this._walletsConnectService.sessionWallet
         if(wallet) {
@@ -384,4 +397,18 @@ export class AuctionDetailComponent implements OnInit {
     }
   }
 
+  private startCountdown(): void {
+    this.timeDiff.subtract(1, 'second');
+    if(!isCountdownValid(this.timeDiff)) {
+      this.auctionCountdown = "Ended";
+      this.$subscription.unsubscribe();
+      return;
+    }
+    this.auctionCountdown = countDownFormatter(this.timeDiff);
+  }
+
+  private getTimeDiff() {
+    this.timeDiff = moment.duration(moment(moment.unix(this.mAuction.closingDate)).diff(moment()));
+    this.$subscription = interval(1000).subscribe(() => this.startCountdown());
+  }
 }

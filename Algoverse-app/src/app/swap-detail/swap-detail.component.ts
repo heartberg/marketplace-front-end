@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
 import {Location} from '@angular/common';
-import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-swap-detail',
@@ -39,6 +38,8 @@ export class SwapDetailComponent implements OnInit {
   }
   acceptingAssetTotal: number = 0;
   offeringAssetTotal: number = 0;
+  public isAcceptingHovered: boolean = false;
+  public isOfferingHovered: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,

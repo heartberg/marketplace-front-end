@@ -5,6 +5,7 @@ import moment from 'moment';
 import {WalletsConnectService} from "../../services/wallets-connect.service";
 import {UserService} from "../../services/user.service";
 import {SessionWallet} from "algorand-session-wallet";
+import {countDownFormatter, isCountdownValid} from "../utils";
 
 @Component({
   selector: 'app-updated-card',
@@ -68,21 +69,18 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
 
   private startCountdown(): void {
     this.timeDiff.subtract(1, 'second');
-    if(!this.countDownValid()) {
+    if(!isCountdownValid(this.timeDiff)) {
       this.auctionCountdown = "Ended";
       this.$subscription.unsubscribe();
       return;
     }
-    this.auctionCountdown =  [Math.floor(this.timeDiff.asHours()), this.timeDiff.minutes(), this.timeDiff.seconds()].join(':');
+    this.auctionCountdown = countDownFormatter(this.timeDiff);
   }
 
   private findForHighestBid(): void {
     this.highestBid = Math.max(...this.item.bids.map((bid: any) => bid.amount));
   }
 
-  private countDownValid(): boolean {
-    return !(this.timeDiff.minutes() < 0 || this.timeDiff.seconds() < 0);
-  }
 
   private getStar(): void {
     if (this.wallet) {
