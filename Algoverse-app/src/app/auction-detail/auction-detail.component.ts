@@ -180,6 +180,11 @@ export class AuctionDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if(!this.hasStarted) {
+      alert('Auction has not started!');
+      return;
+    }
+
     if(this.bidAmount < this.minimumIncrement * Math.pow(10, 6)) {
       alert('Bid too low!');
       return;

@@ -152,7 +152,7 @@
                         <div class="d-flex gap">
                           <h4 class="fixed">Supply:</h4>
                           <span
-                            class="unset-dm-style">{{maxSupply}} {{ acceptingAssetDecimals > 0 ? ' (Fractions: ' : ""}} {{acceptingAssetDecimals >= 5 ? 10 : "" }}
+                            class="unset-dm-style">{{maxSupplyAccepting}} {{ acceptingAssetDecimals > 0 ? ' (Fractions: ' : ""}} {{acceptingAssetDecimals >= 5 ? 10 : "" }}
                             <sup
                               *ngIf="acceptingAssetDecimals >= 5">{{acceptingAssetDecimals}}</sup> {{(acceptingAssetDecimals < 5 && acceptingAssetDecimals > 0) ? formatFractions(acceptingAssetDecimals) : ""}}{{acceptingAssetDecimals > 0 ? ")" : ''}}</span>
                         </div>
@@ -176,11 +176,18 @@
               </div>
           </div>
           <div class="buttons">
-            <button class="btn-secondary-costum aligner" (click)="actionSwap()" style="width: 160px;">
-              <ng-container *ngIf="isMine">
+            <button class="btn-secondary-costum aligner" (click)="actionSwap()" style="width: 160px;" *ngIf="isMine">
+              <ng-container>
                 Cancel Swap
               </ng-container>
-              <ng-container *ngIf="!isMine">
+            </button>
+            <button class="btn-secondary-costum aligner" (click)="actionSwap()" style="width: 160px;" *ngIf="!isMine && balance >= +acceptingAmount">
+              <ng-container>
+                Swap
+              </ng-container>
+            </button>
+            <button class="btn-primary-costum aligner" style="width: 160px;" *ngIf="!isMine && balance < +acceptingAmount">
+              <ng-container>
                 Swap
               </ng-container>
             </button>

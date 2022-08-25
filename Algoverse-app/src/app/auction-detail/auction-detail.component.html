@@ -62,15 +62,15 @@
                       <hr>
                       <div class="desc">
                         <div class="d-flex gap">
-                          <h4 class="fixed">Asset ID: </h4>
+                          <h4 class="fixed" style="color: #666">Asset ID: </h4>
                           <span class="unset-dm-style">{{mAuction.asset?.assetId}}</span>
                         </div>
                         <div class="d-flex gap" *ngIf="mAuction.asset?.unitName">
-                          <h4 class="fixed">Asset Unit:</h4>
+                          <h4 class="fixed" style="color: #666">Asset Unit:</h4>
                           <span class="unset-dm-style">{{mAuction.asset?.unitName}}</span>
                         </div>
                         <div class="d-flex gap">
-                          <h4 class="fixed">Supply:</h4>
+                          <h4 class="fixed" style="color: #666">Supply:</h4>
                           <span
                             class="unset-dm-style">{{maxSupply}} {{ decimals > 0 ? ' (Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}
                             <sup
@@ -79,7 +79,7 @@
                         <div class="row m-0"
                              *ngIf="mAuction.asset?.properties && mAuction.asset?.properties.length > 0">
                           <div class="col-5 p-0" style="width: fit-content">
-                            <h4 class="fixed">Properties:</h4>
+                            <h4 class="fixed" style="color: #666">Properties:</h4>
                           </div>
                           <div class="col-7 p-0">
                             <div *ngFor="let prop of mAuction.asset.properties">

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { WalletsConnectService } from '../services/wallets-connect.service';
 import {Location} from '@angular/common';
+import { getBalance } from '../services/utils.algod';
 
 @Component({
   selector: 'app-swap-detail',
@@ -40,6 +41,8 @@ export class SwapDetailComponent implements OnInit {
   offeringAssetTotal: number = 0;
   public isAcceptingHovered: boolean = false;
   public isOfferingHovered: boolean = false;
+  balance: number = -1;
+  maxSupplyAccepting: any;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -60,7 +63,7 @@ export class SwapDetailComponent implements OnInit {
     let wallet = this._walletsConnectService.sessionWallet
 
     this._userService.loadSwapItem(SwapIdFromRoute).subscribe(
-      res => {
+      async res => {
         console.log('res', res);
         this.mSwap = res;
         const asset = this.mSwap.offeringAsset;
@@ -68,6 +71,7 @@ export class SwapDetailComponent implements OnInit {
         this.receiveAssetCover(res.offeringAsset.assetURL, 'offering');
         this.receiveAssetCover(res.acceptingAsset.assetURL, 'accepting');
         if(wallet) {
+          this.balance = await getBalance(wallet.getDefaultAccount(), this.mSwap.acceptingAsset.assetId) / Math.pow(10, this.acceptingAssetDecimals)
           this._userService.getAssetStar(wallet.getDefaultAccount(), this.mSwap.offeringAsset.assetId).subscribe(
             (res: any) => {
               if(res) {
@@ -120,8 +124,8 @@ export class SwapDetailComponent implements OnInit {
 
     console.log('masset', asset);
     this.selectedAssetDescription = `Name: ${asset.name} \nUnitName: ${asset.unitName}`;
-    this.maxSupply = asset.supply;
-
+    this.maxSupply = asset.supply / Math.pow(10, this.offeringAssetDecimals);
+    this.maxSupplyAccepting = acceptingAssetInfo['params']['total'] / Math.pow(10, this.acceptingAssetDecimals);
     this.metaDataProperties = asset.properties;
   }
 
