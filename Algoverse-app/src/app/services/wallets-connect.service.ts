@@ -38,7 +38,7 @@ export class WalletsConnectService {
     }
   }
 
-  connect = async (choice: string): Promise<void> => {
+  connect = async (choice: string, isBeta: boolean = false): Promise<void> => {
     try {
       console.log('choice', choice);
       const sw = new SessionWallet("TestNet", undefined, choice);
@@ -74,9 +74,10 @@ export class WalletsConnectService {
       localStorage.setItem('sessionWallet', JSON.stringify(this.sessionWallet));
       // localStorage.setItem('walletsOfUser', JSON.stringify(this.sessionWallet.wallet.accounts));
       console.log(this.sessionWallet, 'esaaa');
-
-      if (this.myAlgoAddress.length > 0) {
-        this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
+      if (!isBeta) {
+        if (this.myAlgoAddress.length > 0) {
+          this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
+        }
       }
     } catch (e) {
       exceptionFilter(e);

@@ -339,4 +339,12 @@ export class UserService {
   public receiveAssetInformation(assetUrl: string): Observable<any> {
     return this._http.get(assetUrl);
   }
+  public checkAddressInWhitelist(wallet: string): Observable<any> {
+    const url = `${this.baseUrl}user/whitelist/check`;
+    return this._http.get(url, {
+      params: {
+        wallet
+      }
+    });
+  }
 }

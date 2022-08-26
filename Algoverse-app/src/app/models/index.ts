@@ -4,3 +4,6 @@ export * from './user.model';
 export * from './allowed-wallets.enum';
 export * from './marketplace-type.enum';
 export * from './search-filter.enum';
+//Interfaces
+export * from './social-media.interface';
+

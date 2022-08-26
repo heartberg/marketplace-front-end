@@ -1,0 +1,16 @@
+$font-family: 'Inter', sans-serif;
+
+@font-face {
+  font-family: "Inter";
+  src: local("Inter"), url(../../../assets/font/access/Inter-Regular.ttf) format("truetype");
+}
+
+* {
+  font-family: $font-family !important;
+}
+
+.access-wrapper {
+  height: 100vh;
+  background: #000000 url(../../../assets/img/access/background.png) no-repeat;
+  background-size: cover;
+}

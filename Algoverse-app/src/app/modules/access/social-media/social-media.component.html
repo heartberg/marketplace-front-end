@@ -1,0 +1,8 @@
+<div class="d-flex flex-column fit-content position-fixed social-media-container">
+  <div *ngFor="let medium of socialMedia">
+    <a [href]="medium.href" target="_blank">
+      <img [src]="medium.source" [alt]="medium.alt"
+           class="social-media-icon">
+    </a>
+  </div>
+</div>

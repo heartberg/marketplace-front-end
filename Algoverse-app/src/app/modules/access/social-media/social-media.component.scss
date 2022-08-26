@@ -1,0 +1,33 @@
+.fit-content {
+  width: fit-content;
+}
+
+.social-media-container {
+  z-index: 5;
+  left: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  gap: 30px;
+
+  .social-media-icon {
+
+    &:hover {
+      filter: invert(53%) sepia(34%) saturate(3579%) hue-rotate(306deg) brightness(101%) contrast(101%);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .social-media-container {
+    transform: translateY(0);
+    top: initial;
+    bottom: 30px;
+    left: initial;
+    right: 10px;
+
+    .social-media-icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
