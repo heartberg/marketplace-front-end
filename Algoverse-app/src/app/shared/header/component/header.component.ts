@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
 import {Router} from "@angular/router";
-import {Observable} from "rxjs";
-import fa from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/fa";
+import {Subject, Subscription} from "rxjs";
 import {ThemeService} from "../../../services/theme.service";
 import {NgxSpinnerService} from "ngx-spinner";
-import { environment } from 'src/environments/environment';
-import { NgMarqueeModule } from "ng-marquee"
+import {environment} from 'src/environments/environment';
+import {debounceTime} from 'rxjs/operators';
+import {UserService} from "../../../services/user.service";
+import {SearchService} from "../../../services/search.service";
 
 @Component({
   selector: 'app-header',
@@ -26,18 +27,21 @@ export class HeaderComponent implements OnInit {
   public wallet = "default";
   public balance: string = "0";
   public version = environment.VERSION
-
   public isLoggedIn: boolean = false;
-
   public isPopUpOpenedSecond: boolean = false;
   public isBalanceLoading: boolean = false;
   public spinnerName: string = 'balance-spinner';
+
+  private inputChange: Subject<string> = new Subject<string>();
+  private debounceTime: number = 300;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
     private _walletsConnectService: WalletsConnectService,
     private readonly _themeService: ThemeService,
     private readonly spinner: NgxSpinnerService,
+    private readonly _searchService: SearchService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -51,7 +55,9 @@ export class HeaderComponent implements OnInit {
     }
     this.receiveTheme();
 
-    this.router.onSameUrlNavigation = "reload"
+    this.router.onSameUrlNavigation = "reload";
+
+    this.subscribeToSearchChange();
   }
 
   async openAvatar() {
@@ -153,4 +159,26 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl("/notification-center")
   }
 
+  public onSearchChange(event: Event): void {
+    const element = event.currentTarget as HTMLInputElement;
+    if (element.value) {
+      this.inputChange.next(element.value);
+      return;
+    }
+    this._searchService.$searchResult.next(null);
+  }
+
+  private subscribeToSearchChange(): void {
+    this.subscription = this.inputChange
+      .pipe(
+        debounceTime(this.debounceTime),
+      )
+      .subscribe((value: string) => {
+        this._searchService.globalSearch(value).subscribe(response => {
+          this.router.navigate(["/search"]);
+          this._searchService.setSearchResult = response;
+          this._searchService.setSearchValue = value;
+        });
+      });
+  }
 }

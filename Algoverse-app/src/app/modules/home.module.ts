@@ -45,6 +45,7 @@ import { SwapGridItemComponent } from "../swap-grid-item/swap-grid-item.componen
 import { AuctionDetailComponent } from "../auction-detail/auction-detail.component";
 import { AuctionGridItemComponent } from "../auction-grid-item/auction-grid-item.component";
 import { CreateWrapperComponent } from './create-wrapper/create-wrapper.component';
+import { SearchWrapperComponent } from './search-wrapper/search-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { CreateWrapperComponent } from './create-wrapper/create-wrapper.componen
     AuctionDetailComponent,
     AuctionGridItemComponent,
     CreateWrapperComponent,
+    SearchWrapperComponent,
   ],
   imports: [
     BrowserModule,

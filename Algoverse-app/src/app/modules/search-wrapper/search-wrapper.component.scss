@@ -1,0 +1,35 @@
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .search-info, .not-found {
+    font-size: 18px;
+
+    h4 {
+      color: #666;
+    }
+  }
+}
+
+.profile-section {
+  cursor: pointer;
+  
+  .profile-image {
+    height: 250px;
+    width: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .profile-name-section {
+    gap: 5px;
+
+    img {
+      width: 25px;
+      height: 25px;
+      object-fit: cover;
+    }
+  }
+
+}
