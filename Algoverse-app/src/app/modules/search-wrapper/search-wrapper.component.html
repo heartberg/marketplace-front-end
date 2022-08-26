@@ -20,7 +20,7 @@
   </div>
   <div class="row">
     <ng-container *ngIf="filteredSearchResult && filteredSearchResult.length">
-      <div class="mb-2" *ngFor="let item of filteredSearchResult" [ngClass]="{'col-2':filteredSearchResult.length === 1, 'col': filteredSearchResult.length > 1}">
+      <div class="mb-2 col-md-6 col-lg-4 col-xl-3 col" *ngFor="let item of filteredSearchResult">
         <app-updated-card *ngIf="selectedSearchFilterType === searchFilterEnum.NFT" [item]="item"
                           [routerLink]="'/asset-detail/' + item['assetId']"></app-updated-card>
         <app-card *ngIf="selectedSearchFilterType === searchFilterEnum.COLLECTION" [mItem]="item" [isCollection]="true"
