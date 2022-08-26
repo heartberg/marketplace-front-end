@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SearchService} from "../../services/search.service";
 import {Location} from "@angular/common";
 import {SearchFilterEnum} from "../../models";
@@ -32,9 +32,9 @@ export class SearchWrapperComponent implements OnInit {
   private subscribeToSearchResult(): void {
     this._searchService.$searchResult.subscribe(result => {
       if (result) {
-        console.log(result)
         this.searchResult = result;
         this.filteredSearchResult = result.assets;
+        this.changeSearchFilterType(this.selectedSearchFilterType);
       } else {
         const previousUrl = this._routerService.getPreviousUrl();
         this._router.navigateByUrl(previousUrl);

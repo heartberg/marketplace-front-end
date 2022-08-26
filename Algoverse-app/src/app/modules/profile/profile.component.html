@@ -89,21 +89,21 @@
         <mat-tab-group>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="My Assets ({{myAssets.length}})" *ngIf="isOwnProfile">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of myAssets; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': myAssets.length === 1, 'col': myAssets.length > 1}" *ngFor="let item of myAssets; let i = index; last as last">
                 <app-updated-card [item]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-updated-card>
               </div>
             </div>
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="Created ({{createdAssets.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of createdAssets; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': createdAssets.length === 1, 'col': createdAssets.length > 1}" *ngFor="let item of createdAssets; let i = index; last as last">
                 <app-updated-card [item]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-updated-card>
               </div>
             </div>
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="For Sale ({{forSale.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of forSale; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': forSale.length === 1, 'col': forSale.length > 1}" *ngFor="let item of forSale; let i = index; last as last">
                 <app-updated-card [type]="marketplaceTypes.TRADE" routerLink="../../asset-detail/{{item.assetId}}"
                                      [item]="item"></app-updated-card>
               </div>
@@ -111,7 +111,7 @@
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="For Auction ({{forAuction.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of forAuction; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': forAuction.length === 1, 'col': forAuction.length > 1}" *ngFor="let item of forAuction; let i = index; last as last">
                 <app-updated-card [type]="marketplaceTypes.AUCTION" [routerLink]="'/auction/' + item['auctionId']"
                                        [item]="item"></app-updated-card>
               </div>
@@ -119,21 +119,21 @@
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="For Swap ({{forSwap.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of forSwap; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': forSwap.length === 1, 'col': forSwap.length > 1}" *ngFor="let item of forSwap; let i = index; last as last">
                 <app-updated-card [type]="marketplaceTypes.SWAP" [routerLink]="'/swap/' + item['swapId']" [item]="item"></app-updated-card>
               </div>
             </div>
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="Open Bids ({{myBids.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of myBids; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': myBids.length === 1, 'col': myBids.length > 1}" *ngFor="let item of myBids; let i = index; last as last">
                 <app-updated-card [type]="marketplaceTypes.BID" routerLink="../../asset-detail/{{item.assetId}}" [item]="item"></app-updated-card>
               </div>
             </div>
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="Auction Bids ({{myAuctionBids.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of myAuctionBids; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': myAuctionBids.length === 1, 'col': myAuctionBids.length > 1}" *ngFor="let item of myAuctionBids; let i = index; last as last">
                 <app-updated-card [type]="marketplaceTypes.AUCTION" [routerLink]="'/auction/' + item['auctionId']"
                                        [item]="item"></app-updated-card>
               </div>
@@ -141,7 +141,7 @@
           </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="Starred ({{starred.length}})">
             <div class="row mt-4">
-              <div class="col mb-2" *ngFor="let item of starred; let i = index; last as last">
+              <div class="mb-2" [ngClass]="{'col-2': starred.length === 1, 'col': starred.length > 1}" *ngFor="let item of starred; let i = index; last as last">
                 <app-updated-card [item]="item" routerLink="/asset-detail/{{item.assetId}}"></app-updated-card>
               </div>
             </div>
