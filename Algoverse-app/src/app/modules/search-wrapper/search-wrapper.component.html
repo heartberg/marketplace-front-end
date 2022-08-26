@@ -24,7 +24,7 @@
         <app-updated-card *ngIf="selectedSearchFilterType === searchFilterEnum.NFT" [item]="item"
                           [routerLink]="'/asset-detail/' + item['assetId']"></app-updated-card>
         <app-card *ngIf="selectedSearchFilterType === searchFilterEnum.COLLECTION" [mItem]="item" [isCollection]="true"
-                  [routerLink]="'/asset-detail/' + item['assetId']"></app-card>
+                  [routerLink]="'/collection-detail/' + item['collectionId']"></app-card>
         <div *ngIf="selectedSearchFilterType === searchFilterEnum.PROFILE"
              class="d-flex flex-column align-items-center justify-content-center profile-section" routerLink="../profile/{{item.wallet}}">
           <img class="profile-image" [src]="item.profileImage ? item.profileImage : 'assets/img/default-avatar.svg'" alt="image">
