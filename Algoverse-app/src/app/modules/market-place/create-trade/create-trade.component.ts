@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {Location} from '@angular/common';
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-create-trade',
@@ -33,6 +34,7 @@ export class CreateTradeComponent implements OnInit {
   public selectedAssetName: string = "";
   public assetsName: any[] = [];
   selectedAssetTotal: number = 0;
+  public isDark: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -40,7 +42,8 @@ export class CreateTradeComponent implements OnInit {
     private httpClient: HttpClient,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private _location: Location
+    private _location: Location,
+    private readonly _themeService: ThemeService
   ) {
   }
 
@@ -51,6 +54,7 @@ export class CreateTradeComponent implements OnInit {
     }
 
     this.spinner.show();
+    this.subscribeToThemeColor();
     this.assets = await this._walletsConnectService.getOwnAssets();
 
     if (this.assets.length == 0) {
@@ -295,5 +299,11 @@ export class CreateTradeComponent implements OnInit {
         }
       });
     }
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 }

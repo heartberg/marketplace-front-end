@@ -10,6 +10,7 @@ import {AssetService} from "../services/asset.service";
 import {Location} from '@angular/common';
 import { removeUndefinedProperties } from 'algosdk/dist/types/src/utils/utils';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {ThemeService} from "../services/theme.service";
 
 @Component({
   selector: 'app-trade-detail',
@@ -47,6 +48,7 @@ export class TradeDetailComponent implements OnInit {
   public createTrade: boolean = false;
   public isHovered: boolean = false;
   assetInfo: any;
+  public isDark: boolean = false;
 
 
   constructor(
@@ -56,7 +58,8 @@ export class TradeDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private _assetService: AssetService,
     private _location: Location,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private readonly _themeService: ThemeService
   ) {
   }
 
@@ -69,6 +72,8 @@ export class TradeDetailComponent implements OnInit {
       this._location.back();
       return;
     }
+
+    this.subscribeToThemeColor();
 
     this._assetService.getAssetDetail(itemIdFromRoute).subscribe(
       async res => {
@@ -376,6 +381,12 @@ export class TradeDetailComponent implements OnInit {
     } else {
       return decimals
     }
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 
 }

@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
+import {ThemeService} from "../../services/theme.service";
 
 @Component({
   selector: 'app-create-auction',
@@ -34,6 +35,7 @@ export class CreateAuctionComponent implements OnInit {
 
   metadataAttributes: any;
   selectedAssetTotal: number = 0;
+  public isDark: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -41,7 +43,8 @@ export class CreateAuctionComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient,
     private spinner: NgxSpinnerService,
-    private _location: Location
+    private _location: Location,
+    private readonly _themeService: ThemeService
   ) {
   }
 
@@ -50,8 +53,8 @@ export class CreateAuctionComponent implements OnInit {
       this.router.navigate(['/', 'home']);
       return;
     }
-
     this.spinner.show();
+    this.subscribeToThemeColor();
     this.assets = await this._walletsConnectService.getOwnAssets();
 
     if (this.assets.length == 0) {
@@ -315,5 +318,11 @@ export class CreateAuctionComponent implements OnInit {
         }
       });
     }
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 }

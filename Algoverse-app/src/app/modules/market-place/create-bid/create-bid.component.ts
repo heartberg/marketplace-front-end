@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-create-bid',
@@ -34,6 +35,7 @@ export class CreateBidComponent implements OnInit {
   searchAssetControl: FormControl;
   metadataAttributes: any;
   selectedAssetTotal: number = 0;
+  public isDark: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -41,7 +43,8 @@ export class CreateBidComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient,
     private spinner: NgxSpinnerService,
-    private _location: Location
+    private _location: Location,
+    private readonly _themeService: ThemeService
   ) {
     this.searchAssetControl = new FormControl();
     this.searchAssetControl.valueChanges.pipe(debounceTime(1000)).subscribe(async res => {
@@ -54,6 +57,7 @@ export class CreateBidComponent implements OnInit {
       this.router.navigate(['/', 'home']);
       return;
     }
+    this.subscribeToThemeColor();
   }
 
   async selectedAsset(assetID: string) {
@@ -261,6 +265,12 @@ export class CreateBidComponent implements OnInit {
 
   public actionBack() {
     this._location.back();
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 
 }

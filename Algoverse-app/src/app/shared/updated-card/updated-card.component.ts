@@ -6,6 +6,7 @@ import {WalletsConnectService} from "../../services/wallets-connect.service";
 import {UserService} from "../../services/user.service";
 import {SessionWallet} from "algorand-session-wallet";
 import {countDownFormatter, isCountdownValid} from "../utils";
+import {ThemeService} from "../../services/theme.service";
 
 @Component({
   selector: 'app-updated-card',
@@ -30,10 +31,16 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
   private assetId: number = 0;
   private wallet: SessionWallet | undefined;
   public isHovered: boolean = false;
+  public isDark: boolean = false;
 
-  constructor(private readonly _walletsConnectService: WalletsConnectService, private readonly _userService: UserService) { }
+  constructor(
+    private readonly _walletsConnectService: WalletsConnectService,
+    private readonly _userService: UserService,
+    private readonly _themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
+    this.subscribeToThemeColor();
     this.wallet = this._walletsConnectService.sessionWallet;
 
     if (this.type === this.marketplaceTypes.AUCTION && this.item.bids.length) {
@@ -123,7 +130,7 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private removeStar() {
+  private removeStar(): void {
     if (this.wallet) {
       console.log(this.assetStar, "THIS NUTS")
       this._userService.removeAssetStar(this.assetStar.assetStarId).subscribe(
@@ -136,5 +143,11 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
     } else {
       alert("connect wallet")
     }
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 }

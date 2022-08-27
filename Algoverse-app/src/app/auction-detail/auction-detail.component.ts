@@ -10,6 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import moment from "moment";
 import {interval, Subscription} from "rxjs";
 import {countDownFormatter, isCountdownValid} from "../shared/utils";
+import {ThemeService} from "../services/theme.service";
 
 @Component({
   selector: 'app-auction-detail',
@@ -53,6 +54,7 @@ export class AuctionDetailComponent implements OnInit, OnDestroy {
 
   private timeDiff: moment.Duration = moment.duration();
   private $subscription: Subscription = new Subscription();
+  public isDark: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
@@ -60,7 +62,8 @@ export class AuctionDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private _location: Location,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private readonly _themeService: ThemeService
   ) {
   }
 
@@ -71,6 +74,7 @@ export class AuctionDetailComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('items');
       return;
     }
+    this.subscribeToThemeColor();
     this.loadAuctionDetails(auctionIdFromRoute);
   }
 
@@ -415,5 +419,11 @@ export class AuctionDetailComponent implements OnInit, OnDestroy {
   private getTimeDiff() {
     this.timeDiff = moment.duration(moment(moment.unix(this.mAuction.closingDate)).diff(moment()));
     this.$subscription = interval(1000).subscribe(() => this.startCountdown());
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 }
