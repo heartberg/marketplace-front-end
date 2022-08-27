@@ -118,7 +118,7 @@
                           <div class="show-info d-flex">
                             <div class="show first">
                               <span>{{scaleAlgo(item?.price)}}</span>
-                              <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
+                              <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
                             </div>
                             <div class="show" *ngIf="total > 1 || decimals > 0">
                               <span>for {{scaleAmount(item?.amount)}} </span>
@@ -152,7 +152,7 @@
                           <div class="show-info d-flex">
                             <div class="show first">
                               <span>{{scaleAlgo(item?.price)}}</span>
-                              <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
+                              <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
                             </div>
                             <div class="show" *ngIf="total > 1 || decimals > 0">
                               <span>for {{scaleAmount(item?.amount)}}</span>

@@ -55,7 +55,7 @@
         <h4 *ngIf="!item.price">No price</h4>
         <div class="d-flex align-items-center" *ngIf="item.price > 0">
           <h4 class="mr-1">{{(item.price / 1000000).toFixed(2)}}</h4>
-          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+          <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
         </div>
       </ng-container>
       <ng-container *ngIf="type === marketplaceTypes.AUCTION || type === marketplaceTypes.BID || type === marketplaceTypes.TRADE">
@@ -78,7 +78,7 @@
       <ng-container *ngIf="type === marketplaceTypes.ALL">
         <div class="d-flex align-items-center" *ngIf="item.highestBid">
           <h4 class="mr-1">Bid {{(item.highestBid / 1000000).toFixed(2)}}</h4>
-          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+          <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
         </div>
         <h4 *ngIf="!item.highestBid">No Bids</h4>
       </ng-container>
@@ -86,21 +86,21 @@
       <ng-container *ngIf="type === marketplaceTypes.BID">
         <div class="d-flex align-items-center">
           <h4 class="mr-1">Bid {{(item.price / 1000000).toFixed(2)}}</h4>
-          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+          <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
         </div>
       </ng-container>
       <!--If type is Trade-->
       <ng-container *ngIf="type === marketplaceTypes.TRADE">
         <div class="d-flex align-items-center">
           <h4 class="mr-1">Price {{(item.price / 1000000).toFixed(2)}}</h4>
-          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+          <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
         </div>
       </ng-container>
       <!--If type is Auctiom-->
       <ng-container *ngIf="type === marketplaceTypes.AUCTION">
         <div class="d-flex align-items-center" *ngIf="item.bids.length">
           <h4 class="mr-1">Bid {{(highestBid / 1000000).toFixed(2)}}</h4>
-          <img class="algo-logo pe-none" src="assets/img/algorand-algo-logo.png" alt="">
+          <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
         </div>
         <ng-container *ngIf="!item.bids.length">
           <h4>No Bids</h4>

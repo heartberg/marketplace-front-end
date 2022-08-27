@@ -28,7 +28,7 @@
               </div>
               <div class="col-md-7 d-flex align-items-center">
                 <input type="text" placeholder="Enter algo amount to offer" class="input-costum mr-1" (blur)="blurAlgoEvent($event)">
-                <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
+                <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
               </div>
             </div>
           </div>

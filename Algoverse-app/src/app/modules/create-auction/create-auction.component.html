@@ -73,7 +73,7 @@
             <h4 class="priceheader">Reserve (> 0.001 Algo)</h4>
             <div class="d-flex align-items-center">
               <input type="text" placeholder="Enter price for the offered item" class="input-costum mr-1" (blur)="blurPriceEvent($event)">
-              <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
+              <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
             </div>
           </div>
           <div class="wrapper-border">
@@ -95,7 +95,7 @@
               <h4 class="priceheader">Minimum Bid Increment (>= 0.001 Algo)</h4>
               <div class="d-flex align-items-center">
                 <input type="text" placeholder="10" class="input-costum mr-1" (blur)="blurMinimumIncrementEvent($event)">
-                <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt="">
+                <img class="algo-logo pe-none" [src]="isDark ? 'assets/img/algorand-logo-white-small.png' : 'assets/img/algorand-logo-black-small.png'" alt="Algo">
               </div>
             </div>
           </div>
