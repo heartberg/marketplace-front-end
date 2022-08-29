@@ -39,6 +39,9 @@ export class AccessConnectComponent implements OnInit {
       this.userService.checkAddressInWhitelist(this.wallet[0]).subscribe((isWhitelisted: boolean) => {
         this.isWhitelisted = isWhitelisted;
         this.whitelistService.isWhitelistedValue = isWhitelisted;
+        if (!isWhitelisted) {
+          this.walletsConnectService.disconnect(true);
+        }
         if (isWhitelisted) {
           this.router.navigate(['/marketplace']);
         }

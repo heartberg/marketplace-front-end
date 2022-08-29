@@ -113,7 +113,7 @@ export class WalletsConnectService {
     console.log(this.sessionWallet, 'esaaa 22222');
   }
 
-  disconnect = () => {
+  disconnect = (isBeta: boolean = false) => {
     this.sessionWallet!.disconnect()
     this.myAlgoAddress = [];
     localStorage.removeItem('walletIndex');
@@ -123,14 +123,16 @@ export class WalletsConnectService {
     localStorage.removeItem('profile');
     this.sessionWallet = undefined;
     //setConnected(false)
-    localStorage.setItem('reload', 'true');
-    if (localStorage.getItem('reload')) {
-      location.reload();
-      setTimeout(() => {
-        localStorage.removeItem('reload');
-      }, 300)
-    } else {
-      return
+    if (!isBeta) {
+      localStorage.setItem('reload', 'true');
+      if (localStorage.getItem('reload')) {
+        location.reload();
+        setTimeout(() => {
+          localStorage.removeItem('reload');
+        }, 300)
+      } else {
+        return
+      }
     }
   }
 
