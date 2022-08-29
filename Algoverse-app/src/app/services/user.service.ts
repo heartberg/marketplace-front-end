@@ -339,9 +339,9 @@ export class UserService {
   public receiveAssetInformation(assetUrl: string): Observable<any> {
     return this._http.get(assetUrl);
   }
-  public checkAddressInWhitelist(wallet: string): Observable<any> {
+  public checkAddressInWhitelist(wallet: string): Observable<boolean> {
     const url = `${this.baseUrl}user/whitelist/check`;
-    return this._http.get(url, {
+    return this._http.get<boolean>(url, {
       params: {
         wallet
       }

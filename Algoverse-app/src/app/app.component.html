@@ -1,9 +1,9 @@
-<!--<div class="main-wrapper" [class.dark-mode]="appTheme === 'dark'">-->
-<!--  <app-header></app-header>-->
-<!--  <div class="main MAIN">-->
-<!--    <div class="content">-->
-<!--      <router-outlet></router-outlet>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<app-access></app-access>
+<div [ngClass]="{'main-wrapper': isWhitelisted}" [class.dark-mode]="appTheme === 'dark'">
+  <app-header *ngIf="isWhitelisted"></app-header>
+  <div [ngClass]="{'main MAIN': isWhitelisted}">
+    <div [ngClass]="{'content': isWhitelisted}">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
