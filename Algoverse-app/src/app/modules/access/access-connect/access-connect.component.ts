@@ -17,15 +17,18 @@ export class AccessConnectComponent implements OnInit {
     private readonly walletsConnectService: WalletsConnectService,
     private readonly userService: UserService,
     private readonly router: Router,
-    private whitelistService: WhitelistService
+    private readonly whitelistService: WhitelistService
   ) {
   }
 
   ngOnInit(): void {
-    if (this.walletsConnectService.myAlgoAddress && this.walletsConnectService.myAlgoAddress[0]) {
-      this.userService.checkAddressInWhitelist(this.walletsConnectService.myAlgoAddress[0]).subscribe((isWhitelisted: boolean) => {
+    if (this.walletsConnectService.sessionWallet && this.walletsConnectService.sessionWallet.getDefaultAccount()) {
+      this.userService.checkAddressInWhitelist(this.walletsConnectService.sessionWallet.getDefaultAccount()).subscribe((isWhitelisted: boolean) => {
         this.isWhitelisted = isWhitelisted;
         this.whitelistService.isWhitelistedValue = isWhitelisted;
+        if (!isWhitelisted) {
+          this.walletsConnectService.disconnect(true);
+        }
         if (isWhitelisted) {
           this.router.navigate(['/marketplace']);
         }
@@ -35,8 +38,7 @@ export class AccessConnectComponent implements OnInit {
 
   public async connectWallet(): Promise<void> {
     this.walletsConnectService.connect("my-algo-connect", true).then(() => {
-      this.wallet = this.walletsConnectService.myAlgoAddress;
-      this.userService.checkAddressInWhitelist(this.wallet[0]).subscribe((isWhitelisted: boolean) => {
+      this.userService.checkAddressInWhitelist(this.walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe((isWhitelisted: boolean) => {
         this.isWhitelisted = isWhitelisted;
         this.whitelistService.isWhitelistedValue = isWhitelisted;
         if (!isWhitelisted) {
