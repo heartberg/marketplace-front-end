@@ -30,48 +30,52 @@ import { SwapDetailComponent } from './swap-detail/swap-detail.component';
 import { AuctionDetailComponent } from './auction-detail/auction-detail.component';
 import { CreateWrapperComponent } from "./modules/create-wrapper/create-wrapper.component";
 import {SearchWrapperComponent} from "./modules/search-wrapper/search-wrapper.component";
+import {AccessComponent} from "./modules/access/access.component";
+import {WhitelistGuard} from "./shared/guards/whitelist.guard";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'marketplace', pathMatch: 'full' },
+  { path: '', redirectTo: 'access-beta', pathMatch: 'full'},
+  { path: 'access-beta', component: AccessComponent},
   // { path: 'home', component: LandingPageComponent },
-  { path: 'marketplace', component: MarketPlaceComponent },
-  { path: 'search', component: SearchWrapperComponent },
-  { path: 'collection', component: MyCollectionComponent },
-  { path: 'create-collection', component: CreateCollectionComponent },
-  { path: 'update-collection', component: UpdateCollectionComponent },
-  { path: 'collection-detail/:collectionId', component: CollectionDetailComponent },
+  { path: 'marketplace', component: MarketPlaceComponent, canActivate: [WhitelistGuard] },
+  { path: 'search', component: SearchWrapperComponent, canActivate: [WhitelistGuard] },
+  { path: 'collection', component: MyCollectionComponent, canActivate: [WhitelistGuard] },
+  { path: 'create-collection', component: CreateCollectionComponent, canActivate: [WhitelistGuard] },
+  { path: 'update-collection', component: UpdateCollectionComponent, canActivate: [WhitelistGuard] },
+  { path: 'collection-detail/:collectionId', component: CollectionDetailComponent, canActivate: [WhitelistGuard] },
   {
     path: 'create',
     component: CreateWrapperComponent,
+    canActivate: [WhitelistGuard],
     children: [
-      { path: '', component: CreateAssetComponent },
-      { path: 'collection', component: CreateCollectionComponent},
-      { path: 'offer', component: CreateOfferComponent},
+      { path: '', component: CreateAssetComponent, canActivate: [WhitelistGuard] },
+      { path: 'collection', component: CreateCollectionComponent, canActivate: [WhitelistGuard] },
+      { path: 'offer', component: CreateOfferComponent, canActivate: [WhitelistGuard] },
       { path: '**', redirectTo: '' }
     ]
   },
-  { path: 'create-offer', component: CreateOfferComponent },
-  { path: 'profile/:wallet', component: ProfileComponent, runGuardsAndResolvers: 'always'},
-  { path: 'items', component: ItemsComponent },
-  { path: 'profile-settings', component: ProfileSettingsComponent },
-  { path: 'notification-center', component: NotificationCentreComponent },
-  { path: 'create-trade', component: CreateTradeComponent },
-  { path: 'asset-detail/:itemId', component: TradeDetailComponent},
-  { path: 'swap/:swapId', component: SwapDetailComponent},
-  { path: 'auction/:auctionId', component: AuctionDetailComponent},
-  { path: 'create-swap', component: CreateSwapComponent },
-  { path: 'asset-detail-swap', component: AssetDetailSwapComponent },
-  { path: 'create-bid', component: CreateBidComponent },
-  { path: 'edit-profile', component: ProfileEditComponent },
-  { path: 'assets-detail-buy', component: AssetsDetailBuyComponent },
-  { path: 'create-asset', component: CreateAssetComponent },
-  { path: 'create-auction', component: CreateAuctionComponent },
-  { path: 'get-verified', component: GetVerifiedComponent },
-  { path: 'token', component: TokenComponent },
-  { path: 'creators', component: ArtistsComponent },
+  { path: 'create-offer', component: CreateOfferComponent, canActivate: [WhitelistGuard] },
+  { path: 'profile/:wallet', component: ProfileComponent, runGuardsAndResolvers: 'always', canActivate: [WhitelistGuard] },
+  { path: 'items', component: ItemsComponent, canActivate: [WhitelistGuard] },
+  { path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [WhitelistGuard] },
+  { path: 'notification-center', component: NotificationCentreComponent, canActivate: [WhitelistGuard] },
+  { path: 'create-trade', component: CreateTradeComponent, canActivate: [WhitelistGuard] },
+  { path: 'asset-detail/:itemId', component: TradeDetailComponent, canActivate: [WhitelistGuard] },
+  { path: 'swap/:swapId', component: SwapDetailComponent, canActivate: [WhitelistGuard] },
+  { path: 'auction/:auctionId', component: AuctionDetailComponent, canActivate: [WhitelistGuard] },
+  { path: 'create-swap', component: CreateSwapComponent, canActivate: [WhitelistGuard] },
+  { path: 'asset-detail-swap', component: AssetDetailSwapComponent, canActivate: [WhitelistGuard] },
+  { path: 'create-bid', component: CreateBidComponent, canActivate: [WhitelistGuard] },
+  { path: 'edit-profile', component: ProfileEditComponent, canActivate: [WhitelistGuard] },
+  { path: 'assets-detail-buy', component: AssetsDetailBuyComponent, canActivate: [WhitelistGuard] },
+  { path: 'create-asset', component: CreateAssetComponent, canActivate: [WhitelistGuard] },
+  { path: 'create-auction', component: CreateAuctionComponent, canActivate: [WhitelistGuard] },
+  { path: 'get-verified', component: GetVerifiedComponent, canActivate: [WhitelistGuard] },
+  { path: 'token', component: TokenComponent, canActivate: [WhitelistGuard] },
+  { path: 'creators', component: ArtistsComponent, canActivate: [WhitelistGuard] },
   { path: 'creators/creator-application', component: ArtistApplicationComponent },
-  { path: 'creators/space-shuttle', component: SpaceshuttleComponent },
-  { path: '**', redirectTo: 'marketplace' }
+  { path: 'creators/space-shuttle', component: SpaceshuttleComponent, canActivate: [WhitelistGuard] },
+  { path: '**', redirectTo: 'access-beta' }
 ];
 
 @NgModule({

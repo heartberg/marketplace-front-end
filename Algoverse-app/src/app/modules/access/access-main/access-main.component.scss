@@ -1,0 +1,33 @@
+.access-main-wrapper {
+  gap: 56px;
+  padding-left: 210px;
+  padding-top: 170px;
+}
+
+
+
+@media (max-width: 960px) {
+  .access-main-wrapper {
+    padding-left:190px;
+  }
+}
+
+@media (max-width: 768px) {
+  .access-main-wrapper {
+    padding-left: 150px;
+  }
+}
+
+@media (max-width: 667px) {
+  .access-main-wrapper {
+    padding-left: 110px;
+  }
+}
+
+@media (max-width: 480px) {
+  .access-main-wrapper {
+    padding-left: 30px;
+  }
+}
+
+

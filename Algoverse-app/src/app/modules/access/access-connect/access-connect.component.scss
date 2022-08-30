@@ -1,0 +1,55 @@
+.access-connect {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    &-heading {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: 0;
+      color: #C8CDD2;
+    }
+    &-paragraph {
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 15px;
+      letter-spacing: 0;
+      color: #787D82;
+    }
+  }
+
+  &-button {
+    display: inline-block;
+    background-color: #4838FF;
+    color: #BDBDBD;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+    padding: 10px 19px;
+    border-radius: 10px;
+    align-self: flex-start;
+    border-style: none;
+  }
+
+  &-error {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+
+    color: #FF5894;
+  }
+
+  .access-connect-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

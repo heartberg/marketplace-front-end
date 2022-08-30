@@ -46,6 +46,13 @@ import { AuctionDetailComponent } from "../auction-detail/auction-detail.compone
 import { AuctionGridItemComponent } from "../auction-grid-item/auction-grid-item.component";
 import { CreateWrapperComponent } from './create-wrapper/create-wrapper.component';
 import { SearchWrapperComponent } from './search-wrapper/search-wrapper.component';
+import { AccessComponent } from './access/access.component';
+import { AccessHeaderComponent } from './access/access-header/access-header.component';
+import { BuiltInAlgorandComponent } from "./access/built-in-algorand/built-in-algorand.component";
+import {SocialMediaComponent} from "./access/social-media/social-media.component";
+import { AccessHeadingComponent } from './access/access-heading/access-heading.component';
+import { AccessMainComponent } from './access/access-main/access-main.component';
+import { AccessConnectComponent } from './access/access-connect/access-connect.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +90,13 @@ import { SearchWrapperComponent } from './search-wrapper/search-wrapper.componen
     AuctionGridItemComponent,
     CreateWrapperComponent,
     SearchWrapperComponent,
+    AccessComponent,
+    AccessMainComponent,
+    AccessHeaderComponent,
+    AccessHeadingComponent,
+    BuiltInAlgorandComponent,
+    SocialMediaComponent,
+    AccessConnectComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +116,7 @@ import { SearchWrapperComponent } from './search-wrapper/search-wrapper.componen
   ],
   providers: [],
   exports: [
+    AccessComponent
   ]
 })
 

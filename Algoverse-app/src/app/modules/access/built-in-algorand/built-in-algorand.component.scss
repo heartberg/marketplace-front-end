@@ -1,0 +1,24 @@
+.built-in-algorand-container {
+  display: flex;
+  gap: 7px;
+  top: 50%;
+  right: 30px;
+  transform: translate(50%, -50%) rotate(-90deg);
+  transform-origin: bottom;
+}
+
+.algorand-section {
+  color: #787D82;
+  align-self: flex-end;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+@media (max-width: 480px) {
+  .built-in-algorand-container {
+    right: 15px;
+    opacity: .5;
+  }
+
+}

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import GetAssetByID from 'algosdk/dist/types/src/client/v2/algod/getAssetByID';
 import algosdk from 'algosdk';
 import { getAlgodClient } from 'src/app/services/utils.algod';
+import {WhitelistService} from "../../../services/whitelist.service";
 
 @Component({
   selector: 'app-pop-up',
@@ -40,7 +41,8 @@ export class PopUpComponent implements OnInit {
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private readonly whitelistService: WhitelistService
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +64,7 @@ export class PopUpComponent implements OnInit {
   async selectedWalletConnect(choice: AllowedWalletsEnum) {
     switch (choice) {
       case AllowedWalletsEnum.MY_ALGO_CONNECT: {
+        this.whitelistService.isWhitelistedValue = false;
         await this._walletsConnectService.connect('my-algo-connect');
         if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
           this.isConnectedToWallet.emit(true);
@@ -346,5 +349,5 @@ export class PopUpComponent implements OnInit {
       return decimals
     }
   }
-  
+
 }

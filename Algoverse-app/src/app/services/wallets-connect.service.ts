@@ -38,7 +38,7 @@ export class WalletsConnectService {
     }
   }
 
-  connect = async (choice: string): Promise<void> => {
+  connect = async (choice: string, isBeta: boolean = false): Promise<void> => {
     try {
       console.log('choice', choice);
       const sw = new SessionWallet("TestNet", undefined, choice);
@@ -74,9 +74,10 @@ export class WalletsConnectService {
       localStorage.setItem('sessionWallet', JSON.stringify(this.sessionWallet));
       // localStorage.setItem('walletsOfUser', JSON.stringify(this.sessionWallet.wallet.accounts));
       console.log(this.sessionWallet, 'esaaa');
-
-      if (this.myAlgoAddress.length > 0) {
-        this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
+      if (!isBeta) {
+        if (this.myAlgoAddress.length > 0) {
+          this.createOrLoadProfile(this.sessionWallet!.getDefaultAccount());
+        }
       }
     } catch (e) {
       exceptionFilter(e);
@@ -112,7 +113,7 @@ export class WalletsConnectService {
     console.log(this.sessionWallet, 'esaaa 22222');
   }
 
-  disconnect = () => {
+  disconnect = (isBeta: boolean = false) => {
     this.sessionWallet!.disconnect()
     this.myAlgoAddress = [];
     localStorage.removeItem('walletIndex');
@@ -122,14 +123,16 @@ export class WalletsConnectService {
     localStorage.removeItem('profile');
     this.sessionWallet = undefined;
     //setConnected(false)
-    localStorage.setItem('reload', 'true');
-    if (localStorage.getItem('reload')) {
-      location.reload();
-      setTimeout(() => {
-        localStorage.removeItem('reload');
-      }, 300)
-    } else {
-      return
+    if (!isBeta) {
+      localStorage.setItem('reload', 'true');
+      if (localStorage.getItem('reload')) {
+        location.reload();
+        setTimeout(() => {
+          localStorage.removeItem('reload');
+        }, 300)
+      } else {
+        return
+      }
     }
   }
 

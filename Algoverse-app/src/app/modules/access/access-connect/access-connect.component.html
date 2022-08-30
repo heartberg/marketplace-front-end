@@ -1,0 +1,10 @@
+<div class="access-connect">
+  <div class="access-connect-info">
+    <h4 class="access-connect-info-heading">Connect to the beta site</h4>
+    <p class="access-connect-info-paragraph">If you’ve received a beta invite, <br> connect with the specified wallet</p>
+  </div>
+  <div class="access-connect-button-container">
+    <button class="access-connect-button" (click)="connectWallet()">Connect wallet</button>
+    <h4 *ngIf="!isWhitelisted" class="access-connect-error">Wallet not whitelisted</h4>
+  </div>
+</div>
