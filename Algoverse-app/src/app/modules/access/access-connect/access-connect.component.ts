@@ -37,7 +37,7 @@ export class AccessConnectComponent implements OnInit {
   }
 
   public async connectWallet(): Promise<void> {
-    this.walletsConnectService.connect("my-algo-connect", true).then(() => {
+    this.walletsConnectService.connect("my-algo-connect").then(() => {
       this.userService.checkAddressInWhitelist(this.walletsConnectService.sessionWallet!.getDefaultAccount()).subscribe((isWhitelisted: boolean) => {
         this.isWhitelisted = isWhitelisted;
         this.whitelistService.isWhitelistedValue = isWhitelisted;

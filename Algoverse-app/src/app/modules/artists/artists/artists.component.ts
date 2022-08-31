@@ -25,10 +25,6 @@ export class ArtistsComponent implements OnInit {
       result => {
         console.log('featured artists', result);
         this.featuredArtists = result;
-        this.featuredArtists.push(...result);
-        this.featuredArtists.push(...result);
-        this.featuredArtists.push(...result);
-        this.featuredArtists.push(...result);
       },
       err => {
         console.log(err);
@@ -44,9 +40,6 @@ export class ArtistsComponent implements OnInit {
       result => {
         console.log('all creators', result);
         this.allCreators = result;
-        this.allCreators.push(...result)
-        this.allCreators.push(...result)
-        this.allCreators.push(...result)
       },
       err => {
         console.log(err);
@@ -76,10 +69,6 @@ export class ArtistsComponent implements OnInit {
       result => {
         console.log('hot creators', result);
         this.hotCreators = result;
-        this.hotCreators.push(...result);
-        this.hotCreators.push(...result);
-        this.hotCreators.push(...result);
-        this.hotCreators.push(...result);
       },
       err => {
         console.log(err);
