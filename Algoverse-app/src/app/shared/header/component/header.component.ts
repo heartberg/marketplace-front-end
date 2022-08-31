@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {WalletsConnectService} from "../../../services/wallets-connect.service";
-import {Router} from "@angular/router";
+import {NavigationEnd, NavigationStart, Router} from "@angular/router";
 import {Subject, Subscription} from "rxjs";
 import {ThemeService} from "../../../services/theme.service";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -45,6 +45,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
     if (this._walletsConnectService.sessionWallet && this._walletsConnectService.sessionWallet!.connected()) {
       console.log("hit1")
       this.isLoggedIn = true;
@@ -58,6 +61,7 @@ export class HeaderComponent implements OnInit {
     this.router.onSameUrlNavigation = "reload";
 
     this.subscribeToSearchChange();
+    this.subscribeToRouteChange();
   }
 
   async openAvatar() {
@@ -99,7 +103,6 @@ export class HeaderComponent implements OnInit {
   openProfile() {
     // this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
     this.router.navigate(["/profile/" + this.wallet]);
-    //this.router.navigateByUrl()
   }
 
   connectWalletPopUp() {
@@ -180,5 +183,17 @@ export class HeaderComponent implements OnInit {
           this._searchService.setSearchValue = value;
         });
       });
+  }
+
+  public handeOutsideClick(): void {
+    this.isProfileOpened = false;
+  }
+
+  private subscribeToRouteChange(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.isProfileOpened = false;
+      }
+    });
   }
 }

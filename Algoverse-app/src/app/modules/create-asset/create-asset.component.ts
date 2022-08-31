@@ -418,10 +418,6 @@ export class CreateAssetComponent implements OnInit {
       alert('Please input description');
       return;
     }
-    if (!this.externalLink) {
-      alert('Please input url');
-      return;
-    }
     if (!this.supply) {
       alert('Please input supply');
       return;
@@ -474,7 +470,7 @@ export class CreateAssetComponent implements OnInit {
         description: this.description,
         image: this.coverUrl,
         image_mimetype: this.image_mimetype,
-        external_url: this.externalLink,
+        ...(this.externalLink? {external_url: this.externalLink}: {}),
         animation_url: this.fileUrl,
         animation_url_mimetype: this.animation_url_mimetype,
         properties: properties

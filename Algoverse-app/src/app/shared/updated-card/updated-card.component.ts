@@ -132,7 +132,6 @@ export class UpdatedCardComponent implements OnInit, OnDestroy {
 
   private removeStar(): void {
     if (this.wallet) {
-      console.log(this.assetStar, "THIS NUTS")
       this._userService.removeAssetStar(this.assetStar.assetStarId).subscribe(
         (value: any) => {
           this.isStarred = false;

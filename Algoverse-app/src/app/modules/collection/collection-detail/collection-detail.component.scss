@@ -2,6 +2,7 @@
   i {
     font-size: 25px;
   }
+
   .collection-profile-section {
     position: relative;
 
@@ -9,12 +10,14 @@
       border-radius: 12px;
       object-fit: cover;
     }
+
     .cover {
       img {
         height: 400px;
         width: 100%;
       }
     }
+
     .collection-avatar {
       border-radius: 12px;
       position: absolute;
@@ -29,77 +32,105 @@
       }
     }
   }
+
   .collection-profile-info {
     display: flex;
     margin-top: 80px;
 
-      .creator-section{
-        display: flex;
-        align-items: flex-end;
-        margin-bottom: 30px;
+    .creator-section {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 30px;
 
-        .section-top {
-
-          img {
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
-          }
-        }
-      }
-      .website-section {
-        align-items: flex-end;
-      }
-      .section-top{
-        display: flex;
-        align-items: center;
+      .section-top {
 
         img {
-          height: 30px;
-          width: 30px;
+          width: 80px;
+          height: 80px;
+          border-radius: 12px;
         }
       }
+    }
+
+    .website-section {
+      align-items: flex-end;
+    }
+
+    .section-top {
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 30px;
+        width: 30px;
+      }
+    }
+
     .collection-profile-info-middle {
+      .hearted-section {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+
+        .touched {
+          color: #FF419B !important;
+        }
+        span {
+          margin-left: unset !important;
+        }
+        img {
+          width: 22px;
+          height: 18px;
+        }
+      }
+
       .collection-name {
         gap: 12px;
       }
+
       .section {
         span {
           line-height: 0px;
         }
       }
+
       h4 {
         margin: 0px !important;
         text-align: center;
       }
     }
 
-      .right-section-info {
+    .right-section-info {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .section {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        margin-left: 25px;
 
-        .section {
-          display: flex;
-          align-items: center;
-          margin-left: 25px;
-          &:first-child {
-            margin: 0px;
-          }
+        &:first-child {
+          margin: 0px;
         }
       }
-      .category-section {
-        align-items: center;
-        justify-content: flex-end;
-      }
-    h4,span {
+    }
+
+    .category-section {
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    h4, span {
       margin-left: 10px;
     }
   }
+
   .wrapper-bottom {
     margin-top: 20px;
   }
 }
+
 @media (max-width: 767px) {
   .collection-profile-info-right {
     .category-section {

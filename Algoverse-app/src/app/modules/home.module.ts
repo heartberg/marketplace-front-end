@@ -53,6 +53,7 @@ import {SocialMediaComponent} from "./access/social-media/social-media.component
 import { AccessHeadingComponent } from './access/access-heading/access-heading.component';
 import { AccessMainComponent } from './access/access-main/access-main.component';
 import { AccessConnectComponent } from './access/access-connect/access-connect.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { AccessConnectComponent } from './access/access-connect/access-connect.c
     CarouselModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule
   ],
   providers: [],
   exports: [

@@ -17,8 +17,8 @@ import {WhitelistService} from "../../../services/whitelist.service";
 export class PopUpComponent implements OnInit {
   @Output() isConnectedToWallet = new EventEmitter<boolean>();
   @Output() isClosed = new EventEmitter<boolean>();
-  @Input() switcher = false;
   @Output() isSwitched = new EventEmitter<boolean>();
+  @Input() switcher = false;
   @Input() selected = false;
   @Input() asset: any;
   @Input() assetInfo: any;
@@ -46,6 +46,9 @@ export class PopUpComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
     if(this.selected) {
       this.totalSupply = this.assetInfo.params.total
       this.decimals = this.assetInfo.params.decimals
@@ -121,9 +124,8 @@ export class PopUpComponent implements OnInit {
 
   openProfile(wallet: string) {
     this.closePopUp(true);
-    let url = "profile/" + wallet
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
-    this.router.navigate([url]));
+    let url = "profile/" + wallet;
+    this.router.navigate([url]);
     //this.router.navigateByUrl()
   }
 
@@ -160,7 +162,7 @@ export class PopUpComponent implements OnInit {
           amount: this.enteredAmount
         }
         console.log('create bid param', params2)
-        this._userService.createBid(params2).subscribe(
+        this._userService.createBid(params2).pipe().subscribe(
           res => {
             this.spinner.hide();
             alert('Successfully created');
@@ -214,8 +216,9 @@ export class PopUpComponent implements OnInit {
               if (res) {
                 await this.sendCreateBidRequest(indexAddress);
                 alert("setup bid!")
-                this.spinner.hide()
-                this.closePopUp(true)
+                this.spinner.hide();
+                this.closePopUp(true);
+                window.location.reload();
               } else {
                 alert('optin and rekey failed');
               }
@@ -315,7 +318,8 @@ export class PopUpComponent implements OnInit {
                 await this.sendCreateTradeRequest(indexAddress);
                 alert("setup sale!")
                 this.spinner.hide()
-                this.closePopUp(true)
+                this.closePopUp(true);
+                window.location.reload();
               } else {
                 alert('optin and rekey failed');
               }

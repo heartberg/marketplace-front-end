@@ -104,7 +104,7 @@
           </ng-container>
         </div>
         <ng-container *ngIf="walletConnectionPassed">
-          <div class="avatar btn-icon-round"  (click)="openAvatar()" [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened, 'm-l_10': isMenuRespoOpened}">
+          <div class="avatar btn-icon-round" (clickOutside)="handeOutsideClick()" (click)="openAvatar()" [ngClass]="{'hideUntilMenuRespoClicked': !isMenuRespoOpened, 'm-l_10': isMenuRespoOpened}">
             <i class="fa fa-user" aria-hidden="true" *ngIf="!changeRespoNavAndProfileIcons"></i>
             <ng-container *ngIf="changeRespoNavAndProfileIcons">
               <svg viewBox="0 0 18 8" fill="none" width="16" height="16" xlmns="http://www.w3.org/2000/svg" class="sc-bdnxRM sc-hKFxyN jZIhBR">

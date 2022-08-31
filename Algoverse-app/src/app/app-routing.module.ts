@@ -55,7 +55,7 @@ const routes: Routes = [
     ]
   },
   { path: 'create-offer', component: CreateOfferComponent, canActivate: [WhitelistGuard] },
-  { path: 'profile/:wallet', component: ProfileComponent, runGuardsAndResolvers: 'always', canActivate: [WhitelistGuard] },
+  { path: 'profile/:wallet', component: ProfileComponent, canActivate: [WhitelistGuard] },
   { path: 'items', component: ItemsComponent, canActivate: [WhitelistGuard] },
   { path: 'profile-settings', component: ProfileSettingsComponent, canActivate: [WhitelistGuard] },
   { path: 'notification-center', component: NotificationCentreComponent, canActivate: [WhitelistGuard] },

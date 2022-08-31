@@ -2,7 +2,7 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 
 @Directive({selector: '[onlyNumbers]'})
 
-export class OnlyNumbers {
+export class OnlyNumbersDirective {
 
   @Input() private allowDecimals: boolean = true;
   @Input() private allowSign: boolean = false;

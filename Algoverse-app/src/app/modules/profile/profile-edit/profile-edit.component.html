@@ -68,11 +68,11 @@
           </div>
           <div class="section wrapper-border flex-column">
             <h4>Bio</h4>
-            <textarea style="width: 100%; height: 100px" formControlName="bio"></textarea>
+            <textarea style="width: 100%; height: 100px; font-family: primary; padding: 15px" formControlName="bio"></textarea>
           </div>
-          <div *ngIf="!userProfile.verified" class="section wrapper-border justify-content-between">
+          <div *ngIf="userProfile && !userProfile.verified" class="section wrapper-border justify-content-between">
             <h4>You can verify you account</h4>
-            <button class="btn-secondary-costum" routerLink="../get-verified">
+            <button class="btn-secondary-costum" (click)="navigateToGetVerified()">
               Get Verified
             </button>
           </div>
