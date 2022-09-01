@@ -156,11 +156,12 @@ export class TradeDetailComponent implements OnInit {
 
   async cancelBid() {
     const bidIndex = this.mItem.bids[this.index].indexAddress;
+    const bidId = this.mItem.bids[this.index].bidId;
     console.log('start cancel Bid');
     this.spinner.show();
     const result = await this._walletsConnectService.cancelBid(bidIndex);
     if (result) {
-      this._userService.cancelBid(bidIndex).subscribe(
+      this._userService.cancelBid(bidId).subscribe(
         (result) => {
           this.spinner.hide();
           alert("Cancelled bid!")
