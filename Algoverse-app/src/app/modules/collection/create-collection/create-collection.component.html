@@ -5,7 +5,7 @@
       <div class="mb-3">
         <h3>Create Collection</h3>
       </div>
-      <div class="section wrapper-border upload-section">
+      <div class="section justify-content-between wrapper-border upload-section">
         <div class="d-flex align-items-center mr-2">
           <h4>Collection Icon</h4>
           <button class="btn-primary-costum" (click)="icon.click()">
@@ -15,7 +15,7 @@
         </div>
         <img *ngIf="iconUrl" [src]="iconUrl" alt="collection-icon">
       </div>
-      <div class="section wrapper-border upload-section">
+      <div class="section justify-content-between wrapper-border upload-section">
         <div class="d-flex align-items-center mr-2">
           <h4>Collection Banner</h4>
           <button class="btn-primary-costum" (click)="banner.click()">
@@ -25,7 +25,7 @@
         </div>
         <img *ngIf="bannerUrl" [src]="bannerUrl" alt="collection-banner">
       </div>
-      <div class="section wrapper-border upload-section">
+      <div class="section justify-content-between wrapper-border upload-section">
         <div class="d-flex align-items-center mr-2">
           <h4>Featured Image</h4>
           <button class="btn-primary-costum" (click)="fileInput.click()">

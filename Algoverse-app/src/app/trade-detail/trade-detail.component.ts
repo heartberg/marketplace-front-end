@@ -389,4 +389,8 @@ export class TradeDetailComponent implements OnInit {
     })
   }
 
+  public handleClickOutside(): void {
+    this.indexSecond = -1;
+    this.index = -1;
+  }
 }

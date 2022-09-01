@@ -62,7 +62,7 @@ export class CreateAssetComponent implements OnInit {
   public fileType: string = "";
   public acceptedFileFormats: string = "audio/mpeg, audio/mp3, audio/wav, video/mp4, video/mpeg, image/*";
   public acceptedImageFileFormats: string = "image/*";
-  category: string = "Collectibles";
+  category: string = "Select category";
   // ff first form // sf second form
   public isCollectionSelected: boolean = false;
 
@@ -418,14 +418,15 @@ export class CreateAssetComponent implements OnInit {
       alert('Please input description');
       return;
     }
-    if (!this.externalLink) {
-      alert('Please input url');
-      return;
-    }
     if (!this.supply) {
       alert('Please input supply');
       return;
     }
+    if (this.category === 'Select category') {
+      alert('Please select asset category');
+      return;
+    }
+
     if (!this.fileUrl) {
       alert('Please add file');
       return;
@@ -474,7 +475,7 @@ export class CreateAssetComponent implements OnInit {
         description: this.description,
         image: this.coverUrl,
         image_mimetype: this.image_mimetype,
-        external_url: this.externalLink,
+        ...(this.externalLink? {external_url: this.externalLink}: {}),
         animation_url: this.fileUrl,
         animation_url_mimetype: this.animation_url_mimetype,
         properties: properties

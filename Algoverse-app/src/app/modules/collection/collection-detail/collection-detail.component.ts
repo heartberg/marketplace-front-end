@@ -4,6 +4,7 @@ import { MarketplaceTypeEnum } from 'src/app/models';
 import { StateService } from 'src/app/services/state.service';
 import { UserService } from 'src/app/services/user.service';
 import { WalletsConnectService } from 'src/app/services/wallets-connect.service';
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-collection-detail',
@@ -19,13 +20,16 @@ export class CollectionDetailComponent implements OnInit {
   public collectionId: string = "";
   public myCollection: boolean = false;
   public marketplaceTypes: typeof MarketplaceTypeEnum = MarketplaceTypeEnum;
+  public isHovered: boolean = false;
+  public isDark: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private _stateService: StateService
+    private _stateService: StateService,
+    private readonly _themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +40,7 @@ export class CollectionDetailComponent implements OnInit {
       return;
     }
     this.loadCollectionDetails(collectionIdFromRoute)
-
+    this.subscribeToThemeColor();
   }
 
   loadCollectionDetails(collectionIdFromRoute: string) {
@@ -129,4 +133,9 @@ export class CollectionDetailComponent implements OnInit {
   }
 
 
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    });
+  }
 }

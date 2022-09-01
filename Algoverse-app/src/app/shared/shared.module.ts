@@ -14,9 +14,10 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ScrollComponent } from './scroll/scroll.component';
 import { SwiperModule } from "swiper/angular";
-import { OnlyNumbers } from "./directives/only-number.directive";
+import { OnlyNumbersDirective } from "./directives/only-number.directive";
 import { NgMarqueeModule } from "ng-marquee";
-import { UpdatedCardComponent } from './updated-card/updated-card.component'
+import { UpdatedCardComponent } from './updated-card/updated-card.component';
+import { ClickOutsideDirective } from './directives/click-outside.directive'
 
 @NgModule({
   declarations: [
@@ -29,8 +30,9 @@ import { UpdatedCardComponent } from './updated-card/updated-card.component'
     SkeletonImgComponent,
     SkeletonCardComponent,
     ScrollComponent,
-    OnlyNumbers,
-    UpdatedCardComponent
+    OnlyNumbersDirective,
+    UpdatedCardComponent,
+    ClickOutsideDirective
   ],
   imports: [
     BrowserModule,
@@ -52,8 +54,9 @@ import { UpdatedCardComponent } from './updated-card/updated-card.component'
         NgxSpinnerModule,
         NgxSliderModule,
         ScrollComponent,
-        OnlyNumbers,
-        UpdatedCardComponent
+        OnlyNumbersDirective,
+        UpdatedCardComponent,
+        ClickOutsideDirective
     ],
   providers: [WalletsConnectService],
 })

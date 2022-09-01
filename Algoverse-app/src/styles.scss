@@ -200,6 +200,7 @@ input {
 
   &.main-wrapper {
     background: #1c1c1e;
+    min-height: 100vh;
   }
 
   .header-sticky {
@@ -455,7 +456,7 @@ textarea {
   border-radius: unset !important;
 }
 
-.nav-tabs {
+.navigation-tabs {
   background-color: #e8e8e8;
   border-radius: 10px;
   max-width: fit-content;

@@ -8,7 +8,7 @@
              alt="">
         <div class="profile-avatar">
           <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="">
-          <img *ngIf="!userProfile?.profileImage" src="assets/img/default-avatar.svg" alt="">
+          <img *ngIf="userProfile && !userProfile.profileImage" src="assets/img/default-avatar.svg" alt="">
         </div>
       </div>
       <div class="profile-info row justify-content-center">
@@ -94,10 +94,22 @@
               </div>
             </div>
           </mat-tab>
+          <mat-tab [ngClass]="{'dark-mode': isDark}" label="Collections ({{userCollections.length}})">
+            <div class="row mt-4">
+              <div class="col-md-6 col-lg-4 col-xl-3 col mb-4" *ngFor="let collection of userCollections">
+                <app-card [mItem]="collection" routerLink="/collection-detail/{{collection.collectionId}}" [isCollection]="true"></app-card>
+              </div>
+            </div>
+          </mat-tab>
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="Created ({{createdAssets.length}})">
             <div class="row mt-4">
               <div class="mb-2 col-md-6 col-lg-4 col-xl-3 col" *ngFor="let item of createdAssets; let i = index; last as last">
                 <app-updated-card [item]="item" routerLink="../../asset-detail/{{item.assetId}}"></app-updated-card>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6 col-lg-4 col-xl-3 col mb-4" *ngFor="let collection of userCollections">
+                <app-card [mItem]="collection" routerLink="/collection-detail/{{collection.collectionId}}" [isCollection]="true"></app-card>
               </div>
             </div>
           </mat-tab>
@@ -149,14 +161,6 @@
         </mat-tab-group>
       </div>
     </div>
-    <div class="wrapper-border">
-        <h2>Collections</h2>
-        <div class="row mt-4">
-          <div class="col-4 mb-4" *ngFor="let collection of userCollections">
-            <app-card [mItem]="collection" routerLink="/collection-detail/{{collection.collectionId}}" [isCollection]="true"></app-card>
-          </div>
-        </div>
-      </div>
   </div>
 </div>
 <app-pop-up *ngIf="popupOpen" (isClosed)="closePopUp($event)" [followed]="userProfile.followed"

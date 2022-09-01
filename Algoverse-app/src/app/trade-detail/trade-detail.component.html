@@ -94,7 +94,7 @@
                   </ng-container>
                 </div>
               </div>
-              <div class="col-md-6" *ngIf="mItem">
+              <div class="col-md-6" *ngIf="mItem" (clickOutside)="handleClickOutside()">
                 <ng-container>
                   <div class="card-info mt-3 col-lg-8 col">
                     <div class="section right">
@@ -171,6 +171,8 @@
                         Sell
                       </button>
                       <button class="btn-secondary-costum " *ngIf="index === -1 && indexSecond === -1"
+                              [disabled]="maxSupply === scaleAmount(balance)"
+                              [class.disabled]="maxSupply === scaleAmount(balance)"
                               (click)="createBid()" style="width: 160px;">
                         Bid
                       </button>

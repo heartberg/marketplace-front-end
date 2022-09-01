@@ -5,7 +5,7 @@
       <h4>Search: <span>{{(searchValue.length > 10) ? (searchValue | slice:0:10) + '...' : searchValue}}</span></h4>
     </div>
     <div class="col col-md-10 col-lg-11 p-0 d-flex justify-content-center justify-content-md-start">
-      <div class="nav-tabs d-flex">
+      <div class="navigation-tabs d-flex">
         <div class="tab" [ngClass]="{'tab-active': selectedSearchFilterType === searchFilterEnum.NFT}" (click)="changeSearchFilterType(searchFilterEnum.NFT)">
           <h4 class="text-white">NFTs</h4>
         </div>

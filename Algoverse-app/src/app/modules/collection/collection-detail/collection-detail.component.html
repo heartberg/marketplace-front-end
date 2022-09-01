@@ -25,11 +25,19 @@
         <div class="collection-profile-info-middle">
           <div class="collection-name d-flex align-items-center justify-content-center">
             <h4>{{mCollection.name}}</h4>
-            <div class="section d-flex align-items-center">
-              <img class="collection-star" *ngIf="!isStarred" src="assets/img/unfilled_star.png" alt=""
-                   (click)="addStar()">
-              <img class="collection-star" *ngIf="isStarred" src="assets/img/filled_star.png" alt=""
-                   (click)="removeStar()">
+            <div class="hearted-section" (mouseover)="isHovered = true;" (mouseleave)="isHovered = false;">
+              <ng-container *ngIf="isDark">
+                <img *ngIf="!isStarred" [src]="isHovered ? 'assets/img/heart-touched.svg' : 'assets/img/heart-unfilled.svg'" alt="heart"
+                     (click)="addStar()">
+                <img *ngIf="isStarred" [src]="isHovered ? 'assets/img/heart-touched.svg' : 'assets/img/heart.svg'" alt="heart"
+                     (click)="removeStar()">
+              </ng-container>
+              <ng-container *ngIf="!isDark">
+                <img *ngIf="!isStarred" [src]="isHovered ? 'assets/img/heart-touched.svg' : 'assets/img/heart-dark-unfilled.svg'" alt="heart"
+                     (click)="addStar()">
+                <img *ngIf="isStarred" [src]="isHovered ? 'assets/img/heart-touched.svg' : 'assets/img/heart-dark.svg'" alt="heart"
+                     (click)="removeStar()">
+              </ng-container>
               <span>{{mCollection.stars}}</span>
             </div>
           </div>

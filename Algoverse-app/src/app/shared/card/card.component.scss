@@ -52,6 +52,22 @@
         width: 100%;
         margin-top: 10px;
       }
+      .hearted-section {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+
+        .touched {
+          color: #FF419B !important;
+        }
+
+        img {
+          width: 22px;
+          height: 18px;
+          border-radius: unset !important;
+        }
+      }
+
       .section {
         display: flex;
         align-items: center;
