@@ -482,3 +482,9 @@ textarea {
     }
   }
 }
+
+.disabled {
+  cursor: unset;
+  background-color: #464646;
+  color: #FFFFFF;
+}

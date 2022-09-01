@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-get-verified',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GetVerifiedComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly _location: Location) { }
 
   ngOnInit(): void {
   }
 
+  public actionBack(): void {
+    this._location.back();
+  }
 }

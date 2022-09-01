@@ -249,6 +249,7 @@ export class CreateTradeComponent implements OnInit {
         res => {
           this.spinner.hide();
           alert("Created trade successfully");
+          this.router.navigate([`/asset-detail/${this.selectedAssetID}`]);
           console.log(res)
         },
         error => {

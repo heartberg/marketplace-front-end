@@ -1,36 +1,36 @@
 <div class="main">
   <div class="wrapper-top wrapper-border">
     <div class="profile-section">
-      <div class="cover position-relative">
-        <img *ngIf="userProfile?.bannerImage" style="border-radius:12px" src="{{userProfile?.bannerImage}}" alt="">
-        <img *ngIf="!userProfile?.bannerImage" style="border-radius:12px"
+      <div class="cover position-relative" *ngIf="userProfile">
+        <img *ngIf="userProfile.bannerImage" style="border-radius:12px" src="{{userProfile.bannerImage}}" alt="">
+        <img *ngIf="!userProfile.bannerImage" style="border-radius:12px"
              src="https://img.freepik.com/free-vector/space-banner-with-purple-planet-landscape_107791-6230.jpg?w=2000&t=st=1658221048~exp=1658221648~hmac=c65eb9aee01fdb8c97e698f7c4d794de0780c30ecec37acaba246e8cd15c321f"
              alt="">
-        <div class="profile-avatar">
-          <img *ngIf="userProfile?.profileImage" src="{{userProfile?.profileImage}}" alt="">
-          <img *ngIf="userProfile && !userProfile.profileImage" src="assets/img/default-avatar.svg" alt="">
+        <div class="profile-avatar" *ngIf="userProfile">
+          <img *ngIf="userProfile.profileImage" src="{{userProfile.profileImage}}" alt="">
+          <img *ngIf="!userProfile.profileImage" src="assets/img/default-avatar.svg" alt="">
         </div>
       </div>
       <div class="profile-info row justify-content-center">
         <div class="col-2 social-media-container">
-          <div *ngIf="userProfile.website" class="img" style="cursor: pointer;">
+          <div *ngIf="userProfile && userProfile.website" class="img" style="cursor: pointer;">
             <div>
               <a href="{{userProfile.website}}" target="_blank">
                 <img src="assets/img/globe.svg" alt="">
               </a>
             </div>
           </div>
-          <div *ngIf="userProfile.instagram" class="img" style="cursor: pointer;">
+          <div *ngIf="userProfile && userProfile.instagram" class="img" style="cursor: pointer;">
             <a href="{{userProfile.instagram}}" target="_blank">
               <img src="assets/img/instagram.svg" alt="">
             </a>
           </div>
-          <div *ngIf="userProfile.twitter" class="img" style="cursor: pointer;">
+          <div *ngIf="userProfile && userProfile.twitter" class="img" style="cursor: pointer;">
             <a href="{{userProfile.twitter}}" target="_blank">
               <img src="assets/img/twitter.svg" alt="">
             </a>
           </div>
-          <div *ngIf="userProfile.telegram" class="img" style="cursor: pointer;">
+          <div *ngIf="userProfile && userProfile.telegram" class="img" style="cursor: pointer;">
             <a href="{{userProfile.telegram}}" target="_blank">
               <img src="assets/img/telegram.svg" alt="">
             </a>
@@ -79,7 +79,7 @@
         </div>
         <div class="col-2"></div>
       </div>
-      <div *ngIf="isOwnProfile" class="setting-section" routerLink="../../edit-profile">
+      <div *ngIf="userProfile && isOwnProfile" class="setting-section" routerLink="../../edit-profile">
         <img src="assets/img/settings.svg" alt="">
       </div>
     </div>

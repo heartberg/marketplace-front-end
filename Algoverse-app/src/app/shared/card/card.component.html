@@ -39,7 +39,8 @@
           <span class="asset-count">{{mItem.assetCount}} assets</span>
         </div>
         <div class="hearted-section" (click)="addOrRemoveStar($event)" (mouseover)="isHovered = true;" (mouseleave)="isHovered = false;">
-          <img [src]="isHovered ? './assets/img/heart-touched.svg' : isStarred  ? './assets/img/heart.svg' : './assets/img/heart-unfilled.svg'" alt="heart">
+          <img *ngIf="isDark" [src]="isHovered ? './assets/img/heart-touched.svg' : isStarred  ? './assets/img/heart.svg' : './assets/img/heart-unfilled.svg'" alt="heart">
+          <img *ngIf="!isDark" [src]="isHovered ? './assets/img/heart-touched.svg' : isStarred  ? './assets/img/heart-dark.svg' : './assets/img/heart-dark-unfilled.svg'" alt="heart">
           <span>{{stars}}</span>
         </div>
       </div>

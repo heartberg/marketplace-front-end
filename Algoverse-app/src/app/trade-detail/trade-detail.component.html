@@ -37,7 +37,7 @@
                           </div>
                         </div>
                         <div class="d-flex flex-column gap">
-                          <div *ngIf="mItem.collection" class="d-flex align-items-center gap" style="cursor: pointer"
+                          <div *ngIf="mItem?.collection" class="d-flex align-items-center gap" style="cursor: pointer"
                                routerLink="../../collection-detail/{{mItem?.collection.collectionId}}">
                             <img src="{{mItem?.collection?.icon}}" alt=""
                                  style="width: 30px; height: 30px;">
@@ -76,7 +76,7 @@
                           <h4 class="fixed">Owned:</h4>
                           <span class="unset-dm-style">{{scaleAmount(balance)}}</span>
                         </div>
-                        <div class="row m-0" *ngIf="mItem.properties && mItem.properties.length > 0">
+                        <div class="row m-0" *ngIf="mItem?.properties && mItem.properties.length > 0">
                           <div class="col-5 p-0" style="width: fit-content">
                             <h4>Properties:</h4>
                           </div>
@@ -94,9 +94,9 @@
                   </ng-container>
                 </div>
               </div>
-              <div class="col-md-6" *ngIf="mItem" (clickOutside)="handleClickOutside()">
+              <div class="col-md-6" *ngIf="mItem">
                 <ng-container>
-                  <div class="card-info mt-3 col-lg-8 col">
+                  <div class="card-info mt-3 col-lg-8 col" (clickOutside)="handleClickOutside()" excludeSelector="btn-secondary-costum">
                     <div class="section right">
                       <h4 style="margin-bottom: 15px; color:#666">Sale price:</h4>
                       <div class="bids img scroll">
