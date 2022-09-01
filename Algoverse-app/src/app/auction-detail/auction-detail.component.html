@@ -123,29 +123,31 @@
                     <hr>
                   </div>
                   <div class="auction" style="margin-top: 10px;">
-                    <div class="d-flex mb-3" style="justify-content: flex-start; align-items: center;">
+                    <div class="d-flex align-items-baseline mb-3">
                       <h4 class="fixed" style="margin-right: 5px">Bid amount</h4>
-                      <input type="text" class="input-costum" placeholder="100" style="width: 350px;"
-                             (blur)="blurBidAmount($event)">
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center">
-                      <button class="btn-secondary-costum aligner" (click)="actionAuction()" style="width: 160px;">
-                        <ng-container *ngIf="canCancel">
-                          Cancel
-                        </ng-container>
-                        <ng-container *ngIf="canClose">
-                          Close
-                        </ng-container>
-                        <ng-container *ngIf="!canClose && !canCancel && hasStarted && !isFinished">
-                          Place Bid
-                        </ng-container>
-                        <ng-container *ngIf="!canClose && !canCancel && !hasStarted">
-                          Not Started
-                        </ng-container>
-                        <ng-container *ngIf="!canClose && !canCancel && isFinished">
-                          Finished
-                        </ng-container>
-                      </button>
+                      <div class="d-flex flex-column align-items-center gap">
+                        <input type="text" class="input-costum" placeholder="100" style="width: 160px;"
+                               (blur)="blurBidAmount($event)">
+                        <div class="d-flex justify-content-center align-items-center">
+                          <button class="btn-secondary-costum aligner" (click)="actionAuction()" style="width: 160px;">
+                            <ng-container *ngIf="canCancel">
+                              Cancel
+                            </ng-container>
+                            <ng-container *ngIf="canClose">
+                              Close
+                            </ng-container>
+                            <ng-container *ngIf="!canClose && !canCancel && hasStarted && !isFinished">
+                              Place Bid
+                            </ng-container>
+                            <ng-container *ngIf="!canClose && !canCancel && !hasStarted">
+                              Not Started
+                            </ng-container>
+                            <ng-container *ngIf="!canClose && !canCancel && isFinished">
+                              Finished
+                            </ng-container>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="section right" style="margin-top: 10px;">

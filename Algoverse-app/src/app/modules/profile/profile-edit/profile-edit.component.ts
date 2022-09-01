@@ -170,4 +170,8 @@ export class ProfileEditComponent implements OnInit {
 
     this.router.navigate(['/get-verified'])
   }
+
+  public navigateToProfile(): void {
+    this.router.navigate([`/profile/${this.userProfile.wallet}`]);
+  }
 }

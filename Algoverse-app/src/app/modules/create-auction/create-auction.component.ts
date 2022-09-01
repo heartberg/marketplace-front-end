@@ -269,6 +269,7 @@ export class CreateAuctionComponent implements OnInit {
         res => {
           this.spinner.hide();
           alert("Created auction successfully");
+          this.router.navigate(["/items"]);
           console.log(res)
         },
         error => {
