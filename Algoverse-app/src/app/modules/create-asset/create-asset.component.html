@@ -50,6 +50,15 @@
           <h4 class="priceheader">Supply</h4>
           <input type="text" placeholder="1" class="input-costum" (blur)="blurSupplyEvent($event)">
         </div>
+        <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
+          <h4>Add to Collection (Optional)</h4>
+          <div class="dropdown">
+            <div class="AssetsList">
+              <app-drop-down-selector [dropDownValues]="collections" [defaultValue]="collection"
+                                      (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
+            </div>
+          </div>
+        </div>
         <div class="createoffer wrapper-border">
           <h4>Category</h4>
           <app-drop-down-selector [isCategoryDisabled]="isCollectionSelected" [dropDownValues]="categoryList"
@@ -59,15 +68,6 @@
         <div class="price wrapper-border">
           <h4 class="priceheader">External Link (Optional)</h4>
           <input type="text" placeholder="www.website.com" class="input-costum" (blur)="blurExternalLinkEvent($event)">
-        </div>
-        <div class="dropdownborder wrapper-border" style="margin-bottom: 20px">
-          <h4>Add to Collection (Optional)</h4>
-          <div class="dropdown">
-            <div class="AssetsList">
-              <app-drop-down-selector [dropDownValues]="collections" [defaultValue]="collection"
-                                      (dropDownValue)="selectedCollection($event)"></app-drop-down-selector>
-            </div>
-          </div>
         </div>
         <div class="price wrapper-border">
           <h4 class="priceheader">Properties (Optional)</h4>
