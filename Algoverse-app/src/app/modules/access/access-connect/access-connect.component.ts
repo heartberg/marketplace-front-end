@@ -45,7 +45,8 @@ export class AccessConnectComponent implements OnInit {
           this.walletsConnectService.disconnect(true);
         }
         if (isWhitelisted) {
-          this.router.navigate(['/marketplace']);
+          // this.router.navigate(['/marketplace']);
+          window.location.reload();
         }
       })
     });

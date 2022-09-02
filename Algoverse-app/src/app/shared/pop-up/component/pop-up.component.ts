@@ -8,6 +8,7 @@ import GetAssetByID from 'algosdk/dist/types/src/client/v2/algod/getAssetByID';
 import algosdk from 'algosdk';
 import { getAlgodClient } from 'src/app/services/utils.algod';
 import {WhitelistService} from "../../../services/whitelist.service";
+import {ThemeService} from "../../../services/theme.service";
 
 @Component({
   selector: 'app-pop-up',
@@ -36,13 +37,15 @@ export class PopUpComponent implements OnInit {
   totalSupply: number = 0;
   decimals: number = 0;
   public allowedWallets: typeof AllowedWalletsEnum = AllowedWalletsEnum;
+  public isDark: boolean = false;
 
   constructor(
     private _walletsConnectService: WalletsConnectService,
     private _userService: UserService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private readonly whitelistService: WhitelistService
+    private readonly _whitelistService: WhitelistService,
+    private readonly _themeService: ThemeService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +56,7 @@ export class PopUpComponent implements OnInit {
       this.totalSupply = this.assetInfo.params.total
       this.decimals = this.assetInfo.params.decimals
     }
+    this.subscribeToThemeColor();
   }
 
   scaleTotalSupply(supply: number){
@@ -67,7 +71,7 @@ export class PopUpComponent implements OnInit {
   async selectedWalletConnect(choice: AllowedWalletsEnum) {
     switch (choice) {
       case AllowedWalletsEnum.MY_ALGO_CONNECT: {
-        this.whitelistService.isWhitelistedValue = false;
+        this._whitelistService.isWhitelistedValue = false;
         await this._walletsConnectService.connect('my-algo-connect');
         if (this._walletsConnectService.myAlgoAddress && this._walletsConnectService.myAlgoName !== undefined) {
           this.isConnectedToWallet.emit(true);
@@ -352,6 +356,12 @@ export class PopUpComponent implements OnInit {
     } else {
       return decimals
     }
+  }
+
+  private subscribeToThemeColor(): void {
+    this._themeService.$colorTheme.subscribe((theme: string) => {
+      theme === "dark" ? this.isDark = true : this.isDark = false;
+    })
   }
 
 }

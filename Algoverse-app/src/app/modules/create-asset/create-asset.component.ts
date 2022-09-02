@@ -20,7 +20,8 @@ import { ignoreElements } from 'rxjs/operators';
 })
 export class CreateAssetComponent implements OnInit {
 
-  public collections: Array<any> = ['No Collection']
+  public collections: Array<any> = [];
+  public collection: string = 'No Collection';
   public passedCollection: any = {}
   public passedCollectionName: any = {}
   public pushedItems: any[] = [1];

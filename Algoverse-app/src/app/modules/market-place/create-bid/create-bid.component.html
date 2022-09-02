@@ -18,7 +18,7 @@
               <div class="col-md-7">
                 <input type="text" placeholder="Enter asset id to accept" class="input-costum" [formControl]="searchAssetControl">
               </div>
-                <h4>Name: {{mSelectedAsset?mSelectedAsset.params? mSelectedAsset.params.name : '' : ''}}</h4>
+              <h4 *ngIf="mSelectedAsset">Name: {{mSelectedAsset.params ? mSelectedAsset.params.name : ''}}</h4>
             </div>
           </div>
           <div class="price wrapper-border">

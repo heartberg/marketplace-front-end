@@ -20,7 +20,7 @@ import {ThemeService} from "../../services/theme.service";
 })
 export class ProfileComponent implements OnInit, OnDestroy{
   userProfile: any;
-  userCollections: any;
+  userCollections: any[] = [];
   myAssets: any = [];
   createdAssets: any = [];
   forSale: any = [];

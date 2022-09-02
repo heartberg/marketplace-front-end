@@ -20,5 +20,10 @@
     right: 15px;
     opacity: .5;
   }
+}
 
+@media (max-height: 720px) {
+  .built-in-algorand-container {
+    display: none;
+  }
 }

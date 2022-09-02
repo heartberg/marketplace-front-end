@@ -16,8 +16,8 @@ export class ScrollComponent {
 
   public config: SwiperOptions = {
     direction: 'horizontal',
-    centeredSlides: false,
-    spaceBetween: 8,
+    // centeredSlides: false,
+    spaceBetween: 10,
     slidesPerView: 1,
     scrollbar: {
       draggable: true,
@@ -28,10 +28,13 @@ export class ScrollComponent {
     },
     on: {},
     breakpoints: {
-      769: {
+      1190: {
         slidesPerView: 4
       },
-      575: {
+      910: {
+        slidesPerView: 3
+      },
+      630: {
         slidesPerView: 2
       }
     }

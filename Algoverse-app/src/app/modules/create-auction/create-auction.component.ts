@@ -70,10 +70,10 @@ export class CreateAuctionComponent implements OnInit {
     }
     this.assetIDs = asset_ids;
     this.extractAssetsName();
-    this.spinner.hide()
-    const firstAsset = this.assets[0];
+    this.spinner.hide();
 
-    this.onSelectedAsset(firstAsset.index);
+    // const firstAsset = this.assets[0];
+    // this.onSelectedAsset(firstAsset.index);
   }
 
   async onSelectedAsset(assetID: string) {
@@ -318,6 +318,10 @@ export class CreateAuctionComponent implements OnInit {
           name: asset.params.name
         }
       });
+      this.assetsName.unshift({
+        id: 0,
+        name: "Select asset"
+      })
     }
   }
 
