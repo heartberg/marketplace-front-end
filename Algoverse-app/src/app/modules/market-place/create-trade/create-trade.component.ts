@@ -75,8 +75,8 @@ export class CreateTradeComponent implements OnInit {
     const accountInfo = await algod.accountInformation('5V3RXJ76GKVG7F55LZIVN6DXOQLNRLAMMNQMFLJ57LP2PP5B7Q64A7IX7A').do();
     console.log('accountInfo 0 0 0 ', accountInfo);
 
-    const firstAsset = this.assets[0];
-    this.selectedAsset(firstAsset.index);
+    // const firstAsset = this.assets[0];
+    // this.selectedAsset(firstAsset.index);
 
     this.spinner.hide()
   }
@@ -299,6 +299,10 @@ export class CreateTradeComponent implements OnInit {
           name: asset.params.name
         }
       });
+      this.assetsName.unshift({
+        id: 0,
+        name: "Select asset"
+      })
     }
   }
 

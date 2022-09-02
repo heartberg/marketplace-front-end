@@ -29,7 +29,7 @@
               </div>
               <div class="drop-down-value" *ngIf="selectedLabelValue !== ''">
                 <p>{{selectedLabelValue.name}}</p>
-                <p>ID: {{selectedLabelValue.id}}</p>
+                <p *ngIf="selectedLabelValue.id">ID: {{selectedLabelValue.id}}</p>
               </div>
             </button>
           </ng-container>
@@ -133,33 +133,35 @@
       </div>
     </ng-container>
     <ng-container *ngIf="dropDownValuesWithLabels.length">
-      <div class="section" *ngFor="let button of dropDownValuesWithLabels; let last = last; let i = index" (click)="selectValue(button.id, i + 1)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection"
-           [class.hidden]="isSwitcher">
-        <button class="btn-default btn-drop-down-labels" [class.color-violet]="tree" *ngIf="!isProfileSection">
-          <div class="drop-down-value">
-            <p>{{button.name}}</p>
-            <p>ID: {{button.id}}</p>
-          </div>
-        </button>
-        <ng-container *ngIf="isProfileSection">
-          <div class="dropDownWrapper">
-            <div class="section" [class.profileunHover]="isProfileSection">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="img">
-                    <img [src]="profileSectionImg" alt="">
+      <ng-container *ngFor="let button of dropDownValuesWithLabels; let last = last; let i = index">
+        <div *ngIf="button.id" class="section" (click)="selectValue(button.id, i + 1)" [class.border-none]="last" [class.no-border]="tree" [class.unHover]="isProfileSection"
+             [class.hidden]="isSwitcher">
+          <button class="btn-default btn-drop-down-labels" [class.color-violet]="tree" *ngIf="!isProfileSection">
+            <div class="drop-down-value">
+              <p>{{button.name}}</p>
+              <p>ID: {{button.id}}</p>
+            </div>
+          </button>
+          <ng-container *ngIf="isProfileSection">
+            <div class="dropDownWrapper">
+              <div class="section" [class.profileunHover]="isProfileSection">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="img">
+                      <img [src]="profileSectionImg" alt="">
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="info">
-                    <p>{{profileSectionInfo}}</p>
+                  <div class="col-md-6">
+                    <div class="info">
+                      <p>{{profileSectionInfo}}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </ng-container>
-      </div>
+          </ng-container>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
 <!--  <select name="" id="">-->

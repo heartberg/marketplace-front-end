@@ -72,6 +72,8 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
 
+    this.spinner.hide();
+
     const asset_ids = [];
     for (let asset of this.assets) {
       asset_ids.push(asset.index);
@@ -79,8 +81,8 @@ export class CreateSwapComponent implements OnInit {
     this.assetIDs = asset_ids;
     this.extractAssetsName();
 
-    const firstAsset = this.assets[0];
-    this.onSelectedAsset(firstAsset.index);
+    // const firstAsset = this.assets[0];
+    // this.onSelectedAsset(firstAsset.index);
   }
 
   async onSelectedAsset(assetID: string) {
@@ -363,6 +365,10 @@ export class CreateSwapComponent implements OnInit {
           name: asset.params.name
         }
       });
+      this.assetsName.unshift({
+        id: 0,
+        name: "Select asset"
+      })
     }
   }
 
