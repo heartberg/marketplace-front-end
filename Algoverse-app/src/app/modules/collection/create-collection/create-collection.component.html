@@ -46,6 +46,7 @@
       <div class="section wrapper-border flex-column">
         <h4>Category</h4>
         <app-drop-down-selector [dropDownValues]="categoryList" style="width: 100%;"
+                                [defaultValue]="category"
                                 (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
       </div>
       <div class="section wrapper-border flex-column">
