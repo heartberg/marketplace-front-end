@@ -18,6 +18,27 @@
     transform: translate(-50%, -50%);
     position: absolute;
 
+    .input-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .amount-section {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .info {
+        min-width: 46px;
+        color: #666666;
+      }
+      .input {
+        padding-left: 0;
+        text-align: center;
+        width: 160px;
+      }
+    }
     .follow-container {
       height: 300px;
       width: 200px;
@@ -87,11 +108,17 @@
 }
 .btns {
   padding: 0px 44px;
-  margin-top: 10px;
+  margin-top: 20px;
   button {
     height: 40px;
     width: 160px;
   }
+}
+.amount-section-gap {
+  gap: 6px;
+}
+.button-gap {
+  gap: 12px;
 }
 
 @media (max-width: 576px) {

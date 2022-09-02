@@ -64,19 +64,27 @@
       </div>
     </ng-container>
     <ng-container *ngIf="selected">
-      <h3 *ngIf="!trade" style="text-align: center; margin-bottom: 30px; color: #81007F">Place Bid</h3>
+      <h3 *ngIf="!trade" style="text-align: center; margin-bottom: 30px; color: #81007F">Create Bid</h3>
       <h3 *ngIf="trade" style="text-align: center; margin-bottom: 30px; color: #81007F">Create Sale</h3>
-      <div class="d-flex align-baseline">
-        <input type="text" class="input-costum" (blur)="blurOfferEvent($event)">
-        <!-- <img class="algo-logo" src="assets/img/algorand-algo-logo.png" alt=""> -->
-        <span class="color-violet" style="line-height: 57px;"> Algo</span>
+      <div class="d-flex flex-column amount-section-gap">
+        <div class="amount-section">
+          <div class="input-section">
+            <span class="info">Price</span>
+            <input type="text" class="input-costum input" placeholder="Algo amount" (blur)="blurOfferEvent($event)">
+          </div>
+          <img *ngIf="isDark" class="algo-logo" src="assets/img/algorand-logo-white-small.png" alt="">
+          <img *ngIf="!isDark" class="algo-logo" src="assets/img/algorand-logo-black-small.png" alt="">
+        </div>
+        <div class="amount-section" *ngIf="decimals > 0 || totalSupply > 1">
+          <div class="input-section">
+            <span class="info">Items</span>
+            <input type="text" class="input-costum input" placeholder="Asset amount" (blur)="blurAmount($event)">
+          </div>
+          <span *ngIf="!trade" class="info">{{scaleTotalSupply(totalSupply)}}  {{ decimals > 0? ' Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}} available</span>
+          <span *ngIf="trade" class="info">{{scaleTotalSupply(balance)}} {{ decimals > 0? ' Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}} available</span>
+        </div>
       </div>
-      <div class="d-flex align-baseline" *ngIf="decimals > 0 || totalSupply > 1">
-        <input type="text" class="input-costum" (blur)="blurAmount($event)">
-        <span *ngIf="!trade" class="color-violet" style="line-height: 57px;">Pieces ( Max: {{scaleTotalSupply(totalSupply)}}  {{ decimals > 0? ' Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}})</span>
-        <span *ngIf="trade" class="color-violet" style="line-height: 57px;">Pieces ( Max: {{scaleTotalSupply(balance)}} {{ decimals > 0? ' Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}})</span>
-      </div>
-      <div class="btns d-flex justify-content-between">
+      <div class="btns d-flex justify-content-between button-gap">
         <button class="btn-primary-costum" (click)="cancel()">
           Cancel
         </button>
