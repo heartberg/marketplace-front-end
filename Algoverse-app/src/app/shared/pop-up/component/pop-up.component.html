@@ -80,8 +80,8 @@
             <span class="info">Items</span>
             <input type="text" class="input-costum input" placeholder="Asset amount" (blur)="blurAmount($event)">
           </div>
-          <span *ngIf="!trade" class="info">{{scaleTotalSupply(totalSupply)}}  {{ decimals > 0? ' Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}} available</span>
-          <span *ngIf="trade" class="info">{{scaleTotalSupply(balance)}} {{ decimals > 0? ' Fractions: ' : ""}} {{decimals >= 5 ? 10 : "" }}<sup *ngIf="decimals >= 5">{{decimals}}</sup> {{(decimals < 5 && decimals > 0)? formatFractions(decimals) : ""}} available</span>
+          <span *ngIf="!trade" class="info">{{scaleTotalSupply(totalSupply)}} available</span>
+          <span *ngIf="trade" class="info">{{scaleTotalSupply(balance)}} available</span>
         </div>
       </div>
       <div class="btns d-flex justify-content-between button-gap">
