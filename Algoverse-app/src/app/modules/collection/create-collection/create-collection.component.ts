@@ -13,12 +13,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class CreateCollectionComponent implements OnInit {
 
-  public categoryList = ['Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
+  public categoryList = ['Select category', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
   public name: string = "";
   public description: string = "";
   public externalLink: string = "";
   public website: string = "0";
-  public category: string = "Collectibles";
+  public category: string = "Select category";
   public iconUrl: string = "";
   public bannerUrl: string = "";
   public imageUrl: string = "";
@@ -111,7 +111,7 @@ export class CreateCollectionComponent implements OnInit {
       alert('Please add featured image');
       return;
     }
-    if (!this.category) {
+    if (this.category === 'Select category') {
       alert('Please select category');
       return;
     }

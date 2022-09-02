@@ -20,7 +20,7 @@ import { ignoreElements } from 'rxjs/operators';
 })
 export class CreateAssetComponent implements OnInit {
 
-  public collections: Array<any> = [];
+  public collections: Array<any> = ["No Collection"];
   public collection: string = 'No Collection';
   public passedCollection: any = {}
   public passedCollectionName: any = {}
@@ -34,7 +34,7 @@ export class CreateAssetComponent implements OnInit {
   public fileUrl: string = "";
   public coverUrl: string = "";
   public decimals: string = "0";
-  public categoryList = ['Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
+  public categoryList = ['Select category', 'Collectibles', 'Artwork', 'Tickets', 'Music', 'Media', 'Gaming', 'Wearable', 'Physical assets', 'Domain names'];
 
   public fractionalized: boolean = false;
   @ViewChild('checkboxFractionalize', {static: false})
@@ -123,8 +123,8 @@ export class CreateAssetComponent implements OnInit {
           console.log("hit1")
           if (!this.passedCollection) {
             console.log("hit2")
-            this.passedCollectionName = this.collections[0];
-            this.selectedCollection(this.passedCollectionName)
+            // this.passedCollectionName = this.collections[0];
+            // this.selectedCollection(this.passedCollectionName)
             console.log(this.passedCollection)
           }
         }
