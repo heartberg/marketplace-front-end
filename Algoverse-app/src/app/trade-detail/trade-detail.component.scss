@@ -303,6 +303,10 @@ input[type=date] {
   .audio {
     width: 250px;
   }
+
+  img {
+    object-fit: cover;
+  }
 }
 .bid{
   gap: 24px;
