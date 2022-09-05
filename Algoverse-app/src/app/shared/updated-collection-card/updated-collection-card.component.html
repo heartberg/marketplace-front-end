@@ -1,0 +1,25 @@
+<div class="ucard">
+  <div class="card-image-section">
+    <div class="card-image-wrapper">
+      <img class="card-image" [src]="item.icon" alt="image">
+    </div>
+    <div class="creator-section">
+      <img [src]="item.creator.profileImage"
+           alt="Creator" (click)="navigateToCreatorProfile($event)">
+      <h4>{{(item.creator.name.length > 15) ? (item.creator.name | slice:0:15) + '...' : (item.creator.name)}}</h4>
+    </div>
+    <div class="hearted-section" (click)="addOrRemoveStar($event)" (mouseover)="isHovered = true;"
+         (mouseleave)="isHovered = false;">
+      <img
+        [src]="isHovered ? './assets/img/heart-touched.svg' : isStarred  ? './assets/img/heart.svg' : './assets/img/heart-unfilled.svg'"
+        alt="heart">
+      <h4 [ngClass]="{'touched': isHovered}">{{item.stars}}</h4>
+    </div>
+  </div>
+  <div class="card-info-section">
+    <div class="card-info row m-0 justify-content-between">
+      <h3>{{(item.name.length > 15) ? (item.name | slice:0:15) + '...' : (item.name)}}</h3>
+      <h3>{{item.assetCount ? item.assetCount : '0'}} assets</h3>
+    </div>
+  </div>
+</div>

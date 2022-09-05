@@ -38,7 +38,7 @@
         </div>
         <div class="col-8 d-flex flex-column align-items-center">
           <div class="d-flex align-items-center">
-            <h4>{{userProfile?.name.substring(0, 28)}}</h4>
+            <h4>@{{userProfile?.name.substring(0, 28)}}</h4>
             <img class="pe-none" style='width: 25px; height: 25px;' src="assets/img/verified-mark.png" alt=""
                  *ngIf="userProfile?.verified">
           </div>
@@ -97,7 +97,7 @@
           <mat-tab [ngClass]="{'dark-mode': isDark}" label="Collections ({{userCollections.length}})">
             <div class="row mt-4">
               <div class="col-md-6 col-lg-4 col-xl-3 col mb-4" *ngFor="let collection of userCollections">
-                <app-card [mItem]="collection" routerLink="/collection-detail/{{collection.collectionId}}" [isCollection]="true"></app-card>
+                <app-updated-collection-card [item]="collection" routerLink="/collection-detail/{{collection.collectionId}}"></app-updated-collection-card>
               </div>
             </div>
           </mat-tab>
@@ -109,7 +109,7 @@
             </div>
             <div class="row mt-4">
               <div class="col-md-6 col-lg-4 col-xl-3 col mb-4" *ngFor="let collection of userCollections">
-                <app-card [mItem]="collection" routerLink="/collection-detail/{{collection.collectionId}}" [isCollection]="true"></app-card>
+                <app-updated-collection-card [item]="collection" routerLink="/collection-detail/{{collection.collectionId}}"></app-updated-collection-card>
               </div>
             </div>
           </mat-tab>

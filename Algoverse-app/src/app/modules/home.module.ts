@@ -54,6 +54,7 @@ import { AccessHeadingComponent } from './access/access-heading/access-heading.c
 import { AccessMainComponent } from './access/access-main/access-main.component';
 import { AccessConnectComponent } from './access/access-connect/access-connect.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { CollectionsComponent } from './collection/collections/collections.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     BuiltInAlgorandComponent,
     SocialMediaComponent,
     AccessConnectComponent,
+    CollectionsComponent,
   ],
   imports: [
     BrowserModule,

@@ -347,4 +347,10 @@ export class UserService {
       }
     });
   }
+  public searchForCollections(params?: any): Observable<any> {
+    const url = `${this.baseUrl}collection/search`;
+    return this._http.get(url, {
+      params
+    })
+  }
 }

@@ -1,0 +1,183 @@
+:host ::ng-deep app-drop-down-selector {
+  .drop-down {
+    max-height: 212px !important;
+    overflow-y: auto !important;
+
+    .dropDown {
+      position: unset !important;
+    }
+  }
+}
+
+mat-slider {
+  width: 100%;
+}
+
+app-drop-down-selector {
+  width: 100%;
+}
+
+.main {
+  .p-b_0 {
+    padding-bottom: 0px !important;
+  }
+
+  .title {
+    margin-top: 2em;
+
+    h3 {
+      color: #666;
+    }
+  }
+
+  .wrapper {
+    display: flex;
+
+    .left-section {
+      width: 20%;
+      max-height: calc(100vh - 145px);
+      overflow-y: scroll;
+      position: sticky;
+      top: 85px;
+
+      .section {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        text-align: left;
+
+        h3 {
+          margin-top: 15px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+
+    .right-section {
+      width: 80%;
+      margin-left: 20px;
+
+      .boxes-section {
+        display: flex;
+        flex-direction: column;
+
+        .boxes-section-sort-by {
+          width: 280px;
+          margin-bottom: 20px;
+          margin-top: 20px;
+        }
+      }
+
+    }
+  }
+
+  .custom-color {
+    color: #666;
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 1230px) {
+  .main {
+    .wrapper {
+      .left-section {
+        width: 230px;
+      }
+
+    }
+  }
+}
+
+@media (max-width: 920px) {
+  .main {
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+
+      .left-section {
+        position: unset;
+      }
+
+      .right-section {
+        margin-top: 20px;
+
+        .boxes-section {
+
+          .boxes-section-sort-by {
+            margin-bottom: 30px;
+            margin-top: 20px;
+          }
+
+        }
+
+      }
+
+      .row {
+        margin: -10px -10px;
+
+        &.m-t_10 {
+          margin-top: 10px !important;
+        }
+      }
+
+      .left-section {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+
+        .section {
+          width: 50%;
+          padding: 0px 10px;
+
+          &.first {
+            height: unset;
+          }
+        }
+      }
+
+      .right-section {
+        width: 100%;
+        margin-left: 0px;
+
+      }
+    }
+  }
+}
+
+@media (max-width: 580px) {
+  .main {
+    .wrapper {
+
+      .left-section {
+
+        .section {
+          width: 100%;
+          padding: 0px;
+        }
+      }
+
+      .right-section {
+
+        .timed-auction-section {
+
+          .wrapper {
+
+            img {
+              height: 200px;
+              object-fit: cover;
+            }
+
+            .only-one-img {
+              img {
+                height: 200px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
