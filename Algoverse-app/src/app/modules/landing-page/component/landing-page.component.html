@@ -56,7 +56,7 @@
     <div class="scrolls">
       <div class="box" *ngFor="let item of hotItems">
         <div *ngIf="item['isCollection']">
-          <app-card [mItem]="item" [isCollection]="true" routerLink="/collection-detail/{{item.collectionId}}"></app-card>
+          <app-updated-collection-card [item]="item" routerLink="/collection-detail/{{item.collectionId}}"></app-updated-collection-card>
         </div>
         <app-updated-card *ngIf="item['isAsset']" [item]="item" [type]="marketplaceTypes.ALL" routerLink="../asset-detail/{{item['assetId']}}"></app-updated-card>
         <div class="mitem" *ngIf="item['isUser']">

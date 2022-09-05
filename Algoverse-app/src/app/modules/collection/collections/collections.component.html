@@ -1,0 +1,43 @@
+<div class="main MAIN">
+  <div class="wrapper wrapper-border">
+    <div class="left-section wrapper-border">
+      <div class="section">
+        <div class="title">
+          <h3>
+            Sort by
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="sortDropDown" [isNotAccordion]="false" (dropDownValue)="selectedSort($event)"></app-drop-down-selector>
+      </div>
+      <div class="section">
+        <div class="title">
+          <h3>
+            Cateogry
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="categoriesDropDown" (dropDownValue)="selectedCategory($event)"></app-drop-down-selector>
+      </div>
+      <div class="section last">
+        <div class="title">
+          <h3>
+            Creators
+          </h3>
+        </div>
+        <app-drop-down-selector [dropDownValues]="artistsDropDown" (dropDownValue)="selectedArtist($event)"></app-drop-down-selector>
+      </div>
+    </div>
+    <div class="right-section">
+      <div class="boxes-section">
+        <div class="sale-section">
+          <h3 class="custom-color title">All Collections</h3>
+          <div class="row">
+            <div class="col mb-2" *ngFor="let item of collections">
+              <app-updated-collection-card [item]="item" [routerLink]="'/collection-detail/' + item['collectionId']"></app-updated-collection-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner type="ball-clip-rotate-multiple" size="medium"></ngx-spinner>

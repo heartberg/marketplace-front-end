@@ -48,6 +48,7 @@
         <ul [ngClass]="{'clicked': isMenuRespoOpened}">
           <ng-container *ngIf="!changeRespoNavAndProfileIcons">
             <li [ngClass]="{'menuRespoAnimationFirst': isMenuRespoOpened}" routerLink="/marketplace">NFTs</li>
+            <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/collections">Collections</li>
             <li [ngClass]="{'menuRespoAnimationSecond': isMenuRespoOpened}" routerLink="/creators">Creators</li>
             <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="creators/space-shuttle">SpaceShuttle</li> -->
             <!-- <li [ngClass]="{'menuRespoAnimationThird': isMenuRespoOpened}" routerLink="/notification-center">Notifications</li> -->

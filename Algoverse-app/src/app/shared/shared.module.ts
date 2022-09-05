@@ -17,7 +17,8 @@ import { SwiperModule } from "swiper/angular";
 import { OnlyNumbersDirective } from "./directives/only-number.directive";
 import { NgMarqueeModule } from "ng-marquee";
 import { UpdatedCardComponent } from './updated-card/updated-card.component';
-import { ClickOutsideDirective } from './directives/click-outside.directive'
+import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { UpdatedCollectionCardComponent } from './updated-collection-card/updated-collection-card.component'
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ClickOutsideDirective } from './directives/click-outside.directive'
     ScrollComponent,
     OnlyNumbersDirective,
     UpdatedCardComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    UpdatedCollectionCardComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { ClickOutsideDirective } from './directives/click-outside.directive'
         ScrollComponent,
         OnlyNumbersDirective,
         UpdatedCardComponent,
-        ClickOutsideDirective
+        ClickOutsideDirective,
+        UpdatedCollectionCardComponent
     ],
   providers: [WalletsConnectService],
 })

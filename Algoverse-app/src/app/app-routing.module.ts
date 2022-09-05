@@ -32,6 +32,7 @@ import { CreateWrapperComponent } from "./modules/create-wrapper/create-wrapper.
 import {SearchWrapperComponent} from "./modules/search-wrapper/search-wrapper.component";
 import {AccessComponent} from "./modules/access/access.component";
 import {WhitelistGuard} from "./shared/guards/whitelist.guard";
+import {CollectionsComponent} from "./modules/collection/collections/collections.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'access-beta', pathMatch: 'full'},
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'marketplace', component: MarketPlaceComponent, canActivate: [WhitelistGuard] },
   { path: 'search', component: SearchWrapperComponent, canActivate: [WhitelistGuard] },
   { path: 'collection', component: MyCollectionComponent, canActivate: [WhitelistGuard] },
+  { path: 'collections', component: CollectionsComponent, canActivate: [WhitelistGuard] },
   { path: 'create-collection', component: CreateCollectionComponent, canActivate: [WhitelistGuard] },
   { path: 'update-collection', component: UpdateCollectionComponent, canActivate: [WhitelistGuard] },
   { path: 'collection-detail/:collectionId', component: CollectionDetailComponent, canActivate: [WhitelistGuard] },
